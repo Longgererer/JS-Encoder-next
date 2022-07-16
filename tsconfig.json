@@ -1,4 +1,5 @@
 {
+  "types": ["node"],
   "compilerOptions": {
     "target": "esnext",
     "useDefineForClassFields": true,
