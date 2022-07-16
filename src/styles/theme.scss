@@ -1,0 +1,10 @@
+@import './variable.scss';
+@import './mixins.scss';
+
+:root[theme='bright'] {
+  @include color-list($bright-colors);
+}
+
+:root[theme='dark'] {
+  @include color-list($dark-colors);
+}
