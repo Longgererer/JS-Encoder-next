@@ -151,5 +151,15 @@
 .square { border-radius: 0; }
 .circle { border-radius: 50%; }
 
+/** position */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+/** display */
+.inline-block { display: inline-block; }
+
 /* other */
 .no-select { user-select: none; }
+.high-layer { z-index: 1000; }
