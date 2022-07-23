@@ -1,36 +1,39 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 interface IProps {
   /** 徽章的显隐 */
   value: boolean
-  /** 徽章位置：top-left|top-right|bottom-left|bottom-right */
-  position: string
-  /** 徽章颜色 */
-  color: string
   /** 徽章显示内容 */
   content: string
+  /** 徽章位置：top-left|top-right|bottom-left|bottom-right */
+  position?: string
+  /** 徽章颜色 */
+  color?: string
   /** 邀请徽章尺寸 sm|md|lg */
-  size: string
+  size?: string
+  /** 是否显示边框 */
+  showBorder?: boolean
 }
 
-const props = withDefaults(defineProps<IProps>(), {
+withDefaults(defineProps<IProps>(), {
   value: true,
+  content: '',
   position: 'top-right',
   color: '#0085ff',
-  content: '',
   size: 'md',
+  showBorder: true,
 })
+
+const namespace = 'badge'
 </script>
 
 <template>
-  <span class="badge-wrapper relative">
+  <span class="relative" :class="`${namespace}-wrapper`">
     <span
-      class="badge circle relative high-layer flex-center"
-      :class="`badge-${position} badge-${size}`"
+      class="circle relative high-layer flex-center"
+      :class="`${namespace} badge-${position} badge-${size} ${showBorder ? `${namespace}-border` : ''}`"
       :style="{ backgroundColor: color }"
     >
-      <span class="badge-content font-xs">{{ content }}</span>
+      <span class="font-xs" :class="`${namespace}-content`">{{ content }}</span>
     </span>
     <slot></slot>
   </span>
@@ -38,10 +41,17 @@ const props = withDefaults(defineProps<IProps>(), {
 
 <style lang="scss" scoped>
 $namespace: 'badge';
+/** 组件尺寸 */
 $comp-size: (
   sm: 4,
   md: 8,
   lg: 12,
+);
+/** 边框宽度 */
+$border-width: (
+  sm: 1,
+  md: 1.5,
+  lg: 2,
 );
 
 .#{$namespace}-wrapper {
@@ -50,6 +60,8 @@ $comp-size: (
       color: var(--color-badge-color);
     }
   }
+
+  /** 每种size对应不同的宽高 */
   @each $name, $size in ($comp-size) {
     .#{$namespace}-#{$name} {
       width: #{$size}px;
@@ -67,6 +79,13 @@ $comp-size: (
       &.#{$namespace}-bottom-right {
         inset: calc(100% - #{$size}px / 2) 0 0 calc(100% - #{$size}px / 2);
       }
+    }
+  }
+
+  /** 每种size对应不同的边框宽度 */
+  @each $name, $width in ($border-width) {
+    .#{$namespace}-border {
+      border: #{$width}px solid var(--color-badge-border);
     }
   }
 }
