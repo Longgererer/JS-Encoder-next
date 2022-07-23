@@ -139,7 +139,10 @@
 .flex-center { display: flex; justify-content: center; align-items: center; }
 
 /* cursor */
-.pointer { cursor: pointer; }
+.cursor-pointer { cursor: pointer; }
+.cursor-move { cursor: move; }
+.cursor-x-resize { cursor: e-resize; }
+.cursor-y-resize { cursor: n-resize; }
 
 /* transition */
 .fade-ease { @include transition(all, 0.3s, ease); }
