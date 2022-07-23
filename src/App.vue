@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import badge from './components/badge/badge.vue'
+import container from './views/container/container.vue'
 </script>
 
 <template>
-  <div class="app flex">
-    <badge>
-      <span>1231231313123</span>
-    </badge>
+  <div class="app flex fill">
+    <container></container>
   </div>
 </template>
 
-<style lang="scss">
-.app {
-
-}
+<style lang="scss" scoped>
+.app {}
 </style>
