@@ -1,4 +1,5 @@
 @import './mixins.scss';
+@import './variable.scss';
 
 /* padding */
 .p-xs { padding: 0.25rem; }
@@ -94,7 +95,13 @@
 .bg-repeat { background-repeat: repeat; }
 
 /* color */
+.primary-text { color: var(--color-primary); }
+.describe-text { color: var(--color-describe); }
+.no-active-text { color: var(--color-no-active-color); }
+.active-text { color: var(--color-active-color); }
 
+/** background */
+.bg-main1 { background-color: var(--color-main-bg-1); }
 
 /* width and height */
 .fill { width: 100%; height: 100%; }
@@ -116,7 +123,8 @@
 .font-xxl { font-size: 2rem; }
 
 /* font-family */
-
+.def-font { font-family: $def-font; }
+.code-font { font-family: $code-font; }
 
 /* font-weight */
 .fw-light { font-weight: 200; }
@@ -137,6 +145,9 @@
 .flex-x-center { display: flex; justify-content: center; }
 .flex-y-center { display: flex; align-items: center; }
 .flex-center { display: flex; justify-content: center; align-items: center; }
+.flex-col-x-center { display: flex; flex-direction: column; align-items: center; }
+.flex-col-y-center { display: flex; flex-direction: column; justify-content: center; }
+.flex-col-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
 /* cursor */
 .cursor-pointer { cursor: pointer; }
@@ -146,6 +157,11 @@
 
 /* transition */
 .fade-ease { @include transition(all, 0.3s, ease); }
+
+/** transform */
+.rotate-90 { transform: rotate(90deg); }
+.rotate-180 { transform: rotate(180deg); }
+.rotate-270 { transform: rotate(270deg); }
 
 /* border */
 .no-border { border: none; }
