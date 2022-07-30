@@ -23,6 +23,10 @@ withDefaults(defineProps<IProps>(), {
   showBorder: true,
 })
 
+defineOptions({
+  name: 'badge',
+})
+
 const namespace = 'badge'
 </script>
 

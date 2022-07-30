@@ -2,6 +2,10 @@
 import { ref } from 'vue'
 import projectConfig from '../../../../package.json'
 
+defineOptions({
+  name: "navbar",
+})
+
 /** 是否显示preview窗口 */
 const showPreview = ref<boolean>(true)
 
