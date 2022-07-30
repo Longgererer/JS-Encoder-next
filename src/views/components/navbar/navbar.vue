@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import projectConfig from '../../../../package.json'
 
 defineOptions({
-  name: "navbar",
+  name: 'navbar',
 })
 
 /** 是否显示preview窗口 */
@@ -15,13 +15,12 @@ const handleClickTogglePreview = (): void => {
 </script>
 <template>
   <div class="navbar fill-w p-x-l def-font flex-y-center bg-main1 no-select">
-
     <!-- logo信息 -->
     <div class="logo flex-y-center">
-      <img src="../../../assets/images/logo.svg" alt="logo">
+      <img src="../../../assets/images/logo.svg" alt="logo" />
     </div>
     <span class="logo-text fw-bold ml-l mr-s primary-text" title="JS-Encoder">JS-Encoder</span>
-    <span class="version font-xs pt-xs describe-text">v{{projectConfig.version}}</span>
+    <span class="version font-xs pt-xs describe-text">v{{ projectConfig.version }}</span>
 
     <!-- 占位 -->
     <div class="flex-1"></div>
@@ -33,8 +32,8 @@ const handleClickTogglePreview = (): void => {
         :title="showPreview ? '隐藏预览窗口' : '显示预览窗口'"
         @click="handleClickTogglePreview"
       >
-        <i class="icon iconfont icon-move-right inline-block" :class="showPreview ? '' : 'rotate-180'">123</i>
-      </div> 
+        <i class="icon iconfont icon-move-right inline-block" :class="showPreview ? '' : 'rotate-180'">icon</i>
+      </div>
     </div>
   </div>
 </template>
