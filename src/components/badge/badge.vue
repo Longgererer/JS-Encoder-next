@@ -31,16 +31,16 @@ const namespace = 'badge'
 </script>
 
 <template>
-  <span class="relative" :class="`${namespace}-wrapper`">
-    <span
+  <div class="relative" :class="`${namespace}-wrapper`">
+    <div
       class="circle relative high-layer flex-center"
       :class="`${namespace} badge-${position} badge-${size} ${showBorder ? `${namespace}-border` : ''}`"
       :style="{ backgroundColor: color }"
     >
       <span class="font-xs" :class="`${namespace}-content`">{{ content }}</span>
-    </span>
+    </div>
     <slot></slot>
-  </span>
+  </div>
 </template>
 
 <style lang="scss" scoped>

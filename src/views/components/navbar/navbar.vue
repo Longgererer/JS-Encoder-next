@@ -20,7 +20,7 @@ const handleClickTogglePreview = (): void => {
       <img src="../../../assets/images/logo.svg" alt="logo" />
     </div>
     <span class="logo-text fw-bold ml-l mr-s primary-text" title="JS-Encoder">JS-Encoder</span>
-    <span class="version font-xs pt-xs describe-text">v{{ projectConfig.version }}</span>
+    <span class="version font-xxs pt-xs describe-text">v{{ projectConfig.version }}</span>
 
     <!-- 占位 -->
     <div class="flex-1"></div>

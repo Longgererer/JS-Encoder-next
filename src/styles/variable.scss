@@ -9,6 +9,7 @@ $dark-colors: (
   active-color: #f2f2f2,
   describe: #999999,
   no-active-color: #777777,
+  shadow: #000000,
 
   /** 特殊 */
   edit-bar-active: #f2f2f2,
@@ -16,6 +17,7 @@ $dark-colors: (
   preview-bar-color: #f2f2f2,
   badge-color: #f2f2f2,
   badge-border: #181d1e,
+  tooltip-color: #f2f2f2,
 );
 
 $bright-colors: (
@@ -29,6 +31,7 @@ $bright-colors: (
   active-color: #0085ff,
   describe: #b0b0b0,
   no-active-color: #bfbfbf,
+  shadow: #000000,
 
   /** 特殊 */
   edit-bar-active: #0085ff,
@@ -36,6 +39,7 @@ $bright-colors: (
   preview-bar-color: #101010,
   badge-color: #f2f2f2,
   badge-border: #f0f2f3,
+  tooltip-color: #101010,
 );
 
 $def-font: JetBrains Mono;
