@@ -7,8 +7,8 @@ defineOptions({
 </script>
 <template>
   <div class="sidebar">
-    <tooltip content="这是提示文字" position="top">
-      <div style="height: 100px;width: 200px;background-color: red;">
+    <tooltip content="这是提示文字">
+      <div class="cursor-pointer" style="height: 100px;width: 200px;background-color: red;">
       </div>
     </tooltip>
   </div>

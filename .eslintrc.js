@@ -21,7 +21,7 @@ module.exports = {
     "vue",
     "@typescript-eslint",
   ],
-  "globals": { defineOptions: 'writable' },
+  "globals": { defineOptions: "writable", NodeJS: true },
   "rules": {
     "vue/comment-directive": "off",
     "arrow-parens": [
