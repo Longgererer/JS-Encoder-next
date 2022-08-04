@@ -24,6 +24,8 @@ module.exports = {
   "globals": { defineOptions: "writable", NodeJS: true },
   "rules": {
     "vue/comment-directive": "off",
+    "vue/no-v-for-template-key": "off",
+    "vue/no-multiple-template-root": "off",
     "arrow-parens": [
       "error",
       "always",

@@ -106,7 +106,6 @@ $border-width: 6;
 
 .#{$namespace} {
   color: var(--color-tooltip-color);
-  margin-left: 100px;
   .#{$namespace}-container {
     background-color: var(--color-main-bg-1);
     border-color: var(--color-main-bg-1);
@@ -158,6 +157,6 @@ $border-width: 6;
 
 .#{$namespace}-enter-active,
 .#{$namespace}-leave-active {
-  @include transition(all, 0.2s, ease);
+  @include transition(all, 0.3s, ease);
 }
 </style>

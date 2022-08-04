@@ -14,7 +14,7 @@ const handleClickTogglePreview = (): void => {
 }
 </script>
 <template>
-  <div class="navbar fill-w p-x-l def-font flex-y-center bg-main1 no-select">
+  <div class="navbar fill-w pl-m pr-l def-font flex-y-center bg-main1 no-select">
     <!-- logo信息 -->
     <div class="logo flex-y-center">
       <img src="../../../assets/images/logo.svg" alt="logo" />
