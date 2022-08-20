@@ -4,6 +4,7 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
+    "importHelpers": true,
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
@@ -11,9 +12,18 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "types": ["unplugin-vue-define-options"]
+    "types": ["unplugin-vue-define-options"],
+    "baseUrl": ".",
+    "paths": {
+      "@views/*": ["src/views/*"],
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"],
+      "@type/*": ["src/type/*"],
+    },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

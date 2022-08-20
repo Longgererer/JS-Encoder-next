@@ -12,8 +12,9 @@ export default defineConfig({
       '@views': resolve(__dirname, 'src/views'),
       '@components': resolve(__dirname, 'src/components'),
       '@utils': resolve(__dirname, 'src/utils'),
-      '@types': resolve(__dirname, 'src/types'),
+      '@type': resolve(__dirname, 'src/type'),
     },
+    extensions: ['.js', '.json', '.ts'],
   },
   css: {
     preprocessorOptions: {
