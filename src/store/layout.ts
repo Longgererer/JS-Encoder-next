@@ -1,4 +1,4 @@
-import { isUndefined } from '@utils/tool'
+import { isUndefined } from '@utils/common'
 import { defineStore } from 'pinia'
 
 interface ISize {
