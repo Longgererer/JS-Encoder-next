@@ -33,7 +33,7 @@ const sidebarList: SidebarType[][] = [
 
 <style lang="scss" scoped>
 .sidebar {
-  width: 48px;
+  width: 49px;
   border-right: 1px solid var(--color-main-bg-3);
   .split-line {
     width: 36px;
