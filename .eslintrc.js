@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable quotes */
 module.exports = {
   "env": {
     "browser": true,
@@ -19,8 +21,11 @@ module.exports = {
     "vue",
     "@typescript-eslint",
   ],
+  "globals": { defineOptions: "writable", NodeJS: true },
   "rules": {
     "vue/comment-directive": "off",
+    "vue/no-v-for-template-key": "off",
+    "vue/no-multiple-template-root": "off",
     "arrow-parens": [
       "error",
       "always",
@@ -72,7 +77,7 @@ module.exports = {
     }],
     "prefer-const": "error",
     "prefer-rest-params": "error",
-    "quotes": "on",
+    "quotes": [2, "single", { "avoidEscape": true }],
     "quote-props": "off",
     "radix": "error",
     "semi": "off",
@@ -138,7 +143,7 @@ module.exports = {
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/quotes": [
       "error",
-      "double",
+      "single",
     ],
     "@typescript-eslint/semi": [
       "error",
@@ -162,5 +167,6 @@ module.exports = {
       },
     ],
     "@typescript-eslint/unified-signatures": "error",
+    "vue/multi-word-component-names": "off",
   },
 }
