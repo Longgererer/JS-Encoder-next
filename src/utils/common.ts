@@ -55,7 +55,7 @@ export function getObjAllKeys(obj: any): Array<string | number> {
 }
 
 /** 将dom转化为字符串 */
-function stringifyDOM(dom: HTMLElement): string {
+export function stringifyDOM(dom: HTMLElement): string {
   let eDiv: HTMLElement | null = document.createElement('div')
   eDiv.appendChild(dom.cloneNode(true))
   const domStr = eDiv.innerHTML
@@ -64,7 +64,7 @@ function stringifyDOM(dom: HTMLElement): string {
 }
 
 /** 判断对象是否为window */
-function judgeWindow(data: any): boolean {
+export function judgeWindow(data: any): boolean {
   const type = getType(data)
   return type === 'global' || type === 'Window' || type === 'DOMWindow'
 }
@@ -172,7 +172,44 @@ export function JSONStringify(data: any): string {
   return str
 }
 
+export function JSONParse(data: string | null): any {
+  try {
+    if (data === null || data === 'undefined') {
+      return undefined
+    } else {
+      return JSON.parse(data)
+    }
+  } catch (error) {
+    console.log(error)
+    return void 0
+  }
+}
+
 /** 由于JSON.stringify固有问题，只能在确保可以直接转换时才可使用 */
-export function deepCopy(data: any) {
+export function deepCopy(data: any): any {
   return JSON.parse(JSON.stringify(data))
+}
+
+/** 判断对象中是否存在循环引用 */
+export function isCyclic(obj: any): boolean {
+  const stackSet = new Set()
+  let detected = false
+  const detect = (data: any) => {
+    if (data && typeof data !== 'object') {
+      return false
+    }
+    if (stackSet.has(data)) {
+      return (detected = true)
+    }
+    stackSet.add(data)
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        detect(data[key])
+      }
+    }
+    stackSet.delete(data)
+    return false
+  }
+  detect(obj)
+  return detected
 }

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ELogType } from '@type/interface'
+import { LogType } from '@type/interface'
 
 interface IConsoleSetting {
   /** 每次执行代码前是否自动清空日志 */
@@ -12,7 +12,7 @@ interface IConsoleStore {
   /** 控制台设置 */
   setting: IConsoleSetting
   /** 日志类型过滤选项 */
-  filter: ELogType
+  filter: LogType
 }
 
 export const useStore = defineStore('console', {
@@ -22,7 +22,7 @@ export const useStore = defineStore('console', {
         autoClear: true,
         highlightLog: true,
       },
-      filter: ELogType.ALL,
+      filter: LogType.ALL,
     }
   },
   actions: {
@@ -31,7 +31,7 @@ export const useStore = defineStore('console', {
         ...newSetting,
       })
     },
-    updateFilter(newType: ELogType) {
+    updateFilter(newType: LogType) {
       this.filter = newType
     },
   },

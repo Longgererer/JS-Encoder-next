@@ -1,5 +1,5 @@
 /** 日志类型 */
-export enum ELogType {
+export enum LogType {
   ALL = 'All',
   LOG = 'Log',
   INFO = 'Info',
@@ -7,7 +7,7 @@ export enum ELogType {
   ERROR = 'Error',
 }
 
-export enum ETheme {
+export enum Theme {
   DARK = 'dark',
   LIGHT = 'light',
 }
