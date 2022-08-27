@@ -6,12 +6,12 @@ export function isMac(): boolean {
   return /macintosh|mac os x/i.test(navigator.userAgent)
 }
 
-/** 把字符串第一位变成大写，其他为小写 */
+/* 把字符串第一位变成大写，其他为小写 */
 export function firstUpper(str: string): string {
   return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase()
 }
 
-/** 将字符串中的特殊字符转义，用于正则表达式中 */
+/* 将字符串中的特殊字符转义，用于正则表达式中 */
 export function escapeRegExp(str: string): string {
   const regexp = /[\\^$.*+?()[\]{}|]/g
   return str && new RegExp(regexp.source).test(str) ? str.replace(regexp, '\\$&') : str
@@ -26,7 +26,7 @@ export function getType(data: any): string {
   return type
 }
 
-/** 获取对象的所有键，包括不可枚举的键 */
+/* 获取对象的所有键，包括不可枚举的键 */
 export function getObjAllKeys(obj: any): Array<string | number> {
   const type = getType(obj)
   switch (type) {
@@ -54,7 +54,7 @@ export function getObjAllKeys(obj: any): Array<string | number> {
   }
 }
 
-/** 将dom转化为字符串 */
+/* 将dom转化为字符串 */
 export function stringifyDOM(dom: HTMLElement): string {
   let eDiv: HTMLElement | null = document.createElement('div')
   eDiv.appendChild(dom.cloneNode(true))
@@ -63,7 +63,7 @@ export function stringifyDOM(dom: HTMLElement): string {
   return domStr
 }
 
-/** 判断对象是否为window */
+/* 判断对象是否为window */
 export function judgeWindow(data: any): boolean {
   const type = getType(data)
   return type === 'global' || type === 'Window' || type === 'DOMWindow'
@@ -78,7 +78,7 @@ export function JSONStringify(data: any): string {
   let prefix = ''; let suffix = ''
   const type = getType(data)
 
-  /** 先根据类型判断需要采用何种格式 */
+  /* 先根据类型判断需要采用何种格式 */
   switch (type) {
     case 'Object': {
       prefix = '{'
@@ -185,12 +185,12 @@ export function JSONParse(data: string | null): any {
   }
 }
 
-/** 由于JSON.stringify固有问题，只能在确保可以直接转换时才可使用 */
+/* 由于JSON.stringify固有问题，只能在确保可以直接转换时才可使用 */
 export function deepCopy(data: any): any {
   return JSON.parse(JSON.stringify(data))
 }
 
-/** 判断对象中是否存在循环引用 */
+/* 判断对象中是否存在循环引用 */
 export function isCyclic(obj: any): boolean {
   const stackSet = new Set()
   let detected = false

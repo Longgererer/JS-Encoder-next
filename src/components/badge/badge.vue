@@ -1,16 +1,16 @@
 <script setup lang="ts">
 interface IProps {
-  /** 徽章的显隐 */
+  /* 徽章的显隐 */
   value: boolean
-  /** 徽章显示内容 */
+  /* 徽章显示内容 */
   content: string
-  /** 徽章位置：top-left|top-right|bottom-left|bottom-right */
+  /* 徽章位置：top-left|top-right|bottom-left|bottom-right */
   position?: string
-  /** 徽章颜色 */
+  /* 徽章颜色 */
   color?: string
-  /** 邀请徽章尺寸 sm|md|lg */
+  /* 邀请徽章尺寸 sm|md|lg */
   size?: string
-  /** 是否显示边框 */
+  /* 是否显示边框 */
   showBorder?: boolean
 }
 
@@ -45,13 +45,13 @@ const namespace = 'badge'
 
 <style lang="scss" scoped>
 $namespace: 'badge';
-/** 组件尺寸 */
+/* 组件尺寸 */
 $comp-size: (
   sm: 4,
   md: 8,
   lg: 12,
 );
-/** 边框宽度 */
+/* 边框宽度 */
 $border-width: (
   sm: 1,
   md: 1.5,
@@ -65,7 +65,7 @@ $border-width: (
     }
   }
 
-  /** 每种size对应不同的宽高 */
+  /* 每种size对应不同的宽高 */
   @each $name, $size in ($comp-size) {
     .#{$namespace}-#{$name} {
       width: #{$size}px;
@@ -86,7 +86,7 @@ $border-width: (
     }
   }
 
-  /** 每种size对应不同的边框宽度 */
+  /* 每种size对应不同的边框宽度 */
   @each $name, $width in ($border-width) {
     .#{$namespace}-border {
       border: #{$width}px solid var(--color-badge-border);

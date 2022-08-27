@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import tooltip from '@/components/tooltip/tooltip.vue'
-import { SidebarType, SidebarTypeToText, SidebarTypeToIcon } from './sidebar'
+import { LogType } from '@type/interface'
+import { SidebarType, SidebarTypeToText, SidebarTypeToIcon } from './sidebar.interface'
 
 defineOptions({ name: 'sidebar' })
 
-/** 侧边栏选项列表，每个子列表之间用横线分割 */
+/* 侧边栏选项列表，每个子列表之间用横线分割 */
 const sidebarList: SidebarType[][] = [
   [SidebarType.TEMPLATE, SidebarType.SETTING, SidebarType.LIBRARY],
   [SidebarType.UPLOAD, SidebarType.DOWNLOAD],

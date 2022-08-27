@@ -6,7 +6,7 @@ enum Position {
   BOTTOM = 'bottom',
 }
 
-/** 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
+/* 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
 export const initPosition = Position.RIGHT
 export default { name: 'tooltip' }
 </script>
@@ -15,17 +15,17 @@ export default { name: 'tooltip' }
 import { computed, ref } from 'vue'
 
 interface IProps {
-  /** 提示文字，如果使用slot#content则忽略此属性 */
+  /* 提示文字，如果使用slot#content则忽略此属性 */
   content?: string
-  /** 提示展示位置 */
+  /* 提示展示位置 */
   position?: Position
-  /** 偏移量，单位px */
+  /* 偏移量，单位px */
   offset?: number
-  /** 延迟消失时间，单位ms */
+  /* 延迟消失时间，单位ms */
   delay?: number
-  /** 是否禁用 */
+  /* 是否禁用 */
   disable?: boolean
-  /** 是否显示小三角 */
+  /* 是否显示小三角 */
   showTriangle?: boolean
 }
 
@@ -43,7 +43,7 @@ const hidden = ref<boolean>(true)
 
 const namespace = 'tooltip'
 
-/** 计算偏移样式 */
+/* 计算偏移样式 */
 const offsetStyle = computed<Record<string, string>>(() => {
   const { offset, position } = props
   const posToStyleMap = {
@@ -57,7 +57,7 @@ const offsetStyle = computed<Record<string, string>>(() => {
 
 let timer: NodeJS.Timeout | null = null
 
-/** 鼠标移入显示tip */
+/* 鼠标移入显示tip */
 const handleMouseover = (): void => {
   if (timer) {
     clearTimeout(timer)
@@ -65,7 +65,7 @@ const handleMouseover = (): void => {
   hidden.value = false
 }
 
-/** 鼠标移出delay毫秒后提示消失 */
+/* 鼠标移出delay毫秒后提示消失 */
 const handleMouseLeave = (): void => {
   timer = setTimeout(() => {
     hidden.value = true

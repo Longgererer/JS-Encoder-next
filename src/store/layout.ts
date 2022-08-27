@@ -9,14 +9,14 @@ interface ISize {
 }
 
 interface ILayoutStore {
-  /** 是否展示预览窗口和console */
+  /* 是否展示预览窗口和console */
   showRightView: boolean
   console: ISize,
   preview: ISize,
   editor: ISize,
-  /** 侧边栏宽度 */
+  /* 侧边栏宽度 */
   sidebarWidth: number,
-  /** 头部高度 */
+  /* 头部高度 */
   navbarHeight: number,
 }
 

@@ -3,7 +3,7 @@
   transition: $target $time $func $delay;
 }
 
-/** 内边距和外边距 */
+/* 内边距和外边距 */
 @mixin edge($name, $dir: all, $gap: 0) {
   @if $name == p {
     $name: padding
@@ -25,7 +25,7 @@
   }
 }
 
-/** 遍历主题颜色表 */
+/* 遍历主题颜色表 */
 @mixin color-list($colors) {
   @each $name, $color in $colors {
     --color-#{$name}: #{$color};
