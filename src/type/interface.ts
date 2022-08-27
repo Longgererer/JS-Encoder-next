@@ -1,4 +1,4 @@
-/** 日志类型 */
+/* 日志类型 */
 export enum LogType {
   ALL = 'All',
   LOG = 'Log',
@@ -10,4 +10,9 @@ export enum LogType {
 export enum Theme {
   DARK = 'dark',
   LIGHT = 'light',
+}
+
+export interface IOption {
+  text?: string
+  icon?: string
 }
