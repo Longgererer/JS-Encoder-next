@@ -31,3 +31,11 @@
     --color-#{$name}: #{$color};
   }
 }
+
+/* 文字图标的默认及hover样式 */
+@mixin font-active($defColor, $activeColor) {
+  color: $defColor;
+  &:hover {
+    color: $activeColor;
+  }
+}

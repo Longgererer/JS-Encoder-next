@@ -41,15 +41,19 @@ const handleClickTogglePreview = (): void => {
 .navbar {
   height: 49px;
   border-bottom: 1px solid var(--color-main-bg-3);
+
   .logo img {
     width: 20px;
   }
+
   .logo-text {
     font-size: 1.125rem;
   }
+
   .right-side-menu {
     .menu-item {
       color: var(--color-no-active-color);
+
       &:hover {
         color: var(--color-active-color);
       }

@@ -14,6 +14,7 @@
 .p-x-l { @include edge(p, x, 1rem); }
 .p-x-xl { @include edge(p, x, 1.25rem); }
 .p-x-xxl { @include edge(p, x, 1.5rem); }
+.p-x-max { @include edge(p, x, 2rem); }
 .p-y-xs { @include edge(p, y, 0.25rem); }
 .p-y-s { @include edge(p, y, 0.5rem); }
 .p-y-m { @include edge(p, y, 0.75rem); }
@@ -102,6 +103,8 @@
 
 /* background */
 .bg-main1 { background-color: var(--color-main-bg-1); }
+.bg-main2 { background-color: var(--color-main-bg-2); }
+.bg-main3 { background-color: var(--color-main-bg-3); }
 
 /* width and height */
 .fill { width: 100%; height: 100%; }
@@ -186,6 +189,12 @@
 .triangle-right { border-right-color: inherit; }
 .triangle-left { border-left-color: inherit; }
 .triangle-bottom { border-bottom-color: inherit; }
+
+/* color */
+.font-active { @include font-active(var(--color-no-active-color), var(--color-active-color)); }
+
+/* transition */
+.transition-all { @include transition(all, .3s, ease); }
 
 /* other */
 .no-select { user-select: none; }

@@ -1,10 +1,6 @@
 import { Origin, Prep } from '@type/prep'
 import { IOption } from '@type/interface'
 
-export interface IMoreOpts extends IOption {
-  opts: IOption[]
-}
-
 export interface IEditorTab {
   /* 当前tab对应编辑器使用的预处理语言 */
   prep: Prep
@@ -22,5 +18,28 @@ export interface IEditorBar {
   /* 平铺显示的菜单列表 */
   opts: IOption[]
   /* 更多选项列表 */
-  moreOpts: IMoreOpts
+  moreOpts: IOption[]
+}
+
+export interface IEditor {
+  /* 当前tab对应编辑器使用的预处理语言 */
+  prep: Prep
+  /* 预处理语言对应的原生语言 */
+  origin: Origin
+}
+
+export interface IEditorContainer {
+  width: number
+  height: number
+  editorBar: IEditorBar
+  editor: IEditor
+}
+
+export interface IEditorSplitter {
+  container?: IEditorContainer
+  children?: IEditorSplitter[]
+}
+
+export interface IEditorWrapper {
+  splitters: IEditorSplitter[]
 }
