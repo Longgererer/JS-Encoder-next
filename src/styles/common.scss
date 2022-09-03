@@ -118,13 +118,13 @@
 .fill-max-h { max-height: 100%; }
 
 /* font-size */
-.font-xxs { font-size: 0.75rem; }
-.font-xs { font-size: 0.875rem; }
-.font-s { font-size: 1rem; }
-.font-m { font-size: 1.25rem; }
-.font-l { font-size: 1.5rem; }
-.font-xl { font-size: 1.75rem; }
-.font-xxl { font-size: 2rem; }
+.font-xxs { font-size: 0.75rem; line-height: 0.75rem }
+.font-xs { font-size: 0.875rem; line-height: 0.875rem }
+.font-s { font-size: 1rem; line-height: 1rem }
+.font-m { font-size: 1.25rem; line-height: 1.25rem }
+.font-l { font-size: 1.5rem; line-height: 1.5rem }
+.font-xl { font-size: 1.75rem; line-height: 1.75rem }
+.font-xxl { font-size: 2rem; line-height: 2rem }
 
 /* font-family */
 .def-font { font-family: $def-font; }
@@ -195,6 +195,9 @@
 
 /* transition */
 .transition-all { @include transition(all, .3s, ease); }
+
+/*  line-height */
+.line-h-fill { line-height: 100%; }
 
 /* other */
 .no-select { user-select: none; }

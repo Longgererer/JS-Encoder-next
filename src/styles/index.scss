@@ -27,8 +27,8 @@ table,
 th,
 td {
   border: none;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -60,4 +60,8 @@ input {
 
 i {
   font-style: normal;
+}
+
+html, body {
+  font-family: $def-font;
 }

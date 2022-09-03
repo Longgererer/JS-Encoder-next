@@ -27,6 +27,8 @@ interface IProps {
   disable?: boolean
   /* 是否显示小三角 */
   showTriangle?: boolean
+  /* 是否展示 */
+  hidden?: boolean
 }
 
 const props = withDefaults(defineProps<IProps>(), {

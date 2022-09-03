@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { IEditorWrapper } from '@type/editor'
+import { IEditorSplitter } from '@type/editor'
 import { Origin, Prep } from '@type/prep'
 import { IOption } from '@type/interface'
-import EditorSplitter from '../editor-splitter'
+import EditorSplitter from '../editor-splitter/editor-splitter.vue'
 
-withDefaults(defineProps<IEditorWrapper>(), {
+interface IEditorWrapper {
+  splitters: IEditorSplitter[]
+}
+
+const props = withDefaults(defineProps<IEditorWrapper>(), {
   splitters: () => {
     return [{
       container: {
@@ -25,12 +29,14 @@ withDefaults(defineProps<IEditorWrapper>(), {
 })
 </script>
 <template>
-  <div class="editor-wrapper">
+  <div class="editor-wrapper fill">
     <template v-for="(splitter, index) in splitters" :key="index">
       <editor-splitter v-bind="splitter"></editor-splitter>
     </template>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
+.editor-wrapper {
 
+}
 </style>

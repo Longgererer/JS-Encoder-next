@@ -102,6 +102,7 @@ module.exports = {
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/member-ordering": ["error", {
       "default": [

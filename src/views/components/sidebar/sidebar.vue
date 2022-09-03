@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import tooltip from '@/components/tooltip/tooltip.vue'
+import Tooltip from '@components/tooltip/tooltip.vue'
 import { LogType } from '@type/interface'
 import { SidebarType, SidebarTypeToText, SidebarTypeToIcon } from './sidebar.interface'
 
@@ -22,7 +22,7 @@ const sidebarList: SidebarType[][] = [
       <div class="sidebar-sub fill-w p-y-s">
         <div class="sidebar-item-wrapper flex-center" v-for="item in list" :key="item">
           <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8">
-            <div class="sidebar-item fade-ease cursor-pointer flex-center">
+            <div class="sidebar-item fade-ease cursor-pointer flex-center font-l">
               <i class="fade-ease" :class="SidebarTypeToIcon[item]">❀</i>
             </div>
           </tooltip>
@@ -38,8 +38,8 @@ const sidebarList: SidebarType[][] = [
   border-right: 1px solid var(--color-main-bg-3);
   .split-line {
     width: 36px;
-    height: 1px;
-    background-color: var(--color-main-bg-3);
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-main-bg-3);
   }
   .sidebar-sub {
     .sidebar-item-wrapper {
