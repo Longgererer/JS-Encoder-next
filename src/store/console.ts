@@ -26,12 +26,12 @@ export const useStore = defineStore('console', {
     }
   },
   actions: {
-    updateSetting(newSetting: IConsoleSetting) {
+    updateSetting(newSetting: IConsoleSetting): void {
       this.setting = Object.assign(this.setting, {
         ...newSetting,
       })
     },
-    updateFilter(newType: LogType) {
+    updateFilter(newType: LogType): void {
       this.filter = newType
     },
   },

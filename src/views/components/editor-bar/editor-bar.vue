@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { IOption } from '@type/interface'
-import { IEditorTab } from '@type/editor'
+import { IEditor } from '@type/editor'
 
 interface IEditorBar {
-  tabs: IEditorTab[]
+  /* tab所属splitter的id，方便查找 */
+  splitterId: number
+  tabs: IEditor[]
   /* 平铺显示的菜单列表 */
   opts: IOption[]
   /* 更多选项列表 */
@@ -11,7 +13,11 @@ interface IEditorBar {
 }
 
 const props = defineProps<IEditorBar>()
-console.log(props)
+
+const emit = defineEmits<{
+  (e: 'clickTab', splitterId: number, tab: IEditor): void
+  (e: 'a', tab: IEditor): void
+}>()
 
 const handleDragStart = () => {
   console.log('handleDragStart')
@@ -22,9 +28,6 @@ const handleDragOver = () => {
 const handleDragEnd = () => {
   console.log('handleDragEnd')
 }
-const handleClick = () => {
-  console.log('handleClick')
-}
 </script>
 <template>
   <div class="editor-bar bg-main2 flex">
@@ -33,7 +36,7 @@ const handleClick = () => {
       <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
       <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
         :class="tab.isActive ? 'active' : ''" @dragstart="handleDragStart" @dragover="handleDragOver"
-        @dragend="handleDragEnd" @click="handleClick">
+        @dragend="handleDragEnd" @click="$emit('clickTab', splitterId, tab)">
         <i class="icon iconfont" :class="tab.icon"></i>
         <span class="editor-tab-title code-font">{{ tab.prep }}</span>
       </div>
