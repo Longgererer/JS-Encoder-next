@@ -1,10 +1,5 @@
 <script lang="ts">
-enum Position {
-  TOP = 'top',
-  RIGHT = 'right',
-  LEFT = 'left',
-  BOTTOM = 'bottom',
-}
+import { Position } from '@type/interface'
 
 /* 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
 export const initPosition = Position.RIGHT

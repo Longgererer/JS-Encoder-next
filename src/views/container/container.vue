@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import navbar from '../components/navbar/navbar.vue'
-import sidebar from '../components/sidebar/sidebar.vue'
-import editorWrapper from '../components/editor-wrapper/editor-wrapper.vue'
+import Navbar from '@views/components/navbar/navbar.vue'
+import Sidebar from '@views/components/sidebar/sidebar.vue'
+import EditorWrapper from '@views/components/editor-wrapper/editor-wrapper.vue'
+
 </script>
 
 <template>

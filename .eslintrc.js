@@ -141,7 +141,7 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/prefer-for-of": "error",
-    "@typescript-eslint/prefer-function-type": "error",
+    "@typescript-eslint/prefer-function-type": "off",
     "@typescript-eslint/quotes": [
       "error",
       "single",

@@ -16,3 +16,10 @@ export interface IOption {
   text?: string
   icon?: string
 }
+
+export enum Position {
+  TOP = 'top',
+  RIGHT = 'right',
+  LEFT = 'left',
+  BOTTOM = 'bottom',
+}

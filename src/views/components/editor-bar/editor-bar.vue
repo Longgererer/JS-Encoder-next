@@ -1,26 +1,27 @@
 <script setup lang="ts">
 import { IOption } from '@type/interface'
-import { IEditor } from '@type/editor'
+import { EditorViewId, IEditor } from '@type/editor'
+import { useEditorWrapperStore } from '@store/editorWrapper'
+import { computed, ref } from 'vue'
+import Dropdown from '@components/dropdown/dropdown.vue'
+import DropdownItem from '@components/dropdown/dropdownItem.vue'
+import { editorSideOpts, optionsListMap } from '@utils/config'
 
-interface IEditorBar {
-  /* tab所属splitter的id，方便查找 */
-  splitterId: number
-  tabs: IEditor[]
-  /* 平铺显示的菜单列表 */
-  opts: IOption[]
-  /* 更多选项列表 */
-  moreOpts: IOption[]
+interface IProps {
+  editorViewId: EditorViewId
 }
-
-const props = defineProps<IEditorBar>()
-
+const props = defineProps<IProps>()
 const emit = defineEmits<{
-  (e: 'clickTab', splitterId: number, tab: IEditor): void
-  (e: 'a', tab: IEditor): void
+  (e: 'clickTab', index: number): void
 }>()
 
-const handleDragStart = () => {
+const { editorViewMap } = useEditorWrapperStore()
+const editorView = editorViewMap[props.editorViewId]
+
+const currDragTab = ref<IEditor | null>(null)
+const handleDragStart = (index: number) => {
   console.log('handleDragStart')
+  currDragTab.value = editorView.tabs[index]
 }
 const handleDragOver = () => {
   console.log('handleDragOver')
@@ -28,22 +29,47 @@ const handleDragOver = () => {
 const handleDragEnd = () => {
   console.log('handleDragEnd')
 }
+
+const showSideMenu = ref<boolean>(false)
+const sideOpts = computed(() => {
+  const tab = editorView.tabs[editorView.currEditorIndex]
+  return editorSideOpts[tab.prep]
+})
 </script>
+
 <template>
-  <div class="editor-bar bg-main2 flex">
-    <template v-for="(tab, index) in tabs" :key="tab.prep">
+  <div class="editor-bar bg-main2 flex no-select">
+    <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
       <!-- tab间的分隔线 -->
       <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
       <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
-        :class="tab.isActive ? 'active' : ''" @dragstart="handleDragStart" @dragover="handleDragOver"
-        @dragend="handleDragEnd" @click="$emit('clickTab', splitterId, tab)">
+        :class="index === editorView.currEditorIndex ? 'active' : ''" draggable="true"
+        @dragstart="handleDragStart(index)" @dragover="handleDragOver"
+        @dragend="handleDragEnd" @click="$emit('clickTab', index)"
+      >
         <i class="icon iconfont" :class="tab.icon"></i>
         <span class="editor-tab-title code-font">{{ tab.prep }}</span>
       </div>
     </template>
+    <!-- 占位 -->
+    <div class="flex-1"></div>
+    <!-- 直接展示出的选项 -->
+    <div class="display-opts" v-if="sideOpts.displayOpts.length"></div>
+    <!-- 更多选项菜单 -->
+    <div class="more-opts">
+      <dropdown v-model="showSideMenu">
+        <div>icon</div>
+        <template #options v-if="sideOpts.moreOpts.length">
+          <dropdown-item v-for="(item, index) in sideOpts.moreOpts" :key="index">
+            <span>{{optionsListMap[item].text}}</span>
+          </dropdown-item>
+        </template>
+      </dropdown>
+    </div>
   </div>
 </template>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .editor-bar {
   height: 36px;
   .split-line {

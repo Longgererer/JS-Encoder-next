@@ -13,6 +13,7 @@ export default defineConfig({
       '@components': resolve(__dirname, 'src/components'),
       '@utils': resolve(__dirname, 'src/utils'),
       '@type': resolve(__dirname, 'src/type'),
+      '@store': resolve(__dirname, 'src/store'),
     },
     extensions: ['.js', '.json', '.ts'],
   },

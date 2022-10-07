@@ -14,12 +14,13 @@ import { Origin, Prep } from '@type/prep'
  * 编辑器视图展示的数据结构如state所示
  * 结构以一个根视口分割器(splitter)开始，一个视口分割器至少有一个编辑视口(editorView)，至多有两个编辑视口
  */
-export const useStore = defineStore('editorWrapper', {
+export const useEditorWrapperStore = defineStore('editorWrapper', {
   state: (): IEditorWrapper => {
     return {
       editorViewIdCount: 1,
       editorSplitterIdCount: 1,
       editorStructure: {
+        isRoot: true,
         splitterId: 1,
         children: [],
       },
@@ -112,5 +113,7 @@ export const useStore = defineStore('editorWrapper', {
       const { editorViewId, prep, index } = info
       this.editorViewMap[editorViewId].tabs[index].prep = prep
     },
+  },
+  getters: {
   },
 })

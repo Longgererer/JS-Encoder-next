@@ -30,9 +30,10 @@ export type EditorSplitterId = number
 
 /* 储存splitter包含结构，结构以一个初始的总体splitter为根 */
 export interface IEditorStructure {
+  /* 是否是根节点 */
+  isRoot?: boolean
   splitterId: EditorSplitterId
-  /* 子splitter */
-  children: IEditorStructure[]
+  children: IEditorStructure[],
 }
 
 /* splitter，用来分隔编辑器视口，可横向或纵向分割 */
