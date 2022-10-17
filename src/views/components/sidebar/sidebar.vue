@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Tooltip from '@components/tooltip/tooltip.vue'
+import IconBtn from '@components/icon-btn/icon-btn.vue'
 import { LogType } from '@type/interface'
 import { SidebarType, SidebarTypeToText, SidebarTypeToIcon } from './sidebar.interface'
 
@@ -9,25 +10,36 @@ defineOptions({ name: 'sidebar' })
 const sidebarList: SidebarType[][] = [
   [SidebarType.TEMPLATE, SidebarType.SETTING, SidebarType.LIBRARY],
   [SidebarType.UPLOAD, SidebarType.DOWNLOAD],
-  [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG, SidebarType.GITHUB],
+  [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG],
+  [],
+  [SidebarType.THEME, SidebarType.GITHUB],
 ]
+
+const handleClickItem = () => {
+  console.log('handleClickItem')
+}
 </script>
 
 <template>
   <div class="sidebar bg-main1 fill-h flex-col-x-center">
     <template v-for="(list, index) in sidebarList" :key="index">
       <!-- 分割线 -->
-      <div class="split-line" v-if="index > 0"></div>
+      <div class="split-line" v-if="index > 0 && index !== sidebarList.length - 1 && list.length"></div>
       <!-- 子选项列表 -->
-      <div class="sidebar-sub fill-w p-y-s">
+      <div class="sidebar-sub fill-w p-y-s" v-if="list.length">
         <div class="sidebar-item-wrapper flex-center" v-for="item in list" :key="item">
           <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8">
-            <div class="sidebar-item fade-ease cursor-pointer flex-center font-l">
-              <i class="fade-ease" :class="SidebarTypeToIcon[item]">❀</i>
-            </div>
+            <template v-if="item === SidebarType.THEME">
+              <!-- 主题类型特殊处理 -->
+              <icon-btn size="lg" :icon-class="SidebarTypeToIcon[SidebarType.DARK]" @click="handleClickItem"></icon-btn>
+            </template>
+            <template v-else>
+              <icon-btn size="lg" :icon-class="SidebarTypeToIcon[item]" @click="handleClickItem"></icon-btn>
+            </template>
           </tooltip>
         </div>
       </div>
+      <div class="flex-1" v-else></div>
     </template>
   </div>
 </template>
@@ -45,20 +57,6 @@ const sidebarList: SidebarType[][] = [
     .sidebar-item-wrapper {
       width: 48px;
       height: 48px;
-      .sidebar-item {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        i {
-          color: var(--color-no-active-color);
-        }
-        &:hover {
-          background-color: var(--color-main-bg-3);
-          i {
-            color: var(--color-active-color);
-          }
-        }
-      }
     }
   }
 }

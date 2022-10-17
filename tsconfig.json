@@ -24,6 +24,7 @@
       "@utils/*": ["src/utils/*"],
       "@type/*": ["src/type/*"],
       "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"],
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

@@ -32,7 +32,7 @@ const handleClickTogglePreview = (): void => {
         :title="showPreview ? '隐藏预览窗口' : '显示预览窗口'"
         @click="handleClickTogglePreview"
       >
-        <i class="icon iconfont icon-move-right inline-block" :class="showPreview ? '' : 'rotate-180'">icon</i>
+        <i class="icon iconfont icon-move-right inline-block font-l" :class="showPreview ? '' : 'rotate-180'"></i>
       </div>
     </div>
   </div>

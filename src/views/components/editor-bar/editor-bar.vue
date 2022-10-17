@@ -2,7 +2,7 @@
 import { IOption } from '@type/interface'
 import { EditorViewId, IEditor } from '@type/editor'
 import { useEditorWrapperStore } from '@store/editorWrapper'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Dropdown from '@components/dropdown/dropdown.vue'
 import DropdownItem from '@components/dropdown/dropdownItem.vue'
 import { editorSideOpts, optionsListMap } from '@utils/config'
@@ -31,6 +31,9 @@ const handleDragEnd = () => {
 }
 
 const showSideMenu = ref<boolean>(false)
+watch(showSideMenu, () => {
+  console.log('showSideMenu', showSideMenu)
+})
 const sideOpts = computed(() => {
   const tab = editorView.tabs[editorView.currEditorIndex]
   return editorSideOpts[tab.prep]
@@ -38,7 +41,7 @@ const sideOpts = computed(() => {
 </script>
 
 <template>
-  <div class="editor-bar bg-main2 flex no-select">
+  <div class="editor-bar bg-main2 flex no-select pr-l">
     <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
       <!-- tab间的分隔线 -->
       <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
@@ -57,8 +60,10 @@ const sideOpts = computed(() => {
     <div class="display-opts" v-if="sideOpts.displayOpts.length"></div>
     <!-- 更多选项菜单 -->
     <div class="more-opts">
-      <dropdown v-model="showSideMenu">
-        <div>icon</div>
+      <dropdown v-model="showSideMenu" align="right">
+        <div class="more-opts-icon fade-ease cursor-pointer flex-center">
+          <i class="fade-ease font-m icon iconfont icon-more"></i>
+        </div>
         <template #options v-if="sideOpts.moreOpts.length">
           <dropdown-item v-for="(item, index) in sideOpts.moreOpts" :key="index">
             <span>{{optionsListMap[item].text}}</span>
@@ -80,6 +85,20 @@ const sideOpts = computed(() => {
     &.active {
       background-color: var(--color-main-bg-3);
       color: var(--color-active-color);
+    }
+  }
+  .more-opts {
+    .more-opts-icon {
+      height: 36px;
+      i {
+        color: var(--color-no-active-color);
+      }
+      &:hover {
+        background-color: var(--color-main-bg-3);
+        i {
+          color: var(--color-active-color);
+        }
+      }
     }
   }
 }

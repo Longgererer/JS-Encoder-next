@@ -14,6 +14,7 @@ export default defineConfig({
       '@utils': resolve(__dirname, 'src/utils'),
       '@type': resolve(__dirname, 'src/type'),
       '@store': resolve(__dirname, 'src/store'),
+      '@hooks': resolve(__dirname, 'src/hooks'),
     },
     extensions: ['.js', '.json', '.ts'],
   },
