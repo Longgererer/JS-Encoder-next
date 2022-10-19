@@ -5,35 +5,52 @@ import { useEditorWrapperStore } from '@store/editorWrapper'
 import { computed, ref, watch } from 'vue'
 import Dropdown from '@components/dropdown/dropdown.vue'
 import DropdownItem from '@components/dropdown/dropdownItem.vue'
+import IconBtn from '@components/icon-btn/icon-btn.vue'
 import { editorSideOpts, optionsListMap } from '@utils/config'
 
 interface IProps {
   editorViewId: EditorViewId
 }
 const props = defineProps<IProps>()
-const emit = defineEmits<{
+const emits = defineEmits<{
   (e: 'clickTab', index: number): void
 }>()
 
-const { editorViewMap } = useEditorWrapperStore()
+const { editorViewMap, updateTabs } = useEditorWrapperStore()
 const editorView = editorViewMap[props.editorViewId]
 
-const currDragTab = ref<IEditor | null>(null)
-const handleDragStart = (index: number) => {
-  console.log('handleDragStart')
-  currDragTab.value = editorView.tabs[index]
+/* 临时tabs列表，用来在拖拽的时候展示 */
+let tempTabs: IEditor[] = []
+/* 被拖拽的tab最后放入的位置 */
+let finDragTabIndex: number = -1
+const currDragIndex = ref<number>(-1)
+const handleDragStart = (index: number): void => {
+  currDragIndex.value = index
 }
-const handleDragOver = () => {
-  console.log('handleDragOver')
+const handleDragEnter = (e: MouseEvent, index: number): void => {
+  // 避免源对象触发自身的dragenter事件
+  e.preventDefault()
+  if (currDragIndex.value !== index) {
+    const currDragTab = editorView.tabs[currDragIndex.value]
+    tempTabs = [...editorView.tabs]
+    tempTabs.splice(currDragIndex.value, 1)
+    tempTabs.splice(index, 0, currDragTab)
+    finDragTabIndex = index
+  }
 }
-const handleDragEnd = () => {
-  console.log('handleDragEnd')
+const handleDragEnd = (): void => {
+  if (!tempTabs.length) { return void 0 }
+  updateTabs({ editorViewId: editorView.editorViewId, tabs: tempTabs })
+  currDragIndex.value = -1
+  tempTabs = []
+  if (finDragTabIndex > -1) {
+    emits('clickTab', finDragTabIndex)
+  }
 }
 
+/* 是否显示更多选项下拉菜单 */
 const showSideMenu = ref<boolean>(false)
-watch(showSideMenu, () => {
-  console.log('showSideMenu', showSideMenu)
-})
+
 const sideOpts = computed(() => {
   const tab = editorView.tabs[editorView.currEditorIndex]
   return editorSideOpts[tab.prep]
@@ -41,14 +58,14 @@ const sideOpts = computed(() => {
 </script>
 
 <template>
-  <div class="editor-bar bg-main2 flex no-select pr-l">
+  <div class="editor-bar bg-main2 flex no-select pr-s">
     <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
       <!-- tab间的分隔线 -->
       <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
       <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
-        :class="index === editorView.currEditorIndex ? 'active' : ''" draggable="true"
-        @dragstart="handleDragStart(index)" @dragover="handleDragOver"
-        @dragend="handleDragEnd" @click="$emit('clickTab', index)"
+        :class="{'active': index === editorView.currEditorIndex, 'dragging': index === currDragIndex}" draggable="true"
+        @dragstart="handleDragStart(index)" @dragover="handleDragOver($event)"
+        @dragend="handleDragEnd" @dragenter="handleDragEnter($event, index)" @mousedown="$emit('clickTab', index)"
       >
         <i class="icon iconfont" :class="tab.icon"></i>
         <span class="editor-tab-title code-font">{{ tab.prep }}</span>
@@ -61,8 +78,8 @@ const sideOpts = computed(() => {
     <!-- 更多选项菜单 -->
     <div class="more-opts">
       <dropdown v-model="showSideMenu" align="right">
-        <div class="more-opts-icon fade-ease cursor-pointer flex-center">
-          <i class="fade-ease font-m icon iconfont icon-more"></i>
+        <div class="more-icon-wrapper flex-center">
+          <IconBtn size="md" icon-class="icon-more"></IconBtn>
         </div>
         <template #options v-if="sideOpts.moreOpts.length">
           <dropdown-item v-for="(item, index) in sideOpts.moreOpts" :key="index">
@@ -86,19 +103,14 @@ const sideOpts = computed(() => {
       background-color: var(--color-main-bg-3);
       color: var(--color-active-color);
     }
+    &.dragging {
+      opacity: 0.3;
+    }
   }
   .more-opts {
-    .more-opts-icon {
+    .more-icon-wrapper {
+      width: 36px;
       height: 36px;
-      i {
-        color: var(--color-no-active-color);
-      }
-      &:hover {
-        background-color: var(--color-main-bg-3);
-        i {
-          color: var(--color-active-color);
-        }
-      }
     }
   }
 }
