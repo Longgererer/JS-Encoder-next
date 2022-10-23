@@ -19,6 +19,7 @@ export const useEditorWrapperStore = defineStore('editorWrapper', {
     return {
       editorViewIdCount: 1,
       editorSplitterIdCount: 1,
+      isTabDragging: false,
       editorStructure: {
         isRoot: true,
         splitterId: 1,
@@ -112,6 +113,9 @@ export const useEditorWrapperStore = defineStore('editorWrapper', {
     updatePrep(info: { editorViewId: EditorViewId, prep: Prep, index: number }): void {
       const { editorViewId, prep, index } = info
       this.editorViewMap[editorViewId].tabs[index].prep = prep
+    },
+    updateTabDraggingState(newState: boolean): void {
+      this.isTabDragging = newState
     },
   },
   getters: {

@@ -16,7 +16,7 @@ const emits = defineEmits<{
   (e: 'clickTab', index: number): void
 }>()
 
-const { editorViewMap, updateTabs } = useEditorWrapperStore()
+const { editorViewMap, updateTabs, updateTabDraggingState } = useEditorWrapperStore()
 const editorView = editorViewMap[props.editorViewId]
 
 /* 临时tabs列表，用来在拖拽的时候展示 */
@@ -24,10 +24,11 @@ let tempTabs: IEditor[] = []
 /* 被拖拽的tab最后放入的位置 */
 let finDragTabIndex: number = -1
 const currDragIndex = ref<number>(-1)
-const handleDragStart = (index: number): void => {
+const handleDragstart = (index: number): void => {
   currDragIndex.value = index
+  updateTabDraggingState(true)
 }
-const handleDragEnter = (e: MouseEvent, index: number): void => {
+const handleDragenter = (e: DragEvent, index: number): void => {
   // 避免源对象触发自身的dragenter事件
   e.preventDefault()
   if (currDragIndex.value !== index) {
@@ -38,10 +39,11 @@ const handleDragEnter = (e: MouseEvent, index: number): void => {
     finDragTabIndex = index
   }
 }
-const handleDragEnd = (): void => {
+const handleDragend = (): void => {
+  updateTabDraggingState(false)
+  currDragIndex.value = -1
   if (!tempTabs.length) { return void 0 }
   updateTabs({ editorViewId: editorView.editorViewId, tabs: tempTabs })
-  currDragIndex.value = -1
   tempTabs = []
   if (finDragTabIndex > -1) {
     emits('clickTab', finDragTabIndex)
@@ -59,18 +61,21 @@ const sideOpts = computed(() => {
 
 <template>
   <div class="editor-bar bg-main2 flex no-select pr-s">
-    <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
-      <!-- tab间的分隔线 -->
-      <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
-      <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
-        :class="{'active': index === editorView.currEditorIndex, 'dragging': index === currDragIndex}" draggable="true"
-        @dragstart="handleDragStart(index)" @dragover="handleDragOver($event)"
-        @dragend="handleDragEnd" @dragenter="handleDragEnter($event, index)" @mousedown="$emit('clickTab', index)"
-      >
-        <i class="icon iconfont" :class="tab.icon"></i>
-        <span class="editor-tab-title code-font">{{ tab.prep }}</span>
-      </div>
-    </template>
+    <!-- tab位置切换动画 -->
+    <transition-group name="list">
+      <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
+        <!-- tab间的分隔线 -->
+        <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
+        <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
+          :class="{'active': index === editorView.currEditorIndex, 'dragging': index === currDragIndex}"
+          draggable="true" @dragstart="handleDragstart(index)"  @dragend="handleDragend"
+          @dragenter="handleDragenter($event, index)" @mousedown="$emit('clickTab', index)"
+        >
+          <i class="icon iconfont" :class="tab.icon"></i>
+          <span class="editor-tab-title code-font">{{ tab.prep }}</span>
+        </div>
+      </template>
+    </transition-group>
     <!-- 占位 -->
     <div class="flex-1"></div>
     <!-- 直接展示出的选项 -->
@@ -114,4 +119,10 @@ const sideOpts = computed(() => {
     }
   }
 }
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
 </style>

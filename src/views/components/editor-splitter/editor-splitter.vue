@@ -13,14 +13,13 @@ interface IProps {
 }
 const props = defineProps<IProps>()
 const structure = toRef(props, 'structure')
-console.log(structure.value)
 
 const { editorStructure, editorSplitterMap } = useEditorWrapperStore()
 const editorSplitter = editorSplitterMap[structure.value.splitterId]
 </script>
 
 <template>
-  <div class="editor-splitter">
+  <div class="editor-splitter fill">
     <!--  children不为空，表示不为叶子节点，划分成了两个子视口分割器  -->
     <template v-if="structure.children.length">
       <template v-for="item in structure.children" :key="item.splitterId">

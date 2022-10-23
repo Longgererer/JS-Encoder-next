@@ -13,6 +13,8 @@ export interface IEditorWrapper {
   editorViewIdCount: number
   /* 计数器，每新生成一个EditorSplitter便自增，用来作为id */
   editorSplitterIdCount: number
+  /* 是否正在拖拽tab（需要全局监听其拖动位置） */
+  isTabDragging: boolean
   editorStructure: IEditorStructure
   editorViewMap: EditorViewMap
   editorSplitterMap: EditorSplitterMap
