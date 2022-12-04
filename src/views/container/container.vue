@@ -2,6 +2,7 @@
 import Navbar from '@views/components/navbar/navbar.vue'
 import Sidebar from '@views/components/sidebar/sidebar.vue'
 import EditorWrapper from '@views/components/editor-wrapper/editor-wrapper.vue'
+import TemplateModal from '@views/components/modals/template-modal/template-modal.vue'
 
 </script>
 
@@ -11,6 +12,7 @@ import EditorWrapper from '@views/components/editor-wrapper/editor-wrapper.vue'
     <sidebar></sidebar>
     <editor-wrapper></editor-wrapper>
   </div>
+  <template-modal></template-modal>
 </template>
 
 <style lang="scss" scoped>

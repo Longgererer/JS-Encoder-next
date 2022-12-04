@@ -181,7 +181,7 @@ export function JSONParse(data: string | null): any {
     }
   } catch (error) {
     console.log(error)
-    return void 0
+    return
   }
 }
 

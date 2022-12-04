@@ -25,11 +25,11 @@ import useClickOutside from '@hooks/useClickOutside'
 
 interface IProps {
   /* 触发下拉的行为 */
-  trigger: string
+  trigger?: string
   /* 菜单显示的位置 */
-  position: Position
+  position?: Position
   /* 菜单沿着哪一边对齐 */
-  align: Align
+  align?: Align
   /* 是否显示下拉菜单 */
   modelValue: boolean
 }
@@ -47,7 +47,7 @@ const dropdownOptsRef = ref<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(dropdownOptsRef)
 
 const handleClickTrigger = (): void => {
-  if (props.trigger !== Trigger.CLICK) { return void 0 }
+  if (props.trigger !== Trigger.CLICK) { return }
   emits('update:modelValue', !props.modelValue)
 }
 const handleClickOption = (): void => {
@@ -69,7 +69,7 @@ watch(isClickOutSide, () => {
       <slot></slot>
     </div>
     <!--  菜单项列表  -->
-    <div class="shadow p-y-s absolute" :class="`${namespace}-options-wrapper ${namespace}-align-${align}`"
+    <div class="shadow p-y-s absolute radius-l" :class="`${namespace}-options-wrapper ${namespace}-align-${align}`"
       v-show="modelValue">
       <div :class="`${namespace}-options`" @click="handleClickOption">
         <slot name="options"></slot>
@@ -82,8 +82,8 @@ watch(isClickOutSide, () => {
 $namespace: 'dropdown';
 
 .#{$namespace}-options-wrapper {
+  z-index: 100;
   background-color: var(--color-main-bg-1);
-  border-radius: 8px;
 }
 
 .#{$namespace}-align-left {

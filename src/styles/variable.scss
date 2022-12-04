@@ -1,8 +1,12 @@
 $dark-colors: (
   primary: #0085ff,
+  primary-active: #40a9ff,
   error: #e06c75,
+  error-active: #ff7875,
   warn: #f4ea2a,
+  warn-active: #ffc53d,
   success: #4caf50,
+  success-active: #73d13d,
   main-bg-1: #181d1e,
   main-bg-2: #111516,
   main-bg-3: #101010,
@@ -10,7 +14,9 @@ $dark-colors: (
   describe: #999999,
   no-active-color: #777777,
   shadow: #000000,
-
+  disabled-bgc: rgba(255, 255, 255, 0.08),
+  disabled-color: rgba(255, 255, 255, 0.3),
+  gold: #ffca28,
   /* 特殊 */
   edit-bar-active: #f2f2f2,
   console-bar-color: #f2f2f2,
@@ -18,13 +24,19 @@ $dark-colors: (
   badge-color: #f2f2f2,
   badge-border: #181d1e,
   tooltip-color: #f2f2f2,
+  mask-bgc: rgba(16, 16, 16, 0.5),
+  modal-def-border: #181d1e,
 );
 
 $bright-colors: (
   primary: #0085ff,
+  primary-active: #40a9ff,
   error: #e06c75,
+  error-active: #ff7875,
   warn: #f4ea2a,
+  warn-active: #ffc53d,
   success: #4caf50,
+  success-active: #73d13d,
   main-bg-1: #f0f2f3,
   main-bg-2: #f2f2f2,
   main-bg-3: #ffffff,
@@ -32,7 +44,9 @@ $bright-colors: (
   describe: #b0b0b0,
   no-active-color: #bfbfbf,
   shadow: #000000,
-
+  disabled-bgc: #f5f5f5,
+  disabled-color: #00000040,
+  gold: #ffca28,
   /* 特殊 */
   edit-bar-active: #0085ff,
   console-bar-color: #101010,
@@ -40,7 +54,9 @@ $bright-colors: (
   badge-color: #f2f2f2,
   badge-border: #f0f2f3,
   tooltip-color: #101010,
+  mask-bgc: rgba(16, 16, 16, 0.5),
+  modal-def-border: #181d1e,
 );
 
-$def-font: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+$def-font: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
 $code-font: JetBrains Mono;

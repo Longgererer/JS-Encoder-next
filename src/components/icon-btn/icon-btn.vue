@@ -33,7 +33,8 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="fade-ease cursor-pointer flex-center" :class="`${namespace} ${namespace}-${size}`" @click="handleClick">
+  <div class="fade-ease cursor-pointer flex-center radius-l" :class="`${namespace} ${namespace}-${size}`"
+    @click="handleClick">
     <i class="fade-ease icon iconfont" :class="[iconClass, sizeMap[size]]"></i>
   </div>
 </template>
@@ -47,7 +48,6 @@ $comp-size: (
 );
 
 .#{$namespace} {
-  border-radius: 8px;
   i {
     color: var(--color-no-active-color);
   }

@@ -67,3 +67,28 @@ export type EditorViewMap = Record<EditorViewId, IEditorView>
 
 /* EditorSplitter的id对应的splitter信息 */
 export type EditorSplitterMap = Record<EditorSplitterId, IEditorSplitter>
+
+/* 区域位置 */
+export enum AreaPos {
+  LEFT = 'left',
+  RIGHT = 'right',
+  UP = 'up',
+  DOWN = 'down',
+  MIDDLE = 'middle',
+  NULL = 'null',
+}
+
+export enum TemplateLang {
+  VUE2 = 'Vue2',
+  VUE3 = 'Vue3',
+  VANILLA = 'Vanilla',
+  REACT = 'React',
+  ANGULAR = 'Angular',
+  CUSTOM = 'Custom',
+}
+
+export enum TemplateType {
+  DEFAULT = 'Default',
+  COMPONENT = 'Component',
+  CUSTOM = 'Custom',
+}

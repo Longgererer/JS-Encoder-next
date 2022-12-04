@@ -15,7 +15,7 @@ interface IProps {
   /* 提示展示位置 */
   position?: Position
   /* 偏移量，单位px */
-  offset?: number
+  offset?: number | string
   /* 延迟消失时间，单位ms */
   delay?: number
   /* 是否禁用 */
@@ -80,7 +80,7 @@ const handleMouseLeave = (): void => {
     <transition :name="namespace">
       <div
         v-show="!hidden && !disable"
-        class="p-y-s p-x-l absolute shadow"
+        class="p-y-s p-x-l absolute shadow radius-m"
         :class="`${namespace}-container ${namespace}-${position}`"
         :style="offsetStyle"
       >
@@ -106,7 +106,6 @@ $border-width: 6;
   .#{$namespace}-container {
     background-color: var(--color-main-bg-1);
     border-color: var(--color-main-bg-1);
-    border-radius: 4px;
   }
   .#{$namespace}-bottom {
     top: calc(100% + #{$border-width}px);

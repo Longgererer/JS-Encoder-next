@@ -20,7 +20,7 @@ export function getPrepOrigin(prep: string): keyof typeof Origin | void {
     case Prep.VUE3:
       return 'JAVASCRIPT'
     default: {
-      return void 0
+      return
     }
   }
 }
@@ -45,7 +45,7 @@ export function getOriginByMimeType(mimeType: string): keyof typeof Prep | void 
     case MimeType.VUE3:
      return 'JAVASCRIPT'
     default: {
-      return void 0
+      return
     }
   }
 }

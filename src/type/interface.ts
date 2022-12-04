@@ -23,3 +23,13 @@ export enum Position {
   LEFT = 'left',
   BOTTOM = 'bottom',
 }
+
+export enum ModalName {
+  TEMPLATE = 'template',
+  CODE_SETTINGS = 'codeSettings',
+  LIBRARIES = 'libraries',
+  UPLOAD_CODE = 'uploadCode',
+  DOWNLOAD_CODE = 'downloadCode',
+  SHORTCUT = 'shortcut',
+  UPDATE_LOG = 'updateLog',
+}

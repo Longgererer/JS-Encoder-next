@@ -28,16 +28,11 @@
  */
 import { watch, ref, computed } from 'vue'
 import { useEditorWrapperStore } from '@store/editorWrapper'
+import { AreaPos } from '@type/editor'
 
-/* 区域位置 */
-enum AreaPos {
-  LEFT = 'left',
-  RIGHT = 'right',
-  UP = 'up',
-  DOWN = 'down',
-  MIDDLE = 'middle',
-  NULL = 'null',
-}
+const emits = defineEmits<{
+  (e: 'selectPos', pos: AreaPos): void
+}>()
 
 const editorWrapperStore = useEditorWrapperStore()
 const overlapMonitor = ref<HTMLElement | null>(null)
@@ -63,24 +58,26 @@ watch(() => editorWrapperStore.isTabDragging, (newState) => {
  * 加上setTimeout是为了兼容火狐会同时执行dragenter事件和dragleave事件的问题
  */
 let dragging = 0
-const handleDragenter = (e: DragEvent): void => {
-  dragging ++
-}
-const handleDragleave = (e: DragEvent): void => {
+const handleDragleave = (): void => {
   setTimeout(() => {
     dragging --
     if (dragging === 0) {
       currPos.value = AreaPos.NULL
     }
-  }, 1)
+  }, 50)
+}
+const handleDragover= (e: DragEvent): void => {
+  e.preventDefault()
 }
 
 const currPos = ref<AreaPos>(AreaPos.MIDDLE)
 const handleEnterArea = (e: DragEvent): void => {
+  dragging ++
   currPos.value = ((e.target as HTMLElement).dataset.pos as AreaPos)
 }
 
 const highlightAreaStyle = computed((): Record<string, any> => {
+  /* 各种位置的高亮区域样式 */
   const posStyleMap = {
     [AreaPos.UP]: { left: 0, top: 0, width: `${monitorWidth}px`, height: `${monitorHeight / 2}px` },
     [AreaPos.DOWN]: {
@@ -99,12 +96,12 @@ const highlightAreaStyle = computed((): Record<string, any> => {
 
 <template>
   <div
-    class="overlap-monitor fill flex-1 relative" @dragenter="handleDragenter($event)"
-    @dragleave="handleDragleave($event)" ref="overlapMonitor"
+    class="overlap-monitor fill flex-1 relative"
+    @dragleave="handleDragleave" ref="overlapMonitor"
   >
     <!-- 专门用于监听元素拖动具体位置的区域 -->
     <!-- 直接事件委托监听所有区域的进入和离开 -->
-    <div class="position-capture fill relative" @dragenter="handleEnterArea($event)" @dragleave.prevent="">
+    <div class="position-capture fill relative" @dragenter="handleEnterArea" @dragleave.prevent="">
       <!-- 上 -->
       <div class="up1-area" :data-pos="AreaPos.UP"></div>
       <div class="up2-area" :data-pos="AreaPos.UP"></div>
@@ -143,39 +140,30 @@ const highlightAreaStyle = computed((): Record<string, any> => {
   z-index: 10;
   .up1-area {
     grid-area: up1;
-    //background-color: #fff;
   }
   .up2-area {
     grid-area: up2;
-    //background-color: #fff;
   }
   .down1-area {
     grid-area: dw1;
-    //background-color: red;
   }
   .down2-area {
     grid-area: dw2;
-    //background-color: red;
   }
   .middle-area {
     grid-area: md;
-    //background-color: blue;
   }
   .right1-area {
     grid-area: rt1;
-    //background-color: yellow;
   }
   .right2-area {
     grid-area: rt2;
-    //background-color: yellow;
   }
   .left1-area {
     grid-area: lf1;
-    //background-color: pink;
   }
   .left2-area {
     grid-area: lf2;
-    //background-color: pink;
   }
 }
 
