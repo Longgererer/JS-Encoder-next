@@ -28,7 +28,7 @@ const handleClickItem = () => {
       <!-- 子选项列表 -->
       <div class="sidebar-sub fill-w p-y-s" v-if="list.length">
         <div class="sidebar-item-wrapper flex-center" v-for="item in list" :key="item">
-          <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8">
+          <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8" level="1">
             <template v-if="item === SidebarType.THEME">
               <!-- 主题类型特殊处理 -->
               <icon-btn size="lg" :icon-class="SidebarTypeToIcon[SidebarType.DARK]" @click="handleClickItem"></icon-btn>

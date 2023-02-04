@@ -16,7 +16,7 @@ export default defineConfig({
       '@store': resolve(__dirname, 'src/store'),
       '@hooks': resolve(__dirname, 'src/hooks'),
     },
-    extensions: ['.js', '.json', '.ts'],
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
   css: {
     preprocessorOptions: {

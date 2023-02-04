@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MaskLayer from '@components/mask-layer/mask-layer.vue'
 import CustomButton from '@components/custom-button/custom-button.vue'
-import { defineEmits, toRef } from 'vue'
+import { toRef } from 'vue'
 import useEscClose from '@hooks/useEscClose'
 
 interface IProps {
@@ -27,6 +27,10 @@ interface IProps {
   cancelType?: string
   /* 是否显示底部 */
   showFooter?: boolean
+  /* 距离顶部距离 */
+  top?: number | string
+  /* 距离底部距离 */
+  bottom?: number | string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -40,6 +44,8 @@ const props = withDefaults(defineProps<IProps>(), {
   cancelText: '取消',
   cancelType: 'default',
   showFooter: true,
+  top: 150,
+  bottom: 150,
 })
 
 const emits = defineEmits<{
@@ -73,21 +79,28 @@ const handleCloseModal = (): void => {
   <teleport to="body">
     <transition :name="namespace">
       <mask-layer v-show="modelValue" @clickMask="handleClickMask">
-        <div class="p-xxl radius-l bg-main2 absolute shadow" :class="namespace"
-          :style="{ width: width ? `${width}px` : 'auto' }"
+        <div
+          class="p-xxl radius-l bg-main2 absolute shadow flex-col"
+          :class="namespace"
+          :style="{
+            width: width ? `${width}px` : 'auto',
+            top: `${top}px`,
+            maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
+          }"
         >
-          <div :class="`${namespace}-header`" class="flex-aic pb-l">
+          <div class="flex-aic pb-l" :class="`${namespace}-header`">
             <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
             <div class="flex-1"></div>
-            <i class="icon iconfont icon-close cursor-pointer fade-ease font-active"
+            <i
+              class="icon iconfont icon-close cursor-pointer fade-ease font-active"
               @click.stop="handleCloseModal"
             ></i>
           </div>
-          <div :class="`${namespace}-content`">
+          <div class="over-y-auto flex-1" :class="`${namespace}-content`">
             <slot></slot>
           </div>
           <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
-            <custom-button :type="cancelType" v-if="showCancel" @click="$emit('cancel')">{{cancelText}}</custom-button>
+            <custom-button v-if="showCancel" :type="cancelType" @click="$emit('cancel')">{{cancelText}}</custom-button>
             <custom-button :type="okType" @click="$emit('confirm')">{{okText}}</custom-button>
           </div>
         </div>
@@ -101,7 +114,6 @@ $namespace: 'modal';
 
 .#{$namespace} {
   min-width: 500px;
-  top: 150px;
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid var(--color-modal-def-border);
@@ -111,7 +123,20 @@ $namespace: 'modal';
       color: var(--color-active-color);
     }
   }
-  .#{$namespace}-content {}
+  .#{$namespace}-content {
+    &::-webkit-scrollbar {
+      width: 24px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-left: 16px solid transparent;
+      background-clip: padding-box;
+      background-color: var(--color-main-bg-1);
+    }
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-main-bg-2);
+    }
+  }
   .#{$namespace}-footer {}
 }
 

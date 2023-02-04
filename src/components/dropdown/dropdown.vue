@@ -1,10 +1,5 @@
 <script lang="ts">
-import { Position } from '@type/interface'
-
-enum Trigger {
-  HOVER = 'hover',
-  CLICK = 'click',
-}
+import { Position, Trigger } from '@type/interface'
 
 enum Align {
   LEFT = 'left',
@@ -79,7 +74,7 @@ watch(isClickOutSide, () => {
 </template>
 
 <style lang="scss" scoped>
-$namespace: 'dropdown';
+$namespace: dropdown;
 
 .#{$namespace}-options-wrapper {
   z-index: 100;

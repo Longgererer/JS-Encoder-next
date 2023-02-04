@@ -15,7 +15,7 @@ interface IConsoleStore {
   filter: LogType
 }
 
-export const useStore = defineStore('console', {
+export const useConsoleStore = defineStore('console', {
   state: (): IConsoleStore => {
     return {
       setting: {

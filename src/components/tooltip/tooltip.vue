@@ -8,6 +8,7 @@ export default { name: 'tooltip' }
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { getOffsetStyle } from '@components/utils/common'
 
 interface IProps {
   /* 提示文字，如果使用slot#content则忽略此属性 */
@@ -22,8 +23,10 @@ interface IProps {
   disable?: boolean
   /* 是否显示小三角 */
   showTriangle?: boolean
-  /* 是否展示 */
+  /* 是否消失 */
   hidden?: boolean
+  /* 层级，对应z-index */
+  level?: string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -34,6 +37,7 @@ const props = withDefaults(defineProps<IProps>(), {
   disable: false,
   showTriangle: true,
   position: initPosition,
+  level: 'auto',
 })
 
 const hidden = ref<boolean>(true)
@@ -41,16 +45,7 @@ const hidden = ref<boolean>(true)
 const namespace = 'tooltip'
 
 /* 计算偏移样式 */
-const offsetStyle = computed<Record<string, string>>(() => {
-  const { offset, position } = props
-  const posToStyleMap = {
-    [Position.TOP]: { marginBottom: `${offset}px` },
-    [Position.RIGHT]: { marginLeft: `${offset}px` },
-    [Position.LEFT]: { marginRight: `${offset}px` },
-    [Position.BOTTOM]: { marginTop: `${offset}px` },
-  }
-  return posToStyleMap[position]
-})
+const offsetStyle = getOffsetStyle(props.offset, props.position)
 
 let timer: NodeJS.Timeout | null = null
 
@@ -82,7 +77,7 @@ const handleMouseLeave = (): void => {
         v-show="!hidden && !disable"
         class="p-y-s p-x-l absolute shadow radius-m"
         :class="`${namespace}-container ${namespace}-${position}`"
-        :style="offsetStyle"
+        :style="{...offsetStyle, zIndex: level}"
       >
         <template v-if="$slots.content">
           <slot name="content"></slot>
@@ -90,7 +85,11 @@ const handleMouseLeave = (): void => {
         <template v-else>
           <span class="font-xs text-nowrap">{{ content }}</span>
         </template>
-        <span v-if="showTriangle" class="absolute" :class="`${namespace}-triangle triangle-${position}`"></span>
+        <span
+          v-if="showTriangle"
+          class="absolute"
+          :class="`${namespace}-triangle triangle-${position}`"
+        ></span>
       </div>
     </transition>
     <slot></slot>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Size } from '@type/interface'
 
 interface Props {
   /* 按钮尺寸 mini|small|medium|large|xLarge */
-  size?: string
+  size?: Size
   /* 是否禁用 */
   disabled?: boolean
   /* 是否只显示icon没有文字 */
@@ -24,10 +25,12 @@ interface Props {
   radius?: boolean
   /* 是否占满一整行 */
   fill?: boolean
+  /* 自定义样式类名 */
+  customClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'medium',
+  size: 'medium' as Size,
   disabled: false,
   type: 'primary',
   icon: false,
@@ -38,19 +41,14 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   radius: false,
   fill: false,
+  customClass: '',
 })
 
 const emits = defineEmits<{
   (e: 'click'): void
 }>()
 
-const isDisabled = computed(() => {
-  if (props.loading) {
-    return true
-  } else {
-    return props.disabled
-  }
-})
+const isDisabled = computed(() => props.loading || props.disabled)
 
 const namespace = 'custom-button'
 </script>
@@ -68,6 +66,7 @@ const namespace = 'custom-button'
       outline ? `${namespace}-outline` : '',
       radius ? `${namespace}-radius` : '',
       fill ? 'flex fill-w' : 'inline-flex',
+      customClass,
     ]"
     :disabled="isDisabled"
     @click.stop="$emit('click')"
@@ -99,12 +98,19 @@ $btn-font-size: (
   large: 16px,
   xLarge: 18px,
 );
-$horizontal-padding: (
+$round-padding: (
   mini: 2px,
   small: 4px,
   medium: 6px,
   large: 8px,
   xLarge: 10px,
+);
+$horizontal-padding: (
+  mini: 12px,
+  small: 16px,
+  medium: 20px,
+  large: 24px,
+  xLarge: 28px,
 );
 
 .#{$namespace} {
@@ -187,12 +193,13 @@ $horizontal-padding: (
 
 @each $size in (mini, small, medium, large, xLarge) {
   $font-size: map-get($btn-font-size, $size);
-  $padding: map-get($horizontal-padding, $size);
+  $padding: map-get($round-padding, $size);
   .#{$namespace}--#{$size} {
     height: calc($font-size + 2.6 * $padding);
     border-radius: 4px;
-    padding: 0 25px;
+    padding: 0 map-get($horizontal-padding, $size);
     font-size: $font-size;
+    line-height: $font-size;
   }
   .#{$namespace}--#{$size}.#{$namespace}-radius {
     border-radius: calc(($font-size + 2.6 * $padding) / 2);

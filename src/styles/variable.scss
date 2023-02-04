@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 $dark-colors: (
   primary: #0085ff,
   primary-active: #40a9ff,
@@ -16,7 +18,7 @@ $dark-colors: (
   shadow: #000000,
   disabled-bgc: rgba(255, 255, 255, 0.08),
   disabled-color: rgba(255, 255, 255, 0.3),
-  gold: #ffca28,
+  golden: #ffca28,
   /* 特殊 */
   edit-bar-active: #f2f2f2,
   console-bar-color: #f2f2f2,
@@ -26,6 +28,8 @@ $dark-colors: (
   tooltip-color: #f2f2f2,
   mask-bgc: rgba(16, 16, 16, 0.5),
   modal-def-border: #181d1e,
+  popover-bg: #2A2730,
+  form-item: #2A2730,
 );
 
 $bright-colors: (
@@ -46,7 +50,7 @@ $bright-colors: (
   shadow: #000000,
   disabled-bgc: #f5f5f5,
   disabled-color: #00000040,
-  gold: #ffca28,
+  golden: #ffca28,
   /* 特殊 */
   edit-bar-active: #0085ff,
   console-bar-color: #101010,

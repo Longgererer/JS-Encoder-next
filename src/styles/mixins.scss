@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 @mixin transition($target, $time, $func, $delay: 0s) {
   -webkit-transition: $target $time $func $delay;
   transition: $target $time $func $delay;

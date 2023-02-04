@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 @import './variable.scss';
 @import './mixins.scss';
 @import './theme.scss';
@@ -25,7 +27,9 @@ form,
 fieldset,
 table,
 th,
-td {
+td,
+input,
+textarea {
   border: none;
   margin: 0;
   padding: 0;
@@ -54,7 +58,8 @@ div,
 ul,
 li,
 button,
-input {
+input,
+textarea {
   box-sizing: border-box;
 }
 

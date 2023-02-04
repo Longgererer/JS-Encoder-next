@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .modal-sub-title {
   font-size: 16px;
   color: var(--color-active-color);
@@ -8,9 +10,13 @@
   }
 }
 
-.modal-desc-text {
+.modal-desc-text, .modal-small-desc-text {
   font-size: 14px;
   color: var(--color-describe);
   margin-bottom: 8px;
   line-height: 18px;
+}
+
+.modal-small-desc-text {
+  font-size: 12px;
 }

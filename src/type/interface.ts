@@ -1,5 +1,5 @@
 /* 日志类型 */
-export enum LogType {
+export const enum LogType {
   ALL = 'All',
   LOG = 'Log',
   INFO = 'Info',
@@ -7,7 +7,7 @@ export enum LogType {
   ERROR = 'Error',
 }
 
-export enum Theme {
+export const enum Theme {
   DARK = 'dark',
   LIGHT = 'light',
 }
@@ -17,14 +17,19 @@ export interface IOption {
   icon?: string
 }
 
-export enum Position {
+export const enum Position {
   TOP = 'top',
   RIGHT = 'right',
   LEFT = 'left',
   BOTTOM = 'bottom',
 }
 
-export enum ModalName {
+export const enum Trigger {
+  HOVER = 'hover',
+  CLICK = 'click',
+}
+
+export const enum ModalName {
   TEMPLATE = 'template',
   CODE_SETTINGS = 'codeSettings',
   LIBRARIES = 'libraries',
@@ -32,4 +37,12 @@ export enum ModalName {
   DOWNLOAD_CODE = 'downloadCode',
   SHORTCUT = 'shortcut',
   UPDATE_LOG = 'updateLog',
+}
+
+export const enum Size {
+  MINI = 'mini',
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large',
+  X_LARGE = 'xLarge',
 }
