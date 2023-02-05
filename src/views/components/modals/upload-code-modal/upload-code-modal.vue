@@ -4,7 +4,7 @@ import HelpPopover from '@views/components/help-popover/help-popover.vue'
 import CustomButton from '@components/custom-button/custom-button.vue'
 import Checkbox from '@components/form/checkbox/checkbox.vue'
 import { useCommonStore } from '@store/common'
-import { ModalName } from '@type/interface'
+import { ModalName, Position } from '@type/interface'
 import { ref } from 'vue'
 
 const commonStore = useCommonStore()
@@ -27,6 +27,7 @@ const bindVal = ref<boolean>(false)
         <help-popover
           appendToBody
           level="1001"
+          :position="Position.BOTTOM"
           describe="预处理语言对应着其编译后语言的窗口，如MD对应的窗口为HTML。"
         ></help-popover>
       </div>
@@ -41,7 +42,7 @@ const bindVal = ref<boolean>(false)
 
     <!-- start 已上传文件列表 -->
     <div class="file-list mt-l">
-      <div class="file radius-l bg-main1 flex-center mb-s relative">
+      <div class="file radius-l bg-main1 flex-center mb-s relative" v-for="item in 10">
         <span class="file-name code-font active-text font-s flex-1 text-center">config.json</span>
         <div class="delete-btn cursor-pointer font-error fade-ease fill-h p-x-l flex-y-center absolute">
           <i class="icon iconfont icon-bin font-m"></i>
@@ -51,11 +52,12 @@ const bindVal = ref<boolean>(false)
 
     <custom-button size="xLarge" fill customClass="radius-l font-s">上传文件</custom-button>
     <div class="notice mt-xs flex-x-center">
-      <div class="active-text absolute flex-y-center renew-line-s">
+      <div class="active-text flex-y-center renew-line-s">
         <checkbox v-model="bindVal">分解HTML</checkbox>
         <help-popover
           appendToBody
-          level="1001"
+          level="1002"
+          :position="Position.TOP"
           describe="我们将分解HTML中的各部分的代码以及引入的外部链接，将他们配置到实例中。"
         ></help-popover>
       </div>

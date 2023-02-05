@@ -9,7 +9,7 @@ export default { name: 'popover' }
 
 <script setup lang="ts">
 import { computed, onMounted, ref, toRef, useSlots, watch, reactive } from 'vue'
-import { getOffsetStyle } from '@components/utils/common'
+import { getOffsetStyle, getPosStyle } from '@components/utils/common'
 import useClickOutside from '@hooks/useClickOutside'
 
 interface IProps {
@@ -46,41 +46,44 @@ const props = withDefaults(defineProps<IProps>(), {
 const hidden = ref<boolean>(true)
 
 const namespace = 'popover'
-
 const popoverRef = ref<HTMLElement | null>(null)
-const isClickOutSide = useClickOutside(popoverRef)
-
-/* 计算偏移样式 */
-const offsetStyle = getOffsetStyle(props.offset, props.position)
 
 const slots = useSlots()
-const containerStyle = ref<Record<string, string>>({})
-
+/* 偏移样式 */
+const offsetStyle = getOffsetStyle(props.offset, props.position)
+/* 定位样式 */
+const posStyle = ref<Record<string, string>>({})
 const showPopover = (): void => {
   if (!hidden.value) { return }
   hidden.value = false
   if (props.appendToBody) {
     // 在appendToBody为true时获取点击元素的位置，计算popover显示的位置
-    const slotEle = slots?.default!()[0]?.el
+    const relativeEle = popoverRef.value
     // 直接获取元素的offset和offLeft会受到祖先元素position的影响，不一定准确
-    const { left, top, width, height } = slotEle?.getBoundingClientRect() || {}
-    containerStyle.value = {
-      left: `${left + width}px`,
-      top: `${top + height / 2}px`,
-    }
+    const {
+      left = 0,
+      top = 0,
+      bottom = 0,
+      right = 0,
+      width = 0,
+      height = 0,
+    } = relativeEle?.getBoundingClientRect() || {}
+    posStyle.value = getPosStyle(left, top, bottom, right, width, height, props.position)
+    console.log(posStyle.value)
   } else {
-    containerStyle.value = {}
+    posStyle.value = {}
   }
 }
 
 /**
  * trigger click
  */
+const isClickOutSide = useClickOutside(popoverRef)
 const handleClickTarget = (): void => {
   if (props.trigger !== Trigger.CLICK) { return }
   showPopover()
 }
-/* 如果点击的是气泡卡片外部，就隐藏气泡卡片，并取消监听 */
+// 如果点击的是气泡卡片外部，就隐藏气泡卡片，并取消监听
 watch(isClickOutSide, () => {
   if (props.trigger !== Trigger.CLICK) { return }
   if (isClickOutSide.value) {
@@ -136,7 +139,7 @@ const handleLeaveTarget = (): void => {
           <div
             class="p-x-l p-y-l absolute shadow radius-l"
             :class="`${namespace}-container ${namespace}-${position}`"
-            :style="{...offsetStyle, ...containerStyle}"
+            :style="{...offsetStyle, ...posStyle}"
           >
             <slot name="content"></slot>
             <span
@@ -167,7 +170,7 @@ $namespace: 'popover';
 
 .#{$namespace}-enter-active,
 .#{$namespace}-leave-active {
-  @include transition(all, 0.3s, ease);
+  @include transition(all, 0.1s, ease);
 }
 </style>
 
@@ -204,7 +207,7 @@ $border-width: 6;
     transform: scale(1) translateX(-50%);
   }
   .triangle-bottom {
-    inset: calc(-50% + #{$border-width}px) 0 0 calc(50% - #{$border-width}px);
+    inset: calc(-2 * #{$border-width}px) 0 0 calc(50% - #{$border-width}px);
   }
   .triangle-right {
     inset: calc(50% - #{$border-width}px) 0 0 calc(-2 * #{$border-width}px);

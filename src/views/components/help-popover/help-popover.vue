@@ -2,22 +2,19 @@
 import Popover from '@components/popover/popover.vue'
 import CustomButton from '@components/custom-button/custom-button.vue'
 
-interface IProps {
+interface IProps  {
   /* 说明文字 */
   describe: string
   /* 查看更多跳转的路径 */
   viewTarget?: string
-  appendToBody?: boolean
-  level?: string
+  /* extends component popover */
 }
 
-const props = withDefaults(defineProps<IProps>(), {
-  level: '0',
-})
+const props = defineProps<IProps>()
 </script>
 
 <template>
-  <popover offset="8" :appendToBody="appendToBody" :level="level">
+  <popover offset="8" v-bind="$attrs">
     <div class="cursor-pointer m-xs">
       <i class="icon iconfont icon-help font-s primary-text"></i>
     </div>
