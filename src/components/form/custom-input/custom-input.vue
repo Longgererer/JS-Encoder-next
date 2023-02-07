@@ -88,8 +88,10 @@ const emits = defineEmits<{
 const namespace = 'custom-input'
 
 const commonStyle = computed(() => {
+  const radius = props.radius >= 0 ? props.radius : inputPaddingMap[props.size]
+  const isNumberType = props.type === InputType.NUMBER
   return {
-    borderRadius: `${props.radius >= 0 ? props.radius : inputPaddingMap[props.size]}px`,
+    borderRadius: `${radius} ${isNumberType ? radius : 0} ${isNumberType ? radius : 0} ${radius}`,
   }
 })
 

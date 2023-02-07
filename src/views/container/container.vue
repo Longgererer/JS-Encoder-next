@@ -6,6 +6,7 @@ import TemplateModal from '@views/components/modals/template-modal/template-moda
 import CodeSettingsModal from '@views/components/modals/code-settings-modal/code-settings-modal.vue'
 import LibrariesModal from '@views/components/modals/libraries-modal/libraries-modal.vue'
 import UploadCodeModal from '@views/components/modals/upload-code-modal/upload-code-modal.vue'
+import DownloadCodeModal from '@views/components/modals/download-code-modal/download-code-modal.vue'
 
 </script>
 
@@ -19,6 +20,7 @@ import UploadCodeModal from '@views/components/modals/upload-code-modal/upload-c
   <code-settings-modal></code-settings-modal>
   <libraries-modal></libraries-modal>
   <upload-code-modal></upload-code-modal>
+  <download-code-modal></download-code-modal>
 </template>
 
 <style lang="scss" scoped>

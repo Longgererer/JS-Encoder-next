@@ -14,35 +14,48 @@ const bindVal = ref<boolean>(false)
 </script>
 
 <template>
-  <modal title="上传文件" width="496" top="100"
+  <modal
+    title="上传文件"
+    width="500"
+    top="100"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
-    :showFooter="false" @close="updateDisplayModal(null)"
+    :showFooter="false"
+    @close="updateDisplayModal(null)"
   >
     <div class="font-s active-text code-font mt-s">
       <span>支持 HTML、CSS、JS、MD、PUG、SASS、SCSS、STYL、LESS、COFFEE、TS、VUE 及 JSX 格式的文件</span>
     </div>
-    <div class="notice mt-xs">
+    <div class="mt-xs">
       <div class="font-xs error-text flex-y-center renew-line-s">
         <span>注意: 上传相应格式的文件会覆盖对应窗口的代码</span>
         <help-popover
           appendToBody
           level="1001"
-          :position="Position.BOTTOM"
           describe="预处理语言对应着其编译后语言的窗口，如MD对应的窗口为HTML。"
+          :position="Position.BOTTOM"
         ></help-popover>
       </div>
     </div>
     <div class="upload-btn relative cursor-pointer">
-      <custom-button size="xLarge" fill customClass="radius-l font-s">
-        <input class="upload-input fill absolute" type="file" ref="fileInput"
-          multiple="multiple" title=""/>
+      <custom-button
+        fill
+        size="xLarge"
+        customClass="radius-l font-s"
+      >
+        <input
+          class="upload-input fill absolute"
+          type="file"
+          ref="fileInput"
+          multiple="multiple"
+          title=""
+        />
         <span>选择要上传的文件</span>
       </custom-button>
     </div>
 
     <!-- start 已上传文件列表 -->
     <div class="file-list mt-l">
-      <div class="file radius-l bg-main1 flex-center mb-s relative" v-for="item in 10">
+      <div class="file radius-l bg-main1 flex-center mb-s relative">
         <span class="file-name code-font active-text font-s flex-1 text-center">config.json</span>
         <div class="delete-btn cursor-pointer font-error fade-ease fill-h p-x-l flex-y-center absolute">
           <i class="icon iconfont icon-bin font-m"></i>
@@ -50,15 +63,19 @@ const bindVal = ref<boolean>(false)
       </div>
     </div>
 
-    <custom-button size="xLarge" fill customClass="radius-l font-s">上传文件</custom-button>
-    <div class="notice mt-xs flex-x-center">
+    <custom-button
+      fill
+      size="xLarge"
+      customClass="radius-l font-s"
+    >上传文件</custom-button>
+    <div class="mt-xs flex-x-center">
       <div class="active-text flex-y-center renew-line-s">
         <checkbox v-model="bindVal">分解HTML</checkbox>
         <help-popover
           appendToBody
           level="1002"
-          :position="Position.TOP"
           describe="我们将分解HTML中的各部分的代码以及引入的外部链接，将他们配置到实例中。"
+          :position="Position.TOP"
         ></help-popover>
       </div>
     </div>
@@ -66,9 +83,6 @@ const bindVal = ref<boolean>(false)
 </template>
 
 <style lang="scss" scoped>
-.notice {
-  height: 24px;
-}
 .upload-btn {
   margin-top: 32px;
   .upload-input {

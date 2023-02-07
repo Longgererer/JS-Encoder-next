@@ -88,7 +88,7 @@ const handleCloseModal = (): void => {
             maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
           }"
         >
-          <div class="flex-aic pb-l" :class="`${namespace}-header`">
+          <div class="flex-y-center pb-l" :class="`${namespace}-header`">
             <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
             <div class="flex-1"></div>
             <i

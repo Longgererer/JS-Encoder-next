@@ -14,7 +14,7 @@ const bindInputText = ref<string>('')
 <template>
   <modal
     title="库"
-    width="496"
+    width="500"
     top="100"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
     :showFooter="false"
@@ -33,22 +33,18 @@ const bindInputText = ref<string>('')
       </div>
       <div class="mt-s flex">
         <custom-input
-          :radius="0"
           size="large"
           width="100%"
+          :radius="0"
           v-model="bindInputText"
         >
           <template v-slot:leftSide>
             <div class="fill-h cursor-pointer flex-col-center inline-flex">
-              <div
-                class="flex-1 flex-y-center"
-              >
+              <div class="flex-1 flex-y-center">
                 <i class="icon iconfont icon-down font-s line-h-unset icon-rotate-180 flex-1
                   inline-flex font-active fade-ease p-x-s pt-xs"></i>
               </div>
-              <div
-                class="flex-1 flex-y-center"
-              >
+              <div class="flex-1 flex-y-center">
                 <i class="icon iconfont icon-down font-s line-h-unset flex-1 inline-flex
                   font-active fade-ease p-x-s pb-xs"></i>
               </div>

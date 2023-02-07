@@ -24,16 +24,29 @@ const handleClickCheckbox = (): void => {
 </script>
 
 <template>
-  <div class="font-xs relative flex-y-center fade-ease inline-flex line-h-fill" :class="[
-    `${namespace}`,
-    disabled ? 'disabled form-item-color cursor-default' : 'active-text cursor-pointer',
-    modelValue ? 'checked' : 'describe-text',
-  ]" @click="handleClickCheckbox">
-    <input class="absolute" :class="[
-      `${namespace}-input`,
-      disabled ? 'cursor-default' : 'cursor-pointer',
-    ]" type="checkbox" :checked="modelValue">
-    <span v-show="modelValue" class="flex-center absolute" :class="`${namespace}-icon`">
+  <div
+    class="font-xs relative flex-y-center fade-ease inline-flex line-h-fill no-select"
+    :class="[
+      `${namespace}`,
+      disabled ? 'disabled form-item-color cursor-default' : 'active-text cursor-pointer',
+      modelValue ? 'checked' : 'describe-text',
+    ]"
+    @click="handleClickCheckbox"
+  >
+    <input
+      class="absolute"
+      type="checkbox"
+      :class="[
+        `${namespace}-input`,
+        disabled ? 'cursor-default' : 'cursor-pointer',
+      ]"
+      :checked="modelValue"
+    >
+    <span
+      v-show="modelValue"
+      class="flex-center absolute"
+      :class="`${namespace}-icon`"
+    >
       <i class="icon iconfont icon-ok"></i>
     </span>
     <span><slot></slot></span>

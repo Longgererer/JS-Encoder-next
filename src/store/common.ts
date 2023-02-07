@@ -9,7 +9,7 @@ interface ICommonStore {
 export const useCommonStore = defineStore('common', {
   state: (): ICommonStore => {
     return {
-      displayModal: ModalName.UPLOAD_CODE,
+      displayModal: ModalName.DOWNLOAD_CODE,
     }
   },
   actions: {
