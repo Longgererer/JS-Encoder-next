@@ -27,7 +27,8 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
   <modal
     title="编码设置"
     width="730"
-    top="100"
+    top="80"
+    bottom="80"
     v-if="commonStore.displayModal === ModalName.CODE_SETTINGS"
     :showFooter="false"
     @close="updateDisplayModal(null)"

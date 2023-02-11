@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import Modal from '@components/modal/modal.vue'
+import CustomInput from '@components/form/custom-input/custom-input.vue'
 import { useCommonStore } from '@store/common'
 import { ModalName } from '@type/interface'
-import CustomInput from '@components/form/custom-input/custom-input.vue'
 import { ref } from 'vue'
 
 const commonStore = useCommonStore()
@@ -15,7 +15,8 @@ const bindInputText = ref<string>('')
   <modal
     title="库"
     width="500"
-    top="100"
+    top="80"
+    bottom="80"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
     :showFooter="false"
     @close="updateDisplayModal(null)"
@@ -29,7 +30,7 @@ const bindInputText = ref<string>('')
           width="100%"
           placeholder="输入想查找的样式库..."
           v-model="bindInputText"
-        />
+        ></custom-input>
       </div>
       <div class="mt-s flex">
         <custom-input
@@ -69,7 +70,11 @@ const bindInputText = ref<string>('')
           width="100%"
           placeholder="输入想查找的脚本库..."
           v-model="bindInputText"
-        />
+        ></custom-input>
+      </div>
+      <div class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease">
+        <i class="icon iconfont icon-add font-s"></i>
+        <span class="ml-s font-xs">添加新脚本</span>
       </div>
     </div>
   </modal>

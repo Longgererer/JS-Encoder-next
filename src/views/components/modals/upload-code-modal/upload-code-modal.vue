@@ -17,7 +17,8 @@ const bindVal = ref<boolean>(false)
   <modal
     title="上传文件"
     width="500"
-    top="100"
+    top="80"
+    bottom="80"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
     :showFooter="false"
     @close="updateDisplayModal(null)"
@@ -39,8 +40,9 @@ const bindVal = ref<boolean>(false)
     <div class="upload-btn relative cursor-pointer">
       <custom-button
         fill
+        shadow
         size="xLarge"
-        customClass="radius-l font-s"
+        customClass="radius-l font-xs"
       >
         <input
           class="upload-input fill absolute"
@@ -65,8 +67,9 @@ const bindVal = ref<boolean>(false)
 
     <custom-button
       fill
+      shadow
       size="xLarge"
-      customClass="radius-l font-s"
+      customClass="radius-l font-xs"
     >上传文件</custom-button>
     <div class="mt-xs flex-x-center">
       <div class="active-text flex-y-center renew-line-s">

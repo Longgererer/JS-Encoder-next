@@ -3,7 +3,7 @@ import Modal from '@components/modal/modal.vue'
 import HelpPopover from '@views/components/help-popover/help-popover.vue'
 import { computed, ref } from 'vue'
 import { useCommonStore } from '@store/common'
-import { ModalName } from '@type/interface'
+import { ModalName, Position } from '@type/interface'
 import { TemplateLang, TemplateType } from '@type/editor'
 import { inbuiltTemplateList, TemplateLang2IconMap } from './template-modal.interface'
 import { getCustomTemplateList } from './template-modal.util'
@@ -22,9 +22,14 @@ const customTemplateList = getCustomTemplateList()
 
 <template>
   <modal
+    title="模板"
+    width="730"
+    top="80"
+    bottom="80"
     v-if="commonStore.displayModal === ModalName.TEMPLATE"
-    title="模板" width="730" top="100" :showFooter="false"
-    @close="updateDisplayModal(null)">
+    :showFooter="false"
+    @close="updateDisplayModal(null)"
+  >
     <div class="modal-sub-title">内置模板</div>
     <div class="modal-desc-text">选择你想使用的模板</div>
     <!--内置模板列表-->
@@ -50,9 +55,7 @@ const customTemplateList = getCustomTemplateList()
     </div>
     <div class="modal-sub-title flex-y-center">
       <span>自定义模板</span>
-      <help-popover
-        describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"
-      ></help-popover>
+      <help-popover describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
     </div>
     <template v-if="customTemplateList.length">
       <div>

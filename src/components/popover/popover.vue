@@ -69,7 +69,6 @@ const showPopover = (): void => {
       height = 0,
     } = relativeEle?.getBoundingClientRect() || {}
     posStyle.value = getPosStyle(left, top, bottom, right, width, height, props.position)
-    console.log(posStyle.value)
   } else {
     posStyle.value = {}
   }
@@ -130,7 +129,7 @@ const handleLeaveTarget = (): void => {
           class="absolute pos-origin"
           :class="[
             namespace,
-            appendToBody ? '' : 'absolute pos-origin',
+            appendToBody ? '' : 'absolute pos-origin no-append-to-body',
           ]"
           @mouseover="handleOverTarget"
           @mouseleave="handleLeaveTarget"
@@ -180,6 +179,11 @@ $border-width: 6;
 
 .#{$namespace} {
   color: var(--color-tooltip-color);
+  &.no-append-to-body {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   .#{$namespace}-container {
     background-color: var(--color-popover-bg);
     border-color: var(--color-popover-bg);
