@@ -8,6 +8,7 @@ import LibrariesModal from '@views/components/modals/libraries-modal/libraries-m
 import UploadCodeModal from '@views/components/modals/upload-code-modal/upload-code-modal.vue'
 import DownloadCodeModal from '@views/components/modals/download-code-modal/download-code-modal.vue'
 import ShortcutModal from '@views/components/modals/shortcut-modal/shortcut-modal.vue'
+import UpdateLogModal from '@views/components/modals/update-log-modal/update-log-modal.vue'
 
 </script>
 
@@ -23,6 +24,7 @@ import ShortcutModal from '@views/components/modals/shortcut-modal/shortcut-moda
   <upload-code-modal></upload-code-modal>
   <download-code-modal></download-code-modal>
   <shortcut-modal></shortcut-modal>
+  <update-log-modal></update-log-modal>
 </template>
 
 <style lang="scss" scoped>

@@ -1,4 +1,15 @@
-const ShortcutMapList = [
+export interface IShortcutMap {
+  /* 集合名称 */
+  name: string
+  keymap: Array<{
+    /* 功能描述 */
+    describe: string
+    /* 键位列表 */
+    list: string[]
+  }>
+}
+
+export const ShortcutMapList: IShortcutMap[] = [
   {
     name: '编码',
     keymap: [
@@ -33,5 +44,9 @@ const ShortcutMapList = [
       { describe: '横线', list: ['Ctrl / Cmd', 'H'] },
       { describe: '列表延伸', list: ['Ctrl / Cmd', 'Enter'] },
     ],
+  },
+  {
+    name: '其它',
+    keymap: [],
   },
 ]
