@@ -1,41 +1,63 @@
 <script setup lang="ts">
 import Tooltip from '@components/tooltip/tooltip.vue'
 import IconBtn from '@components/icon-btn/icon-btn.vue'
-import { LogType } from '@type/interface'
-import { SidebarType, SidebarTypeToText, SidebarTypeToIcon } from './sidebar.interface'
+import { Theme } from '@type/interface'
+import { GITHUB_REPO_URL } from '@utils/config'
+import {
+  SidebarList, SidebarType, SidebarTypeToIcon, SidebarTypeToModalNameMap, SidebarTypeToText, ThemeIcon,
+} from './sidebar.interface'
+import { useCommonStore } from '@store/common'
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
-defineOptions({ name: 'sidebar' })
+const NAMESPACE = 'sidebar'
 
-/* 侧边栏选项列表，每个子列表之间用横线分割 */
-const sidebarList: SidebarType[][] = [
-  [SidebarType.TEMPLATE, SidebarType.SETTING, SidebarType.LIBRARY],
-  [SidebarType.UPLOAD, SidebarType.DOWNLOAD],
-  [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG],
-  [],
-  [SidebarType.THEME, SidebarType.GITHUB],
-]
+const commonStore = useCommonStore()
+const { updateDisplayModal, updateTheme } = commonStore
+const { theme } = storeToRefs(commonStore)
 
-const handleClickItem = () => {
-  console.log('handleClickItem')
+const processThemeChanged = (): void => {
+  updateTheme(theme.value === Theme.DARK ? Theme.LIGHT : Theme.DARK)
 }
+
+const handleClickItem = (type: SidebarType) => {
+  switch (type) {
+    case SidebarType.THEME: {
+      processThemeChanged()
+      break
+    }
+    case SidebarType.GITHUB: {
+      window.open(GITHUB_REPO_URL, '_blank')
+      break
+    }
+    default: {
+      const modalName = SidebarTypeToModalNameMap.get(type)
+      if (modalName) { updateDisplayModal(modalName) }
+    }
+  }
+}
+
 </script>
 
 <template>
-  <div class="sidebar bg-main1 fill-h flex-col-x-center">
-    <template v-for="(list, index) in sidebarList" :key="index">
+  <div class="bg-main1 fill-h flex-col-x-center" :class="NAMESPACE">
+    <template v-for="(list, index) in SidebarList" :key="index">
       <!-- 分割线 -->
-      <div class="split-line" v-if="index > 0 && index !== sidebarList.length - 1 && list.length"></div>
+      <div class="split-line" v-if="index > 0 && index !== SidebarList.length - 1 && list.length"></div>
       <!-- 子选项列表 -->
-      <div class="sidebar-sub fill-w p-y-s" v-if="list.length">
-        <div class="sidebar-item-wrapper flex-center" v-for="item in list" :key="item">
+      <div class="fill-w p-y-s" :class="`${NAMESPACE}-sub`" v-if="list.length">
+        <div
+          class="flex-center"
+          :class="`${NAMESPACE}-item-wrapper`"
+          v-for="item in list"
+          :key="item"
+        >
           <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8" level="15">
-            <template v-if="item === SidebarType.THEME">
-              <!-- 主题类型特殊处理 -->
-              <icon-btn size="lg" :icon-class="SidebarTypeToIcon[SidebarType.DARK]" @click="handleClickItem"></icon-btn>
-            </template>
-            <template v-else>
-              <icon-btn size="lg" :icon-class="SidebarTypeToIcon[item]" @click="handleClickItem"></icon-btn>
-            </template>
+            <icon-btn
+              size="lg"
+              :icon-class="item === SidebarType.THEME ? ThemeIcon[theme] : SidebarTypeToIcon[item]"
+              @click="handleClickItem(item)"
+            ></icon-btn>
           </tooltip>
         </div>
       </div>
@@ -45,7 +67,9 @@ const handleClickItem = () => {
 </template>
 
 <style lang="scss" scoped>
-.sidebar {
+$namespace: sidebar;
+
+.#{$namespace} {
   width: 49px;
   border-right: 1px solid var(--color-main-bg-3);
   .split-line {
@@ -53,8 +77,8 @@ const handleClickItem = () => {
     background-color: transparent;
     border-bottom: 1px solid var(--color-main-bg-3);
   }
-  .sidebar-sub {
-    .sidebar-item-wrapper {
+  .#{$namespace}-sub {
+    .#{$namespace}-item-wrapper {
       width: 48px;
       height: 48px;
     }

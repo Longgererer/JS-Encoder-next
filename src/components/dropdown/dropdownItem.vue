@@ -3,7 +3,7 @@ const namespace = 'dropdown-item'
 </script>
 
 <template>
-  <div class="font-xs p-x-m fade-ease flex-aic cursor-pointer text-nowrap" :class="namespace">
+  <div class="font-xs p-x-m fade-ease flex-y-center cursor-pointer text-nowrap" :class="namespace">
     <slot></slot>
   </div>
 </template>

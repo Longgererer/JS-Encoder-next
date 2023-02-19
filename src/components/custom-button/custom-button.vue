@@ -83,13 +83,17 @@ const namespace = 'custom-button'
 $namespace: custom-button;
 $btn-theme: (
   default: transparent,
+  default-hover: transparent,
   default-active: transparent,
-  primary: var(--color-primary),
-  primary-active: var(--color-primary-active),
-  success: var(--color-success),
-  success-active: var(--color-success-active),
-  danger: var(--color-error),
-  danger-active: var(--color-error-active),
+  primary: var(--color-primary1),
+  primary-hover: var(--color-primary2),
+  primary-active: var(--color-primary0),
+  success: var(--color-green1),
+  success-hover: var(--color-green2),
+  success-active: var(--color-green0),
+  danger: var(--color-red1),
+  danger-hover: var(--color-red2),
+  danger-active: var(--color-red0),
 );
 $btn-font-size: (
   mini: 12px,
@@ -174,7 +178,10 @@ $horizontal-padding: (
   .#{$namespace}--#{$type} {
     background-color: map-get($btn-theme, $type);
     &:hover {
-      background-color: map-get($btn-theme, #{$type}-active);
+      background-color: map-get($btn-theme, #{$type}-hover);
+    }
+    &:active {
+      background-color: map-get($btn-theme, #{$type}-active) !important;
     }
     .#{$namespace}-content {
       color: inherit;
@@ -185,8 +192,8 @@ $horizontal-padding: (
     border: 2px solid map-get($btn-theme, $type);
     background-color: transparent;
     &:hover {
-      color: map-get($btn-theme, #{$type}-active);
-      border-color: map-get($btn-theme, #{$type}-active);
+      color: map-get($btn-theme, #{$type}-hover);
+      border-color: map-get($btn-theme, #{$type}-hover);
     }
   }
 }

@@ -289,7 +289,7 @@ $input-border-radius: (
     color: inherit;
     border: 2px solid var(--color-form-item);
     &:focus {
-      border-color: var(--color-primary);
+      border-color: var(--color-primary1);
     }
   }
   .virtual-box {

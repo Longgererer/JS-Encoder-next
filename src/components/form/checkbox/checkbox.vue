@@ -28,7 +28,7 @@ const handleClickCheckbox = (): void => {
     class="font-xs relative flex-y-center fade-ease inline-flex line-h-fill no-select"
     :class="[
       `${namespace}`,
-      disabled ? 'disabled form-item-color cursor-default' : 'active-text cursor-pointer',
+      disabled ? 'disabled cursor-default' : 'active-text cursor-pointer',
       modelValue ? 'checked' : 'describe-text',
     ]"
     @click="handleClickCheckbox"
@@ -69,11 +69,12 @@ $namespace: checkbox;
   }
   &.checked {
     &::before {
-      border-color: var(--color-primary);
-      background-color: var(--color-primary);
+      border-color: var(--color-primary1);
+      background-color: var(--color-primary1);
     }
   }
   &.disabled {
+    color: var(--color-disabled-color);
     &::before {
       border-color: var(--color-form-item);
       background-color: var(--color-form-item);

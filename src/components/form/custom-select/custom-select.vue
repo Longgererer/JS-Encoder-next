@@ -95,12 +95,13 @@ $select-border-radius: (
   medium: 4px,
   large: 8px,
 );
+$borderWidth: 2px;
 
 .#{$namespace} {
   width: 200px;
-  border: 2px solid var(--color-form-item);
+  border: $borderWidth solid var(--color-form-item);
   &:focus {
-    border-color: var(--color-primary);
+    border-color: var(--color-primary1);
   }
   .icon-area {
     top: 50%;
@@ -140,7 +141,7 @@ $select-border-radius: (
       border-radius: $radius;
       padding: $padding 0;
       .#{$namespace}-option {
-        padding: $padding;
+        padding: calc($padding + $borderWidth);
       }
     }
   }

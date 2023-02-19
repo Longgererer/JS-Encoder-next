@@ -27,3 +27,6 @@ export const editorSideOpts = {
   [Prep.VUE2]: { displayOpts: [], moreOpts: [1] },
   [Prep.VUE3]: { displayOpts: [], moreOpts: [1] },
 }
+
+/* Github仓库的网址 */
+export const GITHUB_REPO_URL = 'https://github.com/JS-Encoder/JS-Encoder'

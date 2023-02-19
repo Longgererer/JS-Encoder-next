@@ -7,6 +7,7 @@ import { ModalName, Position } from '@type/interface'
 import { TemplateLang, TemplateType } from '@type/editor'
 import { inbuiltTemplateList, TemplateLang2IconMap } from './template-modal.interface'
 import { getCustomTemplateList } from './template-modal.util'
+import CustomButton from '@components/custom-button/custom-button.vue'
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -65,6 +66,7 @@ const customTemplateList = getCustomTemplateList()
     <template v-else>
       <div class="flex-center bg-main3 radius-l blank-tip-area">
         <span class="no-active-text font-xxs">当前未创建任何自定义模板</span>
+        <custom-button>以当前代码创建自定义模板</custom-button>
       </div>
     </template>
     <!--自定义模板列表-->
@@ -82,11 +84,11 @@ const customTemplateList = getCustomTemplateList()
     background-color: var(--color-main-bg-1);
     border: 2px solid var(--color-main-bg-1);
     &:hover {
-      border: 2px solid var(--color-primary);
+      border: 2px solid var(--color-primary1);
     }
     &.active {
-      background-color: var(--color-primary);
-      border: 2px solid var(--color-primary);
+      background-color: var(--color-primary1);
+      border: 2px solid var(--color-primary2);
     }
     .lang-icon {
       width: 40px;

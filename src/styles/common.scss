@@ -101,18 +101,18 @@
 /* color */
 .no-active-text { color: var(--color-no-active-color); }
 .active-text { color: var(--color-active-color); }
-.primary-text { color: var(--color-primary); }
+.primary-text { color: var(--color-primary1); }
 .describe-text { color: var(--color-describe); }
 .golden-text { color: var(--color-golden); }
 .form-item-color { color: var(--color-form-item); }
-.error-text { color: var(--color-error); }
+.error-text { color: var(--color-red1); }
 
 /* background */
 .bg-main1 { background-color: var(--color-main-bg-1); }
 .bg-main2 { background-color: var(--color-main-bg-2); }
 .bg-main3 { background-color: var(--color-main-bg-3); }
 .bg-form-item { background-color: var(--color-form-item); }
-.bg-error { background-color: var(--color-error); }
+.bg-error { background-color: var(--color-red1); }
 
 /* width and height */
 .fill { width: 100%; height: 100%; }
@@ -126,13 +126,14 @@
 .fill-max-h { max-height: 100%; }
 
 /* font-size */
-.font-xxs { font-size: 0.75rem;}
-.font-xs { font-size: 0.875rem;}
-.font-s { font-size: 1rem;}
-.font-m { font-size: 1.25rem;}
-.font-l { font-size: 1.5rem;}
-.font-xl { font-size: 1.75rem;}
-.font-xxl { font-size: 2rem;}
+.font-xxs { font-size: 12px;}
+.font-xs { font-size: 14px;}
+.font-s { font-size: 16px;}
+.font-r { font-size: 18px;}
+.font-m { font-size: 20px;}
+.font-l { font-size: 24px;}
+.font-xl { font-size: 28px;}
+.font-xxl { font-size: 32px;}
 
 .renew-line-xxs { line-height: 0.75rem; }
 .renew-line-xs { line-height: 0.875rem; }
@@ -150,6 +151,8 @@
 .fw-light { font-weight: 200; }
 .fw-normal { font-weight: 400; }
 .fw-bold { font-weight: 700; }
+
+.font-no-ligatures { font-variant-ligatures: none; }
 
 /* flex */
 .flex { display: flex; }
@@ -222,7 +225,7 @@
 
 /* color */
 .font-active { @include font-active(var(--color-no-active-color), var(--color-active-color)); }
-.font-error { @include font-active(var(--color-no-active-color), var(--color-error)); }
+.font-error { @include font-active(var(--color-no-active-color), var(--color-red1)); }
 
 /* transition */
 .transition-all { @include transition(all, .2s, ease); }

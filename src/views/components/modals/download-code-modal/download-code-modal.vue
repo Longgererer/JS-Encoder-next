@@ -84,8 +84,8 @@ const bindInputText = ref<string>('')
     color: var(--color-no-active-color);
     &.active {
       color: var(--color-active-color);
-      border-color: var(--color-primary-active);
-      background-color: var(--color-primary);
+      border-color: var(--color-primary2);
+      background-color: var(--color-primary1);
     }
 
     .icon {
