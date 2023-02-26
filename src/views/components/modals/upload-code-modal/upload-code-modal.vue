@@ -20,7 +20,7 @@ const bindVal = ref<boolean>(false)
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div class="font-s active-text code-font mt-s">
@@ -30,7 +30,7 @@ const bindVal = ref<boolean>(false)
       <div class="font-xs error-text flex-y-center renew-line-s">
         <span>注意: 上传相应格式的文件会覆盖对应窗口的代码</span>
         <help-popover
-          appendToBody
+          append-to-body
           level="1001"
           describe="预处理语言对应着其编译后语言的窗口，如MD对应的窗口为HTML。"
           :position="Position.BOTTOM"
@@ -42,7 +42,7 @@ const bindVal = ref<boolean>(false)
         fill
         shadow
         size="xLarge"
-        customClass="radius-l font-xs"
+        custom-class="radius-l font-xs"
       >
         <input
           class="upload-input fill absolute"
@@ -69,13 +69,13 @@ const bindVal = ref<boolean>(false)
       fill
       shadow
       size="xLarge"
-      customClass="radius-l font-xs"
+      custom-class="radius-l font-xs"
     >上传文件</custom-button>
     <div class="mt-xs flex-x-center">
       <div class="active-text flex-y-center renew-line-s">
         <checkbox v-model="bindVal">分解HTML</checkbox>
         <help-popover
-          appendToBody
+          append-to-body
           level="1002"
           describe="我们将分解HTML中的各部分的代码以及引入的外部链接，将他们配置到实例中。"
           :position="Position.TOP"

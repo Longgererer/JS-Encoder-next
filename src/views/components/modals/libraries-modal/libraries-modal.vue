@@ -18,7 +18,7 @@ const bindInputText = ref<string>('')
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div>

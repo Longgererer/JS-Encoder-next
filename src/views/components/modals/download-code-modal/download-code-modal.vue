@@ -27,7 +27,7 @@ const bindInputText = ref<string>('')
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.DOWNLOAD_CODE"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div class="download-type flex code-font">
@@ -69,7 +69,7 @@ const bindInputText = ref<string>('')
       <custom-button
         fill
         size="xLarge"
-        customClass="radius-l font-s"
+        custom-class="radius-l font-s"
       >下载文件</custom-button>
     </div>
   </modal>

@@ -9,7 +9,9 @@ const namespace = 'dropdown-item'
 </template>
 
 <style lang="scss" scoped>
-.dropdown-item {
+$namespace: dropdown-item;
+
+.#{$namespace} {
   height: 36px;
   color: var(--color-no-active-color);
   &:hover {

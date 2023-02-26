@@ -18,6 +18,7 @@ import UpdateLogModal from '@views/components/modals/update-log-modal/update-log
     <sidebar></sidebar>
     <editor-wrapper></editor-wrapper>
   </div>
+  <!--modals-->
   <template-modal></template-modal>
   <code-settings-modal></code-settings-modal>
   <libraries-modal></libraries-modal>

@@ -27,7 +27,7 @@ const updateLogList = ref<IUpdateLog[]>([])
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.UPDATE_LOG"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div class="flex mt-m active-text code-font">

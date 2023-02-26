@@ -52,7 +52,7 @@ const handleClickItem = (type: SidebarType) => {
           v-for="item in list"
           :key="item"
         >
-          <tooltip :content="SidebarTypeToText[item]" :showTriangle="false" offset="8" level="15">
+          <tooltip :content="SidebarTypeToText[item]" :show-triangle="false" offset="8" level="15">
             <icon-btn
               size="lg"
               :icon-class="item === SidebarType.THEME ? ThemeIcon[theme] : SidebarTypeToIcon[item]"

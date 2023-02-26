@@ -1,11 +1,11 @@
 /**
- * 该文件用于存放公共配置
+ * 公共配置存储
  */
 import { Prep } from '@type/prep'
-import { IOption } from '@type/interface'
+import { IIconOption } from '@type/interface'
 
 /* 选项列表 */
-export const optionsListMap: Record<number, IOption> = {
+export const optionsListMap: Record<number, IIconOption> = {
   0: { text: 'Markdown工具栏', icon:'' },
   1: { text: '格式化代码' },
 }

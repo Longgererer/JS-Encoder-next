@@ -6,16 +6,20 @@ const emits = defineEmits<{
 const handleClickMask = (): void => {
   emits('clickMask')
 }
+
+const namespace = 'mask-layer'
 </script>
 
 <template>
-  <div class="mask-layer fixed fill high-layer" @click.self="handleClickMask">
+  <div class="fixed fill high-layer" :class="namespace" @click.self="handleClickMask">
     <slot></slot>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.mask-layer {
+$namespace: mask-layer;
+
+.#{$namespace} {
   top: 0;
   left: 0;
   background-color: var(--color-mask-bgc);

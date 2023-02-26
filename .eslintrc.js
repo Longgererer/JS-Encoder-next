@@ -26,6 +26,7 @@ module.exports = {
     "vue/comment-directive": "off",
     "vue/no-v-for-template-key": "off",
     "vue/no-multiple-template-root": "off",
+    "vue/prop-name-casing": ["error", "camelCase"],
     "arrow-parens": [
       "error",
       "always",
@@ -167,6 +168,7 @@ module.exports = {
         "propertyDeclaration": true,
       },
     ],
+    "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/unified-signatures": "error",
     "vue/multi-word-component-names": "off",
   },

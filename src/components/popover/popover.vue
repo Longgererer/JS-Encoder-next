@@ -1,13 +1,5 @@
-<script lang="ts">
-import { Position, Trigger } from '@type/interface'
-
-/* 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
-export const initPosition = Position.RIGHT
-export const initTrigger = Trigger.HOVER
-export default { name: 'popover' }
-</script>
-
 <script setup lang="ts">
+import { Position, Trigger } from '@type/interface'
 import { computed, onMounted, ref, toRef, useSlots, watch, reactive } from 'vue'
 import { getOffsetStyle, getPosStyle } from '@components/utils/common'
 import useClickOutside from '@hooks/useClickOutside'
@@ -36,10 +28,10 @@ const props = withDefaults(defineProps<IProps>(), {
   hidden: true,
   offset: 0,
   showTriangle: true,
-  position: initPosition,
+  position: 'right' as Position,
   appendToBody: false,
   level: 'auto',
-  trigger: initTrigger,
+  trigger: 'hover' as Trigger,
   delay: 300,
 })
 

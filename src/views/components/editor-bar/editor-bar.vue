@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IOption } from '@type/interface'
+import { IIconOption } from '@type/interface'
 import { EditorViewId, IEditor } from '@type/editor'
 import { useEditorWrapperStore } from '@store/editorWrapper'
 import { computed, ref, watch, onMounted } from 'vue'
@@ -33,7 +33,6 @@ const rightSideIndex = 3
 
 const editorBarRef = ref<HTMLElement | null>(null)
 const resetHookState = useDragleaveJudge(editorBarRef, () => {
-  console.log(123123123)
   overlapIndex.value = -1
   tempTabs = []
 })

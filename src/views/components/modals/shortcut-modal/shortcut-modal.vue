@@ -20,7 +20,7 @@ const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.SHORTCUT"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div class="pt-s pb-l flex-ais sticky bg-main2" style="top:0">

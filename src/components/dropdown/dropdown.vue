@@ -64,8 +64,11 @@ watch(isClickOutSide, () => {
       <slot></slot>
     </div>
     <!--  菜单项列表  -->
-    <div class="shadow p-y-s absolute radius-l" :class="`${namespace}-options-wrapper ${namespace}-align-${align}`"
-      v-show="modelValue">
+    <div
+      class="shadow p-y-s absolute radius-l"
+      :class="`${namespace}-options-wrapper ${namespace}-align-${align}`"
+      v-show="modelValue"
+    >
       <div :class="`${namespace}-options`" @click="handleClickOption">
         <slot name="options"></slot>
       </div>

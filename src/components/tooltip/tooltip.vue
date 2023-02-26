@@ -1,12 +1,5 @@
-<script lang="ts">
-import { Position } from '@type/interface'
-
-/* 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
-export const initPosition = Position.RIGHT
-export default { name: 'tooltip' }
-</script>
-
 <script setup lang="ts">
+import { Position } from '@type/interface'
 import { computed, ref } from 'vue'
 import { getOffsetStyle } from '@components/utils/common'
 
@@ -36,7 +29,7 @@ const props = withDefaults(defineProps<IProps>(), {
   delay: 300,
   disable: false,
   showTriangle: true,
-  position: initPosition,
+  position: 'right' as Position,
   level: 'auto',
 })
 
@@ -97,7 +90,7 @@ const handleMouseLeave = (): void => {
 </template>
 
 <style lang="scss" scoped>
-$namespace: 'tooltip';
+$namespace: tooltip;
 $border-width: 6;
 
 .#{$namespace} {

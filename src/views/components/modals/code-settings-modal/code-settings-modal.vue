@@ -30,7 +30,7 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
     top="80"
     bottom="80"
     v-if="commonStore.displayModal === ModalName.CODE_SETTINGS"
-    :showFooter="false"
+    :show-footer="false"
     @close="updateDisplayModal(null)"
   >
     <div class="flex">

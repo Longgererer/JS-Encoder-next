@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Size } from '@type/interface'
+import { BtnType, Size } from '@type/interface'
 
-interface Props {
+interface IProps {
   /* 按钮尺寸 mini|small|medium|large|xLarge */
   size?: Size
   /* 是否禁用 */
@@ -12,7 +12,7 @@ interface Props {
   /* icon类名 */
   iconClass?: string
   /* 按钮类型 */
-  type?: string
+  type?: BtnType
   /* 是否显示icon */
   showIcon?: boolean
   /* 是否有阴影 */
@@ -29,10 +29,10 @@ interface Props {
   customClass?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   size: 'medium' as Size,
   disabled: false,
-  type: 'primary',
+  type: 'primary' as BtnType,
   icon: false,
   iconClass: '',
   showIcon: false,
@@ -50,30 +50,30 @@ const emits = defineEmits<{
 
 const isDisabled = computed(() => props.loading || props.disabled)
 
-const namespace = 'custom-button'
+const NAMESPACE = 'custom-button'
 </script>
 
 <template>
   <button
     class="cursor-pointer flex-center no-select fade-ease"
     :class="[
-      `${namespace}`,
-      `${namespace}--${size}`,
-      `${namespace}--${type}`,
-      icon ? `${namespace}-only-icon` : '',
-      isDisabled ? `${namespace}-disabled` : '',
+      `${NAMESPACE}`,
+      `${NAMESPACE}--${size}`,
+      `${NAMESPACE}--${type}`,
+      icon ? `${NAMESPACE}-only-icon` : '',
+      isDisabled ? `${NAMESPACE}-disabled` : '',
       shadow ? `shadow` : '',
-      outline ? `${namespace}-outline` : '',
-      radius ? `${namespace}-radius` : '',
+      outline ? `${NAMESPACE}-outline` : '',
+      radius ? `${NAMESPACE}-radius` : '',
       fill ? 'flex fill-w' : 'inline-flex',
       customClass,
     ]"
     :disabled="isDisabled"
     @click.stop="$emit('click')"
   >
-    <span class="loading-action" :class="`${namespace}-load`" v-show="loading">-</span>
-    <span class="inline-block" :class="`${namespace}-content ${loading ? 'ml-s' : ''}`">
-      <i v-if="icon || showIcon" :class="`${namespace}-icon icon iconfont ${iconClass}`"></i>
+    <span class="loading-action" :class="`${NAMESPACE}-load`" v-show="loading">-</span>
+    <span class="inline-block" :class="`${NAMESPACE}-content ${loading ? 'ml-s' : ''}`">
+      <i v-if="icon || showIcon" :class="`${NAMESPACE}-icon icon iconfont ${iconClass}`"></i>
       <slot v-if="!icon"></slot>
     </span>
   </button>
@@ -206,7 +206,7 @@ $horizontal-padding: (
     border-radius: 4px;
     padding: 0 map-get($horizontal-padding, $size);
     font-size: $font-size;
-    line-height: $font-size;
+    //line-height: $font-size;
   }
   .#{$namespace}--#{$size}.#{$namespace}-radius {
     border-radius: calc(($font-size + 2.6 * $padding) / 2);

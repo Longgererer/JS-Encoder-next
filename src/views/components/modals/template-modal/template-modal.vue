@@ -1,24 +1,35 @@
 <script setup lang="ts">
 import Modal from '@components/modal/modal.vue'
 import HelpPopover from '@views/components/help-popover/help-popover.vue'
-import { computed, ref } from 'vue'
+import CustomButton from '@components/custom-button/custom-button.vue'
+import { computed, ref, reactive } from 'vue'
 import { useCommonStore } from '@store/common'
-import { ModalName, Position } from '@type/interface'
-import { TemplateLang, TemplateType } from '@type/editor'
+import { CommonObj, ModalName, Position, Size } from '@type/interface'
 import { inbuiltTemplateList, TemplateLang2IconMap } from './template-modal.interface'
 import { getCustomTemplateList } from './template-modal.util'
-import CustomButton from '@components/custom-button/custom-button.vue'
+import { Template } from '@type/namespaces/template'
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const selectInbuiltIndex = ref<number>(-1)
-
-const handleClickInbuiltTemplate = (index: number): void => {
-  selectInbuiltIndex.value = index
-}
+const selectedTemplate = ref<CommonObj>({
+  /* 是否为自定义模板 */
+  isCustom: false,
+  /* 选中的模板下标 */
+  index: -1,
+})
 
 const customTemplateList = getCustomTemplateList()
+
+const templateModalConfirmBtnOpts = reactive<CommonObj>({
+  customClass: 'p-l',
+  disabled: true,
+})
+
+const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): void => {
+  selectedTemplate.value = { index, isCustom }
+  templateModalConfirmBtnOpts.disabled = false
+}
 </script>
 
 <template>
@@ -27,8 +38,10 @@ const customTemplateList = getCustomTemplateList()
     width="730"
     top="80"
     bottom="80"
+    okText="使用该模板"
     v-if="commonStore.displayModal === ModalName.TEMPLATE"
-    :showFooter="false"
+    :show-footer="true"
+    :confirm-btn-opts="templateModalConfirmBtnOpts"
     @close="updateDisplayModal(null)"
   >
     <div class="modal-sub-title">内置模板</div>
@@ -37,7 +50,7 @@ const customTemplateList = getCustomTemplateList()
     <div class="inbuilt-template-list pb-l">
       <div
         class="template flex code-font p-l radius-l cursor-pointer fade-ease"
-        :class="index === selectInbuiltIndex ? 'active' : ''"
+        :class="index === selectedTemplate.index ? 'active' : ''"
         v-for="(item, index) in inbuiltTemplateList"
         :key="index"
         @mousedown="handleClickInbuiltTemplate(index)"
@@ -49,7 +62,7 @@ const customTemplateList = getCustomTemplateList()
           <div class="active-text font-xs template-lang">{{item.lang}}</div>
           <div
             class="font-xxs template-type"
-            :class="item.type === TemplateType.COMPONENT ? 'golden-text' : 'describe-text'"
+            :class="item.type === Template.Type.COMPONENT ? 'golden-text' : 'describe-text'"
           >{{item.type}}</div>
         </div>
       </div>
@@ -64,9 +77,9 @@ const customTemplateList = getCustomTemplateList()
       </div>
     </template>
     <template v-else>
-      <div class="flex-center bg-main3 radius-l blank-tip-area">
-        <span class="no-active-text font-xxs">当前未创建任何自定义模板</span>
-        <custom-button>以当前代码创建自定义模板</custom-button>
+      <div class="flex-col flex-center bg-main3 radius-l blank-tip-area">
+        <span class="no-active-text font-xxs mb-s">当前未创建任何自定义模板</span>
+        <custom-button :size="Size.SMALL">+ 以当前代码创建</custom-button>
       </div>
     </template>
     <!--自定义模板列表-->

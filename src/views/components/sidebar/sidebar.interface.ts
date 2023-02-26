@@ -15,6 +15,8 @@ export enum SidebarType {
   SHORTCUT = 'shortcut',
   /* 更新日志 */
   UPDATE_LOG = 'updateLog',
+  /* 帮助文档 */
+  HELP_DOCUMENT = 'helpDocument',
   /* 主题 */
   THEME = 'theme',
   /* Github */
@@ -29,6 +31,7 @@ export const SidebarTypeToText = {
   [SidebarType.DOWNLOAD_CODE]: '下载代码',
   [SidebarType.SHORTCUT]: '快捷键',
   [SidebarType.UPDATE_LOG]: '更新日志',
+  [SidebarType.HELP_DOCUMENT]: '帮助文档',
   [SidebarType.THEME]: '主题',
   [SidebarType.GITHUB]: 'Github',
 }
@@ -40,8 +43,9 @@ export const SidebarTypeToIcon = {
   [SidebarType.UPLOAD_CODE]: 'icon-upload',
   [SidebarType.DOWNLOAD_CODE]: 'icon-download',
   [SidebarType.SHORTCUT]: 'icon-keyboard',
-  [SidebarType.THEME]: 'icon-sun',
   [SidebarType.UPDATE_LOG]: 'icon-light',
+  [SidebarType.HELP_DOCUMENT]: 'icon-doc-help',
+  [SidebarType.THEME]: 'icon-sun',
   [SidebarType.GITHUB]: 'icon-github',
 }
 
@@ -54,7 +58,7 @@ export const ThemeIcon = {
 export const SidebarList: SidebarType[][] = [
   [SidebarType.TEMPLATE, SidebarType.CODE_SETTINGS, SidebarType.LIBRARIES],
   [SidebarType.UPLOAD_CODE, SidebarType.DOWNLOAD_CODE],
-  [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG],
+  [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG, SidebarType.HELP_DOCUMENT],
   [],
   [SidebarType.THEME, SidebarType.GITHUB],
 ]

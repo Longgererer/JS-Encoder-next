@@ -97,7 +97,8 @@ const highlightAreaStyle = computed((): Record<string, any> => {
 <template>
   <div
     class="overlap-monitor fill flex-1 relative"
-    @dragleave="handleDragleave" ref="overlapMonitor"
+    ref="overlapMonitor"
+    @dragleave="handleDragleave"
   >
     <!-- 专门用于监听元素拖动具体位置的区域 -->
     <!-- 直接事件委托监听所有区域的进入和离开 -->

@@ -1,4 +1,4 @@
-import { JSONParse } from './common'
+import { safeJSONParse } from '@utils/common'
 
 export const enum LocalStorageKey {
   /* 主题 */
@@ -17,7 +17,7 @@ export function setLocalStorage(key: LocalStorageKey, val: any): void {
 }
 
 export function getLocalStorage(key: LocalStorageKey): any {
-  return JSONParse(localStorage.getItem(key))
+  return safeJSONParse(localStorage.getItem(key) || '')
 }
 
 export function setSessionStorage(key: SessionStorageKey, val: any): void {
@@ -25,5 +25,5 @@ export function setSessionStorage(key: SessionStorageKey, val: any): void {
 }
 
 export function getSessionStorage(key: SessionStorageKey): any {
-  return JSONParse(sessionStorage.getItem(key))
+  return safeJSONParse(sessionStorage.getItem(key) || '')
 }

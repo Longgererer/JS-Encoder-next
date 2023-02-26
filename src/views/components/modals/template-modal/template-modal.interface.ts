@@ -1,30 +1,31 @@
-import { IEditor, TemplateLang, TemplateType } from '@type/editor'
+import { IEditor } from '@type/editor'
 import { Origin, Prep } from '@type/prep'
+import { Template } from '@type/namespaces/template'
 
 export interface ITemplateItem {
-  lang: TemplateLang
-  type: TemplateType
+  lang: Template.Lang
+  type: Template.Type
 }
 
 /* 内置模板列表 */
 export const inbuiltTemplateList: ITemplateItem[] = [
-  { lang: TemplateLang.VUE2, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.VUE3, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.VANILLA, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.REACT, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.ANGULAR, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.VUE2, type: TemplateType.COMPONENT },
-  { lang: TemplateLang.VUE3, type: TemplateType.COMPONENT },
+  { lang: Template.Lang.VUE2, type: Template.Type.DEFAULT },
+  { lang: Template.Lang.VUE3, type: Template.Type.DEFAULT },
+  { lang: Template.Lang.VANILLA, type: Template.Type.DEFAULT },
+  { lang: Template.Lang.REACT, type: Template.Type.DEFAULT },
+  { lang: Template.Lang.ANGULAR, type: Template.Type.DEFAULT },
+  { lang: Template.Lang.VUE2, type: Template.Type.COMPONENT },
+  { lang: Template.Lang.VUE3, type: Template.Type.COMPONENT },
 ]
 
 /* 不同类型模板对应的icon */
 export const TemplateLang2IconMap = {
-  [TemplateLang.VUE2]: 'icon-vue',
-  [TemplateLang.VUE3]: 'icon-vue',
-  [TemplateLang.VANILLA]: 'icon-javascript',
-  [TemplateLang.REACT]: 'icon-react',
-  [TemplateLang.ANGULAR]: 'icon-angular',
-  [TemplateLang.CUSTOM]: 'icon-custom-template',
+  [Template.Lang.VUE2]: 'icon-vue',
+  [Template.Lang.VUE3]: 'icon-vue',
+  [Template.Lang.VANILLA]: 'icon-javascript',
+  [Template.Lang.REACT]: 'icon-react',
+  [Template.Lang.ANGULAR]: 'icon-angular',
+  [Template.Lang.CUSTOM]: 'icon-custom-template',
 }
 
 export interface ITemplateContent {

@@ -1,5 +1,4 @@
 import { Origin, Prep } from '@type/prep'
-import { IOption } from '@type/interface'
 
 export interface IEditor {
   /* 当前tab对应编辑器使用的预处理语言 */
@@ -76,19 +75,4 @@ export enum AreaPos {
   DOWN = 'down',
   MIDDLE = 'middle',
   NULL = 'null',
-}
-
-export enum TemplateLang {
-  VUE2 = 'Vue2',
-  VUE3 = 'Vue3',
-  VANILLA = 'Vanilla',
-  REACT = 'React',
-  ANGULAR = 'Angular',
-  CUSTOM = 'Custom',
-}
-
-export enum TemplateType {
-  DEFAULT = 'Default',
-  COMPONENT = 'Component',
-  CUSTOM = 'Custom',
 }
