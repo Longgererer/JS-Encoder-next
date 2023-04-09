@@ -166,7 +166,7 @@ $namespace: 'popover';
 </style>
 
 <style lang="scss" scoped>
-$namespace: 'popover';
+$namespace: popover;
 $border-width: 6;
 
 .#{$namespace} {

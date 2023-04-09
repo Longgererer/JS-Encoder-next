@@ -2,21 +2,19 @@
 import { Size } from '@type/interface'
 import { ref, watch } from 'vue'
 import useClickOutside from '@hooks/useClickOutside'
-
-type SelectSize = Exclude<Size, Size.MINI | Size.X_LARGE>
-
-interface IOption {
-  label: string | number
-  value: string | number | boolean
-}
+import { SelectSize, ISelectOption } from './custom-select.interface'
 
 interface IProps {
   /* 内容 */
-  modelValue: IOption
-  /* 数据列表 */
-  dataList: IOption[]
+  modelValue: ISelectOption
+  /* 数据列表, 如果不传label，就直接使用value代替label展示 */
+  dataList: ISelectOption[]
   /* 尺寸 */
   size?: SelectSize
+  customSelectStyle?: string
+  customOptionListStyle?: string
+  customSelectInnerStyle?: string
+  customOptionStyle?: string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -24,56 +22,72 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', state: IOption): void,
+  (event: 'update:modelValue', state: ISelectOption): void,
 }>()
 
-const foldOptions = ref<boolean>(true)
+const namespace = 'custom-select'
+/* 是否折叠 */
+const isFoldOptions = ref<boolean>(true)
+/* 是否高亮边框 */
+const isHighlightBorder = ref<boolean>(false)
 const selectRef = ref<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(selectRef)
-const namespace = 'custom-select'
 
 const handleClickSelect = (): void => {
-  foldOptions.value = !foldOptions.value
+  isFoldOptions.value = !isFoldOptions.value
+  isHighlightBorder.value = true
 }
 
-const handleClickOption = (item: IOption): void => {
+const handleClickOption = (item: ISelectOption): void => {
   emits('update:modelValue', item)
-  foldOptions.value = true
+  isFoldOptions.value = true
+  isHighlightBorder.value = false
 }
 
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
-    foldOptions.value = true
+    isFoldOptions.value = true
+    isHighlightBorder.value = false
   }
 })
+
+const getFinalLabel = (item: ISelectOption): string => {
+  return String(item.label === undefined ? item.value : item.label)
+}
 </script>
 
 <template>
   <div
-    class="fade-ease active-text relative bg-form-item code-font cursor-pointer"
+    class="active-text relative bg-form-item code-font cursor-pointer"
     ref="selectRef"
-    :class="`${namespace} ${namespace}--${size}`"
-    @click="handleClickSelect"
-  >
-    <span :class="`${namespace}-value`">{{modelValue.label}}</span>
-    <div class="icon-area absolute">
-      <i
-        class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
-        :class="foldOptions ? '' : 'up'"
-      ></i>
+    :class="`${namespace}-wrapper ${namespace}-wrapper--${size}`"
+    :style="customSelectStyle"
+    @click="handleClickSelect">
+    <div
+      class="fade-ease"
+      :class="`${namespace} ${namespace}--${size} ${isHighlightBorder ? 'highlight' : ''}`"
+      :style="customSelectInnerStyle">
+      <span :class="`${namespace}-value`">{{getFinalLabel(modelValue)}}</span>
+      <div class="icon-area flex-y-center absolute">
+        <i
+          class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
+          :class="isFoldOptions ? '' : 'up'"
+        ></i>
+      </div>
     </div>
     <div
+      v-if="!isFoldOptions"
       class="absolute fade-ease bg-form-item shadow"
-      :class="`${namespace}-options`"
-      v-if="!foldOptions"
-    >
+      :class="`${namespace}-options ${namespace}-options--${size}`"
+      :style="customOptionListStyle">
       <div
         class="cursor-pointer fade-ease fill-w"
         :class="`${namespace}-option ${modelValue.value === item.value ? 'selected' : ''}`"
+        :style="customOptionStyle"
         v-for="item in dataList"
         :key="item.value"
         @click.stop="handleClickOption(item)"
-      >{{item.label}}</div>
+      >{{getFinalLabel(item)}}</div>
     </div>
   </div>
 </template>
@@ -97,11 +111,17 @@ $select-border-radius: (
 );
 $borderWidth: 2px;
 
-.#{$namespace} {
+.#{$namespace}-wrapper {
   width: 200px;
-  border: $borderWidth solid var(--color-form-item);
-  &:focus {
-    border-color: var(--color-primary1);
+  .#{$namespace} {
+    width: 100%;
+    height: 100%;
+    border: $borderWidth solid var(--color-form-item);
+    box-sizing: border-box;
+    border-radius: inherit;
+    &.highlight {
+      border-color: var(--color-primary1);
+    }
   }
   .icon-area {
     top: 50%;
@@ -116,9 +136,10 @@ $borderWidth: 2px;
   }
   .#{$namespace}-options {
     top: calc(100% + 8px);
-    left: -2px;
+    left: 0;
+    right: 0;
     z-index: 100;
-    width: 200px;
+    width: 100%;
     .#{$namespace}-option {
       color: var(--color-no-active-color);
       &:hover, &.selected {
@@ -133,11 +154,13 @@ $borderWidth: 2px;
   $radius: map-get($select-border-radius, $size);
   $padding: map-get($select-padding, $size);
   $font-size: map-get($select-font-size, $size);
-  .#{$namespace}--#{$size} {
+  .#{$namespace}-wrapper--#{$size} {
     border-radius: $radius;
-    padding: $padding;
-    font-size: $font-size;
-    .#{$namespace}-options {
+    .#{$namespace}--#{$size} {
+      padding: $padding;
+      font-size: $font-size;
+    }
+    .#{$namespace}-options--#{$size} {
       border-radius: $radius;
       padding: $padding 0;
       .#{$namespace}-option {

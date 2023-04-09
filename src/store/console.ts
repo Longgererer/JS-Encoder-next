@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { LogType } from '@type/interface'
+import { LogType } from '@type/console'
 
 interface IConsoleSetting {
   /* 每次执行代码前是否自动清空日志 */

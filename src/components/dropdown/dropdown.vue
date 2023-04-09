@@ -1,38 +1,25 @@
-<script lang="ts">
-import { Position, Trigger } from '@type/interface'
-
-enum Align {
-  LEFT = 'left',
-  RIGHT = 'right',
-  MIDDLE = 'middle',
-}
-
-/* 由于defineProps中无法引入本地定义变量，因此只能提到额外的script中了 */
-export const initPosition = Position.BOTTOM
-export const initAlign = Align.LEFT
-export const initTrigger = Trigger.CLICK
-export default { name: 'dropdown' }
-</script>
-
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import useClickOutside from '@hooks/useClickOutside'
+import { Trigger, Position, Align } from '@type/interface'
 
 interface IProps {
+  /* 是否显示下拉菜单 */
+  modelValue: boolean
   /* 触发下拉的行为 */
   trigger?: string
   /* 菜单显示的位置 */
   position?: Position
   /* 菜单沿着哪一边对齐 */
   align?: Align
-  /* 是否显示下拉菜单 */
-  modelValue: boolean
+  /* 是否显示三角 */
+  showTriangle?: boolean
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  position: initPosition,
-  align: initAlign,
-  trigger: initTrigger,
+  position: 'bottom' as Position,
+  align: 'left' as Align,
+  trigger: 'click' as Trigger,
   modelValue: false,
 })
 const emits = defineEmits(['update:modelValue'])
@@ -65,10 +52,9 @@ watch(isClickOutSide, () => {
     </div>
     <!--  菜单项列表  -->
     <div
-      class="shadow p-y-s absolute radius-l"
-      :class="`${namespace}-options-wrapper ${namespace}-align-${align}`"
       v-show="modelValue"
-    >
+      class="shadow p-y-xs absolute radius-m"
+      :class="`${namespace}-options-wrapper ${namespace}-align-${align}`">
       <div :class="`${namespace}-options`" @click="handleClickOption">
         <slot name="options"></slot>
       </div>

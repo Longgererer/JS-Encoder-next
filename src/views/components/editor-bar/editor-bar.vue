@@ -86,7 +86,7 @@ const sideOpts = computed(() => {
       <template v-for="(tab, index) in editorView.tabs" :key="tab.prep">
         <!-- tab间的分隔线 -->
         <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
-        <div class="editor-tab p-x-max fill-h font-active cursor-pointer transition-all flex-y-center"
+        <div class="editor-tab fill-h font-active cursor-pointer transition-all flex-y-center"
           :class="{
             'active': index === editorView.currEditorIndex,
             'dragging': index === currDragIndex,
@@ -94,9 +94,8 @@ const sideOpts = computed(() => {
           }"
           draggable="true" @dragstart="handleTabDragstart(index)" @dragend="handleTabDragend"
           @mousedown="$emit('clickTab', index)" @drop.prevent="handleTabDrop(index)"
-          @dragover.prevent="handleTabDragover(index)"
-        >
-          <i class="icon iconfont" :class="tab.icon"></i>
+          @dragover.prevent="handleTabDragover(index)">
+          <!--<i class="icon iconfont" :class="tab.icon"></i>-->
           <span class="editor-tab-title code-font">{{ tab.prep }}</span>
         </div>
       </template>
@@ -105,8 +104,7 @@ const sideOpts = computed(() => {
       class="flex flex-1 bg-main2 right-side pr-s"
       :class="overlapIndex === rightSideIndex ? 'highlight' : ''"
       @dragover.prevent="handleTabDragover(rightSideIndex)"
-      @drop.prevent="handleTabDrop(editorView.tabs.length - 1)"
-    >
+      @drop.prevent="handleTabDrop(editorView.tabs.length - 1)">
       <!-- 占位 -->
       <div class="flex-1"></div>
       <!-- 直接展示出的选项 -->
@@ -115,7 +113,7 @@ const sideOpts = computed(() => {
       <div class="more-opts">
         <dropdown v-model="showSideMenu" align="right">
           <div class="more-icon-wrapper flex-center">
-            <IconBtn size="md" icon-class="icon-more"></IconBtn>
+            <icon-btn size="md" icon-class="icon-more"></icon-btn>
           </div>
           <template #options v-if="sideOpts.moreOpts.length">
             <dropdown-item v-for="(item, index) in sideOpts.moreOpts" :key="index">
@@ -135,6 +133,7 @@ const sideOpts = computed(() => {
     border-right: 0.5px solid var(--color-main-bg-3);
   }
   .editor-tab {
+    padding: 0 24px;
     background-color: var(--color-main-bg-1);
     &.active {
       background-color: var(--color-main-bg-3);

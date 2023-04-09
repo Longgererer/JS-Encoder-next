@@ -1,48 +1,45 @@
-import { isUndefined } from '@utils/common'
 import { defineStore } from 'pinia'
+import { isUndefined } from '@utils/judge'
 
 interface ISize {
   width?: number,
   height?: number,
-  minWidth?: number,
-  minHeight?: number,
+}
+
+export interface IModulesSize {
+  /* 编辑器宽度 */
+  editorWidth: number
+  /* console高度 */
+  consoleHeight: number
+  /* 预览高度 */
+  previewHeight: number
+  /* 结果(预览和console)窗口尺寸 */
+  resultWidth: number
 }
 
 interface ILayoutStore {
-  /* 是否展示预览窗口和console */
-  showRightView: boolean
-  /* 控制台窗口尺寸 */
-  console: ISize,
-  /* 预览窗口尺寸 */
-  preview: ISize,
-  /* 编辑区域窗口尺寸 */
-  editorWrapper: ISize,
-  /* 侧边栏宽度 */
-  sidebarWidth: number,
-  /* 头部高度 */
-  navbarHeight: number,
+  /* 是否展示结果窗口(预览和console) */
+  showResultView: boolean
+  /* 各模块尺寸配置 */
+  modulesSize: IModulesSize
 }
 
-export const useStore = defineStore('layout', {
-  state: (): ILayoutStore => {
-    return {
-      showRightView: true,
-      console: {
-        minHeight: 28,
-        minWidth: 200,
-      },
-      preview: {
-        minHeight: 49,
-        minWidth: 200,
-      },
-      editorWrapper: {},
-      sidebarWidth: 49,
-      navbarHeight: 49,
-    }
-  },
+export const useLayoutStore = defineStore('layout', {
+  state: (): ILayoutStore => ({
+    showResultView: true,
+    modulesSize: {
+      editorWidth: 0,
+      consoleHeight: 0,
+      previewHeight: 0,
+      resultWidth: 0,
+    },
+  }),
   actions: {
     updateShowRightView(newState?: boolean) {
-      this.showRightView = isUndefined(newState) ? !this.showRightView : newState!
+      this.showResultView = isUndefined(newState) ? !this.showResultView : newState!
+    },
+    updateModuleSize(newSizeConfig: Partial<IModulesSize>) {
+      Object.assign(this.modulesSize, newSizeConfig)
     },
   },
 })

@@ -3,7 +3,7 @@ import container from './views/container/container.vue'
 </script>
 
 <template>
-  <div class="fill">
+  <div class="fill over-hidden">
     <container></container>
   </div>
 </template>

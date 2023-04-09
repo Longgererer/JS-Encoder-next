@@ -1,31 +1,30 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { IconBtnSize } from '@components/icon-btn/icon-btn.interface'
 
 interface IProps {
-  /* 三种尺寸：sm|md|lg */
-  size: string
   /* icon类名 */
   iconClass: string
+  /* 三种尺寸：sm|md|lg */
+  size?: IconBtnSize
+  title?: string
+  highlight?: boolean
+  highlightStyle?: string
 }
 const props = withDefaults(defineProps<IProps>(), {
-  size: 'md',
+  size: 'md' as IconBtnSize,
+  title: '',
 })
 const emits = defineEmits<{
   (e: 'click'): void
 }>()
 
-const enum Size {
-  SM = 'sm',
-  MD = 'md',
-  LG = 'lg',
-}
-const sizeMap = {
-  [Size.SM]: 'font-s',
-  [Size.MD]: 'font-m',
-  [Size.LG]: 'font-l',
-}
-
 const namespace = 'icon-btn'
+const size2ClassMap = {
+  [IconBtnSize.SM]: 'font-s',
+  [IconBtnSize.MD]: 'font-m',
+  [IconBtnSize.LG]: 'font-l',
+}
 
 const handleClick = () => {
   emits('click')
@@ -33,14 +32,18 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="fade-ease cursor-pointer flex-center radius-l" :class="`${namespace} ${namespace}-${size}`"
+  <div
+    class="fade-ease cursor-pointer flex-center radius-l"
+    :class="`${namespace} ${namespace}-${size}`"
+    :style="`${highlight ? highlightStyle : ''}`"
+    :title="title"
     @click="handleClick">
-    <i class="fade-ease icon iconfont" :class="[iconClass, sizeMap[size]]"></i>
+    <i class="fade-ease icon iconfont" :class="[iconClass, size2ClassMap[size]]"></i>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$namespace: 'icon-btn';
+$namespace: icon-btn;
 $comp-size: (
   sm: 24,
   md: 28,
@@ -48,14 +51,10 @@ $comp-size: (
 );
 
 .#{$namespace} {
-  i {
-    color: var(--color-no-active-color);
-  }
+  color: var(--color-no-active-color);
   &:hover {
     background-color: var(--color-main-bg-3);
-    i {
-      color: var(--color-active-color);
-    }
+    color: var(--color-active-color);
   }
 }
 

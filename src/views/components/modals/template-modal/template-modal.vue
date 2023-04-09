@@ -7,7 +7,7 @@ import { useCommonStore } from '@store/common'
 import { CommonObj, ModalName, Position, Size } from '@type/interface'
 import { inbuiltTemplateList, TemplateLang2IconMap } from './template-modal.interface'
 import { getCustomTemplateList } from './template-modal.util'
-import { Template } from '@type/namespaces/template'
+import { TemplateLang, TemplateType } from '@type/template'
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -62,7 +62,7 @@ const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): v
           <div class="active-text font-xs template-lang">{{item.lang}}</div>
           <div
             class="font-xxs template-type"
-            :class="item.type === Template.Type.COMPONENT ? 'golden-text' : 'describe-text'"
+            :class="item.type === TemplateType.COMPONENT ? 'golden-text' : 'describe-text'"
           >{{item.type}}</div>
         </div>
       </div>

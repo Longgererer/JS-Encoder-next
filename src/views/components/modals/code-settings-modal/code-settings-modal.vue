@@ -45,8 +45,6 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
         <div class="pt-xs"><checkbox v-model="bindVal">使用制表符缩进</checkbox></div>
         <div class="active-text font-xxs mt-m">缩进长度:</div>
         <div class="mt-s"><custom-input type="number" v-model="bindInputNumber"/></div>
-        <!--<div class="mt-s"><custom-input v-model="bindInputText"/></div>-->
-        <!--<div class="mt-s"><custom-input v-model="bindInputText" type="textarea"/></div>-->
 
         <div class="modal-sub-title">执行</div>
         <div class="pt-xs"><checkbox v-model="bindVal">自动执行</checkbox></div>

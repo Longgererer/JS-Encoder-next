@@ -58,6 +58,13 @@ export const enum Trigger {
   CLICK = 'click',
 }
 
+/* 对其方向 */
+export enum Align {
+  LEFT = 'left',
+  RIGHT = 'right',
+  MIDDLE = 'middle',
+}
+
 /* 模态框名字 */
 export const enum ModalName {
   /* 模板 */

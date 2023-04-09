@@ -21,8 +21,7 @@ const bindVal = ref<boolean>(false)
     bottom="80"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
     :show-footer="false"
-    @close="updateDisplayModal(null)"
-  >
+    @close="updateDisplayModal(null)">
     <div class="font-s active-text code-font mt-s">
       <span>支持 HTML、CSS、JS、MD、PUG、SASS、SCSS、STYL、LESS、COFFEE、TS、VUE 及 JSX 格式的文件</span>
     </div>
@@ -42,15 +41,13 @@ const bindVal = ref<boolean>(false)
         fill
         shadow
         size="xLarge"
-        custom-class="radius-l font-xs"
-      >
+        custom-class="radius-l font-xs">
         <input
           class="upload-input fill absolute"
           type="file"
           ref="fileInput"
           multiple="multiple"
-          title=""
-        />
+          title=""/>
         <span>选择要上传的文件</span>
       </custom-button>
     </div>

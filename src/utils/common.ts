@@ -83,7 +83,7 @@ function switchEnumValueToList(enumType: any): any[] {
  */
 function switchIteratorValueToList(iterator: IterableIterator<any>): any[] {
   const list: any[] = []
-  for(;;) {
+  for (; ;) {
     const { value, done } = iterator.next()
     if (done) { break }
     list.push(value)
@@ -110,7 +110,31 @@ export function getObjAllKeys(obj: any): ObjKey[] {
   }
 }
 
-/** 获取对象所有自身属性名集合(包括不可枚举) */
+/**
+ * 获取对象所有自身属性名集合(包括不可枚举)
+ * @param obj 需要处理的对象
+ */
 export function getObjOwnKeyList(obj: any): string[] {
   return Object.getOwnPropertyNames(obj)
+}
+
+/**
+ * 提供一个数字，提供这个数字及其范围内的数字组成的数组
+ * @param digit 数字
+ * @param gap 表示包含目标数字周围的多少个数字
+ * @param range 范围 包含两个元素[最小值, 最大值]
+ * @param type 类型，可选择只要比digit小的值，或比digit大的值，默认全选
+ */
+export function getRangeNumberList(digit: number, gap: number, range: number[], type?: 'min' | 'max'): number[] {
+  const res = []
+  // eslint-disable-next-line prefer-const
+  let [min, max] = range
+  const realMin = type === 'max' ? digit + 1 : digit - gap < min ? min : digit - gap
+  const realMax = type === 'min' ? digit - 1 : digit + gap > max ? max : digit + gap
+  for (let i = realMin; i <= realMax; i++) {
+    if (i !== digit) {
+      res.push(i)
+    }
+  }
+  return res
 }

@@ -17,7 +17,6 @@
 .p-x-l { @include edge(p, x, 1rem); }
 .p-x-xl { @include edge(p, x, 1.25rem); }
 .p-x-xxl { @include edge(p, x, 1.5rem); }
-.p-x-max { @include edge(p, x, 2rem); }
 .p-y-xs { @include edge(p, y, 0.25rem); }
 .p-y-s { @include edge(p, y, 0.5rem); }
 .p-y-m { @include edge(p, y, 0.75rem); }
@@ -135,13 +134,14 @@
 .font-xl { font-size: 28px;}
 .font-xxl { font-size: 32px;}
 
-.renew-line-xxs { line-height: 0.75rem; }
-.renew-line-xs { line-height: 0.875rem; }
-.renew-line-s { line-height: 1rem; }
-.renew-line-m { line-height: 1.25rem; }
-.renew-line-l { line-height: 1.5rem; }
-.renew-line-xl { line-height: 1.75rem; }
-.renew-line-xxl { line-height: 2rem; }
+.renew-line-xxs { line-height: 12px; }
+.renew-line-xs { line-height: 14px; }
+.renew-line-s { line-height: 16px; }
+.renew-line-r { line-height: 18px; }
+.renew-line-m { line-height: 20px; }
+.renew-line-l { line-height: 24px; }
+.renew-line-xl { line-height: 28px; }
+.renew-line-xxl { line-height: 32px; }
 
 /* font-family */
 .def-font { font-family: $def-font; }
@@ -211,6 +211,7 @@
 .fixed { position: fixed; }
 .sticky { position: sticky; }
 .pos-origin { left: 0; top: 0; }
+.pos-full { left: 0; top: 0; right: 0; bottom: 0; }
 
 /* display */
 .inline-block { display: inline-block; }

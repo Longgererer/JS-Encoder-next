@@ -7,7 +7,7 @@ const { editorStructure } = useEditorWrapperStore()
 </script>
 
 <template>
-  <div class="editor-wrapper fill-w">
+  <div class="editor-wrapper fill">
     <!--  根splitter  -->
     <editor-splitter :structure="editorStructure"></editor-splitter>
   </div>

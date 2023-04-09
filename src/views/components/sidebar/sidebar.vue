@@ -2,12 +2,11 @@
 import Tooltip from '@components/tooltip/tooltip.vue'
 import IconBtn from '@components/icon-btn/icon-btn.vue'
 import { Theme } from '@type/interface'
-import { GITHUB_REPO_URL } from '@utils/config'
+import { GITHUB_REPO_URL, HELP_DOCS_URL } from '@utils/config'
 import {
   SidebarList, SidebarType, SidebarTypeToIcon, SidebarTypeToModalNameMap, SidebarTypeToText, ThemeIcon,
 } from './sidebar.interface'
 import { useCommonStore } from '@store/common'
-import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 const NAMESPACE = 'sidebar'
@@ -28,6 +27,10 @@ const handleClickItem = (type: SidebarType) => {
     }
     case SidebarType.GITHUB: {
       window.open(GITHUB_REPO_URL, '_blank')
+      break
+    }
+    case SidebarType.HELP_DOCUMENT: {
+      window.open(HELP_DOCS_URL, '_blank')
       break
     }
     default: {

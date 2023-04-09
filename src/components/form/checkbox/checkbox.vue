@@ -25,14 +25,13 @@ const handleClickCheckbox = (): void => {
 
 <template>
   <div
-    class="font-xs relative flex-y-center fade-ease inline-flex line-h-fill no-select"
+    class="font-xs relative flex-y-center fade-ease flex line-h-fill no-select"
     :class="[
       `${namespace}`,
       disabled ? 'disabled cursor-default' : 'active-text cursor-pointer',
       modelValue ? 'checked' : 'describe-text',
     ]"
-    @click="handleClickCheckbox"
-  >
+    @click="handleClickCheckbox">
     <input
       class="absolute"
       type="checkbox"
@@ -40,13 +39,11 @@ const handleClickCheckbox = (): void => {
         `${namespace}-input`,
         disabled ? 'cursor-default' : 'cursor-pointer',
       ]"
-      :checked="modelValue"
-    >
+      :checked="modelValue">
     <span
       v-show="modelValue"
       class="flex-center absolute"
-      :class="`${namespace}-icon`"
-    >
+      :class="`${namespace}-icon`">
       <i class="icon iconfont icon-ok"></i>
     </span>
     <span><slot></slot></span>
@@ -57,6 +54,7 @@ const handleClickCheckbox = (): void => {
 $namespace: checkbox;
 
 .#{$namespace} {
+  width: fit-content;
   &::before {
     content: "";
     display: inline-block;
