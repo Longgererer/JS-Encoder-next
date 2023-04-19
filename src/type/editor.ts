@@ -48,6 +48,7 @@ export interface IEditorSplitter {
 
 /* 包含当前编辑器视口的所有信息 */
 export interface IEditorView {
+  isRoot: boolean
   editorViewId: EditorViewId
   /* 该视口属于哪一个splitter的 */
   fromSplitterId: EditorSplitterId
@@ -56,9 +57,9 @@ export interface IEditorView {
   /* 当前展示的editor下标 */
   currEditorIndex: number
   /* 视口宽度 */
-  width: number
+  width?: number
   /* 视口高度 */
-  height: number
+  height?: number
 }
 
 /* EditorView的id对应的EditorView信息 */
@@ -68,7 +69,7 @@ export type EditorViewMap = Record<EditorViewId, IEditorView>
 export type EditorSplitterMap = Record<EditorSplitterId, IEditorSplitter>
 
 /* 区域位置 */
-export enum AreaPos {
+export enum AreaPosition {
   LEFT = 'left',
   RIGHT = 'right',
   UP = 'up',

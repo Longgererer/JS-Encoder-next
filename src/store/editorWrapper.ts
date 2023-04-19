@@ -40,8 +40,6 @@ export const useEditorWrapperStore = defineStore('editorWrapper', {
             origin: Origin.JAVASCRIPT,
           }],
           currEditorIndex: 0,
-          width: 500,
-          height: 500,
         },
       },
       editorSplitterMap: {
@@ -121,3 +119,154 @@ export const useEditorWrapperStore = defineStore('editorWrapper', {
   getters: {
   },
 })
+
+const editorStructure1 = {
+  isRoot: true,
+  splitterId: 1,
+  children: [],
+}
+const editorViewMap1 = {
+  [1]: {
+    editorViewId: 1,
+    fromSplitterId: 1,
+    tabs: [{
+      prep: Prep.HTML,
+      origin: Origin.HTML,
+    }, {
+      prep: Prep.CSS,
+      origin: Origin.CSS,
+    }, {
+      prep: Prep.JAVASCRIPT,
+      origin: Origin.JAVASCRIPT,
+    }],
+    currEditorIndex: 0,
+    width: 1000,
+    height: 1000,
+  },
+}
+
+
+
+const editorStructure2 = {
+  isRoot: true,
+  splitterId: 1,
+  children: [{
+    isRoot: false,
+    splitterId: 2,
+    children: [],
+  }, {
+    isRoot: false,
+    splitterId: 3,
+    children: [],
+  }],
+}
+const editorViewMap2 = {
+  [1]: {
+    editorViewId: 1,
+    fromSplitterId: 1,
+    tabs: [],
+    currEditorIndex: 0,
+    width: 1000,
+    height: 1000,
+  },
+  [2]: {
+    editorViewId: 2,
+    fromSplitterId: 1,
+    tabs: [{
+      prep: Prep.HTML,
+      origin: Origin.HTML,
+    }, {
+      prep: Prep.CSS,
+      origin: Origin.CSS,
+    }],
+    currEditorIndex: 0,
+    width: 500,
+    height: 1000,
+  },
+  [3]: {
+    editorViewId: 3,
+    fromSplitterId: 1,
+    tabs: [{
+      prep: Prep.JAVASCRIPT,
+      origin: Origin.JAVASCRIPT,
+    }],
+    currEditorIndex: 0,
+    width: 500,
+    height: 1000,
+  },
+}
+
+
+
+const editorStructure3 = {
+  isRoot: true,
+  splitterId: 1,
+  children: [{
+    isRoot: false,
+    splitterId: 2,
+    children: [{
+      isRoot: false,
+      splitterId: 4,
+      children: [],
+    }, {
+      isRoot: false,
+      splitterId: 5,
+      children: [],
+    }],
+  }, {
+    isRoot: false,
+    splitterId: 3,
+    children: [],
+  }],
+}
+const editorViewMap3 = {
+  [1]: {
+    editorViewId: 1,
+    fromSplitterId: 1,
+    tabs: [],
+    currEditorIndex: 0,
+    width: 1000,
+    height: 1000,
+  },
+  [2]: {
+    editorViewId: 2,
+    fromSplitterId: 1,
+    tabs: [],
+    currEditorIndex: 0,
+    width: 500,
+    height: 1000,
+  },
+  [3]: {
+    editorViewId: 3,
+    fromSplitterId: 1,
+    tabs: [{
+      prep: Prep.JAVASCRIPT,
+      origin: Origin.JAVASCRIPT,
+    }],
+    currEditorIndex: 0,
+    width: 500,
+    height: 1000,
+  },
+  [4]: {
+    editorViewId: 4,
+    fromSplitterId: 2,
+    tabs: [{
+      prep: Prep.HTML,
+      origin: Origin.HTML,
+    }],
+    currEditorIndex: 0,
+    width: 500,
+    height: 500,
+  },
+  [5]: {
+    editorViewId: 5,
+    fromSplitterId: 2,
+    tabs: [{
+      prep: Prep.CSS,
+      origin: Origin.CSS,
+    }],
+    currEditorIndex: 0,
+    width: 500,
+    height: 500,
+  },
+}

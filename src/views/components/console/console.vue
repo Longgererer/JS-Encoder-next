@@ -7,8 +7,10 @@ import { ISelectOption } from '@components/form/custom-select/custom-select.inte
 import { ref, watch } from 'vue'
 import { useConsoleStore } from '@store/console'
 import { IconBtnSize } from '@components/icon-btn/icon-btn.interface'
-import { useLayoutStore } from '@store/layout'
-import { CONSOLE_MIN_HEIGHT } from '@views/container/container.util'
+
+const emits = defineEmits<{
+  (e: 'resize', startY: number): void
+}>()
 
 const namespace = 'console'
 const { updateFilter } = useConsoleStore()
@@ -36,33 +38,15 @@ const handleClickConsoleSettingsBtn = (): void => {
 /**
  * console拖拽
  */
-const { modulesSize, updateModuleSize } = useLayoutStore()
 const handleResize = (e: MouseEvent) => {
-  // 在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
-  const { consoleHeight, previewHeight } = modulesSize
-  const resultHeight = consoleHeight + previewHeight
-  const starY = e.clientY
-  // 鼠标拖拉console分隔栏改变console和iframe的高度
-  document.onmousemove = (event: MouseEvent) => {
-    const finishHeight = consoleHeight - event.clientY + starY
-    if (finishHeight > CONSOLE_MIN_HEIGHT && resultHeight - finishHeight > 0) {
-      updateModuleSize({
-        consoleHeight: finishHeight,
-        previewHeight: resultHeight - finishHeight,
-      })
-    }
-  }
-  document.onmouseup = () => {
-    document.onmouseup = null
-    document.onmousemove = null
-  }
+  emits('resize', e.clientY)
 }
 </script>
 
 <template>
   <div class="flex-col fill-w" :class="namespace">
     <!--头部-->
-    <div class="bg-main1 active-text font-xxs flex p-x-l" :class="`${namespace}-header`">
+    <div class="bg-main1 active-text font-xxs flex p-x-l no-select" :class="`${namespace}-header`">
       <div class="flex-y-center" :class="`${namespace}-title`">
         <i class="icon iconfont icon-console font-s"></i>
         <span class="ml-s renew-line-xxs mt-xs code-font">Console</span>
@@ -88,7 +72,7 @@ const handleResize = (e: MouseEvent) => {
       </div>
     </div>
     <!--工具栏-->
-    <div class="bg-main2 active-text font-xxs flex p-x-l code-font flex-sh" :class="`${namespace}-toolbar`">
+    <div class="bg-main2 active-text font-xxs flex p-x-l code-font flex-sh no-select" :class="`${namespace}-toolbar`">
       <!--类型过滤-->
       <div class="filter flex-y-center">
         <span class="mr-s">Filter:</span>

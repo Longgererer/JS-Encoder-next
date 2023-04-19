@@ -2,7 +2,7 @@
 import { useEditorWrapperStore } from '@store/editorWrapper'
 import EditorBar from '@views/components/editor-bar/editor-bar.vue'
 import OverlapMonitor from '@views/components/overlap-monitor/overlap-monitor.vue'
-import { EditorViewId } from '@type/editor'
+import { AreaPosition, EditorViewId } from '@type/editor'
 
 interface IProps {
   editorViewId: EditorViewId
@@ -19,12 +19,16 @@ const handleClickTab = (index: number) => {
     currEditorIndex: index,
   })
 }
+
+const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
+
+}
 </script>
 
 <template>
   <div class="editor-view fill flex-col">
     <editor-bar :editor-view-id="props.editorViewId" @click-tab="handleClickTab"></editor-bar>
-    <overlap-monitor></overlap-monitor>
+    <overlap-monitor @selectPosition="handleSelectSplitPosition"></overlap-monitor>
   </div>
 </template>
 

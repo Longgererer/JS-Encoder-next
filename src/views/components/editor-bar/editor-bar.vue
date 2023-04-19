@@ -92,8 +92,11 @@ const sideOpts = computed(() => {
             'dragging': index === currDragIndex,
             'highlight': index === overlapIndex,
           }"
-          draggable="true" @dragstart="handleTabDragstart(index)" @dragend="handleTabDragend"
-          @mousedown="$emit('clickTab', index)" @drop.prevent="handleTabDrop(index)"
+          draggable="true"
+          @dragstart="handleTabDragstart(index)"
+          @dragend="handleTabDragend"
+          @mousedown="$emit('clickTab', index)"
+          @drop.prevent="handleTabDrop(index)"
           @dragover.prevent="handleTabDragover(index)">
           <!--<i class="icon iconfont" :class="tab.icon"></i>-->
           <span class="editor-tab-title code-font">{{ tab.prep }}</span>

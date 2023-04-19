@@ -69,4 +69,7 @@ i {
 
 html, body {
   font-family: $def-font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
 }

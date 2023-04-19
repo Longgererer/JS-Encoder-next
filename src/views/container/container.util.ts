@@ -50,24 +50,31 @@ export const getInitModulesSize = (): IModulesSize => {
  */
 export const getModulesWidth = (changedWidth: number, modulesSize: IModulesSize): Partial<IModulesSize> => {
   const { editorWidth, resultWidth } = modulesSize
-  const isReachEditorMinWidth = editorWidth <= EDITOR_MIN_WIDTH
-  const isReachResultMinWidth = resultWidth <= RESULT_MIN_WIDTH
   const isWindowWidthDecreased = changedWidth < 0
-  // 处理两个窗口宽度达到最小值的情况
-  if (isReachEditorMinWidth && isReachResultMinWidth && isWindowWidthDecreased) {
-    return {}
+
+  // 均分改变的宽度（为避免出现小数点，使用floor）
+  const editorChangeWidth = Math.floor(changedWidth / 2)
+  const resultChangeWidth = changedWidth - editorChangeWidth
+  // 处理宽度变小的情况
+  if (isWindowWidthDecreased) {
+    const changedEditorWidth = editorWidth + editorChangeWidth
+    const changedResultWidth = resultWidth + resultChangeWidth
+    // 如果改变后的宽度小于最小值，就把多余宽度分到另一边
+    if (changedEditorWidth < EDITOR_MIN_WIDTH) {
+      return {
+        editorWidth: EDITOR_MIN_WIDTH,
+        resultWidth: resultWidth + resultChangeWidth - (EDITOR_MIN_WIDTH - (changedEditorWidth)),
+      }
+    } else if (changedResultWidth < RESULT_MIN_WIDTH) {
+      return {
+        editorWidth: editorWidth + editorChangeWidth - (RESULT_MIN_WIDTH - (changedResultWidth)),
+        resultWidth: RESULT_MIN_WIDTH,
+      }
+    }
   }
-  if (isReachEditorMinWidth && isWindowWidthDecreased) {
-    return { resultWidth: resultWidth + changedWidth }
-  }
-  if (isReachResultMinWidth && isWindowWidthDecreased) {
-    return { editorWidth: editorWidth + changedWidth }
-  }
-  // 如果两个窗口宽度都没有达到最小值，均分改变的宽度
-  const averageWidth = changedWidth / 2
   return {
-    editorWidth: editorWidth + averageWidth,
-    resultWidth: resultWidth + averageWidth,
+    editorWidth: editorWidth + editorChangeWidth,
+    resultWidth: resultWidth + resultChangeWidth,
   }
 }
 
@@ -79,23 +86,52 @@ export const getModulesWidth = (changedWidth: number, modulesSize: IModulesSize)
  */
 export const getModulesHeight = (changedHeight: number, modulesSize: IModulesSize): any => {
   const { previewHeight, consoleHeight } = modulesSize
-  const isReachPreviewMinHeight = previewHeight <= PREVIEW_MIN_HEIGHT
-  const isReachConsoleMinHeight = consoleHeight <= CONSOLE_MIN_HEIGHT
   const isWindowHeightDecreased = changedHeight < 0
-  // 处理两个窗口高度达到最小值的情况
-  if (isReachPreviewMinHeight && isReachConsoleMinHeight && isWindowHeightDecreased) {
-    return {}
+  // 均分改变的宽度为避免出现小数点，使用floor）
+  const consoleChangeHeight = Math.floor(changedHeight / 2)
+  const previewChangeWidth = changedHeight - consoleChangeHeight
+  // 处理宽度变小的情况
+  if (isWindowHeightDecreased) {
+    const changedConsoleHeight = consoleHeight + consoleChangeHeight
+    const changedPreviewHeight = previewHeight + previewChangeWidth
+    // 如果改变后的宽度小于最小值，就把多余宽度分到另一边
+    if (changedConsoleHeight < CONSOLE_MIN_HEIGHT) {
+      return {
+        consoleHeight: CONSOLE_MIN_HEIGHT,
+        previewHeight: previewHeight + previewChangeWidth - (CONSOLE_MIN_HEIGHT - (changedConsoleHeight)),
+      }
+    } else if (changedPreviewHeight < PREVIEW_MIN_HEIGHT) {
+      return {
+        consoleHeight: consoleHeight + consoleChangeHeight - (PREVIEW_MIN_HEIGHT - (changedPreviewHeight)),
+        previewHeight: PREVIEW_MIN_HEIGHT,
+      }
+    }
   }
-  if (isReachPreviewMinHeight && isWindowHeightDecreased) {
-    return { consoleHeight: consoleHeight + changedHeight }
-  }
-  if (isReachConsoleMinHeight && isWindowHeightDecreased) {
-    return { previewHeight: previewHeight + changedHeight }
-  }
-  // 如果两个窗口高度都没有达到最小值，均分改变的高度
-  const averageHeight = changedHeight / 2
   return {
-    previewHeight: previewHeight + averageHeight,
-    consoleHeight: consoleHeight + averageHeight,
+    consoleHeight: consoleHeight + consoleChangeHeight,
+    previewHeight: previewHeight + previewChangeWidth,
   }
+}
+
+/**
+ * 拖拽console时获取最新的预览和console窗口高度
+ * 两个窗口的新高度都达到最小值就不更新高度
+ */
+export const getNewResultModuleResize = (
+  startY: number,
+  currentY: number,
+  consoleHeight: number,
+  previewHeight: number,
+): Partial<IModulesSize> => {
+  const resultHeight = consoleHeight + previewHeight
+  const newConsoleHeight = consoleHeight - currentY + startY
+  const newPreviewHeight = resultHeight - newConsoleHeight
+  // 处理两个窗口的新高度都没有达到最小值的情况
+  if (newConsoleHeight >= CONSOLE_MIN_HEIGHT && newPreviewHeight >= PREVIEW_MIN_HEIGHT) {
+    return {
+      consoleHeight: newConsoleHeight,
+      previewHeight: newPreviewHeight,
+    }
+  }
+  return {}
 }

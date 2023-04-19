@@ -22,6 +22,10 @@ interface ILayoutStore {
   showResultView: boolean
   /* 各模块尺寸配置 */
   modulesSize: IModulesSize
+  /* 是否正在拖动改变模块宽高 */
+  isModulesResizing: boolean
+  /* 是否展示结果窗口 */
+  isShowResult: boolean
 }
 
 export const useLayoutStore = defineStore('layout', {
@@ -33,13 +37,18 @@ export const useLayoutStore = defineStore('layout', {
       previewHeight: 0,
       resultWidth: 0,
     },
+    isModulesResizing: false,
+    isShowResult: true,
   }),
   actions: {
-    updateShowRightView(newState?: boolean) {
+    updateShowRightView(newState?: boolean): void {
       this.showResultView = isUndefined(newState) ? !this.showResultView : newState!
     },
-    updateModuleSize(newSizeConfig: Partial<IModulesSize>) {
+    updateModuleSize(newSizeConfig: Partial<IModulesSize>): void {
       Object.assign(this.modulesSize, newSizeConfig)
+    },
+    updateIsModulesResizing(newState: boolean): void {
+      this.isModulesResizing = newState
     },
   },
 })

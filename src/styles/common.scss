@@ -210,6 +210,10 @@
 .absolute { position: absolute; }
 .fixed { position: fixed; }
 .sticky { position: sticky; }
+.pos-left { left: 0; }
+.pos-right { right: 0; }
+.pos-top { top: 0; }
+.pos-bottom { bottom: 0; }
 .pos-origin { left: 0; top: 0; }
 .pos-full { left: 0; top: 0; right: 0; bottom: 0; }
 

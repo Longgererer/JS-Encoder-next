@@ -12,12 +12,14 @@ import DownloadCodeModal from '@views/components/modals/download-code-modal/down
 import ShortcutModal from '@views/components/modals/shortcut-modal/shortcut-modal.vue'
 import UpdateLogModal from '@views/components/modals/update-log-modal/update-log-modal.vue'
 import { onMounted, ref, watch } from 'vue'
-import { getInitModulesSize, getModulesHeight, getModulesWidth } from '@views/container/container.util'
+import {
+  EDITOR_MIN_WIDTH, getInitModulesSize, getModulesHeight, getModulesWidth, getNewResultModuleResize, RESULT_MIN_WIDTH,
+} from '@views/container/container.util'
 import { useLayoutStore } from '@store/layout'
-import { storeToRefs } from 'pinia'
 import useWindowResize from '@hooks/useWindowResize'
 
-const { updateModuleSize, modulesSize } = useLayoutStore()
+const layoutStore = useLayoutStore()
+const { updateModuleSize, updateIsModulesResizing, modulesSize } = layoutStore
 const { clientWidth, clientHeight } = useWindowResize()
 
 onMounted(() => {
@@ -28,13 +30,53 @@ onMounted(() => {
 })
 
 /* 监听窗口尺寸变化更新对应模块尺寸 */
-function startObserveWindowSize(): void {
+const startObserveWindowSize = (): void => {
   watch(clientWidth, (newWidth: number, oldWidth: number) => {
     updateModuleSize(getModulesWidth(newWidth - oldWidth, modulesSize))
   })
   watch(clientHeight, (newHeight: number, oldHeight: number) => {
     updateModuleSize(getModulesHeight(newHeight - oldHeight, modulesSize))
   })
+}
+
+const handleResizeEditorAndResult = (e: MouseEvent) => {
+  const { resultWidth, editorWidth } = modulesSize
+  // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
+  updateIsModulesResizing(true)
+  const startX = e.clientX
+  const wholeWidth = resultWidth + editorWidth
+  // 鼠标拖拉editor分隔栏改变editor和结果窗口的宽度
+  document.onmousemove = (event: MouseEvent) => {
+    const finishWidth = editorWidth + event.clientX - startX
+    // 处理改变后的宽度没有低于两个窗口最小值的情况
+    if (finishWidth >= EDITOR_MIN_WIDTH && wholeWidth - finishWidth >= RESULT_MIN_WIDTH) {
+      updateModuleSize({
+        editorWidth: finishWidth,
+        resultWidth: wholeWidth - finishWidth,
+      })
+    }
+    processFinishResize()
+  }
+}
+
+const handleResizeConsoleAndPreview = (startY: number) => {
+  const { consoleHeight, previewHeight } = modulesSize
+  // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
+  updateIsModulesResizing(true)
+  // 鼠标拖拉console分隔栏改变console和iframe的高度
+  document.onmousemove = (event: MouseEvent) => {
+    const newModuleSize = getNewResultModuleResize(startY, event.clientY, consoleHeight, previewHeight)
+    updateModuleSize(newModuleSize)
+    processFinishResize()
+  }
+}
+
+const processFinishResize = (): void => {
+  document.onmouseup = () => {
+    updateIsModulesResizing(false)
+    document.onmouseup = null
+    document.onmousemove = null
+  }
 }
 </script>
 
@@ -43,16 +85,21 @@ function startObserveWindowSize(): void {
   <div class="main-content flex">
     <sidebar></sidebar>
     <!--编辑-->
-    <div :style="{ width: `${modulesSize.editorWidth}px` }">
+    <div class="over-hidden" :style="{ width: `${modulesSize.editorWidth}px` }">
       <editor-wrapper></editor-wrapper>
     </div>
     <!--分割线-->
-    <div class="resize-line y cursor-x-resize bg-main2 fade-ease"></div>
+    <div class="resize-line y cursor-x-resize bg-main2 fade-ease" @mousedown="handleResizeEditorAndResult"></div>
     <!--结果-->
     <div :style="{ width: `${modulesSize.resultWidth}px` }">
-      <preview :style="{ height: `${modulesSize.previewHeight}px` }"></preview>
-      <!--<div class="resize-line x cursor-y-resize bg-main2 fade-ease"></div>-->
-      <console :style="{ height: `${modulesSize.consoleHeight}px` }"></console>
+      <preview
+        :style="{ height: `${modulesSize.previewHeight}px` }"
+        :isShowScreen="layoutStore.isModulesResizing"
+      ></preview>
+      <console
+        :style="{ height: `${modulesSize.consoleHeight}px` }"
+        @resize="handleResizeConsoleAndPreview"
+      ></console>
     </div>
   </div>
   <!--modals-->

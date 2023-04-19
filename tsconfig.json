@@ -18,6 +18,13 @@
     "skipLibCheck": true,
     "types": ["unplugin-vue-define-options"],
     "baseUrl": ".",
+    "no-any": [true,{"ignore-rest-args": true}],
+    "no-for-in": true,
+    "ban-comma-operator": true,
+    "curly": true,
+    "no-async-without-await": true,
+    "no-duplicate-super": true,
+    "noImplicitReturns": true,
     "paths": {
       "@views/*": ["src/views/*"],
       "@components/*": ["src/components/*"],
