@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { Size } from '@type/interface'
-import { ref, watch } from 'vue'
-import useClickOutside from '@hooks/useClickOutside'
-import { SelectSize, ISelectOption } from './custom-select.interface'
+import { ref, watch } from "vue"
+import useClickOutside from "@hooks/useClickOutside"
+import { SelectSize, ISelectOption } from "./custom-select.interface"
 
 interface IProps {
   /* 内容 */
@@ -18,14 +17,14 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  size: 'medium' as SelectSize,
+  size: "medium" as SelectSize,
 })
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', state: ISelectOption): void,
+  (event: "update:modelValue", state: ISelectOption): void,
 }>()
 
-const namespace = 'custom-select'
+const namespace = "custom-select"
 /* 是否折叠 */
 const isFoldOptions = ref<boolean>(true)
 /* 是否高亮边框 */
@@ -39,7 +38,7 @@ const handleClickSelect = (): void => {
 }
 
 const handleClickOption = (item: ISelectOption): void => {
-  emits('update:modelValue', item)
+  emits("update:modelValue", item)
   isFoldOptions.value = true
   isHighlightBorder.value = false
 }
@@ -84,8 +83,8 @@ const getFinalLabel = (item: ISelectOption): string => {
         class="cursor-pointer fade-ease fill-w"
         :class="`${namespace}-option ${modelValue.value === item.value ? 'selected' : ''}`"
         :style="customOptionStyle"
-        v-for="item in dataList"
-        :key="item.value"
+        v-for="(item, index) in dataList"
+        :key="index"
         @click.stop="handleClickOption(item)"
       >{{getFinalLabel(item)}}</div>
     </div>

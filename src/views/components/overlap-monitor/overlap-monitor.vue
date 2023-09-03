@@ -26,12 +26,12 @@
  * └——————————————————————————————————————————————————————————————————┙
  * 相当于对整个窗口做了一百等分，如果tab的50%以上进入某一个区域，那么就会按照该区域的分割结果进行窗口分割
  */
-import { watch, ref, computed, onMounted } from 'vue'
-import { useEditorWrapperStore } from '@store/editorWrapper'
-import { AreaPosition } from '@type/editor'
+import { watch, ref, computed, onMounted } from "vue"
+import { useEditorWrapperStore } from "@store/editorWrapper"
+import { AreaPosition } from "@type/editor"
 
 const emits = defineEmits<{
-  (e: 'selectPosition', pos: AreaPosition): void
+  (e: "selectPosition", pos: AreaPosition): void
 }>()
 
 const editorWrapperStore = useEditorWrapperStore()
@@ -42,14 +42,16 @@ let monitorHeight = 0
 
 const currPos = ref<AreaPosition>(AreaPosition.MIDDLE)
 
+onMounted(() => {
+  /* 初始化overlap-monitor宽高 */
+  const { clientWidth, clientHeight } = overlapMonitor.value!
+  monitorWidth = clientWidth
+  monitorHeight = clientHeight
+})
+
 /* 监听tab拖拽状态变化 */
-watch(() => editorWrapperStore.isTabDragging, (newState) => {
-  if (newState) {
-    /* 初始化overlap-monitor宽高 */
-    const { clientWidth, clientHeight } = overlapMonitor.value!
-    monitorWidth = clientWidth
-    monitorHeight = clientHeight
-  } else {
+watch(() => editorWrapperStore.draggingTabInfo, (draggingTabInfo) => {
+  if (!draggingTabInfo) {
     currPos.value = AreaPosition.NULL
   }
 })
@@ -76,7 +78,7 @@ const handleEnterArea = (e: DragEvent): void => {
 }
 
 const handleDrop = (e: MouseEvent) => {
-  emits('selectPosition', currPos.value)
+  emits("selectPosition", currPos.value)
   dragging = 0
   currPos.value = AreaPosition.NULL
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import useClickOutside from '@hooks/useClickOutside'
-import { Trigger, Position, Align } from '@type/interface'
+import { ref, watch } from "vue"
+import useClickOutside from "@hooks/useClickOutside"
+import { Trigger, Position, Align } from "@type/interface"
 
 interface IProps {
   /* 是否显示下拉菜单 */
@@ -17,29 +17,29 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  position: 'bottom' as Position,
-  align: 'left' as Align,
-  trigger: 'click' as Trigger,
+  position: "bottom" as Position,
+  align: "left" as Align,
+  trigger: "click" as Trigger,
   modelValue: false,
 })
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(["update:modelValue"])
 
-const namespace = 'dropdown'
+const namespace = "dropdown"
 const dropdownOptsRef = ref<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(dropdownOptsRef)
 
 const handleClickTrigger = (): void => {
   if (props.trigger !== Trigger.CLICK) { return }
-  emits('update:modelValue', !props.modelValue)
+  emits("update:modelValue", !props.modelValue)
 }
 const handleClickOption = (): void => {
-  emits('update:modelValue', false)
+  emits("update:modelValue", false)
 }
 
 /* 如果点击的是菜单外部，就隐藏菜单，并取消监听 */
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
-    emits('update:modelValue', false)
+    emits("update:modelValue", false)
   }
 })
 </script>

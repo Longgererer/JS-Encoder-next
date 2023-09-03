@@ -1,30 +1,40 @@
 <script setup lang="ts">
-import Navbar from '@views/components/navbar/navbar.vue'
-import Sidebar from '@views/components/sidebar/sidebar.vue'
-import Preview from '@views/components/preview/preview.vue'
-import Console from '@views/components/console/console.vue'
-import EditorWrapper from '@views/components/editor-wrapper/editor-wrapper.vue'
-import TemplateModal from '@views/components/modals/template-modal/template-modal.vue'
-import CodeSettingsModal from '@views/components/modals/code-settings-modal/code-settings-modal.vue'
-import LibrariesModal from '@views/components/modals/libraries-modal/libraries-modal.vue'
-import UploadCodeModal from '@views/components/modals/upload-code-modal/upload-code-modal.vue'
-import DownloadCodeModal from '@views/components/modals/download-code-modal/download-code-modal.vue'
-import ShortcutModal from '@views/components/modals/shortcut-modal/shortcut-modal.vue'
-import UpdateLogModal from '@views/components/modals/update-log-modal/update-log-modal.vue'
-import { onMounted, ref, watch } from 'vue'
+import Navbar from "@views/components/navbar/navbar.vue"
+import Sidebar from "@views/components/sidebar/sidebar.vue"
+import Preview from "@views/components/preview/preview.vue"
+import Console from "@views/components/console/console.vue"
+import EditorWrapper from "@views/components/editor-wrapper/editor-wrapper.vue"
+import TemplateModal from "@views/components/modals/template-modal/template-modal.vue"
+import CodeSettingsModal from "@views/components/modals/code-settings-modal/code-settings-modal.vue"
+import LibrariesModal from "@views/components/modals/libraries-modal/libraries-modal.vue"
+import UploadCodeModal from "@views/components/modals/upload-code-modal/upload-code-modal.vue"
+import DownloadCodeModal from "@views/components/modals/download-code-modal/download-code-modal.vue"
+import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
+import UpdateLogModal from "@views/components/modals/update-log-modal/update-log-modal.vue"
+import { onMounted, watch } from "vue"
 import {
-  EDITOR_MIN_WIDTH, getInitModulesSize, getModulesHeight, getModulesWidth, getNewResultModuleResize, RESULT_MIN_WIDTH,
-} from '@views/container/container.util'
-import { useLayoutStore } from '@store/layout'
-import useWindowResize from '@hooks/useWindowResize'
+  getModulesHeight,
+  getModulesWidth,
+} from "@views/container/container.util"
+import { useLayoutStore } from "@store/layout"
+import useWindowResize from "@hooks/useWindowResize"
+import ModuleSizeService, {
+  CONSOLE_MIN_HEIGHT,
+  EDITOR_MIN_WIDTH,
+  PREVIEW_MIN_HEIGHT,
+  RESULT_MIN_WIDTH,
+} from "@utils/services/module-size-service"
 
 const layoutStore = useLayoutStore()
-const { updateModuleSize, updateIsModulesResizing, modulesSize } = layoutStore
+const { updateModuleSize, updateIsModulesResizing, updateHasInitModulesSize, modulesSize } = layoutStore
 const { clientWidth, clientHeight } = useWindowResize()
+
+const moduleSizeService = new ModuleSizeService()
 
 onMounted(() => {
   // 设置初始模块尺寸
-  updateModuleSize(getInitModulesSize())
+  updateModuleSize(moduleSizeService.getInitModulesSize())
+  updateHasInitModulesSize()
   // 开始监听窗口尺寸变化更新对应模块尺寸
   startObserveWindowSize()
 })
@@ -44,17 +54,19 @@ const handleResizeEditorAndResult = (e: MouseEvent) => {
   // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
   updateIsModulesResizing(true)
   const startX = e.clientX
-  const wholeWidth = resultWidth + editorWidth
   // 鼠标拖拉editor分隔栏改变editor和结果窗口的宽度
   document.onmousemove = (event: MouseEvent) => {
-    const finishWidth = editorWidth + event.clientX - startX
-    // 处理改变后的宽度没有低于两个窗口最小值的情况
-    if (finishWidth >= EDITOR_MIN_WIDTH && wholeWidth - finishWidth >= RESULT_MIN_WIDTH) {
-      updateModuleSize({
-        editorWidth: finishWidth,
-        resultWidth: wholeWidth - finishWidth,
-      })
-    }
+    // 获取editor和result窗口的新尺寸
+    const [editor, result] = moduleSizeService.getNewModulesSize(
+      { width: editorWidth, minWidth: EDITOR_MIN_WIDTH },
+      { width: resultWidth, minWidth: RESULT_MIN_WIDTH },
+      true,
+      startX - event.clientX,
+    )
+    updateModuleSize({
+      editorWidth: editor.width,
+      resultWidth: result.width,
+    })
     processFinishResize()
   }
 }
@@ -65,8 +77,18 @@ const handleResizeConsoleAndPreview = (startY: number) => {
   updateIsModulesResizing(true)
   // 鼠标拖拉console分隔栏改变console和iframe的高度
   document.onmousemove = (event: MouseEvent) => {
-    const newModuleSize = getNewResultModuleResize(startY, event.clientY, consoleHeight, previewHeight)
-    updateModuleSize(newModuleSize)
+    // 获取console和preview窗口的新尺寸
+    const [preview, console] = moduleSizeService.getNewModulesSize(
+      { height: previewHeight, minHeight: PREVIEW_MIN_HEIGHT },
+      { height: consoleHeight, minHeight: CONSOLE_MIN_HEIGHT },
+      false,
+      startY - event.clientY,
+    )
+    // 更新尺寸
+    updateModuleSize({
+      previewHeight: preview.height,
+      consoleHeight: console.height,
+    })
     processFinishResize()
   }
 }
@@ -85,11 +107,14 @@ const processFinishResize = (): void => {
   <div class="main-content flex">
     <sidebar></sidebar>
     <!--编辑-->
-    <div class="over-hidden" :style="{ width: `${modulesSize.editorWidth}px` }">
+    <div class="over-hidden">
       <editor-wrapper></editor-wrapper>
     </div>
     <!--分割线-->
-    <div class="resize-line y cursor-x-resize bg-main2 fade-ease" @mousedown="handleResizeEditorAndResult"></div>
+    <div
+      class="resize-line resize-y cursor-x-resize bg-main2 fade-ease"
+      @mousedown="handleResizeEditorAndResult"
+    ></div>
     <!--结果-->
     <div :style="{ width: `${modulesSize.resultWidth}px` }">
       <preview
@@ -116,10 +141,10 @@ const processFinishResize = (): void => {
 .main-content {
   height: calc(100% - 50px);
   .resize-line {
-    &.x {
+    &.resize-x {
       height: 4px;
     }
-    &.y {
+    &.resize-y {
       width: 4px;
     }
     &:hover {

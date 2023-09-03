@@ -78,7 +78,7 @@ module.exports = {
     }],
     "prefer-const": "error",
     "prefer-rest-params": "error",
-    "quotes": [2, "single", { "avoidEscape": true }],
+    "quotes": [2, "double"],
     "quote-props": "off",
     "radix": "error",
     "semi": "off",
@@ -145,7 +145,7 @@ module.exports = {
     "@typescript-eslint/prefer-function-type": "off",
     "@typescript-eslint/quotes": [
       "error",
-      "single",
+      "double",
     ],
     "@typescript-eslint/semi": [
       "error",

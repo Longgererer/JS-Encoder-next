@@ -15,9 +15,9 @@ class Loader {
 
   /* 动态加载script */
   public async loadScript(url: string): Promise<void> {
-    const head = document.getElementsByTagName('head')[0]
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
+    const head = document.getElementsByTagName("head")[0]
+    const script = document.createElement("script")
+    script.type = "text/javascript"
     script.src = url
     head.appendChild(script)
     return new Promise<void>((resolve) => {

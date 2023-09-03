@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, Ref } from 'vue'
+import { onMounted, onUnmounted, ref, Ref } from "vue"
 
 /* 点击元素区域外部的时候隐藏元素 */
 const useClickOutside = (eleRef: Ref<HTMLElement | null>) => {
@@ -10,11 +10,11 @@ const useClickOutside = (eleRef: Ref<HTMLElement | null>) => {
   }
 
   onMounted(() => {
-    document.addEventListener('click', handler)
+    document.addEventListener("click", handler)
   })
 
   onUnmounted(() => {
-    document.removeEventListener('click', handler)
+    document.removeEventListener("click", handler)
   })
 
   return isClickOutside

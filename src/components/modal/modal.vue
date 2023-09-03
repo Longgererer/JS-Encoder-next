@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import MaskLayer from '@components/mask-layer/mask-layer.vue'
-import CustomButton from '@components/custom-button/custom-button.vue'
-import { toRef } from 'vue'
-import useEscClose from '@hooks/useEscClose'
-import { BtnType, Size } from '@type/interface'
+import MaskLayer from "@components/mask-layer/mask-layer.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { toRef } from "vue"
+import useEscClose from "@hooks/useEscClose"
+import { BtnType, Size } from "@type/interface"
 
 interface IProps {
   /* 是否显示 */
@@ -40,40 +40,40 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
-  title: '示例标题',
+  title: "示例标题",
   escCloseable: true,
   maskClosable: true,
-  okText: '确认',
+  okText: "确认",
   showCancel: false,
-  cancelText: '取消',
+  cancelText: "取消",
   showFooter: true,
   top: 150,
   bottom: 150,
   cancelBtnOpts: () => ({
-    type: 'default' as BtnType,
-    size: 'medium' as Size,
-    customClass: '',
+    type: "default" as BtnType,
+    size: "medium" as Size,
+    customClass: "",
   }),
   confirmBtnOpts: () => ({
-    type: 'primary' as BtnType,
-    size: 'medium' as Size,
-    customClass: '',
+    type: "primary" as BtnType,
+    size: "medium" as Size,
+    customClass: "",
   }),
 })
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', state: boolean): void,
-  (event: 'confirm' | 'cancel' | 'close'): void,
+  (event: "update:modelValue", state: boolean): void,
+  (event: "confirm" | "cancel" | "close"): void,
 }>()
 
-const namespace = 'modal'
+const namespace = "modal"
 
 const closeModal = (): void => {
-  emits('close')
-  emits('update:modelValue', false)
+  emits("close")
+  emits("update:modelValue", false)
 }
 
-useEscClose(toRef(props, 'escCloseable'), () => {
+useEscClose(toRef(props, "escCloseable"), () => {
   if (!props.modelValue) { return }
   closeModal()
 })

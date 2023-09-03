@@ -1,15 +1,15 @@
 /**
  * 公共工具方法集合
  */
-import { ErrorCode, throwError } from '@utils/error'
-import { ObjKey, Type } from '@type/interface'
+import { ErrorCode, throwError } from "@utils/error"
+import { ObjKey, Type } from "@type/interface"
 
 /**
  * 将dom转换为字符串
  * @param dom 需要转换成字符串的dom
  */
 export function stringifyDOM(dom: HTMLElement): string {
-  let eDiv: HTMLElement | null = document.createElement('div')
+  let eDiv: HTMLElement | null = document.createElement("div")
   eDiv.appendChild(dom.cloneNode(true))
   const domStr = eDiv.innerHTML
   eDiv = null
@@ -39,7 +39,7 @@ export function firstUpper(str: string): string {
  */
 export function escapeRegExp(str: string): string {
   const regexp = /[\\^$.*+?()[\]{}|]/g
-  return str && new RegExp(regexp.source).test(str) ? str.replace(regexp, '\\$&') : str
+  return str && new RegExp(regexp.source).test(str) ? str.replace(regexp, "\\$&") : str
 }
 
 /**
@@ -125,12 +125,12 @@ export function getObjOwnKeyList(obj: any): string[] {
  * @param range 范围 包含两个元素[最小值, 最大值]
  * @param type 类型，可选择只要比digit小的值，或比digit大的值，默认全选
  */
-export function getRangeNumberList(digit: number, gap: number, range: number[], type?: 'min' | 'max'): number[] {
+export function getRangeNumberList(digit: number, gap: number, range: number[], type?: "min" | "max"): number[] {
   const res = []
   // eslint-disable-next-line prefer-const
   let [min, max] = range
-  const realMin = type === 'max' ? digit + 1 : digit - gap < min ? min : digit - gap
-  const realMax = type === 'min' ? digit - 1 : digit + gap > max ? max : digit + gap
+  const realMin = type === "max" ? digit + 1 : digit - gap < min ? min : digit - gap
+  const realMax = type === "min" ? digit - 1 : digit + gap > max ? max : digit + gap
   for (let i = realMin; i <= realMax; i++) {
     if (i !== digit) {
       res.push(i)

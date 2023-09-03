@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { IconBtnSize } from '@components/icon-btn/icon-btn.interface'
+import { computed } from "vue"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 
 interface IProps {
   /* icon类名 */
@@ -12,22 +12,22 @@ interface IProps {
   highlightStyle?: string
 }
 const props = withDefaults(defineProps<IProps>(), {
-  size: 'md' as IconBtnSize,
-  title: '',
+  size: "md" as IconBtnSize,
+  title: "",
 })
 const emits = defineEmits<{
-  (e: 'click'): void
+  (e: "click"): void
 }>()
 
-const namespace = 'icon-btn'
+const namespace = "icon-btn"
 const size2ClassMap = {
-  [IconBtnSize.SM]: 'font-s',
-  [IconBtnSize.MD]: 'font-m',
-  [IconBtnSize.LG]: 'font-l',
+  [IconBtnSize.SM]: "font-s",
+  [IconBtnSize.MD]: "font-m",
+  [IconBtnSize.LG]: "font-l",
 }
 
 const handleClick = () => {
-  emits('click')
+  emits("click")
 }
 </script>
 

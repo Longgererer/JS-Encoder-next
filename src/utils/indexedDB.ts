@@ -2,8 +2,8 @@
  * 对于上一个版本(v3)来说，虽然是纯前端项目，但需要存储的数据量不大，完全可以使用sessionStorage和localStorage来应付。
  * 在v4中新增了可以存储自定义模板的功能，因为无法预知自定义模板的数据大小，所以使用indexedDB更加保险。
  */
-import { ErrorCode, throwError } from '@utils/error'
-import { deepCopy } from '@utils/common'
+import { ErrorCode, throwError } from "@utils/error"
+import { deepCopy } from "@utils/common"
 
 
 interface IndexedDBStoreIndex {
@@ -33,7 +33,7 @@ interface IndexedDBConfig {
   initCb?: () => void
 }
 
-type TransactionMode = 'readonly' | 'readwrite' | 'versionchange'
+type TransactionMode = "readonly" | "readwrite" | "versionchange"
 
 declare global {
   interface Window {
@@ -130,7 +130,7 @@ export class IndexedDBHelper {
   public count(storeName: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_COUNT_FAILED,
-      () => this.beginTransaction(storeName, 'readonly').count(),
+      () => this.beginTransaction(storeName, "readonly").count(),
       storeName,
     )
   }
@@ -151,7 +151,7 @@ export class IndexedDBHelper {
       throwError(ErrorCode.INDEXEDDB_CONNECT_BLOCKED, { data: event })
     }
     dbReq.onsuccess = (event) => {
-      console.log('数据库连接成功')
+      console.log("数据库连接成功")
       this.db = dbReq.result
       this.dbInfo!.initCb?.()
     }
@@ -180,14 +180,14 @@ export class IndexedDBHelper {
     })
   }
 
-  private beginTransaction(storeName: string, mode: TransactionMode = 'readwrite'): IDBObjectStore {
+  private beginTransaction(storeName: string, mode: TransactionMode = "readwrite"): IDBObjectStore {
     const transaction = this.db?.transaction(storeName, mode)
 
     transaction!.onerror = (event) => {
       throwError(ErrorCode.INDEXEDDB_CREATE_TRANSACTION_FAILED, { data: event })
     }
     transaction!.oncomplete = () => {
-      console.log('数据库修改结束，事务完成')
+      console.log("数据库修改结束，事务完成")
     }
 
     return transaction!.objectStore(storeName)
@@ -197,7 +197,7 @@ export class IndexedDBHelper {
     return new Promise((resolve, reject) => {
       const req = getReq()
       req.onsuccess = (event) => {
-        console.log('数据库操作成功', ...args)
+        console.log("数据库操作成功", ...args)
         resolve(event)
       }
       req.onerror = (event) => {
@@ -212,7 +212,7 @@ export class IndexedDBHelper {
       const req = getReq()
       const res: any[] = []
       req.onsuccess = (event: any) => {
-        console.log('数据库操作成功', ...args)
+        console.log("数据库操作成功", ...args)
         const cursor = event.target.result
         if (cursor) {
           res.push({ id: cursor.key, ...cursor.value })

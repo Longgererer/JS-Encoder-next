@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { onMounted, ref, getCurrentInstance, onUnmounted, watch } from 'vue'
-import { V_PROP_NAME, VirtualList } from './virtual-list.util'
+import { onMounted, ref, getCurrentInstance, onUnmounted, watch } from "vue"
+import { V_PROP_NAME, VirtualList } from "./virtual-list.util"
 
 type RenderList = Array<Record<string, any>>
 
@@ -10,7 +10,7 @@ interface IProps {
 }
 const props = withDefaults(defineProps<IProps>(), {})
 
-const V_LIST_ITEM_CLASS = 'virtual-list-item'
+const V_LIST_ITEM_CLASS = "virtual-list-item"
 
 const listArea = ref<HTMLElement | null>(null)
 let virtualList: VirtualList | null = null
@@ -35,7 +35,7 @@ onMounted(() => {
   virtualList = new VirtualList({
     listArea: listArea.value,
     listItemSelector: `.${V_LIST_ITEM_CLASS}`,
-    rootMargin: '0px',
+    rootMargin: "0px",
     threshold: 0,
     cb: () => {
       processToBeUpdatedItemQueue()

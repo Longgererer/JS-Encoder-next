@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import CustomSelect from '@components/form/custom-select/custom-select.vue'
-import IconBtn from '@components/icon-btn/icon-btn.vue'
-import Checkbox from '@components/form/checkbox/checkbox.vue'
-import { LogType } from '@type/console'
-import { ISelectOption } from '@components/form/custom-select/custom-select.interface'
-import { ref, watch } from 'vue'
-import { useConsoleStore } from '@store/console'
-import { IconBtnSize } from '@components/icon-btn/icon-btn.interface'
+import { LogType } from "@type/console"
+import { ISelectOption } from "@components/form/custom-select/custom-select.interface"
+import { ref, watch } from "vue"
+import { useConsoleStore } from "@store/console"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
+import { Size } from "@type/interface"
+import CustomSelect from "@components/form/custom-select/custom-select.vue"
+import IconBtn from "@components/icon-btn/icon-btn.vue"
+import Checkbox from "@components/form/checkbox/checkbox.vue"
 
 const emits = defineEmits<{
-  (e: 'resize', startY: number): void
+  (e: "resize", startY: number): void
 }>()
 
-const namespace = 'console'
+const namespace = "console"
 const { updateFilter } = useConsoleStore()
 
 /* 日志过滤选项列表 */
@@ -39,7 +40,7 @@ const handleClickConsoleSettingsBtn = (): void => {
  * console拖拽
  */
 const handleResize = (e: MouseEvent) => {
-  emits('resize', e.clientY)
+  emits("resize", e.clientY)
 }
 </script>
 
@@ -78,12 +79,12 @@ const handleResize = (e: MouseEvent) => {
         <span class="mr-s">Filter:</span>
         <custom-select
           v-model="currFilterOption"
-          size="small"
+          :size="Size.SMALL"
+          :data-list="filterSelectOptions"
           custom-select-style="height: 20px; border-radius: 4px; width: 100px;"
           custom-option-list-style="width: 100px;"
           custom-select-inner-style="padding: 0 8px;"
           custom-option-style="padding-left: 8px;"
-          :data-list="filterSelectOptions"
         ></custom-select>
       </div>
       <!--操作按钮-->

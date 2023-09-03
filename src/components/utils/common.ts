@@ -1,5 +1,5 @@
-import { computed } from 'vue'
-import { Position } from '@type/interface'
+import { computed } from "vue"
+import { Position } from "@type/interface"
 
 /* 计算偏移样式 */
 export function getOffsetStyle(offset: number | string, position: Position): Record<string, string> {
@@ -25,29 +25,29 @@ export function getPosStyle(
   const posToStyleMap = {
     [Position.TOP]: {
       left: `${left + width / 2}px`,
-      top: 'unset',
+      top: "unset",
       bottom: `-${bottom - height}px`,
-      right: 'unset',
-      transform: 'translateX(-50%)',
+      right: "unset",
+      transform: "translateX(-50%)",
     },
     [Position.RIGHT]: {
       left: `${left + width}px`,
       top: `${top + height / 2}px`,
-      bottom: 'unset',
-      right: 'unset',
+      bottom: "unset",
+      right: "unset",
     },
     [Position.LEFT]: {
-      left: 'unset',
+      left: "unset",
       top: `${top + height / 2}px`,
-      bottom: 'unset',
+      bottom: "unset",
       right: `-${left}px`,
     },
     [Position.BOTTOM]: {
       left: `${left + width / 2}px`,
       top: `${bottom}px`,
-      bottom: 'unset',
-      right: 'unset',
-      transform: 'translateX(-50%)',
+      bottom: "unset",
+      right: "unset",
+      transform: "translateX(-50%)",
     },
   }
   return posToStyleMap[position]

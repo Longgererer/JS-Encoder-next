@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import Modal from '@components/modal/modal.vue'
-import Checkbox from '@components/form/checkbox/checkbox.vue'
-import CustomInput from '@components/form/custom-input/custom-input.vue'
-import CustomSelect from '@components/form/custom-select/custom-select.vue'
-import { computed, ref } from 'vue'
-import { useCommonStore } from '@store/common'
-import { ModalName } from '@type/interface'
+import Modal from "@components/modal/modal.vue"
+import Checkbox from "@components/form/checkbox/checkbox.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import CustomSelect from "@components/form/custom-select/custom-select.vue"
+import { computed, ref } from "vue"
+import { useCommonStore } from "@store/common"
+import { ModalName } from "@type/interface"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
 const bindVal = ref<boolean>(false)
-const bindInputText = ref<string>('')
+const bindInputText = ref<string>("")
 const bindInputNumber = ref<number>(5)
 
 const bindDataList = [
-  { value: 0, label: 'JetBrains Mono1' },
-  { value: 1, label: 'JetBrains Mono2' },
-  { value: 2, label: 'JetBrains Mono3' },
-  { value: 3, label: 'JetBrains Mono4' },
+  { value: 0, label: "JetBrains Mono1" },
+  { value: 1, label: "JetBrains Mono2" },
+  { value: 2, label: "JetBrains Mono3" },
+  { value: 3, label: "JetBrains Mono4" },
 ]
 const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
 </script>

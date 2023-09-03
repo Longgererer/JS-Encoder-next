@@ -1,4 +1,4 @@
-import { getObjOwnKeyList } from '@utils/common'
+import { getObjOwnKeyList } from "@utils/common"
 
 export function isDom(type: string): boolean {
   return /^HTML/.test(type)
@@ -25,7 +25,7 @@ export function isOwnAttr(target: Record<string, any>, key: string): boolean {
 export function isCyclic(obj: any): boolean {
   const stackSet = new Set()
   const detect = (data: any): boolean => {
-    if (data && typeof data !== 'object') {
+    if (data && typeof data !== "object") {
       return false
     }
     if (stackSet.has(data)) {

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Modal from '@components/modal/modal.vue'
-import HelpPopover from '@views/components/help-popover/help-popover.vue'
-import CustomButton from '@components/custom-button/custom-button.vue'
-import { computed, ref, reactive } from 'vue'
-import { useCommonStore } from '@store/common'
-import { CommonObj, ModalName, Position, Size } from '@type/interface'
-import { inbuiltTemplateList, TemplateLang2IconMap } from './template-modal.interface'
-import { getCustomTemplateList } from './template-modal.util'
-import { TemplateLang, TemplateType } from '@type/template'
+import Modal from "@components/modal/modal.vue"
+import HelpPopover from "@views/components/help-popover/help-popover.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { computed, ref, reactive } from "vue"
+import { useCommonStore } from "@store/common"
+import { CommonObj, ModalName, Position, Size } from "@type/interface"
+import { inbuiltTemplateList, TemplateLang2IconMap } from "./template-modal.interface"
+import { getCustomTemplateList } from "./template-modal.util"
+import { TemplateLang, TemplateType } from "@type/template"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -22,7 +22,7 @@ const selectedTemplate = ref<CommonObj>({
 const customTemplateList = getCustomTemplateList()
 
 const templateModalConfirmBtnOpts = reactive<CommonObj>({
-  customClass: 'p-l',
+  customClass: "p-l",
   disabled: true,
 })
 

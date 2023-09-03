@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const emits = defineEmits<{
-  (event: 'clickMask'): void,
+  (event: "clickMask"): void,
 }>()
 
 const handleClickMask = (): void => {
-  emits('clickMask')
+  emits("clickMask")
 }
 
-const namespace = 'mask-layer'
+const namespace = "mask-layer"
 </script>
 
 <template>

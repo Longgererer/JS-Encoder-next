@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { IEditorSettings, ShortcutMode } from '@type/settings'
+import { defineStore } from "pinia"
+import { IEditorSettings, ShortcutMode } from "@type/settings"
 
-export const useEditorConfigStore = defineStore('editorSetting', {
+export const useEditorConfigStore = defineStore("editorSetting", {
   state: (): IEditorSettings => {
     return {
       edit: {
@@ -20,10 +20,10 @@ export const useEditorConfigStore = defineStore('editorSetting', {
       },
       font: {
         fontSize: 14,
-        fontFamily: 'JetBrains Mono',
+        fontFamily: "JetBrains Mono",
       },
       other: {
-        headTags: '',
+        headTags: "",
         shortcutTemplate: ShortcutMode.VSCODE,
       },
     }

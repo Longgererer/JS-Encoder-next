@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import Modal from '@components/modal/modal.vue'
-import CustomInput from '@components/form/custom-input/custom-input.vue'
-import { useCommonStore } from '@store/common'
-import { ModalName } from '@type/interface'
-import { ref } from 'vue'
+import Modal from "@components/modal/modal.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName } from "@type/interface"
+import { ref } from "vue"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const bindInputText = ref<string>('')
+const bindInputText = ref<string>("")
 </script>
 
 <template>

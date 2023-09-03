@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { onUnmounted, ref } from 'vue'
+import { onUnmounted, ref } from "vue"
 
-const NAME_SPACE = 'loading'
+const NAME_SPACE = "loading"
 
 const frames = [
-  '[        ]',
-  '[=       ]',
-  '[==      ]',
-  '[===     ]',
-  '[====    ]',
-  '[=====   ]',
-  '[ =====  ]',
-  '[  ===== ]',
-  '[   =====]',
-  '[    ====]',
-  '[     ===]',
-  '[      ==]',
-  '[       =]',
-  '[        ]',
+  "[        ]",
+  "[=       ]",
+  "[==      ]",
+  "[===     ]",
+  "[====    ]",
+  "[=====   ]",
+  "[ =====  ]",
+  "[  ===== ]",
+  "[   =====]",
+  "[    ====]",
+  "[     ===]",
+  "[      ==]",
+  "[       =]",
+  "[        ]",
 ]
 /* 动画周期总时间 */
 const CYCLE_TIME = 1000

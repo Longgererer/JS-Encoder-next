@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const namespace = 'dropdown-item'
+const namespace = "dropdown-item"
 </script>
 
 <template>

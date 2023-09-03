@@ -1,18 +1,18 @@
-import { onMounted, onUnmounted, ref, Ref } from 'vue'
+import { onMounted, onUnmounted, ref, Ref } from "vue"
 
 /* 按下ESC关闭弹窗 */
 const useEscClose = (canClose: Ref<boolean>, handler: () => void) => {
   const onPressEsc = (e: KeyboardEvent): void => {
-    if (!canClose.value || !(e.key === 'Escape')) { return }
+    if (!canClose.value || !(e.key === "Escape")) { return }
     handler()
   }
 
   onMounted(() => {
-    window.addEventListener('keydown', onPressEsc)
+    window.addEventListener("keydown", onPressEsc)
   })
 
   onUnmounted(() => {
-    document.removeEventListener('keydown', onPressEsc)
+    document.removeEventListener("keydown", onPressEsc)
   })
 }
 

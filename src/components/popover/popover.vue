@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Position, Trigger } from '@type/interface'
-import { computed, onMounted, ref, toRef, useSlots, watch, reactive } from 'vue'
-import { getOffsetStyle, getPosStyle } from '@components/utils/common'
-import useClickOutside from '@hooks/useClickOutside'
+import { Position, Trigger } from "@type/interface"
+import { computed, onMounted, ref, toRef, useSlots, watch, reactive } from "vue"
+import { getOffsetStyle, getPosStyle } from "@components/utils/common"
+import useClickOutside from "@hooks/useClickOutside"
 
 interface IProps {
   /* 提示展示位置 */
@@ -22,22 +22,22 @@ interface IProps {
   /* 延迟消失时间，单位ms */
   delay?: number
 }
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(["update:modelValue"])
 
 const props = withDefaults(defineProps<IProps>(), {
   hidden: true,
   offset: 0,
   showTriangle: true,
-  position: 'right' as Position,
+  position: "right" as Position,
   appendToBody: false,
-  level: 'auto',
-  trigger: 'hover' as Trigger,
+  level: "auto",
+  trigger: "hover" as Trigger,
   delay: 300,
 })
 
 const hidden = ref<boolean>(true)
 
-const namespace = 'popover'
+const namespace = "popover"
 const popoverRef = ref<HTMLElement | null>(null)
 
 const slots = useSlots()

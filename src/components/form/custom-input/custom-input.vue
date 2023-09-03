@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Size } from '@type/interface'
-import { computed, ref } from 'vue'
+import { Size } from "@type/interface"
+import { computed, ref } from "vue"
 
 type InputSize = Exclude<Size, Size.MINI | Size.X_LARGE>
 
@@ -18,11 +18,11 @@ const inputPaddingMap = {
 
 enum InputType {
   /* 文本 */
-  TEXT = 'text',
+  TEXT = "text",
   /* 数字 */
-  NUMBER = 'number',
+  NUMBER = "number",
   /* 文本区 */
-  TEXTAREA = 'textarea',
+  TEXTAREA = "textarea",
 }
 
 interface IProps {
@@ -63,13 +63,13 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  modelValue: '',
+  modelValue: "",
   disabled: false,
-  type: 'text' as InputType,
-  placeholder: '',
-  inputClass: '',
-  size: 'medium' as InputSize,
-  width: '200px',
+  type: "text" as InputType,
+  placeholder: "",
+  inputClass: "",
+  size: "medium" as InputSize,
+  width: "200px",
   radius: 5,
   /* number input 特有属性 */
   min: -Infinity,
@@ -82,10 +82,10 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', state: string | number): void,
+  (event: "update:modelValue", state: string | number): void,
 }>()
 
-const namespace = 'custom-input'
+const namespace = "custom-input"
 
 const commonStyle = computed(() => {
   const radius = props.radius >= 0 ? props.radius : inputPaddingMap[props.size]
@@ -97,7 +97,7 @@ const commonStyle = computed(() => {
 
 /* type = text */
 const handleInputTextChange = (e: InputEvent): void => {
-  emits('update:modelValue', (e.target as HTMLInputElement)?.value)
+  emits("update:modelValue", (e.target as HTMLInputElement)?.value)
 }
 
 /*
@@ -113,19 +113,19 @@ const handleInputNumberBlur = (e: InputEvent): void => {
   } else {
     // do nothing
   }
-  emits('update:modelValue', value)
+  emits("update:modelValue", value)
 }
 /* 点击上箭头 */
 const handleClickInputNumberUp = (): void => {
   const value = Number(props.modelValue) + props.step
   if (value > props.max) { return }
-  emits('update:modelValue', value)
+  emits("update:modelValue", value)
 }
 /* 点击下箭头 */
 const handleClickInputNumberDown = (): void => {
   const value = Number(props.modelValue) + props.step
   if (value < props.min) { return }
-  emits('update:modelValue', value)
+  emits("update:modelValue", value)
 }
 
 /*
@@ -164,7 +164,7 @@ const handleInputTextAreaChange = (e: InputEvent): void => {
     }
   }
   textareaHeight.value = finHeight
-  emits('update:modelValue', value)
+  emits("update:modelValue", value)
 }
 </script>
 

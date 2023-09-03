@@ -7,8 +7,8 @@ export interface IVirtualListConfig {
   cb: () => void
 }
 
-export const V_PROP_NAME = '$v'
-export const V_LIST_ITEM_INDEX_PROP_NAME = 'data-virtual-list-item-index'
+export const V_PROP_NAME = "$v"
+export const V_LIST_ITEM_INDEX_PROP_NAME = "data-virtual-list-item-index"
 
 export interface IVirtualListItemState {
   state: number

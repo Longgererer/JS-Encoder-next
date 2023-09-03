@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { ModalName, Theme } from '@type/interface'
+import { defineStore } from "pinia"
+import { ModalName, Theme } from "@type/interface"
 
 interface ICommonStore {
   /* 显示的modal名称 */
@@ -7,7 +7,7 @@ interface ICommonStore {
   theme: Theme,
 }
 
-export const useCommonStore = defineStore('common', {
+export const useCommonStore = defineStore("common", {
   state: (): ICommonStore => {
     return {
       displayModal: null,

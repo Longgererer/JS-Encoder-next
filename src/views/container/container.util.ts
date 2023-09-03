@@ -1,46 +1,12 @@
 /* 侧边栏宽度 */
-import { IModulesSize } from '@store/layout'
-
-/* 侧边栏宽度 */
-export const SIDEBAR_WIDTH = 49
-/* 预览窗口与编辑窗口分割线宽度 */
-export const RESIZER_WIDTH_BETWEEN_PREVIEW_AND_EDITOR = 4
-/* navbar高度 */
-export const NAV_BAR_HEIGHT = 49
-/* 结果(预览和console)窗口最小宽度 */
-export const RESULT_MIN_WIDTH = 50
-/* 编辑窗口最小宽度 */
-export const EDITOR_MIN_WIDTH = 100
-/* console最小高度 */
-export const CONSOLE_MIN_HEIGHT = 28
-/* 预览窗口最小高度 */
-export const PREVIEW_MIN_HEIGHT = 36
-
-const getWindowSize = (): { windowWidth: number, windowHeight: number } => ({
-  windowWidth: window.innerWidth,
-  windowHeight: window.innerHeight,
-})
-
-/**
- * 获取初始模块宽高
- * 编辑窗口高度占满，宽度与(预览窗口、console窗口)平分
- * 预览窗口和console窗口高度比为3:1
- */
-export const getInitModulesSize = (): IModulesSize => {
-  const { windowWidth, windowHeight } = getWindowSize()
-  const resizeAreaWidth = windowWidth - SIDEBAR_WIDTH - RESIZER_WIDTH_BETWEEN_PREVIEW_AND_EDITOR
-  const resizeAreaHeight = windowHeight - NAV_BAR_HEIGHT
-  const editorWidth = Math.floor(resizeAreaWidth / 2)
-  const resultWidth = resizeAreaWidth - editorWidth
-  const previewHeight = Math.floor(resizeAreaHeight / 2)
-  const consoleHeight = resizeAreaHeight - previewHeight
-  return {
-    editorWidth,
-    previewHeight,
-    consoleHeight,
-    resultWidth,
-  }
-}
+import { IModulesSize } from "@store/layout"
+import {
+  CONSOLE_MIN_HEIGHT,
+  EDITOR_MIN_WIDTH,
+  NAV_BAR_HEIGHT, PREVIEW_MIN_HEIGHT,
+  RESIZE_LINE_SIZE, RESULT_MIN_WIDTH,
+  SIDEBAR_WIDTH,
+} from "@utils/services/module-size-service"
 
 /**
  * 获取各模块宽度
@@ -85,9 +51,9 @@ export const getModulesWidth = (changedWidth: number, modulesSize: IModulesSize)
  * changedHeight < 0 表示高度变小，> 0 则为高度变大
  */
 export const getModulesHeight = (changedHeight: number, modulesSize: IModulesSize): any => {
-  const { previewHeight, consoleHeight } = modulesSize
+  const { previewHeight, consoleHeight, editorHeight } = modulesSize
   const isWindowHeightDecreased = changedHeight < 0
-  // 均分改变的宽度为避免出现小数点，使用floor）
+  // 均分改变的宽度为避免出现小数点，使用floor
   const consoleChangeHeight = Math.floor(changedHeight / 2)
   const previewChangeWidth = changedHeight - consoleChangeHeight
   // 处理宽度变小的情况
@@ -99,17 +65,20 @@ export const getModulesHeight = (changedHeight: number, modulesSize: IModulesSiz
       return {
         consoleHeight: CONSOLE_MIN_HEIGHT,
         previewHeight: previewHeight + previewChangeWidth - (CONSOLE_MIN_HEIGHT - (changedConsoleHeight)),
+        editorHeight: editorHeight + changedHeight,
       }
     } else if (changedPreviewHeight < PREVIEW_MIN_HEIGHT) {
       return {
         consoleHeight: consoleHeight + consoleChangeHeight - (PREVIEW_MIN_HEIGHT - (changedPreviewHeight)),
         previewHeight: PREVIEW_MIN_HEIGHT,
+        editorHeight: editorHeight + changedHeight,
       }
     }
   }
   return {
     consoleHeight: consoleHeight + consoleChangeHeight,
     previewHeight: previewHeight + previewChangeWidth,
+    editorHeight: editorHeight + changedHeight,
   }
 }
 

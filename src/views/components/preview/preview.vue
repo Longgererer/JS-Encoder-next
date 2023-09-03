@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import IconBtn from '@components/icon-btn/icon-btn.vue'
-import CustomButton from '@components/custom-button/custom-button.vue'
-import { BtnType } from '@type/interface'
-import { HELP_DOCS_URL } from '@utils/config'
-import { ref } from 'vue'
-import { useLayoutStore } from '@store/layout'
-import { storeToRefs } from 'pinia'
+import IconBtn from "@components/icon-btn/icon-btn.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { BtnType } from "@type/interface"
+import { HELP_DOCS_URL } from "@utils/config"
+import { ref } from "vue"
+import { useLayoutStore } from "@store/layout"
+import { storeToRefs } from "pinia"
 
 interface IProps {
   isShowScreen?: boolean
@@ -15,12 +15,12 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 /* 组件名 */
-const namespace = 'preview'
+const namespace = "preview"
 const { modulesSize } = useLayoutStore()
 
 enum PreviewOptName {
-  REFRESH = 'refresh',
-  FULLSCREEN = 'fullscreen',
+  REFRESH = "refresh",
+  FULLSCREEN = "fullscreen",
 }
 
 interface IPreviewOpt {
@@ -30,8 +30,8 @@ interface IPreviewOpt {
 }
 
 const previewOpts: IPreviewOpt[] = [
-  { icon: 'icon-refresh', name: PreviewOptName.REFRESH, title: '刷新' },
-  { icon: 'icon-magnify', name: PreviewOptName.FULLSCREEN, title: '全屏' },
+  { icon: "icon-refresh", name: PreviewOptName.REFRESH, title: "刷新" },
+  { icon: "icon-magnify", name: PreviewOptName.FULLSCREEN, title: "全屏" },
 ]
 
 /**
@@ -39,7 +39,7 @@ const previewOpts: IPreviewOpt[] = [
  */
 const isShowNewUserGuide = ref<boolean>(false)
 const handleJumpToHelp = () => {
-  window.open(HELP_DOCS_URL, '_blank')
+  window.open(HELP_DOCS_URL, "_blank")
 }
 const handleSkipGuide = () => {
   // 隐藏引导
@@ -50,7 +50,7 @@ const handleSkipGuide = () => {
 
 <template>
   <div class="flex-col fill-w" :class="namespace">
-    <div class="bg-main2 flex no-select pr-s flex-sh" :class="`${namespace}-bar`">
+    <div class="bg-main2 flex no-select pr-l flex-sh" :class="`${namespace}-bar`">
       <!--tab-->
       <div
         class="fill-h font-active cursor-pointer transition-all flex-y-center active"

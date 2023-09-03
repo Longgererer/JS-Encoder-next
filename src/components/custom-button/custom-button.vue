@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { BtnType, Size } from '@type/interface'
+import { computed } from "vue"
+import { BtnType, Size } from "@type/interface"
 
 interface IProps {
   /* 按钮尺寸 mini|small|medium|large|xLarge */
@@ -30,27 +30,27 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  size: 'medium' as Size,
+  size: "medium" as Size,
   disabled: false,
-  type: 'primary' as BtnType,
+  type: "primary" as BtnType,
   icon: false,
-  iconClass: '',
+  iconClass: "",
   showIcon: false,
   shadow: false,
   outline: false,
   loading: false,
   radius: false,
   fill: false,
-  customClass: '',
+  customClass: "",
 })
 
 const emits = defineEmits<{
-  (e: 'click'): void
+  (e: "click"): void
 }>()
 
 const isDisabled = computed(() => props.loading || props.disabled)
 
-const NAMESPACE = 'custom-button'
+const NAMESPACE = "custom-button"
 </script>
 
 <template>

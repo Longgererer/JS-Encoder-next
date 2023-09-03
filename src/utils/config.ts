@@ -1,13 +1,13 @@
 /**
  * 公共配置存储
  */
-import { Prep } from '@type/prep'
-import { IIconOption } from '@type/interface'
+import { Prep } from "@type/prep"
+import { IIconOption } from "@type/interface"
 
 /* 选项列表 */
 export const optionsListMap: Record<number, IIconOption> = {
-  0: { text: 'Markdown工具栏', icon:'' },
-  1: { text: '格式化代码' },
+  0: { text: "Markdown工具栏", icon:"" },
+  1: { text: "格式化代码" },
 }
 
 /* 存储各个预处理器所包含的选项id，分为直接展示出的选项和在菜单中展示的更多选项 */
@@ -29,6 +29,6 @@ export const editorSideOpts = {
 }
 
 /* Github仓库的网址 */
-export const GITHUB_REPO_URL = 'https://github.com/JS-Encoder/JS-Encoder'
+export const GITHUB_REPO_URL = "https://github.com/JS-Encoder/JS-Encoder"
 /* 帮助文档的网址 */
-export const HELP_DOCS_URL = 'http://docs.lliiooiill.cn/'
+export const HELP_DOCS_URL = "http://docs.lliiooiill.cn/"

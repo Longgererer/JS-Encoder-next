@@ -1,0 +1,13 @@
+.resize-line {
+  .resize-x {
+    width: 100%;
+    height: 4px;
+  }
+  .resize-y {
+    width: 4px;
+    height: 100%;
+  }
+  &:hover {
+    background-color: var(--color-primary1);
+  }
+}

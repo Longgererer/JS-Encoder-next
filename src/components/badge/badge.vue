@@ -16,18 +16,18 @@ interface IProps {
 
 withDefaults(defineProps<IProps>(), {
   value: true,
-  content: '',
-  position: 'top-right',
-  color: '#0085ff',
-  size: 'md',
+  content: "",
+  position: "top-right",
+  color: "#0085ff",
+  size: "md",
   showBorder: true,
 })
 
 defineOptions({
-  name: 'badge',
+  name: "badge",
 })
 
-const namespace = 'badge'
+const namespace = "badge"
 </script>
 
 <template>

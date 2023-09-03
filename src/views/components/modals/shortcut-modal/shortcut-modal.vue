@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import Modal from '@components/modal/modal.vue'
-import CustomInput from '@components/form/custom-input/custom-input.vue'
-import { useCommonStore } from '@store/common'
-import { ModalName, Position } from '@type/interface'
-import { ShortcutMapList, IShortcutMap } from './shortcut-modal.interface'
-import { ref } from 'vue'
+import Modal from "@components/modal/modal.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName, Position } from "@type/interface"
+import { ShortcutMapList, IShortcutMap } from "./shortcut-modal.interface"
+import { ref } from "vue"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const bindInputText = ref<string>('')
+const bindInputText = ref<string>("")
 const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
 </script>
 

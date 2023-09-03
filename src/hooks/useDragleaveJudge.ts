@@ -1,5 +1,4 @@
-import { onMounted, onUnmounted, ref, Ref } from 'vue'
-import { AreaPosition } from '@type/editor'
+import { onMounted, Ref } from "vue"
 
 /**
  * 由于拖拽元素进入或离开子元素的时候会触发父元素的dragenter和dragleave事件
@@ -11,10 +10,10 @@ const useDragleaveJudge = (eleRef: Ref<HTMLElement | null>, callback: () => void
   let dragging = 0
   onMounted(() => {
     const ele = eleRef.value
-    ele?.addEventListener('dragenter', () => {
+    ele?.addEventListener("dragenter", () => {
       dragging++
     })
-    ele?.addEventListener('dragleave', () => {
+    ele?.addEventListener("dragleave", () => {
       dragging--
       setTimeout(() => {
         if (dragging === 0) {

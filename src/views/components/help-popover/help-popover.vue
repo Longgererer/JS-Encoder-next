@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import Popover from '@components/popover/popover.vue'
-import CustomButton from '@components/custom-button/custom-button.vue'
+import Popover from "@components/popover/popover.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
 
 interface IProps {
   /* 说明文字 */

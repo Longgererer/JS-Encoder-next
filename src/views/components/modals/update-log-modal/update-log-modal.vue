@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import Modal from '@components/modal/modal.vue'
-import Loading from '@components/loading/loading.vue'
-import { useCommonStore } from '@store/common'
-import { ModalName } from '@type/interface'
-import { ref } from 'vue'
+import Modal from "@components/modal/modal.vue"
+import Loading from "@components/loading/loading.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName } from "@type/interface"
+import { ref } from "vue"
 
 interface IUpdateLog {
   version: string

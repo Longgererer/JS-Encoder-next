@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Position } from '@type/interface'
-import { computed, ref } from 'vue'
-import { getOffsetStyle } from '@components/utils/common'
+import { Position } from "@type/interface"
+import { computed, ref } from "vue"
+import { getOffsetStyle } from "@components/utils/common"
 
 interface IProps {
   /* 提示文字，如果使用slot#content则忽略此属性 */
@@ -23,19 +23,19 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  content: '',
+  content: "",
   hidden: true,
   offset: 0,
   delay: 300,
   disable: false,
   showTriangle: true,
-  position: 'right' as Position,
-  level: 'auto',
+  position: "right" as Position,
+  level: "auto",
 })
 
 const hidden = ref<boolean>(true)
 
-const namespace = 'tooltip'
+const namespace = "tooltip"
 
 /* 计算偏移样式 */
 const offsetStyle = getOffsetStyle(props.offset, props.position)

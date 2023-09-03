@@ -36,6 +36,6 @@ export interface IEditorSettings {
 }
 
 export const enum ShortcutMode {
-  VSCODE = 'VSCode',
-  SUBLIME = 'Sublime',
+  VSCODE = "VSCode",
+  SUBLIME = "Sublime",
 }

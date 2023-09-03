@@ -12,14 +12,14 @@ const props = withDefaults(defineProps<IProps>(), {
 })
 
 const emits = defineEmits<{
-  (event: 'update:modelValue', state: boolean): void,
+  (event: "update:modelValue", state: boolean): void,
 }>()
 
-const namespace = 'checkbox'
+const namespace = "checkbox"
 
 const handleClickCheckbox = (): void => {
   if (props.disabled) { return }
-  emits('update:modelValue', !props.modelValue)
+  emits("update:modelValue", !props.modelValue)
 }
 </script>
 

@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { LogType } from '@type/console'
+import { defineStore } from "pinia"
+import { LogType } from "@type/console"
 
 interface IConsoleSetting {
   /* 每次执行代码前是否自动清空日志 */
@@ -15,7 +15,7 @@ interface IConsoleStore {
   filter: LogType
 }
 
-export const useConsoleStore = defineStore('console', {
+export const useConsoleStore = defineStore("console", {
   state: (): IConsoleStore => {
     return {
       setting: {

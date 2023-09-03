@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import Tooltip from '@components/tooltip/tooltip.vue'
-import IconBtn from '@components/icon-btn/icon-btn.vue'
-import { Theme } from '@type/interface'
-import { GITHUB_REPO_URL, HELP_DOCS_URL } from '@utils/config'
+import Tooltip from "@components/tooltip/tooltip.vue"
+import IconBtn from "@components/icon-btn/icon-btn.vue"
+import { Theme } from "@type/interface"
+import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/config"
 import {
   SidebarList, SidebarType, SidebarTypeToIcon, SidebarTypeToModalNameMap, SidebarTypeToText, ThemeIcon,
-} from './sidebar.interface'
-import { useCommonStore } from '@store/common'
-import { storeToRefs } from 'pinia'
+} from "./sidebar.interface"
+import { useCommonStore } from "@store/common"
+import { storeToRefs } from "pinia"
 
-const NAMESPACE = 'sidebar'
+const NAMESPACE = "sidebar"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal, updateTheme } = commonStore
@@ -26,11 +26,11 @@ const handleClickItem = (type: SidebarType) => {
       break
     }
     case SidebarType.GITHUB: {
-      window.open(GITHUB_REPO_URL, '_blank')
+      window.open(GITHUB_REPO_URL, "_blank")
       break
     }
     case SidebarType.HELP_DOCUMENT: {
-      window.open(HELP_DOCS_URL, '_blank')
+      window.open(HELP_DOCS_URL, "_blank")
       break
     }
     default: {

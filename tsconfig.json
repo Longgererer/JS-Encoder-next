@@ -1,6 +1,7 @@
 {
   "types": ["node"],
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -18,12 +19,6 @@
     "skipLibCheck": true,
     "types": ["unplugin-vue-define-options"],
     "baseUrl": ".",
-    "no-any": [true,{"ignore-rest-args": true}],
-    "no-for-in": true,
-    "ban-comma-operator": true,
-    "curly": true,
-    "no-async-without-await": true,
-    "no-duplicate-super": true,
     "noImplicitReturns": true,
     "paths": {
       "@views/*": ["src/views/*"],
@@ -32,6 +27,7 @@
       "@type/*": ["src/type/*"],
       "@store/*": ["src/store/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@services/*": ["src/services/*"],
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

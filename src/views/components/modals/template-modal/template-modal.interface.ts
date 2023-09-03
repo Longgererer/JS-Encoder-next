@@ -1,6 +1,6 @@
-import { IEditor } from '@type/editor'
-import { Origin, Prep } from '@type/prep'
-import { TemplateLang, TemplateType } from '@type/template'
+import { IEditor } from "@type/editor"
+import { Origin, Prep } from "@type/prep"
+import { TemplateLang, TemplateType } from "@type/template"
 
 export interface ITemplateItem {
   lang: TemplateLang
@@ -20,12 +20,12 @@ export const inbuiltTemplateList: ITemplateItem[] = [
 
 /* 不同类型模板对应的icon */
 export const TemplateLang2IconMap = {
-  [TemplateLang.VUE2]: 'icon-vue',
-  [TemplateLang.VUE3]: 'icon-vue',
-  [TemplateLang.VANILLA]: 'icon-javascript',
-  [TemplateLang.REACT]: 'icon-react',
-  [TemplateLang.ANGULAR]: 'icon-angular',
-  [TemplateLang.CUSTOM]: 'icon-custom-template',
+  [TemplateLang.VUE2]: "icon-vue",
+  [TemplateLang.VUE3]: "icon-vue",
+  [TemplateLang.VANILLA]: "icon-javascript",
+  [TemplateLang.REACT]: "icon-react",
+  [TemplateLang.ANGULAR]: "icon-angular",
+  [TemplateLang.CUSTOM]: "icon-custom-template",
 }
 
 export interface ITemplateContent {

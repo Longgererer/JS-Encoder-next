@@ -1,14 +1,11 @@
-import { defineStore } from 'pinia'
-import { isUndefined } from '@utils/judge'
-
-interface ISize {
-  width?: number,
-  height?: number,
-}
+import { defineStore } from "pinia"
+import { isUndefined } from "@utils/judge"
 
 export interface IModulesSize {
-  /* 编辑器宽度 */
+  /* 编辑器窗口宽度 */
   editorWidth: number
+  /* 编辑器窗口宽度 */
+  editorHeight: number
   /* console高度 */
   consoleHeight: number
   /* 预览高度 */
@@ -26,19 +23,23 @@ interface ILayoutStore {
   isModulesResizing: boolean
   /* 是否展示结果窗口 */
   isShowResult: boolean
+  /* 是否已经初始化了模块的尺寸 */
+  hasInitModulesSize: boolean
 }
 
-export const useLayoutStore = defineStore('layout', {
+export const useLayoutStore = defineStore("layout", {
   state: (): ILayoutStore => ({
     showResultView: true,
     modulesSize: {
       editorWidth: 0,
+      editorHeight: 0,
       consoleHeight: 0,
       previewHeight: 0,
       resultWidth: 0,
     },
     isModulesResizing: false,
     isShowResult: true,
+    hasInitModulesSize: false,
   }),
   actions: {
     updateShowRightView(newState?: boolean): void {
@@ -49,6 +50,9 @@ export const useLayoutStore = defineStore('layout', {
     },
     updateIsModulesResizing(newState: boolean): void {
       this.isModulesResizing = newState
+    },
+    updateHasInitModulesSize(): void {
+      this.hasInitModulesSize = true
     },
   },
 })

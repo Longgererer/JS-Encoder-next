@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import Modal from '@components/modal/modal.vue'
-import CustomButton from '@components/custom-button/custom-button.vue'
-import Checkbox from '@components/form/checkbox/checkbox.vue'
-import CustomInput from '@components/form/custom-input/custom-input.vue'
-import { useCommonStore } from '@store/common'
-import { ModalName, Position } from '@type/interface'
-import { ref } from 'vue'
+import Modal from "@components/modal/modal.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import Checkbox from "@components/form/checkbox/checkbox.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName, Position } from "@type/interface"
+import { ref } from "vue"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -17,7 +17,7 @@ const enum DownloadType {
 const activeType = ref<DownloadType>(DownloadType.SINGLE)
 
 const bindVal = ref<boolean>(false)
-const bindInputText = ref<string>('')
+const bindInputText = ref<string>("")
 </script>
 
 <template>
