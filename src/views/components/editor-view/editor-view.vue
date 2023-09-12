@@ -1,6 +1,10 @@
 <template>
   <div class="editor-view fill flex-col over-hidden">
-    <editor-bar :editor-id="id" :splitter-id="splitterId" @click-tab="handleClickTab"></editor-bar>
+    <editor-bar
+      :editor-id="id"
+      :splitter-id="splitterId"
+      @click-tab="handleClickTab"
+    ></editor-bar>
     <overlap-monitor
       v-if="editorWrapperStore.draggingTabInfo"
       @selectPosition="handleSelectSplitPosition"

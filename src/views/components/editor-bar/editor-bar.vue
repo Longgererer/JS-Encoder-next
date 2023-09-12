@@ -16,7 +16,7 @@
         @mousedown="handleClickTab(tabId)"
         @dragstart="handleTabDragstart(tabId)"
         @dragend="handleTabDragend()"
-        @drop.prevent="handleTabDrop(tabId)"
+        @drop.prevent="handleTabDrop()"
         @dragover.prevent="handleTabDragover(tabId)">
         <span class="editor-tab-title code-font">{{ (tabMap[tabId]).prep }}</span>
       </div>
@@ -68,10 +68,10 @@ const props = defineProps<{
   splitterId: number
 }>()
 
-/** pinia */
+/** store */
 const editorWrapperStore = useEditorWrapperStore()
-const { updateEditor, updateDraggingTabInfo } = editorWrapperStore
-const { editorMap, draggingTabInfo, tabMap } = storeToRefs(editorWrapperStore)
+const { updateEditor, updateDraggingTabInfo, deleteSplitter, updateSplitter } = editorWrapperStore
+const { editorMap, draggingTabInfo, tabMap, editorSplitterMap } = storeToRefs(editorWrapperStore)
 
 /** service */
 const utilService = new UtilService()
@@ -125,7 +125,7 @@ const handleTabDragend = (): void => {
  * 如果是在右侧边栏释放tab，则tab放到最右边，若是放到其他tab上，则放到对应tab的左边
  * 如果没有传tabId表示是右侧工具栏
  */
-const handleTabDrop = (tabId?: number): void => {
+const handleTabDrop = (): void => {
   const { editorId: fromEditorId, tabId: draggingTabId } = draggingTabInfo.value!
   const { tabIds: fromTabIds } = editorMap.value[fromEditorId]
   const { id: toEditorId, tabIds: toTabIds } = editor
@@ -144,8 +144,11 @@ const handleTabDrop = (tabId?: number): void => {
         tabIds: finalFromTabIds,
         ...(finalFromTabIds.length ? { displayTabId: finalFromTabIds[0] } : null),
       })
+      updateEditor(toEditorId, { tabIds: [...toTabIds, draggingTabId], displayTabId: draggingTabId })
+      processUniqueTabEditor()
+    } else {
+      updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
     }
-    updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
   } else {
     // tab拖到其他tab上
     /** 当前被重叠(高亮)tab的index */
@@ -160,8 +163,10 @@ const handleTabDrop = (tabId?: number): void => {
         tabIds: finalFromTabIds,
         ...(finalFromTabIds.length ? { displayTabId: finalFromTabIds[0] } : null),
       })
-      const finalToTabIds = toTabIds.splice(currOverlapTabIndex, 0, draggingTabId)
+      const finalToTabIds = [...toTabIds]
+      finalToTabIds.splice(currOverlapTabIndex, 0, draggingTabId)
       updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
+      processUniqueTabEditor()
     }
   }
   updateDraggingTabInfo(null)
@@ -169,6 +174,39 @@ const handleTabDrop = (tabId?: number): void => {
   resetHookState()
   // 清除数据，tab高亮消失
   resetDragState()
+}
+
+/**
+ * 处理被拖动tab是fromEditor唯一tab的情况
+ * 如果fromEdtior的parentSplitter与toEditor的一样，那么就删掉parentSplitter的两个splitter，把toEditor设置给parentSplitter
+ * 如果不一样的话只删除fromSplitter
+ */
+const processUniqueTabEditor = (): void => {
+  const { editorId: fromEditorId, tabId: draggingTabId } = draggingTabInfo.value!
+  const { tabIds: fromTabIds, parentId: fromParentId } = editorMap.value[fromEditorId]
+  const { id: toEditorId, tabIds: toTabIds, parentId: toParentId } = editor
+  const { id: fromSplitterId } = editorSplitterMap.value[fromParentId!]
+  const { id: toSplitterId, parentId: toSplitterParentId } = editorSplitterMap.value[toParentId!]
+  const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
+  console.log(fromSplitterId, toSplitterId)
+  if (isSameParent) {
+    deleteSplitter(fromSplitterId, true)
+    deleteSplitter(toSplitterId)
+    console.log("toSplitterParentId", toSplitterParentId)
+    updateSplitter(toSplitterParentId!, {
+      children: [],
+      editorId: toEditorId,
+    })
+  } else {
+    deleteSplitter(fromSplitterId)
+  }
+}
+
+/** 检查两个splitter的父splitter是否同一个 */
+const checkIsSameParent = (splitterId1: number, splitterId2: number): boolean => {
+  const splitter1 = editorSplitterMap.value[splitterId1]
+  const splitter2 = editorSplitterMap.value[splitterId2]
+  return splitter1.parentId === splitter2.parentId
 }
 
 const resetDragState = () => {

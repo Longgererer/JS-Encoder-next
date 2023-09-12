@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useEditorWrapperStore } from "@store/editorWrapper"
 import { ref, watch } from "vue"
-import { AreaPosition, SplitDirection } from "@type/editor"
+import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"
 import { ISize } from "@type/interface"
 import ModuleSizeService, { SPLITTER_MIN_HEIGHT, SPLITTER_MIN_WIDTH } from "@utils/services/module-size-service"
@@ -93,6 +93,7 @@ watch(() => props.height, (newHeight, oldHeight = 0) => {
 watch(() => editorSplitter.editorId, (editorId) => {
   if (editorId) {
     childrenSizeMap.value = {}
+    console.log(childrenSizeMap.value)
   } else {
     const { width, height } = props
     const { direction, children = [] } = editorSplitter
@@ -136,11 +137,13 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
   // 获取拖动tab的信息
   const { tabId, editorId: fromEditorId, splitterId: fromSplitterId } = draggingTabInfo.value!
   // 获取释放tab所在splitter的信息
-  const { editorId: toEditorId, id: toSplitterId } = editorSplitter
+  const { editorId: toEditorId, id: toSplitterId, parentId } = editorSplitter
   /** 是否是fromEditor内的唯一tab */
   const isUniqueTab = editorMap.value[fromEditorId].tabIds.length === 1
   /** fromEditorId和toEditorId是否同一个 */
   const isCurrEditor = fromEditorId === toEditorId
+  /** 两个splitter是否来自同一个父splitter */
+  const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
   /** 释放位置是否是中间 */
   const isMiddleArea = splitPosition === AreaPosition.MIDDLE
   // 先判断哪些情况是不需要处理的
@@ -156,12 +159,24 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
     // 前面已经过滤过了，这里只处理isCurrEditor为false的情况即可
     if (isUniqueTab) {
       // 如果拖动的tab是所在editor的唯一tab，那就需要删掉旧的editor，然后将新的tab放到目标editor中
-      deleteEditor(fromEditorId)
       const newToTabIds = [...toTabIds, tabId]
       updateEditor(toEditorId!, {
         tabIds: newToTabIds,
-        displayTabId: newToTabIds[0],
+        displayTabId: tabId,
       })
+      /**
+       * 删除fromSplitter
+       * 如果fromSplitterId和toSplitter在同一个splitter下面，就删除这两个splitter
+       * 将toSplitter的editor设置给parentSplitter，parentSplitter清空children和childrenSizeMap
+       */
+      if (isSameParent) {
+        deleteSplitter(fromSplitterId, true)
+        deleteSplitter(toSplitterId)
+        updateSplitter(parentId!, {
+          children: [],
+          editorId: toEditorId,
+        })
+      }
     } else {
       // 如果不是唯一的tab，那就要把被拖动的tab从toEditor移动到fromEditor中
       const [newFromTabIds, newToTabIds] = utilService.moveArrItemToOtherArr({
@@ -175,12 +190,11 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
       })
       updateEditor(toEditorId!, {
         tabIds: newToTabIds,
-        displayTabId: newToTabIds[0],
+        displayTabId: tabId,
       })
     }
   } else {
     if (isCurrEditor) {
-      console.log(123123131)
       // 需要将释放tab所在的splitter下面新增两个子splitter
       processSpliteArea(toSplitterId, tabId, splitPosition)
       const newFromTabIds = utilService.deleteFirstMatchArrayItem(fromTabIds, tabId)
@@ -190,6 +204,7 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
       })
     } else {
       if (isUniqueTab) {
+        console.log(123123123123123)
         deleteEditor(fromEditorId)
       } else {
       }
@@ -216,8 +231,9 @@ const processSpliteArea = (splitterId: number, tabId: number, splitPosition: Are
     parentId: splitterId,
     editorId: isFirst ? toEditorId : newEditor.id,
   })
+  updateEditor(newEditor.id, { parentId: isFirst ? newSplitter1.id : newSplitter2.id })
+  updateEditor(toEditorId!, { parentId: isFirst ? newSplitter2.id : newSplitter1.id })
   // 修改旧splitter的分割方向以及子splitter，移除原有的editorId
-  console.log(splitterId)
   updateSplitter(splitterId, {
     direction: isHorizontal ? SplitDirection.HORIZONTAL : SplitDirection.VERTICAL,
     children: [newSplitter1.id, newSplitter2.id],
@@ -237,6 +253,13 @@ const getSpliteDirectionInfo = (
     [AreaPosition.MIDDLE]: null,
     [AreaPosition.NULL]: null,
   }[splitPosition]
+}
+
+/** 检查两个splitter的父splitter是否同一个 */
+const checkIsSameParent = (splitterId1: number, splitterId2: number): boolean => {
+  const splitter1 = editorSplitterMap.value[splitterId1]
+  const splitter2 = editorSplitterMap.value[splitterId2]
+  return splitter1.parentId === splitter2.parentId
 }
 </script>
 
