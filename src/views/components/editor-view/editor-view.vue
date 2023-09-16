@@ -13,16 +13,19 @@
 </template>
 
 <script setup lang="ts">
+/** modules */
 import { useEditorWrapperStore } from "@store/editorWrapper"
 import { AreaPosition } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 
+/** props */
 const props = defineProps<{
   splitterId: number
   id: number
 }>()
+/** emits */
 const emits = defineEmits<{
   (e: "selectSplitPosition", splitPosition: AreaPosition): void
 }>()
@@ -43,4 +46,8 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.editor-view {
+  background: #000;
+}
+</style>

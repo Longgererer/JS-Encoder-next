@@ -90,10 +90,10 @@ watch(() => props.height, (newHeight, oldHeight = 0) => {
  * 如果editorId不为空，说明有没子splitter，需要清空childrenSizeMap
  * 如果editorId为空，说明有子splitter，需要根据direction将宽高均分给两个子splitter
  */
-watch(() => editorSplitter.editorId, (editorId) => {
+watch(() => [editorSplitter.editorId, editorSplitter.children], ([editorId]) => {
+  console.log(111, editorId)
   if (editorId) {
     childrenSizeMap.value = {}
-    console.log(childrenSizeMap.value)
   } else {
     const { width, height } = props
     const { direction, children = [] } = editorSplitter
@@ -194,6 +194,8 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
       })
     }
   } else {
+    /** 判断分割方向是否横向 */
+    const isHorizontal = [AreaPosition.RIGHT, AreaPosition.LEFT].includes(splitPosition)
     if (isCurrEditor) {
       // 需要将释放tab所在的splitter下面新增两个子splitter
       processSpliteArea(toSplitterId, tabId, splitPosition)
@@ -204,8 +206,15 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
       })
     } else {
       if (isUniqueTab) {
-        console.log(123123123123123)
-        deleteEditor(fromEditorId)
+        // 如果是唯一tab，需要删除fromSplitter，然后分割目标splitter区域
+        deleteSplitter(fromSplitterId, true)
+        deleteSplitter(toSplitterId)
+        console.log(fromSplitterId, toSplitterId, parentId)
+        updateSplitter(parentId!, {
+          children: [],
+          editorId: toEditorId,
+        })
+        processSpliteArea(parentId!, tabId, splitPosition)
       } else {
       }
     }
@@ -218,6 +227,7 @@ const processSpliteArea = (splitterId: number, tabId: number, splitPosition: Are
   // 判断分割方向
   const spliteDirectionInfo = getSpliteDirectionInfo(splitPosition)
   if (!spliteDirectionInfo) { return }
+  console.log("splitPosition", splitPosition)
   const { isFirst, isHorizontal } = spliteDirectionInfo
   const { editorId: toEditorId } = editorSplitter
   // 创建新的editor，将tab放到editor中设置为当前展示

@@ -133,6 +133,8 @@ const handleTabDrop = (): void => {
   const isCurrEditor = props.editorId === fromEditorId
   /** 拖拽tab的index */
   const draggingTabIndex = fromTabIds.findIndex((id) => draggingTabId === id)
+  /** 是否是fromEditor内的唯一tab */
+  const isUniqueTab = editorMap.value[fromEditorId].tabIds.length === 1
   if (isOverlapRightSide.value) {
     // tab拖到右侧工具栏
     // 将tab挪到最后
@@ -145,7 +147,9 @@ const handleTabDrop = (): void => {
         ...(finalFromTabIds.length ? { displayTabId: finalFromTabIds[0] } : null),
       })
       updateEditor(toEditorId, { tabIds: [...toTabIds, draggingTabId], displayTabId: draggingTabId })
-      processUniqueTabEditor()
+      if (isUniqueTab) {
+        processUniqueTabEditor()
+      }
     } else {
       updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
     }
@@ -166,7 +170,9 @@ const handleTabDrop = (): void => {
       const finalToTabIds = [...toTabIds]
       finalToTabIds.splice(currOverlapTabIndex, 0, draggingTabId)
       updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
-      processUniqueTabEditor()
+      if (isUniqueTab) {
+        processUniqueTabEditor()
+      }
     }
   }
   updateDraggingTabInfo(null)
@@ -188,11 +194,9 @@ const processUniqueTabEditor = (): void => {
   const { id: fromSplitterId } = editorSplitterMap.value[fromParentId!]
   const { id: toSplitterId, parentId: toSplitterParentId } = editorSplitterMap.value[toParentId!]
   const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
-  console.log(fromSplitterId, toSplitterId)
   if (isSameParent) {
     deleteSplitter(fromSplitterId, true)
     deleteSplitter(toSplitterId)
-    console.log("toSplitterParentId", toSplitterParentId)
     updateSplitter(toSplitterParentId!, {
       children: [],
       editorId: toEditorId,
