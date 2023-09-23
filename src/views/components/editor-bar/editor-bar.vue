@@ -119,6 +119,7 @@ const resetHookState = useDragleaveJudge(editorBarRef, () => {
 /** 拖动结束，清除数据 */
 const handleTabDragend = (): void => {
   isOverlapRightSide.value = false
+  updateDraggingTabInfo(null)
 }
 /**
  * 拖动释放，对tab位置进行处理

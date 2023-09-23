@@ -90,30 +90,68 @@ watch(() => props.height, (newHeight, oldHeight = 0) => {
  * 如果editorId不为空，说明有没子splitter，需要清空childrenSizeMap
  * 如果editorId为空，说明有子splitter，需要根据direction将宽高均分给两个子splitter
  */
-watch(() => [editorSplitter.editorId, editorSplitter.children], ([editorId]) => {
-  console.log(111, editorId)
-  if (editorId) {
-    childrenSizeMap.value = {}
-  } else {
-    const { width, height } = props
-    const { direction, children = [] } = editorSplitter
-    const [splitterSize1, splitterSize2] = moduleSizeService.getHalfModuleSize(
-      { width, height },
-      direction === SplitDirection.HORIZONTAL,
-    )
-    console.log(editorSplitter, splitterSize1, splitterSize2, width, height, props)
-    const [splitterId1, spliiterId2] = children
-    childrenSizeMap.value = {
-      [splitterId1]: splitterSize1,
-      [spliiterId2]: splitterSize2,
+watch(
+  () => [editorSplitter.editorId, editorSplitter.children],
+  ([newEditorId, newChildren], [oldEditorId, oldChildren]) => {
+    const isChangeEditorId = newEditorId !== oldEditorId
+    if (isChangeEditorId) {
+      if (newEditorId) {
+        // 如果newEditorId不为空，说明是设置了editorId，而children是空的，因此要清空尺寸数据
+        childrenSizeMap.value = {}
+      } else {
+        setSplitterChildrenSize()
+      }
+    } else {
+      if ((newChildren as number[]).length === 1) {
+        // 如果只有一个子splitter，那就直接继承这个子splitter的editorId和children
+        const { id, children, editorId, parentId } = editorSplitter
+        const {
+          id: childSplitterId,
+          editorId: childEditorId,
+          children: childSplitterChildren,
+          direction: childDirection,
+        } = editorSplitterMap.value[children![0]]
+        deleteSplitter(childSplitterId)
+        updateSplitter(id, {
+          editorId: childEditorId,
+          children: childSplitterChildren,
+          direction: childDirection,
+        })
+        childSplitterChildren?.forEach((childrenId) => {
+          updateSplitter(childrenId, {
+            parentId: id,
+          })
+        })
+      } else {
+        setSplitterChildrenSize()
+      }
     }
+  },
+)
+
+function setSplitterChildrenSize(): void {
+  const { width, height } = props
+  const { direction, children = [] } = editorSplitter
+  const [splitterSize1, splitterSize2] = moduleSizeService.getHalfModuleSize(
+    { width, height },
+    direction === SplitDirection.HORIZONTAL,
+  )
+  const [splitterId1, spliiterId2] = children
+  childrenSizeMap.value = {
+    [splitterId1]: splitterSize1,
+    [spliiterId2]: splitterSize2,
   }
-})
+}
 
 /** 在改变宽高时设置子splitter的尺寸 */
-const setChildrenSplitterSize = (changeSize: number) => {
+function setChildrenSplitterSize(changeSize: number): void {
   const { children = [], direction } = editorSplitter
   const [splitterId1, spliiterId2] = children
+  const splitterI1Size = childrenSizeMap.value[splitterId1]
+  const splitterI2Size = childrenSizeMap.value[spliiterId2]
+  if (!splitterI1Size || !splitterI2Size) {
+    setSplitterChildrenSize()
+  }
   const [splitterSize1, splitterSize2] = moduleSizeService.getNewModulesSize(
     childrenSizeMap.value[splitterId1],
     childrenSizeMap.value[spliiterId2],
@@ -146,6 +184,7 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
   const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
   /** 释放位置是否是中间 */
   const isMiddleArea = splitPosition === AreaPosition.MIDDLE
+  console.log(isMiddleArea, isUniqueTab, isCurrEditor, isSameParent)
   // 先判断哪些情况是不需要处理的
   // 释放的editor和tab之前所在的editor是同一个 && (当前tab释放区域为中间 || fromEditor只有一个tab)
   if (isCurrEditor && (isMiddleArea || isUniqueTab)) {
@@ -176,6 +215,8 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
           children: [],
           editorId: toEditorId,
         })
+      } else {
+        deleteSplitter(fromSplitterId, true)
       }
     } else {
       // 如果不是唯一的tab，那就要把被拖动的tab从toEditor移动到fromEditor中
@@ -194,8 +235,6 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
       })
     }
   } else {
-    /** 判断分割方向是否横向 */
-    const isHorizontal = [AreaPosition.RIGHT, AreaPosition.LEFT].includes(splitPosition)
     if (isCurrEditor) {
       // 需要将释放tab所在的splitter下面新增两个子splitter
       processSpliteArea(toSplitterId, tabId, splitPosition)
@@ -207,27 +246,40 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
     } else {
       if (isUniqueTab) {
         // 如果是唯一tab，需要删除fromSplitter，然后分割目标splitter区域
-        deleteSplitter(fromSplitterId, true)
-        deleteSplitter(toSplitterId)
-        console.log(fromSplitterId, toSplitterId, parentId)
-        updateSplitter(parentId!, {
-          children: [],
-          editorId: toEditorId,
-        })
-        processSpliteArea(parentId!, tabId, splitPosition)
+        if (isSameParent) {
+          deleteSplitter(fromSplitterId, true)
+          deleteSplitter(toSplitterId)
+          updateSplitter(parentId!, {
+            children: [],
+            editorId: toEditorId,
+          })
+          processSpliteArea(parentId!, tabId, splitPosition)
+        } else {
+          deleteSplitter(fromSplitterId, true)
+          processSpliteArea(toSplitterId, tabId, splitPosition)
+        }
       } else {
+        const newFromTabIds = utilService.deleteFirstMatchArrayItem(fromTabIds, tabId)
+        updateEditor(fromEditorId, {
+          tabIds: newFromTabIds,
+          displayTabId: newFromTabIds[0],
+        })
+        processSpliteArea(toSplitterId, tabId, splitPosition)
       }
     }
   }
-  updateDraggingTabInfo(null)
 }
 
-/** 分割splitter区域 */
+/**
+ * 分割splitter区域
+ * @param splitterId 被分割的splitterId
+ * @param tabId 被拖动的tab
+ * @param splitPosition 分割位置
+ */
 const processSpliteArea = (splitterId: number, tabId: number, splitPosition: AreaPosition) => {
   // 判断分割方向
   const spliteDirectionInfo = getSpliteDirectionInfo(splitPosition)
   if (!spliteDirectionInfo) { return }
-  console.log("splitPosition", splitPosition)
   const { isFirst, isHorizontal } = spliteDirectionInfo
   const { editorId: toEditorId } = editorSplitter
   // 创建新的editor，将tab放到editor中设置为当前展示

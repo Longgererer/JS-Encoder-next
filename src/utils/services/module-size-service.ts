@@ -79,6 +79,7 @@ export default class ModuleSizeService {
     isHorizontal: boolean,
     changeSize: number,
   ): IModuleInfo[] {
+    console.log(module1, module2)
     let finalChangeSize = changeSize
     // 根据分割方向判断要处理的key
     const sizeKey = isHorizontal ? "width" : "height"

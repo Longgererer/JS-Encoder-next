@@ -48,6 +48,5 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
 
 <style lang="scss" scoped>
 .editor-view {
-  background: #000;
 }
 </style>
