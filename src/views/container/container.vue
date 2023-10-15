@@ -11,7 +11,9 @@ import UploadCodeModal from "@views/components/modals/upload-code-modal/upload-c
 import DownloadCodeModal from "@views/components/modals/download-code-modal/download-code-modal.vue"
 import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
 import UpdateLogModal from "@views/components/modals/update-log-modal/update-log-modal.vue"
-import { onMounted, watch } from "vue"
+import SplitLine from "@views/components/split-line/split-line.vue"
+import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
+import { onMounted, ref, watch } from "vue"
 import {
   getModulesHeight,
   getModulesWidth,
@@ -111,10 +113,13 @@ const processFinishResize = (): void => {
       <editor-wrapper></editor-wrapper>
     </div>
     <!--分割线-->
-    <div
-      class="resize-line resize-y cursor-x-resize bg-main2 fade-ease"
+    <split-line
+      :size="4"
+      :activeSize="4"
+      :direction="SplitDirection.HORIZONTAL"
+      full-default-bg
       @mousedown="handleResizeEditorAndResult"
-    ></div>
+    ></split-line>
     <!--结果-->
     <div :style="{ width: `${modulesSize.resultWidth}px` }">
       <preview

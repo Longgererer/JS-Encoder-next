@@ -7,19 +7,24 @@
     <!--  children不为空，表示不为叶子节点，存在子splitter  -->
     <template v-if="editorSplitter?.children?.length">
       <template v-for="(item, index) in editorSplitter.children" :key="item">
-        <!--  如果只有一个splitter，不需要分割线进行分割，如果有两个splitter，则需要根据方向来进行分割  -->
-        <div
-          v-if="index > 0"
-          class="resize-line cursor-x-resize bg-main2 fade-ease"
-          :class="editorSplitter.direction === SplitDirection.HORIZONTAL ? 'resize-x' : 'resize-y'"
-          @mousedown="handleResizeSplitter"
-        ></div>
-        <editor-splitter
-          :id="item"
-          :parent-id="props.id"
-          :width="childrenSizeMap[item]?.width"
-          :height="childrenSizeMap[item]?.height"
-        ></editor-splitter>
+        <div class="relative">
+          <!--  如果只有一个splitter，不需要分割线进行分割，如果有两个splitter，则需要根据方向来进行分割  -->
+          <split-line
+            v-if="index > 0"
+            class="absolute"
+            :size="splitLineSize / 2"
+            :active-size="splitLineSize"
+            :direction="editorSplitter.direction"
+            :style="splitLinePositionStyle"
+            @mousedown="handleResizeSplitter"
+          ></split-line>
+          <editor-splitter
+            :id="item"
+            :parent-id="props.id"
+            :width="childrenSizeMap[item]?.width"
+            :height="childrenSizeMap[item]?.height"
+          ></editor-splitter>
+        </div>
       </template>
     </template>
     <!--  children为空，表示其为叶子节点，下面包含着编辑视口  -->
@@ -36,13 +41,14 @@
 
 <script setup lang="ts">
 import { useEditorWrapperStore } from "@store/editorWrapper"
-import { ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"
 import { ISize } from "@type/interface"
 import ModuleSizeService, { SPLITTER_MIN_HEIGHT, SPLITTER_MIN_WIDTH } from "@utils/services/module-size-service"
 import EditorView from "@views/components/editor-view/editor-view.vue"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
+import SplitLine from "@views/components/split-line/split-line.vue"
 import UtilService from "@utils/services/util-service"
 
 const props = defineProps<{
@@ -69,6 +75,18 @@ const utilService = new UtilService()
 const editorSplitter = editorSplitterMap.value[props.id]
 /** 存放子splitter size */
 const childrenSizeMap = ref<Record<number, ISize>>({})
+
+/** 分割线定位样式 */
+const splitLineSize = 4
+const splitLinePositionStyle = computed(() => {
+  const { direction } = editorSplitter
+  const isHorizontal = direction === SplitDirection.HORIZONTAL
+  return {
+    top: isHorizontal ? 0 : `${-splitLineSize}px`,
+    left: isHorizontal ? `${-splitLineSize}px` : 0,
+    ...(isHorizontal ? { bottom: 0 } : { right: 0 }),
+  }
+})
 
 /**
  * 监听改变的宽高将改变均分到children中
@@ -136,25 +154,25 @@ function setSplitterChildrenSize(): void {
     { width, height },
     direction === SplitDirection.HORIZONTAL,
   )
-  const [splitterId1, spliiterId2] = children
+  const [splitterId1, splitterId2] = children
   childrenSizeMap.value = {
     [splitterId1]: splitterSize1,
-    [spliiterId2]: splitterSize2,
+    [splitterId2]: splitterSize2,
   }
 }
 
 /** 在改变宽高时设置子splitter的尺寸 */
 function setChildrenSplitterSize(changeSize: number): void {
   const { children = [], direction } = editorSplitter
-  const [splitterId1, spliiterId2] = children
+  const [splitterId1, splitterId2] = children
   const splitterI1Size = childrenSizeMap.value[splitterId1]
-  const splitterI2Size = childrenSizeMap.value[spliiterId2]
+  const splitterI2Size = childrenSizeMap.value[splitterId2]
   if (!splitterI1Size || !splitterI2Size) {
     setSplitterChildrenSize()
   }
   const [splitterSize1, splitterSize2] = moduleSizeService.getNewModulesSize(
     childrenSizeMap.value[splitterId1],
-    childrenSizeMap.value[spliiterId2],
+    childrenSizeMap.value[splitterId2],
     direction === SplitDirection.HORIZONTAL,
     changeSize,
   )
@@ -166,7 +184,7 @@ function setChildrenSplitterSize(changeSize: number): void {
 
 
 const handleResizeSplitter = () => {
-
+  console.log(123123)
 }
 
 /** tab拖动所导致的splitter分割 */
@@ -184,7 +202,6 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
   const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
   /** 释放位置是否是中间 */
   const isMiddleArea = splitPosition === AreaPosition.MIDDLE
-  console.log(isMiddleArea, isUniqueTab, isCurrEditor, isSameParent)
   // 先判断哪些情况是不需要处理的
   // 释放的editor和tab之前所在的editor是同一个 && (当前tab释放区域为中间 || fromEditor只有一个tab)
   if (isCurrEditor && (isMiddleArea || isUniqueTab)) {
@@ -237,7 +254,7 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
   } else {
     if (isCurrEditor) {
       // 需要将释放tab所在的splitter下面新增两个子splitter
-      processSpliteArea(toSplitterId, tabId, splitPosition)
+      processSplitArea(toSplitterId, tabId, splitPosition)
       const newFromTabIds = utilService.deleteFirstMatchArrayItem(fromTabIds, tabId)
       updateEditor(fromEditorId, {
         tabIds: newFromTabIds,
@@ -253,10 +270,10 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
             children: [],
             editorId: toEditorId,
           })
-          processSpliteArea(parentId!, tabId, splitPosition)
+          processSplitArea(parentId!, tabId, splitPosition)
         } else {
           deleteSplitter(fromSplitterId, true)
-          processSpliteArea(toSplitterId, tabId, splitPosition)
+          processSplitArea(toSplitterId, tabId, splitPosition)
         }
       } else {
         const newFromTabIds = utilService.deleteFirstMatchArrayItem(fromTabIds, tabId)
@@ -264,7 +281,7 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
           tabIds: newFromTabIds,
           displayTabId: newFromTabIds[0],
         })
-        processSpliteArea(toSplitterId, tabId, splitPosition)
+        processSplitArea(toSplitterId, tabId, splitPosition)
       }
     }
   }
@@ -276,11 +293,11 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
  * @param tabId 被拖动的tab
  * @param splitPosition 分割位置
  */
-const processSpliteArea = (splitterId: number, tabId: number, splitPosition: AreaPosition) => {
+const processSplitArea = (splitterId: number, tabId: number, splitPosition: AreaPosition) => {
   // 判断分割方向
-  const spliteDirectionInfo = getSpliteDirectionInfo(splitPosition)
-  if (!spliteDirectionInfo) { return }
-  const { isFirst, isHorizontal } = spliteDirectionInfo
+  const splitDirectionInfo = getSplitDirectionInfo(splitPosition)
+  if (!splitDirectionInfo) { return }
+  const { isFirst, isHorizontal } = splitDirectionInfo
   const { editorId: toEditorId } = editorSplitter
   // 创建新的editor，将tab放到editor中设置为当前展示
   const newEditor = createEditor({ displayTabId: tabId, tabIds: [tabId] })
@@ -304,7 +321,7 @@ const processSpliteArea = (splitterId: number, tabId: number, splitPosition: Are
 }
 
 /** 获取分割方向信息 */
-const getSpliteDirectionInfo = (
+const getSplitDirectionInfo = (
   splitPosition: AreaPosition,
 ): { isFirst: boolean, isHorizontal: boolean } | null => {
   return {
