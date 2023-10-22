@@ -95,12 +95,12 @@ const splitLinePositionStyle = computed(() => {
 watch(() => props.width, (newWidth, oldWidth = 0) => {
   const { children = [], editorId } = editorSplitter
   if (editorId || children.length < 2) { return }
-  setChildrenSplitterSize(newWidth - oldWidth)
+  setChildrenSplitterSize(newWidth - oldWidth, SplitDirection.HORIZONTAL)
 }, { immediate: true })
 watch(() => props.height, (newHeight, oldHeight = 0) => {
   const { children = [], editorId } = editorSplitter
   if (editorId || children.length < 2) { return }
-  setChildrenSplitterSize(newHeight - oldHeight)
+  setChildrenSplitterSize(newHeight - oldHeight, SplitDirection.VERTICAL)
 }, { immediate: true })
 
 /**
@@ -110,7 +110,7 @@ watch(() => props.height, (newHeight, oldHeight = 0) => {
  */
 watch(
   () => [editorSplitter.editorId, editorSplitter.children],
-  ([newEditorId, newChildren], [oldEditorId, oldChildren]) => {
+  ([newEditorId, newChildren], [oldEditorId]) => {
     const isChangeEditorId = newEditorId !== oldEditorId
     if (isChangeEditorId) {
       if (newEditorId) {
@@ -162,7 +162,7 @@ function setSplitterChildrenSize(): void {
 }
 
 /** 在改变宽高时设置子splitter的尺寸 */
-function setChildrenSplitterSize(changeSize: number): void {
+function setChildrenSplitterSize(changeSize: number, changeDirection?: SplitDirection): void {
   const { children = [], direction } = editorSplitter
   const [splitterId1, splitterId2] = children
   const splitter1Size = childrenSizeMap.value[splitterId1]
@@ -170,15 +170,24 @@ function setChildrenSplitterSize(changeSize: number): void {
   if (!splitter1Size || !splitter2Size) {
     setSplitterChildrenSize()
   }
-  const [splitterSize1, splitterSize2] = moduleSizeService.getNewModulesSize(
-    childrenSizeMap.value[splitterId1],
-    childrenSizeMap.value[splitterId2],
-    direction === SplitDirection.HORIZONTAL,
-    changeSize,
-  )
+  /**
+   * 需要比对更改尺寸的方向和当前splitter的分割方向是否一样
+   * 如果不一样，就只是改变直接子splitter的宽度或高度，不需要均分尺寸的改变
+   * 如果一样，就需要将尺寸改变均分到各个直接子splitter
+   */
+  const changeKey = changeDirection === SplitDirection.HORIZONTAL ? "width" : "height"
+  if (changeDirection === direction) {
+    changeSize = changeSize / 2
+  }
   childrenSizeMap.value = {
-    [splitterId1]: splitterSize1 as ISize,
-    [splitterId2]: splitterSize2 as ISize,
+    [splitterId1]: {
+      ...splitter1Size,
+      [changeKey]: splitter1Size[changeKey] + changeSize,
+    },
+    [splitterId2]: {
+      ...splitter2Size,
+      [changeKey]: splitter2Size[changeKey] + changeSize,
+    },
   }
 }
 
