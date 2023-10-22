@@ -5,6 +5,5 @@ export interface IProps {
   activeSize?: number | string
   direction?: SplitDirection
   showCursor?: boolean
-  fullDefaultBg?: boolean
   isActive?: boolean
 }

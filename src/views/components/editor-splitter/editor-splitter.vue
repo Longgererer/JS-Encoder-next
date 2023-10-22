@@ -165,9 +165,9 @@ function setSplitterChildrenSize(): void {
 function setChildrenSplitterSize(changeSize: number): void {
   const { children = [], direction } = editorSplitter
   const [splitterId1, splitterId2] = children
-  const splitterI1Size = childrenSizeMap.value[splitterId1]
-  const splitterI2Size = childrenSizeMap.value[splitterId2]
-  if (!splitterI1Size || !splitterI2Size) {
+  const splitter1Size = childrenSizeMap.value[splitterId1]
+  const splitter2Size = childrenSizeMap.value[splitterId2]
+  if (!splitter1Size || !splitter2Size) {
     setSplitterChildrenSize()
   }
   const [splitterSize1, splitterSize2] = moduleSizeService.getNewModulesSize(
@@ -178,13 +178,35 @@ function setChildrenSplitterSize(changeSize: number): void {
   )
   childrenSizeMap.value = {
     [splitterId1]: splitterSize1 as ISize,
-    [splitterId1]: splitterSize2 as ISize,
+    [splitterId2]: splitterSize2 as ISize,
   }
 }
 
 
-const handleResizeSplitter = () => {
-  console.log(123123)
+const handleResizeSplitter = (e: MouseEvent) => {
+  const { direction, children = [] } = editorSplitter
+  const isHorizontal = direction === SplitDirection.HORIZONTAL
+  const startPos = isHorizontal ? e.clientX : e.clientY
+  const [splitterId1, splitterId2] = children
+  const splitter1Size = childrenSizeMap.value[splitterId1]
+  const splitter2Size = childrenSizeMap.value[splitterId2]
+  document.onmousemove = (event: MouseEvent) => {
+    const changeSize = startPos - (isHorizontal ? event.clientX : event.clientY)
+    const [size1, size2] = moduleSizeService.getNewModulesSize(
+      splitter1Size,
+      splitter2Size,
+      isHorizontal,
+      changeSize,
+    )
+    childrenSizeMap.value = {
+      [splitterId1]: size1 as ISize,
+      [splitterId2]: size2 as ISize,
+    }
+    document.onmouseup = () => {
+      document.onmouseup = null
+      document.onmousemove = null
+    }
+  }
 }
 
 /** tab拖动所导致的splitter分割 */

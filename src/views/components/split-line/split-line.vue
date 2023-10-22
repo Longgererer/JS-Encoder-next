@@ -27,23 +27,22 @@ const props = withDefaults(defineProps<IProps>(), {
 
 /** 动态设置分割线宽高 */
 const splitLineSizeStyle = computed(() => {
-  const { size, direction, activeSize = size, fullDefaultBg } = props
+  const { size, direction, activeSize = size } = props
   const isHorizontal = direction === SplitDirection.HORIZONTAL
-  const borderSize = Number(size) / (fullDefaultBg ? 1 : 2)
   if (isHorizontal) {
     return {
-      width: `${size}px`,
+      width: `${activeSize}px`,
       height: "100%",
       borderBottom: 0,
-      borderRight: `${borderSize}px solid var(--color-main-bg-2)`,
+      borderRight: `${size}px solid var(--color-main-bg-2)`,
       "--hover-width": `${activeSize}px`,
       "--hover-height": "100%",
     }
   } else {
     return {
       width: "100%",
-      height: `${size}px`,
-      borderBottom: `${borderSize}px solid var(--color-main-bg-2)`,
+      height: `${activeSize}px`,
+      borderBottom: `${size}px solid var(--color-main-bg-2)`,
       borderRight: 0,
       "--hover-width": "100%",
       "--hover-height": `${activeSize}px`,

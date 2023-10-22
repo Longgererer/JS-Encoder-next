@@ -78,8 +78,7 @@ export default class ModuleSizeService {
     module2: IModuleInfo,
     isHorizontal: boolean,
     changeSize: number,
-  ): IModuleInfo[] {
-    console.log(module1, module2)
+  ): Array<Partial<ISize>> {
     let finalChangeSize = changeSize
     // 根据分割方向判断要处理的key
     const sizeKey = isHorizontal ? "width" : "height"
@@ -102,18 +101,26 @@ export default class ModuleSizeService {
       }
     }
     return [
-      { ...module1, [sizeKey]: module1[sizeKey]! - finalChangeSize },
-      { ...module2, [sizeKey]: module2[sizeKey]! + finalChangeSize },
+      {
+        width: module1.width,
+        height: module1.height,
+        [sizeKey]: module1[sizeKey]! - finalChangeSize,
+      },
+      {
+        width: module2.width,
+        height: module2.height,
+        [sizeKey]: module2[sizeKey]! + finalChangeSize,
+      },
     ]
   }
 
   /* 将尺寸分割成两半 */
   public getHalfModuleSize(module: ISize, isHorizontal: boolean): ISize[] {
     const sizeKey = isHorizontal ? "width" : "height"
-    const halfSize = Math.floor(module[sizeKey] / 2)
+    const halfSize = Math.floor(module[sizeKey]! / 2)
     return [
       { ...module, [sizeKey]: halfSize },
-      { ...module, [sizeKey]: module[sizeKey] - halfSize },
+      { ...module, [sizeKey]: module[sizeKey]! - halfSize },
     ]
   }
 }
