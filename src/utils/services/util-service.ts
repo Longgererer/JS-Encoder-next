@@ -1,5 +1,8 @@
 import SingleInstance from "@utils/decorators/single-instance"
 
+/**
+ * 工具服务类
+ */
 @SingleInstance
 export default class UtilService {
   constructor() {}

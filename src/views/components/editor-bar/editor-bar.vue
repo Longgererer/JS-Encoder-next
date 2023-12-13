@@ -56,7 +56,7 @@ import { storeToRefs } from "pinia"
 import { useEditorWrapperStore } from "@store/editorWrapper"
 import { Align } from "@type/interface"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-import { useSidemenu } from "./hooks/sideMenu"
+import { useSideMenu } from "./hooks/sideMenu"
 import useDragleaveJudge from "@hooks/useDragleaveJudge"
 import Dropdown from "@components/dropdown/dropdown.vue"
 import DropdownItem from "@components/dropdown/dropdownItem.vue"
@@ -159,7 +159,7 @@ const handleTabDrop = (): void => {
     /** 当前被重叠(高亮)tab的index */
     const currOverlapTabIndex = toTabIds.findIndex((id) => currOverlapTabId.value === id)
     if (isCurrEditor) {
-      // 如果是当前edior，直接将tab插入到高亮tab的左边
+      // 如果是当前editor，直接将tab插入到高亮tab的左边
       const finalToTabIds = utilService.moveArrayItem(toTabIds, draggingTabIndex, currOverlapTabIndex)
       updateEditor(toEditorId, { tabIds: finalToTabIds, displayTabId: draggingTabId })
     } else {
@@ -185,7 +185,7 @@ const handleTabDrop = (): void => {
 
 /**
  * 处理被拖动tab是fromEditor唯一tab的情况
- * 如果fromEdtior的parentSplitter与toEditor的一样，那么就删掉parentSplitter的两个splitter，把toEditor设置给parentSplitter
+ * 如果fromEditor的parentSplitter与toEditor的一样，那么就删掉parentSplitter的两个splitter，把toEditor设置给parentSplitter
  * 如果不一样的话只删除fromSplitter
  */
 const processUniqueTabEditor = (): void => {
@@ -220,7 +220,7 @@ const resetDragState = () => {
 }
 
 /** 右侧工具栏菜单 */
-const { showSideMenu, sideOpts } = useSidemenu(editor, tabMap)
+const { showSideMenu, sideOpts } = useSideMenu(editor, tabMap)
 </script>
 
 <style src="./editor-bar.scss" lang="scss" scoped></style>

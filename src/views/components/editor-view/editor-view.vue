@@ -9,6 +9,7 @@
       v-if="editorWrapperStore.draggingTabInfo"
       @selectPosition="handleSelectSplitPosition"
     ></overlap-monitor>
+    <editor></editor>
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import { AreaPosition } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
+import Editor from "@views/components/editor/editor.vue"
 
 /** props */
 const props = defineProps<{

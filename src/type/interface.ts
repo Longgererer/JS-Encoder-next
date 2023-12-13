@@ -27,7 +27,10 @@ export enum Type {
 export type ObjKey = string | number | symbol
 
 /* 通用对象类型 */
-export type CommonObj = Record<ObjKey, any>
+export type AnyObject = Record<ObjKey, any>
+
+/* 通用数组类型 */
+export type AnyArray = any[]
 
 /* 什么都不返回的函数 */
 export type noop = () => void
