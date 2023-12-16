@@ -13,25 +13,6 @@ import { Prep } from "@type/prep"
 const useCodemirrorEditor = (config: EditorViewConfig) => {
   const view: EditorView = new EditorView({ ...config })
 
-  const getExtensionUpdater = () => {
-    const compartment = new Compartment()
-    // 返回个函数保留compartment引用
-    return (extension: Extension) => {
-      return compartment.get(view.state)
-        // 重新配置插件
-        ? view.dispatch({ effects: compartment.reconfigure(extension) })
-        // 注入新插件
-        : view.dispatch({ effects: StateEffect.appendConfig.of(compartment.of(extension)) })
-    }
-  }
-
-  const getExtensionToggler = (extension: Extension) => {
-    const updater = getExtensionUpdater()
-    return (newStatus?: boolean) => {
-      updater(newStatus ? extension : [])
-    }
-  }
-
   /** 获取编辑器内容 */
   const getContent = (): string => {
     return view.state.doc.toString()
@@ -48,21 +29,6 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
     })
   }
 
-  const tabSizeUpdater = getExtensionUpdater()
-  /** 设置tab size */
-  const setTabSize = (tabSize: number): void => {
-    tabSizeUpdater([
-      EditorState.tabSize.of(tabSize),
-      indentUnit.of(" ".repeat(tabSize)),
-    ])
-  }
-
-  /** 是否用tab缩进开关 */
-  const tabIndentToggler = getExtensionToggler(keymap.of([indentWithTab]))
-
-  /** 更新扩展列表 */
-  const extensionUpdater = getExtensionUpdater()
-
   /** 获得光标位置信息 */
   const getCursorPos = (): { line: number, col: number } => {
     const head = view.state.selection.main.head
@@ -73,12 +39,53 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
     }
   }
 
+  /**
+   * 扩展相关
+   */
+
+  /** 获取扩展更新方法 */
+  const getExtensionUpdater = () => {
+    const compartment = new Compartment()
+    // 返回个函数保留compartment引用
+    return (extension: Extension) => {
+      return compartment.get(view.state)
+        // 重新配置插件
+        ? view.dispatch({ effects: compartment.reconfigure(extension) })
+        // 注入新插件
+        : view.dispatch({ effects: StateEffect.appendConfig.of(compartment.of(extension)) })
+    }
+  }
+
+  /** 开启或关闭扩展 */
+  const getExtensionToggler = (extension: Extension) => {
+    const updater = getExtensionUpdater()
+    return (newStatus?: boolean) => {
+      updater(newStatus ? extension : [])
+    }
+  }
+
+  const tabSizeUpdater = getExtensionUpdater()
+  /** 设置tab size */
+  const setTabSize = (tabSize: number): void => {
+    tabSizeUpdater([
+      EditorState.tabSize.of(tabSize),
+      indentUnit.of(" ".repeat(tabSize)),
+    ])
+  }
+
+  /** 更新扩展列表 */
+  const extensionUpdater = getExtensionUpdater()
+
   const styleUpdater = getExtensionUpdater()
+  /** 设置内部样式 */
   const setStyle = (style: Record<string, AnyObject>): void => {
     styleUpdater([
       EditorView.theme(style)
     ])
   }
+
+  /** 是否用tab缩进开关 */
+  const tabIndentToggler = getExtensionToggler(keymap.of([indentWithTab]))
 
   return {
     view,

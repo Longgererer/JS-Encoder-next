@@ -14,9 +14,6 @@
     "jsxSingleQuote": true,
     "printWidth": 120
   },
-  "peerDependencies": {
-    "codemirror": "^6.0.1"
-  },
   "dependencies": {
     "@codemirror/commands": "^6.3.0",
     "@codemirror/lang-css": "^6.2.1",
@@ -33,9 +30,17 @@
     "@codemirror/state": "^6.3.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.21.4",
+    "@types/htmlhint": "^1.1.5",
+    "@typescript/vfs": "^1.5.0",
     "codemirror": "^6.0.1",
+    "eslint4b-prebuilt": "^6.7.2",
+    "htmlhint": "^1.1.4",
     "sass": "^1.53.0",
     "sass-loader": "^13.0.2",
+    "stylelint": "^16.0.2",
+    "stylelint-config-recommended-less": "^3.0.0",
+    "stylelint-config-standard": "^35.0.0",
+    "stylelint-config-standard-scss": "^12.0.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {

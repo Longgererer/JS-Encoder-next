@@ -1,6 +1,7 @@
 import { basicSetup } from "codemirror"
 import { StreamLanguage } from "@codemirror/language"
-import { javascript } from "@codemirror/lang-javascript"
+import { javascript, esLint } from "@codemirror/lang-javascript"
+import { lintGutter, linter, openLintPanel } from "@codemirror/lint"
 import { css } from "@codemirror/lang-css"
 import { html } from "@codemirror/lang-html"
 import { less } from "@codemirror/lang-less"
@@ -33,7 +34,7 @@ const Prep2LegacyExtensionMap = {
   [Prep.COFFEESCRIPT]: () => StreamLanguage.define(coffeeScript),
 }
 
-/** 获取语言对应的扩展 */
+/** 获取语言对应的基础扩展 */
 export const getPrepBaseExtension = (prep: Prep) => {
   return {
     ...Prep2ExtensionMap,
@@ -41,6 +42,13 @@ export const getPrepBaseExtension = (prep: Prep) => {
   }[prep]()
 }
 
-export const getPrepLintExtension = (prep: Prep) => {
+const Prep2LinterExtensionMap = {
 
+}
+
+/** 获取语言对应的linter扩展 */
+export const getPrepLintExtension = (prep: Prep) => {
+  return {
+    
+  }[prep]()
 }
