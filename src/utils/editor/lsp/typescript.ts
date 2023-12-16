@@ -7,7 +7,6 @@ import * as tsVfs from "@typescript/vfs"
 import ts from "typescript"
 import { CompletionContext } from "@codemirror/autocomplete"
 import { EditorView } from "codemirror"
-import { Tooltip, hoverTooltip } from "@codemirror/view"
 
 const DEFAULT_FILE_NAME = "index.ts"
 

@@ -4,6 +4,7 @@ import stylelint from "stylelint"
 import stylusLintRecommendConfig from "@utils/config/stylus-lint-recommend.config"
 import Linter from "eslint4b-prebuilt"
 import { esLint } from "@codemirror/lang-javascript"
+import { tsLinter } from "../lsp/typescript"
 
 /** 用HTMLHint实现htmlLinter */
 export const htmlLinter = linter(
@@ -56,4 +57,4 @@ export const stylusLinter = styleLinter(stylusLintRecommendConfig)
 
 export const javascriptLinter = linter(esLint(new Linter()))
 
-export const typeScriptLinter
+export const typeScriptLinter = linter(() => tsLinter() as Diagnostic[])

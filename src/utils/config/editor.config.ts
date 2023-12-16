@@ -11,6 +11,7 @@ import { markdown } from "@codemirror/lang-markdown"
 import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
+import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylusLinter, typeScriptLinter } from "@utils/editor/linter"
 
 const Prep2ExtensionMap = {
   [Prep.HTML]: html,
@@ -43,12 +44,23 @@ export const getPrepBaseExtension = (prep: Prep) => {
 }
 
 const Prep2LinterExtensionMap = {
-
+  [Prep.HTML]: htmlLinter,
+  [Prep.MARKDOWN]: () => {},
+  [Prep.PUG]: () => {},
+  [Prep.CSS]: cssLinter,
+  [Prep.SASS]: scssLinter,
+  [Prep.SCSS]: scssLinter,
+  [Prep.LESS]: lessLinter,
+  [Prep.STYLUS]: stylusLinter,
+  [Prep.JAVASCRIPT]: javascriptLinter,
+  [Prep.TYPESCRIPT]: typeScriptLinter,
+  [Prep.JSX]: () => {},
+  [Prep.COFFEESCRIPT]: () => {},
+  [Prep.VUE2]: () => {},
+  [Prep.VUE3]: () => {},
 }
 
 /** 获取语言对应的linter扩展 */
 export const getPrepLintExtension = (prep: Prep) => {
-  return {
-    
-  }[prep]()
+  return Prep2LinterExtensionMap[prep]
 }
