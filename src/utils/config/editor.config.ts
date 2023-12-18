@@ -12,6 +12,18 @@ import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
 import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylusLinter, typeScriptLinter } from "@utils/editor/linter"
+import { Extension } from "@codemirror/state"
+import { keymap } from "@codemirror/view"
+import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
+import { autocompletion } from "@codemirror/autocomplete"
+
+export const getDefaultEditorConfig = (): Extension => {
+  return [
+    basicSetup,
+    keymap.of(vscodeKeymap),
+    autocompletion({ defaultKeymap: false })
+  ]
+}
 
 const Prep2ExtensionMap = {
   [Prep.HTML]: html,

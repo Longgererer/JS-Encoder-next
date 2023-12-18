@@ -15,6 +15,7 @@
     "printWidth": 120
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.11.1",
     "@codemirror/commands": "^6.3.0",
     "@codemirror/lang-css": "^6.2.1",
     "@codemirror/lang-html": "^6.4.6",
@@ -30,6 +31,7 @@
     "@codemirror/state": "^6.3.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.21.4",
+    "@replit/codemirror-vscode-keymap": "^6.0.2",
     "@types/htmlhint": "^1.1.5",
     "@typescript/vfs": "^1.5.0",
     "codemirror": "^6.0.1",
