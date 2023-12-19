@@ -31,6 +31,8 @@
     "@codemirror/state": "^6.3.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.21.4",
+    "@emmetio/codemirror6-plugin": "^0.3.0",
+    "@replit/codemirror-indentation-markers": "^6.5.0",
     "@replit/codemirror-vscode-keymap": "^6.0.2",
     "@types/htmlhint": "^1.1.5",
     "@typescript/vfs": "^1.5.0",
@@ -43,6 +45,7 @@
     "stylelint-config-recommended-less": "^3.0.0",
     "stylelint-config-standard": "^35.0.0",
     "stylelint-config-standard-scss": "^12.0.0",
+    "thememirror": "^2.0.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {

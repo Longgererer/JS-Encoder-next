@@ -2,12 +2,7 @@ import { indentWithTab } from "@codemirror/commands"
 import { indentUnit } from "@codemirror/language"
 import { Compartment, EditorState, Extension, StateEffect } from "@codemirror/state"
 import { EditorView, EditorViewConfig, keymap } from "@codemirror/view"
-import { linter, Diagnostic } from "@codemirror/lint"
-import { javascript, esLint } from "@codemirror/lang-javascript"
-import { AnyObject, noop } from "@type/interface"
-import { shallowRef } from "vue"
-import { getPrepBaseExtension } from "@utils/config/editor.config"
-import { Prep } from "@type/prep"
+import { AnyObject } from "@type/interface"
 
 /* 构建并配置codemirror编辑器 */
 const useCodemirrorEditor = (config: EditorViewConfig) => {
