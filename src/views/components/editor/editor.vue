@@ -10,6 +10,9 @@ import useCodemirrorEditor from "@hooks/use-codemirror-editor"
 import { Prep } from "@type/prep"
 import { onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
+import { Extension } from "@codemirror/state"
+import { getDefaultEditorExtensions } from "@utils/config/editor.config"
+import { EditorView } from "codemirror"
 /** props */
 const props = defineProps<IProps>()
 /** emits */
@@ -20,15 +23,28 @@ const emits = defineEmits<IEmits>()
 const editorRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  const initConfig = {
-    
-  }
+  // 初始化编辑器
   const {
     view, getContent, setContent, setTabSize, tabIndentToggler,
-  } = useCodemirrorEditor()
+  } = useCodemirrorEditor({
+    parent: editorRef.value!,
+    extensions: [
+      getDefaultEditorExtensions(),
+      EditorView.updateListener.of((update) => {
+        if (update.docChanged) {
+          emits("change", update.state.doc.toString())
+        }
+      })
+    ],
+  })
 
-  watch(() => props.settings.tabSize, () => {
-    
+  // 监听tabSize改变
+  watch(() => props.settings.tabSize, (newTabSize) => {
+    setTabSize(newTabSize)
+  })
+  // 监听是否使用tab缩进
+  watch(() => props.settings.indentWithTab, (newStatus) => {
+    tabIndentToggler(newStatus)
   })
 })
 </script>

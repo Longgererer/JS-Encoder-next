@@ -18,7 +18,7 @@ import { autocompletion } from "@codemirror/autocomplete"
 import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
 
 /** 获取编辑器通用默认配置 */
-export const getDefaultEditorConfig = (): Extension => {
+export const getDefaultEditorExtensions = (): Extension => {
   return [
     basicSetup,
     autocompletion({ defaultKeymap: false }),

@@ -1,14 +1,11 @@
-import { basicSetup } from "codemirror"
-import { keymap, EditorView, ViewUpdate, lineNumbers } from "@codemirror/view"
-import { EditorState, Compartment, Extension, StateEffect, EditorStateConfig } from "@codemirror/state"
-import { javascript } from "@codemirror/lang-javascript"
-import { css } from "@codemirror/lang-css"
-import { html } from "@codemirror/lang-html"
+import { Extension } from "@codemirror/state"
 import { Prep } from "@type/prep"
-import { EditorViewConfig } from "@codemirror/view"
-import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language"
-import { oneDark } from "@codemirror/theme-one-dark"
-import { Ref, ShallowRef, ref, shallowRef } from "vue"
+import { getDefaultEditorExtensions } from "@utils/config/editor.config"
+import { useEditorConfigStore } from "@store/editorConfig"
+import { storeToRefs } from "pinia"
+
+export const editorConfigStore = useEditorConfigStore()
+const { indent } = storeToRefs(editorConfigStore)
 
 export interface ICodemirrorEditorSettings {
   tabSize: number
@@ -21,8 +18,5 @@ export interface IProps {
 }
 
 export interface IEmits {
-  (e: "change", index: number): void
+  (e: "change", code: string): void
 }
-
-
-
