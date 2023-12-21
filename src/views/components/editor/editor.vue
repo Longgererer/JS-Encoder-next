@@ -7,44 +7,62 @@
  * desc: 编辑器实例
  */
 import useCodemirrorEditor from "@hooks/use-codemirror-editor"
-import { Prep } from "@type/prep"
-import { onMounted, ref, watch } from "vue"
+import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
-import { Extension } from "@codemirror/state"
 import { getDefaultEditorExtensions } from "@utils/config/editor.config"
 import { EditorView } from "codemirror"
 /** props */
 const props = defineProps<IProps>()
 /** emits */
 const emits = defineEmits<IEmits>()
-/** service */
-/** store */
 
 const editorRef = ref<HTMLElement | null>(null)
+const editorView = ref<EditorView>()
 
 onMounted(() => {
   // 初始化编辑器
-  const {
-    view, getContent, setContent, setTabSize, tabIndentToggler,
-  } = useCodemirrorEditor({
+  const editor = useCodemirrorEditor({
     parent: editorRef.value!,
     extensions: [
       getDefaultEditorExtensions(),
       EditorView.updateListener.of((update) => {
+        // 监听内容改变
         if (update.docChanged) {
           emits("change", update.state.doc.toString())
         }
       })
     ],
   })
+  editorView.value = editor.view
 
-  // 监听tabSize改变
-  watch(() => props.settings.tabSize, (newTabSize) => {
-    setTabSize(newTabSize)
-  })
-  // 监听是否使用tab缩进
-  watch(() => props.settings.indentWithTab, (newStatus) => {
-    tabIndentToggler(newStatus)
+  /**
+   * 监听各种编辑器状态设置
+   */
+  watch(
+    () => props.modelValue,
+    (newContent) => {
+      if (newContent !== editor.getContent()) { return }
+      editor.setContent(newContent)
+    }
+  )
+  watch(
+    () => props.settings.tabSize,
+    (newTabSize) => editor.setTabSize(newTabSize),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.indentWithTab,
+    (newStatus) => editor.tabIndentToggler(newStatus),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.style,
+    (newStyle) => editor.setStyle(newStyle),
+    { immediate: true },
+  )
+
+  onBeforeUnmount(() => {
+    editorView.value?.destroy()
   })
 })
 </script>

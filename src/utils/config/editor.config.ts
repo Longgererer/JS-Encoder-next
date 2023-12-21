@@ -16,6 +16,14 @@ import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { autocompletion } from "@codemirror/autocomplete"
 import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
+import { emacsStyleKeymap } from "@codemirror/commands"
+import { ShortcutMode } from "@type/settings"
+
+/** 快捷键模式对应的按键映射扩展 */
+export const ShortCutMode2ExtensionMap = {
+  [ShortcutMode.VSCODE]: vscodeKeymap,
+  [ShortcutMode.EMACS]: emacsStyleKeymap,
+}
 
 /** 获取编辑器通用默认配置 */
 export const getDefaultEditorExtensions = (): Extension => {
