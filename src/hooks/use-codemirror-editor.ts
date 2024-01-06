@@ -6,7 +6,7 @@ import { linter, Diagnostic } from "@codemirror/lint"
 import { javascript, esLint } from "@codemirror/lang-javascript"
 import { AnyObject, noop } from "@type/interface"
 import { shallowRef } from "vue"
-import { getPrepBaseExtension } from "@utils/config/editor.config"
+import { getPrepBaseExtension } from "@utils/editor/config/editor.config"
 import { Prep } from "@type/prep"
 
 /* 构建并配置codemirror编辑器 */

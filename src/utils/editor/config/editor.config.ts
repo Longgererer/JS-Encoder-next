@@ -64,3 +64,4 @@ const Prep2LinterExtensionMap = {
 export const getPrepLintExtension = (prep: Prep) => {
   return Prep2LinterExtensionMap[prep]
 }
+

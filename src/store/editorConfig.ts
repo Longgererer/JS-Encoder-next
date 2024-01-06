@@ -12,7 +12,7 @@ export const useEditorConfigStore = defineStore("editorSetting", {
       },
       indent: {
         indentWithTab: true,
-        tabsize: 2,
+        tabSize: 2,
       },
       execute: {
         autoExecute: true,

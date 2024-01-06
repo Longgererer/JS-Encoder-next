@@ -25,7 +25,9 @@ onMounted(() => {
   }
   const {
     view, getContent, setContent, setTabSize, tabIndentToggler,
-  } = useCodemirrorEditor()
+  } = useCodemirrorEditor({
+    
+  })
 
   watch(() => props.settings.tabSize, () => {
     

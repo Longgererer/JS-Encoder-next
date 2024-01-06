@@ -3,9 +3,7 @@ import { defineStore } from "pinia"
 import {
   EditorCodeMap,
   EditorMap,
-  EditorSizeMap,
   EditorSplitterMap,
-  EditorSplitterSizeMap,
   EditorTabMap, IDraggingTabInfo,
   IEditor,
   IEditorSplitter,
@@ -13,9 +11,7 @@ import {
   SplitDirection,
 } from "@type/editor"
 import ModuleSizeService from "@utils/services/module-size-service"
-import { useLayoutStore } from "@store/layout"
 import UtilService from "@utils/services/util-service"
-import { ISize } from "@type/interface"
 
 /**
  * 编辑器视图展示的数据结构如state所示
