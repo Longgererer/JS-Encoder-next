@@ -2,12 +2,9 @@ import { indentWithTab } from "@codemirror/commands"
 import { indentUnit } from "@codemirror/language"
 import { Compartment, EditorState, Extension, StateEffect } from "@codemirror/state"
 import { EditorView, EditorViewConfig, keymap } from "@codemirror/view"
-import { linter, Diagnostic } from "@codemirror/lint"
-import { javascript, esLint } from "@codemirror/lang-javascript"
-import { AnyObject, noop } from "@type/interface"
-import { shallowRef } from "vue"
-import { getPrepBaseExtension } from "@utils/editor/config/editor.config"
-import { Prep } from "@type/prep"
+import { AnyObject } from "@type/interface"
+import { ShortcutMode } from "@type/settings"
+import { ShortCutMode2ExtensionMap } from "@utils/config/editor.config"
 
 /* 构建并配置codemirror编辑器 */
 const useCodemirrorEditor = (config: EditorViewConfig) => {
@@ -78,7 +75,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
 
   const styleUpdater = getExtensionUpdater()
   /** 设置内部样式 */
-  const setStyle = (style: Record<string, AnyObject>): void => {
+  const setStyle = (style: Record<string, AnyObject> = {}): void => {
     styleUpdater([
       EditorView.theme(style)
     ])
@@ -86,6 +83,12 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
 
   /** 是否用tab缩进开关 */
   const tabIndentToggler = getExtensionToggler(keymap.of([indentWithTab]))
+
+  const keymapBindingUpdater = getExtensionUpdater()
+  /** 设置快捷键模式 */
+  const setKeymapBinding = (shortcutMode: ShortcutMode): void => {
+    keymapBindingUpdater(keymap.of(ShortCutMode2ExtensionMap[shortcutMode]))
+  }
 
   return {
     view,
@@ -96,6 +99,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
     extensionUpdater,
     getCursorPos,
     setStyle,
+    setKeymapBinding,
   }
 }
 

@@ -8,17 +8,17 @@ export interface ICodemirrorEditorSettings {
   lineWrapping: boolean
   useEmmet: boolean
   tabSize: number
-  indentWithTab: boolean
   shortcutTemplate: ShortcutMode
   style: string
 }
 
 export interface IProps {
   prep: Prep,
+  modelValue: string
   settings: ICodemirrorEditorSettings
   extensions?: Extension[]
 }
 
 export interface IEmits {
-  (e: "change", index: number): void
+  (e: "change", code: string): void
 }

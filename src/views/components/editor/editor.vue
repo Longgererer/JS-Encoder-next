@@ -7,30 +7,62 @@
  * desc: 编辑器实例
  */
 import useCodemirrorEditor from "@hooks/use-codemirror-editor"
-import { Prep } from "@type/prep"
-import { onMounted, ref, watch } from "vue"
+import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
+import { getDefaultEditorExtensions } from "@utils/config/editor.config"
+import { EditorView } from "codemirror"
 /** props */
 const props = defineProps<IProps>()
 /** emits */
 const emits = defineEmits<IEmits>()
-/** service */
-/** store */
 
 const editorRef = ref<HTMLElement | null>(null)
+const editorView = ref<EditorView>()
 
 onMounted(() => {
-  const initConfig = {
-    
-  }
-  const {
-    view, getContent, setContent, setTabSize, tabIndentToggler,
-  } = useCodemirrorEditor({
-    
+  // 初始化编辑器
+  const editor = useCodemirrorEditor({
+    parent: editorRef.value!,
+    extensions: [
+      getDefaultEditorExtensions(),
+      EditorView.updateListener.of((update) => {
+        // 监听内容改变
+        if (update.docChanged) {
+          emits("change", update.state.doc.toString())
+        }
+      })
+    ],
   })
+  editorView.value = editor.view
 
-  watch(() => props.settings.tabSize, () => {
-    
+  /**
+   * 监听各种编辑器状态设置
+   */
+  watch(
+    () => props.modelValue,
+    (newContent) => {
+      if (newContent !== editor.getContent()) { return }
+      editor.setContent(newContent)
+    }
+  )
+  watch(
+    () => props.settings.tabSize,
+    (newTabSize) => editor.setTabSize(newTabSize),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.indentWithTab,
+    (newStatus) => editor.tabIndentToggler(newStatus),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.style,
+    (newStyle) => editor.setStyle(newStyle),
+    { immediate: true },
+  )
+
+  onBeforeUnmount(() => {
+    editorView.value?.destroy()
   })
 })
 </script>
