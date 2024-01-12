@@ -1,4 +1,4 @@
-/* 原生和预处理语言列表 */
+/** 原生和预处理语言列表 */
 export enum Prep {
   HTML = "HTML",
   MARKDOWN = "Markdown",
@@ -16,14 +16,14 @@ export enum Prep {
   VUE3 = "Vue3",
 }
 
-/* 原生语言列表 */
+/** 原生语言列表 */
 export enum Origin {
   HTML = "HTML",
   CSS = "CSS",
   JAVASCRIPT = "JAVASCRIPT",
 }
 
-/* 语言对应的文件后缀名 */
+/** 语言对应的文件后缀名 */
 export enum MimeType {
   HTML = "html",
   MARKDOWN = "md",
@@ -41,7 +41,7 @@ export enum MimeType {
   VUE3 = "vue",
 }
 
-/* 语言对应的codemirror高亮配置 */
+/** 语言对应的codemirror高亮配置 */
 export enum ModeStyle {
   HTML = "text/html",
   MARKDOWN = "text/md-mix",

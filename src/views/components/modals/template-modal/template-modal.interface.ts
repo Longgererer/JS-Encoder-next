@@ -7,7 +7,7 @@ export interface ITemplateItem {
   type: TemplateType
 }
 
-/* 内置模板列表 */
+/** 内置模板列表 */
 export const inbuiltTemplateList: ITemplateItem[] = [
   { lang: TemplateLang.VUE2, type: TemplateType.DEFAULT },
   { lang: TemplateLang.VUE3, type: TemplateType.DEFAULT },
@@ -18,7 +18,7 @@ export const inbuiltTemplateList: ITemplateItem[] = [
   { lang: TemplateLang.VUE3, type: TemplateType.COMPONENT },
 ]
 
-/* 不同类型模板对应的icon */
+/** 不同类型模板对应的icon */
 export const TemplateLang2IconMap = {
   [TemplateLang.VUE2]: "icon-vue",
   [TemplateLang.VUE3]: "icon-vue",
@@ -29,7 +29,7 @@ export const TemplateLang2IconMap = {
 }
 
 export interface ITemplateContent {
-  /* 模板名 */
+  /** 模板名 */
   name: string
   editorList: IEditor[]
   links: []

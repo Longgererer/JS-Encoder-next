@@ -4,15 +4,15 @@ import useClickOutside from "@hooks/useClickOutside"
 import { Trigger, Position, Align } from "@type/interface"
 
 interface IProps {
-  /* 是否显示下拉菜单 */
+  /** 是否显示下拉菜单 */
   modelValue: boolean
-  /* 触发下拉的行为 */
+  /** 触发下拉的行为 */
   trigger?: string
-  /* 菜单显示的位置 */
+  /** 菜单显示的位置 */
   position?: Position
-  /* 菜单沿着哪一边对齐 */
+  /** 菜单沿着哪一边对齐 */
   align?: Align
-  /* 是否显示三角 */
+  /** 是否显示三角 */
   showTriangle?: boolean
 }
 
@@ -36,7 +36,7 @@ const handleClickOption = (): void => {
   emits("update:modelValue", false)
 }
 
-/* 如果点击的是菜单外部，就隐藏菜单，并取消监听 */
+/** 如果点击的是菜单外部，就隐藏菜单，并取消监听 */
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
     emits("update:modelValue", false)

@@ -1,4 +1,4 @@
-/* 模板对应的语言 */
+/** 模板对应的语言 */
 export enum TemplateLang {
   VUE2 = "Vue2",
   VUE3 = "Vue3",
@@ -8,7 +8,7 @@ export enum TemplateLang {
   CUSTOM = "Custom",
 }
 
-/* 模板类型 */
+/** 模板类型 */
 export enum TemplateType {
   DEFAULT = "Default",
   COMPONENT = "Component",

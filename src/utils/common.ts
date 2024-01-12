@@ -2,7 +2,7 @@
  * 公共工具方法集合
  */
 import { ErrorCode, throwError } from "@utils/error"
-import { ObjKey, Type } from "@type/interface"
+import { ObjKey, Type, noop } from "@type/interface"
 
 /**
  * 将dom转换为字符串
@@ -127,8 +127,7 @@ export function getObjOwnKeyList(obj: any): string[] {
  */
 export function getRangeNumberList(digit: number, gap: number, range: number[], type?: "min" | "max"): number[] {
   const res = []
-  // eslint-disable-next-line prefer-const
-  let [min, max] = range
+  const [min, max] = range
   const realMin = type === "max" ? digit + 1 : digit - gap < min ? min : digit - gap
   const realMax = type === "min" ? digit - 1 : digit + gap > max ? max : digit + gap
   for (let i = realMin; i <= realMax; i++) {
@@ -137,4 +136,12 @@ export function getRangeNumberList(digit: number, gap: number, range: number[], 
     }
   }
   return res
+}
+
+export const debounce = (cb: noop, delay: number = 0) => {
+  let timeoutId: NodeJS.Timeout
+  return function(this: any, ...args: any[]) {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => cb.apply(this, args), delay)
+  }
 }

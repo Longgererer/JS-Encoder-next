@@ -17,48 +17,48 @@ const inputPaddingMap = {
 }
 
 enum InputType {
-  /* 文本 */
+  /** 文本 */
   TEXT = "text",
-  /* 数字 */
+  /** 数字 */
   NUMBER = "number",
-  /* 文本区 */
+  /** 文本区 */
   TEXTAREA = "textarea",
 }
 
 interface IProps {
-  /* 内容 */
+  /** 内容 */
   modelValue?: string | number | undefined
-  /* 是否禁用 */
+  /** 是否禁用 */
   disabled?: boolean
-  /* input类型 */
+  /** input类型 */
   type?: InputType
-  /* 描述文字 */
+  /** 描述文字 */
   placeholder?: string
-  /* input自定义class */
+  /** input自定义class */
   inputClass?: string
-  /* 尺寸 */
+  /** 尺寸 */
   size?: InputSize
-  /* 最大长度 */
+  /** 最大长度 */
   maxLength?: number
-  /* 宽度 */
+  /** 宽度 */
   width?: string
-  /* 圆角 */
+  /** 圆角 */
   radius?: number
 
-  /* number input 特有属性 */
-  /* 最小值 */
+  /** number input 特有属性 */
+  /** 最小值 */
   min?: number
-  /* 最大值 */
+  /** 最大值 */
   max?: number
-  /* 步长 */
+  /** 步长 */
   step?: number
 
-  /* textarea 特有属性 */
-  /* 最小行数 */
+  /** textarea 特有属性 */
+  /** 最小行数 */
   minRows?: number
-  /* 最大行数 */
+  /** 最大行数 */
   maxRows?: number
-  /* 是否可以自由改变尺寸 */
+  /** 是否可以自由改变尺寸 */
   resize?: boolean
 }
 
@@ -71,11 +71,11 @@ const props = withDefaults(defineProps<IProps>(), {
   size: "medium" as InputSize,
   width: "200px",
   radius: 5,
-  /* number input 特有属性 */
+  /** number input 特有属性 */
   min: -Infinity,
   max: Infinity,
   step: 1,
-  /* textarea 特有属性 */
+  /** textarea 特有属性 */
   minRows: 3,
   maxRows: 6,
   resize: false,
@@ -95,7 +95,7 @@ const commonStyle = computed(() => {
   }
 })
 
-/* type = text */
+/** type = text */
 const handleInputTextChange = (e: InputEvent): void => {
   emits("update:modelValue", (e.target as HTMLInputElement)?.value)
 }
@@ -103,7 +103,7 @@ const handleInputTextChange = (e: InputEvent): void => {
 /*
  * type = number
  */
-/* 数字输入框失焦时检测输入框内容 */
+/** 数字输入框失焦时检测输入框内容 */
 const handleInputNumberBlur = (e: InputEvent): void => {
   let value = Number((e.target as HTMLInputElement)?.value)
   if (Number.isNaN(value) || value < props.min) {
@@ -115,13 +115,13 @@ const handleInputNumberBlur = (e: InputEvent): void => {
   }
   emits("update:modelValue", value)
 }
-/* 点击上箭头 */
+/** 点击上箭头 */
 const handleClickInputNumberUp = (): void => {
   const value = Number(props.modelValue) + props.step
   if (value > props.max) { return }
   emits("update:modelValue", value)
 }
-/* 点击下箭头 */
+/** 点击下箭头 */
 const handleClickInputNumberDown = (): void => {
   const value = Number(props.modelValue) + props.step
   if (value < props.min) { return }
@@ -143,7 +143,7 @@ const getTextAreaHeightRange = (): { minHeight: number, maxHeight: number } => {
 const textAreaHeightRange = getTextAreaHeightRange()
 
 const textareaRef = ref<HTMLElement | null>(null)
-/* 一个虚拟盒子，用来计算文字高度 */
+/** 一个虚拟盒子，用来计算文字高度 */
 const virtualBoxRef = ref<HTMLElement | null>(null)
 
 const textareaHeight = ref<number>(textAreaHeightRange.minHeight)

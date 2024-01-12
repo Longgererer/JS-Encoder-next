@@ -53,7 +53,7 @@
 import { ref } from "vue"
 import { optionsListMap } from "@utils/config"
 import { storeToRefs } from "pinia"
-import { useEditorWrapperStore } from "@store/editorWrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { Align } from "@type/interface"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { useSideMenu } from "./hooks/sideMenu"
@@ -98,7 +98,7 @@ const handleTabDragstart = (tabId: number): void => {
   const { editorId, splitterId } = props
   updateDraggingTabInfo({ tabId, editorId, splitterId })
 }
-/* 处理tab重叠情况，设置被重叠的tab的index，这时会在被重叠的tab左边插入一个与移动tab大小一致的高亮占位 */
+/** 处理tab重叠情况，设置被重叠的tab的index，这时会在被重叠的tab左边插入一个与移动tab大小一致的高亮占位 */
 const handleTabDragover = (tabId: number): void => {
   if (currOverlapTabId.value === tabId) { return }
   currOverlapTabId.value = tabId

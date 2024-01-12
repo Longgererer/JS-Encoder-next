@@ -13,9 +13,9 @@ const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
 const selectedTemplate = ref<AnyObject>({
-  /* 是否为自定义模板 */
+  /** 是否为自定义模板 */
   isCustom: false,
-  /* 选中的模板下标 */
+  /** 选中的模板下标 */
   index: -1,
 })
 

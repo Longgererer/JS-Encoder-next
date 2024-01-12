@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { useEditorWrapperStore } from "@store/editorWrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { computed, ref, watch } from "vue"
 import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"

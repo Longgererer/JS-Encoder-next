@@ -1,14 +1,14 @@
 import { safeJSONParse } from "@utils/common"
 
 export const enum LocalStorageKey {
-  /* 主题 */
+  /** 主题 */
   THEME = "theme",
-  /* 自定义模板 */
+  /** 自定义模板 */
   CUSTOM_TEMPLATE = "custom_template",
 }
 
 export const enum SessionStorageKey {
-  /* 状态存储 */
+  /** 状态存储 */
   JS_ENCODER_STORE = "js_encoder_store",
 }
 

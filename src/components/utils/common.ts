@@ -1,7 +1,7 @@
 import { computed } from "vue"
 import { Position } from "@type/interface"
 
-/* 计算偏移样式 */
+/** 计算偏移样式 */
 export function getOffsetStyle(offset: number | string, position: Position): Record<string, string> {
   const posToStyleMap = {
     [Position.TOP]: { marginBottom: `${offset}px` },
@@ -12,7 +12,7 @@ export function getOffsetStyle(offset: number | string, position: Position): Rec
   return posToStyleMap[position]
 }
 
-/* 计算位置样式 */
+/** 计算位置样式 */
 export function getPosStyle(
   left: number,
   top: number,

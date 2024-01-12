@@ -28,7 +28,7 @@ onMounted(() => {
       EditorView.updateListener.of((update) => {
         // 监听内容改变
         if (update.docChanged) {
-          emits("change", update.state.doc.toString())
+          emits("codeChanged", update.state.doc.toString())
         }
       })
     ],
@@ -39,7 +39,7 @@ onMounted(() => {
    * 监听各种编辑器状态设置
    */
   watch(
-    () => props.modelValue,
+    () => props.code,
     (newContent) => {
       if (newContent !== editor.getContent()) { return }
       editor.setContent(newContent)

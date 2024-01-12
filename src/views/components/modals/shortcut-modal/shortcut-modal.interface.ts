@@ -1,10 +1,10 @@
 export interface IShortcutMap {
-  /* 集合名称 */
+  /** 集合名称 */
   name: string
   keymap: Array<{
-    /* 功能描述 */
+    /** 功能描述 */
     describe: string
-    /* 键位列表 */
+    /** 键位列表 */
     list: string[]
   }>
 }

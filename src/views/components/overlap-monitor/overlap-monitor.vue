@@ -27,7 +27,7 @@
  * 相当于对整个窗口做了一百等分，如果tab的50%以上进入某一个区域，那么就会按照该区域的分割结果进行窗口分割
  */
 import { watch, ref, computed, onMounted } from "vue"
-import { useEditorWrapperStore } from "@store/editorWrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { AreaPosition } from "@type/editor"
 
 const emits = defineEmits<{
@@ -43,13 +43,13 @@ let monitorHeight = 0
 const currPos = ref<AreaPosition>(AreaPosition.MIDDLE)
 
 onMounted(() => {
-  /* 初始化overlap-monitor宽高 */
+  /** 初始化overlap-monitor宽高 */
   const { clientWidth, clientHeight } = overlapMonitor.value!
   monitorWidth = clientWidth
   monitorHeight = clientHeight
 })
 
-/* 监听tab拖拽状态变化 */
+/** 监听tab拖拽状态变化 */
 watch(() => editorWrapperStore.draggingTabInfo, (draggingTabInfo) => {
   if (!draggingTabInfo) {
     currPos.value = AreaPosition.NULL
@@ -84,7 +84,7 @@ const handleDrop = (e: MouseEvent) => {
 }
 
 const highlightAreaStyle = computed((): Record<string, any> => {
-  /* 各种位置的高亮区域样式 */
+  /** 各种位置的高亮区域样式 */
   const posStyleMap = {
     [AreaPosition.UP]: { left: 0, top: 0, width: `${monitorWidth}px`, height: `${monitorHeight / 2}px` },
     [AreaPosition.DOWN]: {

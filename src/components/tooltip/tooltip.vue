@@ -4,21 +4,21 @@ import { computed, ref } from "vue"
 import { getOffsetStyle } from "@components/utils/common"
 
 interface IProps {
-  /* 提示文字，如果使用slot#content则忽略此属性 */
+  /** 提示文字，如果使用slot#content则忽略此属性 */
   content?: string
-  /* 提示展示位置 */
+  /** 提示展示位置 */
   position?: Position
-  /* 偏移量，单位px */
+  /** 偏移量，单位px */
   offset?: number | string
-  /* 延迟消失时间，单位ms */
+  /** 延迟消失时间，单位ms */
   delay?: number
-  /* 是否禁用 */
+  /** 是否禁用 */
   disable?: boolean
-  /* 是否显示小三角 */
+  /** 是否显示小三角 */
   showTriangle?: boolean
-  /* 是否消失 */
+  /** 是否消失 */
   hidden?: boolean
-  /* 层级，对应z-index */
+  /** 层级，对应z-index */
   level?: string
 }
 
@@ -37,12 +37,12 @@ const hidden = ref<boolean>(true)
 
 const namespace = "tooltip"
 
-/* 计算偏移样式 */
+/** 计算偏移样式 */
 const offsetStyle = getOffsetStyle(props.offset, props.position)
 
 let timer: NodeJS.Timeout | null = null
 
-/* 鼠标移入显示tip */
+/** 鼠标移入显示tip */
 const handleMouseover = (): void => {
   if (timer) {
     clearTimeout(timer)
@@ -50,7 +50,7 @@ const handleMouseover = (): void => {
   hidden.value = false
 }
 
-/* 鼠标移出delay毫秒后提示消失 */
+/** 鼠标移出delay毫秒后提示消失 */
 const handleMouseLeave = (): void => {
   timer = setTimeout(() => {
     hidden.value = true

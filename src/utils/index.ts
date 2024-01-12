@@ -9,7 +9,7 @@ export function getType(data: any): string {
   return type
 }
 
-/* 获取对象的所有键，包括不可枚举的键 */
+/** 获取对象的所有键，包括不可枚举的键 */
 export function getObjAllKeys(obj: any): Array<string | number> {
   const type = getType(obj)
   switch (type) {
@@ -46,7 +46,7 @@ export function JSONStringify(data: any): string {
   let prefix = ""; let suffix = ""
   const type = getType(data)
 
-  /* 先根据类型判断需要采用何种格式 */
+  /** 先根据类型判断需要采用何种格式 */
   switch (type) {
     case "Object": {
       prefix = "{"

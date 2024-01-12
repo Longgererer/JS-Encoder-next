@@ -1,25 +1,25 @@
 import { ModalName, Theme } from "@type/interface"
 
 export enum SidebarType {
-  /* 模板 */
+  /** 模板 */
   TEMPLATE = "template",
-  /* 编码设置 */
+  /** 编码设置 */
   CODE_SETTINGS = "codeSettings",
-  /* 库 */
+  /** 库 */
   LIBRARIES = "libraries",
-  /* 上传代码 */
+  /** 上传代码 */
   UPLOAD_CODE = "uploadCode",
-  /* 下载代码 */
+  /** 下载代码 */
   DOWNLOAD_CODE = "downloadCode",
-  /* 快捷键 */
+  /** 快捷键 */
   SHORTCUT = "shortcut",
-  /* 更新日志 */
+  /** 更新日志 */
   UPDATE_LOG = "updateLog",
-  /* 帮助文档 */
+  /** 帮助文档 */
   HELP_DOCUMENT = "helpDocument",
-  /* 主题 */
+  /** 主题 */
   THEME = "theme",
-  /* Github */
+  /** Github */
   GITHUB = "Github",
 }
 
@@ -54,7 +54,7 @@ export const ThemeIcon = {
   [Theme.DARK]: "icon-sun",
 }
 
-/* 侧边栏选项列表，每个子列表之间用横线分割 */
+/** 侧边栏选项列表，每个子列表之间用横线分割 */
 export const SidebarList: SidebarType[][] = [
   [SidebarType.TEMPLATE, SidebarType.CODE_SETTINGS, SidebarType.LIBRARIES],
   [SidebarType.UPLOAD_CODE, SidebarType.DOWNLOAD_CODE],

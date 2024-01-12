@@ -5,7 +5,7 @@ import { V_PROP_NAME, VirtualList } from "./virtual-list.util"
 type RenderList = Array<Record<string, any>>
 
 interface IProps {
-  /* 需要渲染的数据列表 */
+  /** 需要渲染的数据列表 */
   list: RenderList
 }
 const props = withDefaults(defineProps<IProps>(), {})

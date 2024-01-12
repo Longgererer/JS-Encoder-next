@@ -1,5 +1,5 @@
 export interface IVirtualListConfig {
-  /* 列表选择器 */
+  /** 列表选择器 */
   listArea: HTMLElement | null
   listItemSelector: string
   rootMargin: string

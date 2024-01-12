@@ -12,7 +12,7 @@ export interface IEditorSettings {
   indent: {
     /** 使用制表符缩进 */
     indentWithTab: boolean
-    /* 缩进长度 */
+    /** 缩进长度 */
     tabSize: number
   },
   execute: {

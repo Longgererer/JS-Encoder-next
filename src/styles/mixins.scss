@@ -5,7 +5,7 @@
   transition: $target $time $func $delay;
 }
 
-/* 内边距和外边距 */
+/** 内边距和外边距 */
 @mixin edge($name, $dir: all, $gap: 0) {
   @if $name == p {
     $name: padding
@@ -27,14 +27,14 @@
   }
 }
 
-/* 遍历主题颜色表 */
+/** 遍历主题颜色表 */
 @mixin color-list($colors) {
   @each $name, $color in $colors {
     --color-#{$name}: #{$color};
   }
 }
 
-/* 文字图标的默认及hover样式 */
+/** 文字图标的默认及hover样式 */
 @mixin font-active($defColor, $activeColor) {
   color: $defColor;
   &:hover {

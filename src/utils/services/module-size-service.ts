@@ -3,23 +3,23 @@ import { ISize } from "@type/interface"
 import { IModulesSize } from "@store/layout"
 import { SplitDirection } from "@type/editor"
 
-/* 侧边栏宽度 */
+/** 侧边栏宽度 */
 export const SIDEBAR_WIDTH = 49
-/* 预览窗口与编辑窗口分割线宽度 */
+/** 预览窗口与编辑窗口分割线宽度 */
 export const RESIZE_LINE_SIZE = 4
-/* navbar高度 */
+/** navbar高度 */
 export const NAV_BAR_HEIGHT = 49
-/* 结果(预览和console)窗口最小宽度 */
+/** 结果(预览和console)窗口最小宽度 */
 export const RESULT_MIN_WIDTH = 50
-/* 编辑窗口最小宽度 */
+/** 编辑窗口最小宽度 */
 export const EDITOR_MIN_WIDTH = 150
-/* console最小高度 */
+/** console最小高度 */
 export const CONSOLE_MIN_HEIGHT = 28
-/* 预览窗口最小高度 */
+/** 预览窗口最小高度 */
 export const PREVIEW_MIN_HEIGHT = 36
-/* splitter的最小宽度 */
+/** splitter的最小宽度 */
 export const SPLITTER_MIN_WIDTH = 60
-/* splitter的最小高度 */
+/** splitter的最小高度 */
 export const SPLITTER_MIN_HEIGHT = 60
 
 interface IModuleInfo extends Partial<ISize> {
@@ -34,7 +34,7 @@ interface IModuleInfo extends Partial<ISize> {
 export default class ModuleSizeService {
   constructor() {}
 
-  /* 获取整个窗口高度 */
+  /** 获取整个窗口高度 */
   public getWindowSize(): ISize {
     return { width: window.innerWidth, height: window.innerHeight }
   }
@@ -114,7 +114,7 @@ export default class ModuleSizeService {
     ]
   }
 
-  /* 将尺寸分割成两半 */
+  /** 将尺寸分割成两半 */
   public getHalfModuleSize(module: ISize, isHorizontal: boolean): ISize[] {
     const sizeKey = isHorizontal ? "width" : "height"
     const halfSize = Math.floor(module[sizeKey]! / 2)

@@ -4,9 +4,9 @@ import { Compartment, EditorState, Extension, StateEffect } from "@codemirror/st
 import { EditorView, EditorViewConfig, keymap } from "@codemirror/view"
 import { AnyObject } from "@type/interface"
 import { ShortcutMode } from "@type/settings"
-import { ShortCutMode2ExtensionMap } from "@utils/config/editor.config"
+import { ShortCutMode2ExtensionMap } from "@utils/editor/config/editor.config"
 
-/* 构建并配置codemirror编辑器 */
+/** 构建并配置codemirror编辑器 */
 const useCodemirrorEditor = (config: EditorViewConfig) => {
   const view: EditorView = new EditorView({ ...config })
 
@@ -74,7 +74,17 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
   const extensionUpdater = getExtensionUpdater()
 
   const styleUpdater = getExtensionUpdater()
-  /** 设置内部样式 */
+  /**
+   * 设置内部样式
+   * example：
+   * "&": {
+        color: "white",
+        backgroundColor: "#034"
+      },
+      ".cm-content": {
+        caretColor: "#0e9"
+      },
+   */
   const setStyle = (style: Record<string, AnyObject> = {}): void => {
     styleUpdater([
       EditorView.theme(style)

@@ -19,7 +19,7 @@ const frames = [
   "[       =]",
   "[        ]",
 ]
-/* 动画周期总时间 */
+/** 动画周期总时间 */
 const CYCLE_TIME = 1000
 const START_INDEX = 0
 const timeGap = Math.floor(CYCLE_TIME / frames.length)

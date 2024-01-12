@@ -4,11 +4,11 @@ import useClickOutside from "@hooks/useClickOutside"
 import { SelectSize, ISelectOption } from "./custom-select.interface"
 
 interface IProps {
-  /* 内容 */
+  /** 内容 */
   modelValue: ISelectOption
-  /* 数据列表, 如果不传label，就直接使用value代替label展示 */
+  /** 数据列表, 如果不传label，就直接使用value代替label展示 */
   dataList: ISelectOption[]
-  /* 尺寸 */
+  /** 尺寸 */
   size?: SelectSize
   customSelectStyle?: string
   customOptionListStyle?: string
@@ -25,9 +25,9 @@ const emits = defineEmits<{
 }>()
 
 const namespace = "custom-select"
-/* 是否折叠 */
+/** 是否折叠 */
 const isFoldOptions = ref<boolean>(true)
-/* 是否高亮边框 */
+/** 是否高亮边框 */
 const isHighlightBorder = ref<boolean>(false)
 const selectRef = ref<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(selectRef)

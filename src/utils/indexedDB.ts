@@ -12,24 +12,24 @@ interface IndexedDBStoreIndex {
 }
 
 interface IndexedDBStore {
-  /* 对象仓库名称 */
+  /** 对象仓库名称 */
   name: string
-  /* 主键名称 */
+  /** 主键名称 */
   primaryKey: string
-  /* 索引列表 key：索引名称 value：是否可以重复 */
+  /** 索引列表 key：索引名称 value：是否可以重复 */
   indexList: IndexedDBStoreIndex[]
-  /* 版本更新时是否需要删除原来的仓库 */
+  /** 版本更新时是否需要删除原来的仓库 */
   isClear: boolean
 }
 
 interface IndexedDBConfig {
-  /* 数据库名 */
+  /** 数据库名 */
   dbName: string
-  /* 对象仓库集合 */
+  /** 对象仓库集合 */
   stores: IndexedDBStore[]
-  /* 数据库版本 */
+  /** 数据库版本 */
   version?: number
-  /* 初始化回调 */
+  /** 初始化回调 */
   initCb?: () => void
 }
 
@@ -44,15 +44,15 @@ declare global {
 }
 
 export class IndexedDBHelper {
-  /* 单例模式实例 */
+  /** 单例模式实例 */
   static dbInstance: IndexedDBHelper
-  /* 数据库 */
+  /** 数据库 */
   private indexedDb?: IDBFactory
-  /* 数据库对象 */
+  /** 数据库对象 */
   private db: IDBDatabase | null = null
-  /* 数据库信息 */
+  /** 数据库信息 */
   private readonly dbInfo?: IndexedDBConfig
-  /* 数据库请求对象 */
+  /** 数据库请求对象 */
   private readonly dbReq?: IDBOpenDBRequest
 
   constructor(config: IndexedDBConfig) {
@@ -72,7 +72,7 @@ export class IndexedDBHelper {
     IndexedDBHelper.dbInstance = this
   }
 
-  /* 添加单条数据 */
+  /** 添加单条数据 */
   public add(storeName: string, data: any): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_ADD_SINGLE_FAILED,
@@ -81,7 +81,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 获取单条数据 */
+  /** 获取单条数据 */
   public get(storeName: string, primaryKey: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_GET_SINGLE_FAILED,
@@ -90,7 +90,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 获取所有数据 */
+  /** 获取所有数据 */
   public getAll(storeName: string): Promise<any[]> {
     return this.setMultipleDataReqCallBack(
       ErrorCode.INDEXEDDB_GET_ALL_FAILED,
@@ -99,7 +99,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 通过索引获取数据 */
+  /** 通过索引获取数据 */
   public getByIndex(storeName: string, indexName: string): Promise<any> {
     return this.setMultipleDataReqCallBack(
       ErrorCode.INDEXEDDB_GET_BY_INDEX_FAILED,
@@ -108,7 +108,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 更新数据 */
+  /** 更新数据 */
   public update(storeName: string, data: any, primaryKey?: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_UPDATE_FAILED,
@@ -117,7 +117,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 删除数据 */
+  /** 删除数据 */
   public delete(storeName: string, primaryKey: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_DELETE_FAILED,
@@ -126,7 +126,7 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 获取条数 */
+  /** 获取条数 */
   public count(storeName: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXEDDB_COUNT_FAILED,
@@ -135,13 +135,13 @@ export class IndexedDBHelper {
     )
   }
 
-  /* 开启数据库 */
+  /** 开启数据库 */
   private open(): IDBOpenDBRequest {
     const { dbName, version } = this.dbInfo!
     return this.indexedDb!.open(dbName, version)
   }
 
-  /* 初始化数据库事件回调 */
+  /** 初始化数据库事件回调 */
   private initRequestHandler(): void {
     const dbReq = this.dbReq!
     dbReq.onerror = (event) => {
@@ -170,7 +170,7 @@ export class IndexedDBHelper {
     }
   }
 
-  /* 创建仓库 */
+  /** 创建仓库 */
   private createStore(store: IndexedDBStore, db: IDBDatabase = this.db!): void {
     const { name, primaryKey, indexList } = store
     const newStore = db.createObjectStore(name, { keyPath: primaryKey, autoIncrement: true })

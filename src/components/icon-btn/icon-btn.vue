@@ -3,9 +3,9 @@ import { computed } from "vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 
 interface IProps {
-  /* icon类名 */
+  /** icon类名 */
   iconClass: string
-  /* 三种尺寸：sm|md|lg */
+  /** 三种尺寸：sm|md|lg */
   size?: IconBtnSize
   title?: string
   highlight?: boolean

@@ -1,4 +1,4 @@
-import { javascript, javascriptLanguage, scopeCompletionSource } from "@codemirror/lang-javascript"
+import { scopeCompletionSource } from "@codemirror/lang-javascript"
 import { tsComplete } from "../lsp/typescript"
 import { autocompletion } from "@codemirror/autocomplete"
 

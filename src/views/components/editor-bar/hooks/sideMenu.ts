@@ -7,7 +7,7 @@ import { Ref, computed, ref } from "vue"
 import { editorSideOpts } from "@utils/config"
 
 export const useSideMenu = (editor: IEditor, tabMap: Ref<EditorTabMap>) => {
-  /* 是否显示更多选项下拉菜单 */
+  /** 是否显示更多选项下拉菜单 */
   const showSideMenu = ref<boolean>(false)
   const sideOpts = computed(() => {
     const tab = tabMap.value[editor.displayTabId]

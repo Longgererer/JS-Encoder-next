@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { ModalName, Theme } from "@type/interface"
 
 interface ICommonStore {
-  /* 显示的modal名称 */
+  /** 显示的modal名称 */
   displayModal: ModalName | null,
   theme: Theme,
 }

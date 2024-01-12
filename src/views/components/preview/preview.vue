@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<IProps>(), {
   isShowScreen: false,
 })
 
-/* 组件名 */
+/** 组件名 */
 const namespace = "preview"
 const { modulesSize } = useLayoutStore()
 

@@ -28,4 +28,5 @@ export const useEditorConfigStore = defineStore("editorSetting", {
       },
     }
   },
+  
 })

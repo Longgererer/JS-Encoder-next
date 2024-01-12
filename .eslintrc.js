@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/quotes */
-/* eslint-disable quotes */
+/** eslint-disable @typescript-eslint/quotes */
+/** eslint-disable quotes */
 module.exports = {
   "env": {
     "browser": true,

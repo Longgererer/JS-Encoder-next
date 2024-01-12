@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 interface IProps {
-  /* 是否选中 */
+  /** 是否选中 */
   modelValue?: boolean
-  /* 是否禁用 */
+  /** 是否禁用 */
   disabled?: boolean
 }
 

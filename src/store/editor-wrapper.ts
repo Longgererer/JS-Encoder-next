@@ -18,21 +18,21 @@ import UtilService from "@utils/services/util-service"
  * 结构以一个根视口分割器(splitter)开始，一个视口分割器至少有一个编辑视口(editorView)，至多有两个编辑视口
  */
 interface IEditorWrapper {
-  /* 计数器，每新生成一个tab便自增，用来作为id */
+  /** 计数器，每新生成一个tab便自增，用来作为id */
   tabIdCount: number
-  /* 计数器，每新生成一个editor便自增，用来作为id */
+  /** 计数器，每新生成一个editor便自增，用来作为id */
   editorIdCount: number
-  /* 计数器，每新生成一个splitter便自增，用来作为id */
+  /** 计数器，每新生成一个splitter便自增，用来作为id */
   splitterIdCount: number
-  /* 正在拖拽的tab信息（需要全局监听其拖动位置），null就表示没有 */
+  /** 正在拖拽的tab信息（需要全局监听其拖动位置），null就表示没有 */
   draggingTabInfo: IDraggingTabInfo | null
-  /* 编辑窗口tab id与对应代码内容的映射 */
+  /** 编辑窗口tab id与对应代码内容的映射 */
   codeMap: EditorCodeMap
-  /* editor的id对应的editor信息 */
+  /** editor的id对应的editor信息 */
   editorMap: EditorMap
-  /* 编辑窗口tab id与对应tab内容的映射 */
+  /** 编辑窗口tab id与对应tab内容的映射 */
   tabMap: EditorTabMap
-  /* 分割器id所对应的分割器信息 */
+  /** 分割器id所对应的分割器信息 */
   editorSplitterMap: EditorSplitterMap
 }
 
@@ -51,14 +51,14 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     editorSplitterMap: {},
   }),
   actions: {
-    /* 批量更新配置 */
+    /** 批量更新配置 */
     updateBatchConfig(config: IEditorWrapper): void {
       Object.assign(this, { ...config })
     },
     updateDraggingTabInfo(draggingTabInfo: IDraggingTabInfo | null): void {
       this.draggingTabInfo = draggingTabInfo
     },
-    /* 创建编辑窗口tab */
+    /** 创建编辑窗口tab */
     createTab(prep: Prep, origin: Origin): IEditorTab {
       const id = ++ this.tabIdCount
       this.tabMap[id] = { id, prep, origin }
@@ -68,11 +68,17 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       this.tabMap[id] = { ...this.tabMap[id], ...options }
       return this.tabMap[id]
     },
-    /* 删除编辑窗口tab */
+    /** 删除编辑窗口tab */
     deleteTab(id: number): void {
       Reflect.deleteProperty(this.tabMap, id)
     },
-    /* splitter */
+    /**
+     * 创建splitter
+     * @param options splitter配置
+     * @param fromId 来自于父splitter的id(为空则初始化(获取尺寸信息)，不为空则连带更新父splitter的关联配置)
+     * @param direction 分割方向
+     * @returns 创建好的splitter
+     */
     createSplitter(
       options?: Partial<Omit<IEditorSplitter, "id">>,
       fromId?: number,
@@ -138,43 +144,13 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     deleteEditor(id: number): void {
       Reflect.deleteProperty(this.editorMap, id)
     },
-    /* 通过分割线改变editor尺寸 */
-    updateEditorSizeBySplitLine(splitterId: number, changeSize: number): void {
-      // 如果是使用了拖拽分割线改变尺寸，说明所在的splitter下面没有子splitter，并且有两个editor
-      // 先获取splitter，获取里面的分割方向，来判断改变的是editor的高度还是宽度
-      // 再获取splitter内部editor对应的尺寸信息
-      // 要根据改变的高度或宽度判断editor的宽高增加还是减小
-
+    updateCodeMap(tabId: number, code: string): void {
+      this.codeMap[tabId] = code
     },
-  },
-  getters: {
-    /* 根据splitter id获取内部editor尺寸总和 */
-    getSplitterSize() {
-      // splitter可能还有嵌套的子splitter，需要递归查找editor
-      // const getSize = (id: number): ISize => {
-      //   const { direction, editorId, children = [] } = this.editorSplitterMap[id]
-      //   const isHorizontal = direction === SplitDirection.HORIZONTAL
-      //   if (children.length) {
-      //     const [splitterId1, splitterId2] = children
-      //     const splitter1Size = getSize(splitterId1)
-      //     if (!splitterId2) { return splitter1Size }
-      //     const splitter2Size = getSize(splitterId2)
-      //     return {
-      //       width: splitter1Size.width + (isHorizontal ? splitter2Size.width : 0),
-      //       height: splitter1Size.height + (isHorizontal ? 0 : splitter2Size.height),
-      //     }
-      //   } else {
-      //     const [editor1Id, editor2Id] = displayEditorIds
-      //     const editor1Size = this.editorSizeMap[editor1Id]
-      //     if (!editor2Id) { return editor1Size }
-      //     const editor2Size = this.editorSizeMap[editor2Id]
-      //     return {
-      //       width: editor1Size.width + (isHorizontal ? editor2Size.width : 0),
-      //       height: editor1Size.height + (isHorizontal ? 0 : editor2Size.height),
-      //     }
-      //   }
-      // }
-      // return getSize
-    },
+    clearCodeMap(): void {
+      Object.keys(this.codeMap).forEach((tabId) => {
+        this.codeMap[Number(tabId)] = ""
+      })
+    }
   },
 })

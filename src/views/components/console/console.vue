@@ -16,7 +16,7 @@ const emits = defineEmits<{
 const namespace = "console"
 const { updateFilter } = useConsoleStore()
 
-/* 日志过滤选项列表 */
+/** 日志过滤选项列表 */
 const filterSelectOptions: ISelectOption[] = [
   { value: LogType.ALL },
   { value: LogType.MESSAGE },
@@ -24,13 +24,13 @@ const filterSelectOptions: ISelectOption[] = [
   { value: LogType.WARN },
   { value: LogType.ERROR },
 ]
-/* 当前过滤日志类型选项 */
+/** 当前过滤日志类型选项 */
 const currFilterOption = ref<ISelectOption>(filterSelectOptions[0])
 watch(currFilterOption, (newOption) => {
   updateFilter(newOption.value as LogType)
 })
 
-/* 是否展示console设置 */
+/** 是否展示console设置 */
 const isShowConsoleSettings = ref<boolean>(false)
 const handleClickConsoleSettingsBtn = (): void => {
   isShowConsoleSettings.value = !isShowConsoleSettings.value

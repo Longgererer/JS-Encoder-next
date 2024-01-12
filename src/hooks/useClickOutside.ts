@@ -1,6 +1,6 @@
 import { onMounted, onUnmounted, ref, Ref } from "vue"
 
-/* 点击元素区域外部的时候隐藏元素 */
+/** 点击元素区域外部的时候隐藏元素 */
 const useClickOutside = (eleRef: Ref<HTMLElement | null>) => {
   const isClickOutside = ref<boolean>(false)
 

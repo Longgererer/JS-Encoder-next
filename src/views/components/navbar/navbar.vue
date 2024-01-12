@@ -2,7 +2,7 @@
 import { ref } from "vue"
 import projectConfig from "../../../../package.json"
 
-/* 是否显示结果窗口 */
+/** 是否显示结果窗口 */
 const showResult = ref<boolean>(true)
 const handleClickTogglePreview = (): void => {
   showResult.value = !showResult.value

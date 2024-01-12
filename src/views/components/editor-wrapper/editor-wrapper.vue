@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /** module */
-import { useEditorWrapperStore } from "@store/editorWrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { Origin, Prep } from "@type/prep"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import { IEditorSplitter } from "@type/editor"
@@ -16,7 +16,7 @@ const { createTab, createSplitter, createEditor, updateSplitter, updateEditor } 
 /** 根splitter */
 const rootSplitter = ref<IEditorSplitter | null>(null)
 
-/* 初始化编辑窗口结构 */
+/** 初始化编辑窗口结构 */
 const initEditorWrapperConfig = () => {
   // 先创建一个splitter根节点
   rootSplitter.value = createSplitter({})
@@ -36,7 +36,7 @@ const initEditorWrapperConfig = () => {
 }
 
 watch(() => layoutStore.hasInitModulesSize, () => {
-  /* 初始化编辑窗口结构 */
+  /** 初始化编辑窗口结构 */
   initEditorWrapperConfig()
 })
 

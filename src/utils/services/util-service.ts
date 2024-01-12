@@ -7,18 +7,18 @@ import SingleInstance from "@utils/decorators/single-instance"
 export default class UtilService {
   constructor() {}
 
-  /* 调换数组中指定两个元素的位置 */
+  /** 调换数组中指定两个元素的位置 */
   public swapArrayItem(arr: any[], index1: number, index2: number): void {
     arr[index1] = arr.splice(index2, 1, arr[index1])[0]
   }
 
-  /* 将数字分成两半并且不要小数点 */
+  /** 将数字分成两半并且不要小数点 */
   public splitNumberWithoutDot(num: number): number[] {
     const halfOfNum = Math.floor(num / 2)
     return [halfOfNum, num - halfOfNum]
   }
 
-  /* 删除第一个数组中匹配的元素 */
+  /** 删除第一个数组中匹配的元素 */
   public deleteFirstMatchArrayItem<T>(arr: T[], deleteItem: T): T[] {
     const copyArr = [...arr]
     copyArr.splice(arr.findIndex((item) => deleteItem === item), 1)

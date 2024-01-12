@@ -9,7 +9,7 @@ interface IUpdateLog {
   version: string
   time: string
   title: string
-  /* 是否最新版本 */
+  /** 是否最新版本 */
   isLatest: boolean
   content: string
 }

@@ -3,29 +3,29 @@ import { computed } from "vue"
 import { BtnType, Size } from "@type/interface"
 
 interface IProps {
-  /* 按钮尺寸 mini|small|medium|large|xLarge */
+  /** 按钮尺寸 mini|small|medium|large|xLarge */
   size?: Size
-  /* 是否禁用 */
+  /** 是否禁用 */
   disabled?: boolean
-  /* 是否只显示icon没有文字 */
+  /** 是否只显示icon没有文字 */
   icon?: boolean
-  /* icon类名 */
+  /** icon类名 */
   iconClass?: string
-  /* 按钮类型 */
+  /** 按钮类型 */
   type?: BtnType
-  /* 是否显示icon */
+  /** 是否显示icon */
   showIcon?: boolean
-  /* 是否有阴影 */
+  /** 是否有阴影 */
   shadow?: boolean
-  /* 是否有外边框 */
+  /** 是否有外边框 */
   outline?: boolean
-  /* 是否正在加载 */
+  /** 是否正在加载 */
   loading?: boolean
-  /* 是否为全圆角按钮 */
+  /** 是否为全圆角按钮 */
   radius?: boolean
-  /* 是否占满一整行 */
+  /** 是否占满一整行 */
   fill?: boolean
-  /* 自定义样式类名 */
+  /** 自定义样式类名 */
   customClass?: string
 }
 

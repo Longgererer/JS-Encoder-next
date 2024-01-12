@@ -1,4 +1,4 @@
-/* 侧边栏宽度 */
+/** 侧边栏宽度 */
 import { IModulesSize } from "@store/layout"
 import {
   CONSOLE_MIN_HEIGHT,
