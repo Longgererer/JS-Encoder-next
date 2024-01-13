@@ -47,6 +47,10 @@ const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 const { editorMap, tabMap, codeMap } = storeToRefs(editorWrapperStore)
 // const editor = editorMap.value[props.id]
 
+/**
+ * tab事件
+ */
+
 /** 点击tab处理 */
 const handleClickTab = (tabId: number) => {
   editorWrapperStore.updateEditor(props.id, { displayTabId: tabId })
@@ -97,6 +101,7 @@ const getEditorStyle = () => {
 /** code改变存入store */
 const handleCodeChanged = (newCode: string) => {
   const { execute } = editorConfigStoreRefs
+  /** 延迟同步store，进而延迟编译 */
   debounce(() => {
     editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
   }, execute.value.delayTimeOfExecute)()
