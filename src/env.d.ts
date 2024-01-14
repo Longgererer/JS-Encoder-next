@@ -8,3 +8,7 @@ declare module "*.vue" {
 }
 
 declare module "eslint4b-prebuilt"
+
+declare interface Window {
+  stylelint: any
+}

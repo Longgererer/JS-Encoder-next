@@ -1,7 +1,6 @@
 import SingleInstance from "@utils/decorators/single-instance"
 import { ISize } from "@type/interface"
 import { IModulesSize } from "@store/layout"
-import { SplitDirection } from "@type/editor"
 
 /** 侧边栏宽度 */
 export const SIDEBAR_WIDTH = 49

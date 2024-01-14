@@ -5,7 +5,7 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "importHelpers": true,
+    "importHelpers": false,
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",

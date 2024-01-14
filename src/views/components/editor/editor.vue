@@ -9,7 +9,7 @@
 import useCodemirrorEditor from "@hooks/use-codemirror-editor"
 import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
-import { getDefaultEditorExtensions } from "@utils/config/editor.config"
+import { getDefaultEditorExtensions } from "@utils/editor/config/editor.config"
 import { EditorView } from "codemirror"
 /** props */
 const props = defineProps<IProps>()
