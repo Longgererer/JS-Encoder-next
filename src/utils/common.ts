@@ -138,6 +138,7 @@ export function getRangeNumberList(digit: number, gap: number, range: number[], 
   return res
 }
 
+/** 防抖 */
 export const debounce = (cb: noop, delay: number = 0) => {
   let timeoutId: NodeJS.Timeout
   return function(this: any, ...args: any[]) {

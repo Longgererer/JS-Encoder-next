@@ -109,6 +109,4 @@ const handleCodeChanged = (newCode: string) => {
 </script>
 
 <style lang="scss" scoped>
-.editor-view {
-}
 </style>
