@@ -1,7 +1,6 @@
 @charset "UTF-8";
-
-@import "./variable.scss";
-@import "./mixins.scss";
+@import "./variable";
+@import "./mixins";
 
 :root[theme="bright"] {
   @include color-list($bright-colors);

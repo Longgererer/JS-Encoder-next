@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 @mixin transition($target, $time, $func, $delay: 0s) {
-  -webkit-transition: $target $time $func $delay;
   transition: $target $time $func $delay;
 }
 
@@ -37,6 +36,7 @@
 /** 文字图标的默认及hover样式 */
 @mixin font-active($defColor, $activeColor) {
   color: $defColor;
+
   &:hover {
     color: $activeColor;
   }

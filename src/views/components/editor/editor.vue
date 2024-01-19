@@ -30,7 +30,7 @@ onMounted(() => {
         if (update.docChanged) {
           emits("codeChanged", update.state.doc.toString())
         }
-      })
+      }),
     ],
   })
   editorView.value = editor.view
@@ -43,7 +43,7 @@ onMounted(() => {
     (newContent) => {
       if (newContent !== editor.getContent()) { return }
       editor.setContent(newContent)
-    }
+    },
   )
   watch(
     () => props.settings.tabSize,

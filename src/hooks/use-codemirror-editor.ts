@@ -7,6 +7,7 @@ import { ShortcutMode } from "@type/settings"
 import { ShortCutMode2ExtensionMap } from "@utils/editor/config/editor.config"
 
 /** 构建并配置codemirror编辑器 */
+// eslint-disable-next-line max-lines-per-function
 const useCodemirrorEditor = (config: EditorViewConfig) => {
   const view: EditorView = new EditorView({ ...config })
 
@@ -87,7 +88,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
    */
   const setStyle = (style: Record<string, AnyObject> = {}): void => {
     styleUpdater([
-      EditorView.theme(style)
+      EditorView.theme(style),
     ])
   }
 

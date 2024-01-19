@@ -151,6 +151,6 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       Object.keys(this.codeMap).forEach((tabId) => {
         this.codeMap[Number(tabId)] = ""
       })
-    }
+    },
   },
 })

@@ -1,11 +1,10 @@
 @charset "UTF-8";
+@import "./variable";
+@import "./mixins";
+@import "./theme";
+@import "./common";
 
-@import "./variable.scss";
-@import "./mixins.scss";
-@import "./theme.scss";
-@import "./common.scss";
-
-HTML,
+html,
 body,
 div,
 h1,

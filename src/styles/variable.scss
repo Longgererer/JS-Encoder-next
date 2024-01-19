@@ -16,12 +16,12 @@ $dark-colors: (
   main-bg-1: #1B1B1B,
   main-bg-2: #151515,
   main-bg-3: #121212,
-  active-color: rgba(255, 255, 255, 0.87),
-  describe: rgba(255, 255, 255, 0.6),
-  no-active-color: rgba(255, 255, 255, 0.4),
-  shadow: #000000,
-  disabled-bgc: rgba(255, 255, 255, 0.08),
-  disabled-color: rgba(255, 255, 255, 0.38),
+  active-color: rgb(255 255 255 / 87%),
+  describe: rgb(255 255 255 / 60%),
+  no-active-color: rgb(255 255 255 / 40%),
+  shadow: #000,
+  disabled-bgc: rgb(255 255 255 / 8%),
+  disabled-color: rgb(255 255 255 / 38%),
   golden: #ffca28,
   /** 特殊 */
   edit-bar-active: #f2f2f2,
@@ -30,12 +30,11 @@ $dark-colors: (
   badge-color: #f2f2f2,
   badge-border: #181d1e,
   tooltip-color: #f2f2f2,
-  mask-bgc: rgba(16, 16, 16, 0.5),
+  mask-bgc: rgb(16 16 16 / 50%),
   modal-def-border: #181d1e,
   popover-bg: #2A2730,
   form-item: #2A2730,
 );
-
 $bright-colors: (
   primary: #9246FF,
   primary-active: #40a9ff,
@@ -47,11 +46,11 @@ $bright-colors: (
   success-active: #73d13d,
   main-bg-1: #f0f2f3,
   main-bg-2: #f2f2f2,
-  main-bg-3: #ffffff,
+  main-bg-3: #fff,
   active-color: #0085ff,
   describe: #b0b0b0,
   no-active-color: #bfbfbf,
-  shadow: #000000,
+  shadow: #000,
   disabled-bgc: #f5f5f5,
   disabled-color: #00000040,
   golden: #ffca28,
@@ -62,9 +61,8 @@ $bright-colors: (
   badge-color: #f2f2f2,
   badge-border: #f0f2f3,
   tooltip-color: #101010,
-  mask-bgc: rgba(16, 16, 16, 0.5),
+  mask-bgc: rgb(16 16 16 / 50%),
   modal-def-border: #181d1e,
 );
-
-$def-font: "WenQuanYi Micro Hei","PingFang SC","Helvetica Neue","Hiragino Sans GB","Microsoft YaHei",SimSun,sans-serif;
+$def-font: "WenQuanYi Micro Hei","PingFang SC","Helvetica Neue","Hiragino Sans GB","Microsoft YaHei",simsun,sans-serif;
 $code-font: "JetBrains Mono";

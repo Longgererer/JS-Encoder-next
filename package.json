@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint --ext .ts,.vue src/ --fix && stylelint \"./src/**/*.{css,scss,vue}\" --fix"
   },
   "prettier": {
     "eslintIntegration": true,
     "semi": false,
-    "singleQuote": true,
-    "jsxSingleQuote": true,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
     "printWidth": 120
   },
   "dependencies": {
@@ -42,10 +43,10 @@
     "htmlhint": "^1.1.4",
     "sass": "^1.53.0",
     "sass-loader": "^13.0.2",
-    "stylelint": "^16.1.0",
     "stylelint-config-recommended-less": "^3.0.0",
     "stylelint-config-standard": "^35.0.0",
     "stylelint-config-standard-scss": "^12.0.0",
+    "stylelint-config-standard-vue": "^1.0.0",
     "thememirror": "^2.0.1",
     "vue": "^3.4.5"
   },
@@ -59,6 +60,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.1.1",
     "pinia": "^2.1.7",
+    "postcss-html": "^1.6.0",
     "prettier": "^2.7.1",
     "typescript": "^5.3.2",
     "unplugin-vue-define-options": "^1.4.1",

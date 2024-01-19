@@ -48,7 +48,7 @@ export const tsComplete = (context: CompletionContext) => {
     {},
   )
 
-  if (!tsCompletions) return { from: context.pos, options: [] }
+  if (!tsCompletions) {return { from: context.pos, options: [] }}
 
   const code = context.state.doc.toString()
 
@@ -80,7 +80,7 @@ export const tsComplete = (context: CompletionContext) => {
           changes: { from, to: context.pos, insert: completion.name },
         })
       },
-    }))
+    })),
   }
 }
 
@@ -94,16 +94,16 @@ const isTokenKind = (kind: ts.SyntaxKind) => {
 }
 
 /**
- * 
+ *
  * @param node AST节点
  * @param pos 位置
  * @param sourceFile 原文件
  * @returns
  */
 const getTokenAtPositionWorker = (
-  node: ts.Node,
+  astNode: ts.Node,
   pos: number,
-  sourceFile: ts.SourceFile
+  sourceFile: ts.SourceFile,
 ) => {
   const getTokenKindChild = (node: ts.Node): ts.Node | undefined => {
     // 遍历子节点
@@ -116,7 +116,7 @@ const getTokenAtPositionWorker = (
     }
     return
   }
-  return getTokenKindChild(node)
+  return getTokenKindChild(astNode)
 }
 
 /** 获取指定位置的token */
@@ -144,7 +144,7 @@ export const tsTypeDefinition = (
    * 计算悬停展示定义tooltip的位置范围
    * Ref: https://codemirror.net/examples/tooltip/
    */
-  let start = pos, end = pos;
+  let start = pos; let end = pos
   while (start > from && /\w/.test(text[start - from - 1])) {
     start--
   }
@@ -179,7 +179,7 @@ export const tsTypeDefinition = (
         typeChecker.typeToString(
           type,
           undefined,
-          ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.InTypeAlias
+          ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.InTypeAlias,
         ),
         "</pre>",
       ].join("")

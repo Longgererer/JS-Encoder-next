@@ -1,8 +1,7 @@
 @charset "UTF-8";
-
-@import "./mixins.scss";
-@import "./variable.scss";
-@import "./modal.scss";
+@import "./mixins";
+@import "./variable";
+@import "./modal";
 
 /** padding */
 .p-xs { padding: 0.25rem; }
@@ -215,7 +214,7 @@
 .pos-top { top: 0; }
 .pos-bottom { bottom: 0; }
 .pos-origin { left: 0; top: 0; }
-.pos-full { left: 0; top: 0; right: 0; bottom: 0; }
+.pos-full { inset: 0; }
 
 /** display */
 .inline-block { display: inline-block; }
@@ -262,9 +261,11 @@
     height: 8px;
     cursor: default;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: var(--color-main-bg-1);
   }
+
   &::-webkit-scrollbar-track {
     background-color: var(--color-main-bg-2);
   }

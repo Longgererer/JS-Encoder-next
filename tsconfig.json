@@ -17,9 +17,10 @@
     "checkJs": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "types": ["unplugin-vue-define-options"],
+    "types": ["unplugin-vue-define-options/macros-global"],
     "baseUrl": ".",
     "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@views/*": ["src/views/*"],
       "@components/*": ["src/components/*"],

@@ -19,7 +19,7 @@ export const htmlLinter = linter(
         message: result.message,
       }
     })
-  }
+  },
 )
 
 /**
@@ -48,7 +48,7 @@ const styleLinter = (config: any) => {
           }
         })
       }).flat()
-    }
+    },
   )
 }
 

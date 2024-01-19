@@ -16,5 +16,5 @@ export default {
     // - Don't understand the Stylus selectors.
     "selector-type-no-unknown": null,
     "no-duplicate-selectors": null,
-  }
+  },
 }
