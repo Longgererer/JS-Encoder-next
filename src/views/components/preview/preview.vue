@@ -132,12 +132,12 @@ $namespace: preview;
   }
   .#{$namespace}-iframe-wrapper {
     .#{$namespace}-iframe {
-      background-color: #ffffff;
+      background-color: #fff;
     }
     .#{$namespace}-iframe-size {
       height: 24px;
       background-color: #f2f2f2;
-      color: #999999;
+      color: #999;
     }
   }
   .#{$namespace}-guide {

@@ -45,12 +45,14 @@ const namespace = "badge"
 
 <style lang="scss" scoped>
 $namespace: 'badge';
+
 /** 组件尺寸 */
 $comp-size: (
   sm: 4,
   md: 8,
   lg: 12,
 );
+
 /** 边框宽度 */
 $border-width: (
   sm: 1,

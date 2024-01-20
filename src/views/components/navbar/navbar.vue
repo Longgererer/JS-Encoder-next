@@ -45,7 +45,7 @@ const handleClickTogglePreview = (): void => {
   }
   .logo-text {
     font-size: 1.125rem;
-    -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
     background-image: linear-gradient(135deg, var(--color-primary2), var(--color-primary1))
   }

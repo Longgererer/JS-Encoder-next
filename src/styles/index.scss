@@ -33,24 +33,20 @@ textarea {
   margin: 0;
   padding: 0;
 }
-
 html,
 body {
   height: 100%;
   width: 100%;
   font-size: 16px;
 }
-
 a {
   text-decoration: none;
 }
-
 ul,
 ol,
 li {
   list-style-type: none;
 }
-
 html,
 body,
 div,
@@ -61,11 +57,9 @@ input,
 textarea {
   box-sizing: border-box;
 }
-
 i {
   font-style: normal;
 }
-
 html, body {
   font-family: $def-font;
   -webkit-font-smoothing: antialiased;

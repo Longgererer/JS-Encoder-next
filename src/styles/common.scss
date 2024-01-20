@@ -133,6 +133,7 @@
 .font-xl { font-size: 28px;}
 .font-xxl { font-size: 32px;}
 
+/** line-height */
 .renew-line-xxs { line-height: 12px; }
 .renew-line-xs { line-height: 14px; }
 .renew-line-s { line-height: 16px; }
@@ -141,6 +142,8 @@
 .renew-line-l { line-height: 24px; }
 .renew-line-xl { line-height: 28px; }
 .renew-line-xxl { line-height: 32px; }
+.line-h-fill { line-height: 100%; }
+.line-h-unset { line-height: unset; }
 
 /** font-family */
 .def-font { font-family: $def-font; }
@@ -150,7 +153,6 @@
 .fw-light { font-weight: 200; }
 .fw-normal { font-weight: 400; }
 .fw-bold { font-weight: 700; }
-
 .font-no-ligatures { font-variant-ligatures: none; }
 
 /** flex */
@@ -185,7 +187,6 @@
 .rotate-90 { transform: rotate(90deg); }
 .rotate-180 { transform: rotate(180deg); }
 .rotate-270 { transform: rotate(270deg); }
-
 .icon-rotate-180 {
   &::before {
     display: inline-block;
@@ -234,10 +235,6 @@
 /** transition */
 .transition-all { @include transition(all, .2s, ease); }
 
-/** line-height */
-.line-h-fill { line-height: 100%; }
-.line-h-unset { line-height: unset; }
-
 /** text */
 .text-nowrap { white-space: nowrap; }
 .text-pre-wrap { white-space: pre-wrap; }
@@ -255,17 +252,16 @@
 .break-all { word-break: break-all; }
 .break-word { word-break: break-word; }
 
+/** scrollbar */
 .common-scrollbar {
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
     cursor: default;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: var(--color-main-bg-1);
   }
-
   &::-webkit-scrollbar-track {
     background-color: var(--color-main-bg-2);
   }

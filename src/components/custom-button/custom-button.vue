@@ -100,21 +100,21 @@ $btn-font-size: (
   small: 12px,
   medium: 14px,
   large: 16px,
-  xLarge: 18px,
+  xlarge: 18px,
 );
 $round-padding: (
   mini: 2px,
   small: 4px,
   medium: 6px,
   large: 8px,
-  xLarge: 10px,
+  xlarge: 10px,
 );
 $horizontal-padding: (
   mini: 12px,
   small: 16px,
   medium: 20px,
   large: 24px,
-  xLarge: 28px,
+  xlarge: 28px,
 );
 
 .#{$namespace} {
@@ -138,6 +138,7 @@ $horizontal-padding: (
     animation: spin .6s linear infinite;
     opacity: 0.3;
   }
+
   @keyframes spin {
     from {
       transform: rotate(0)
@@ -206,6 +207,7 @@ $horizontal-padding: (
     border-radius: 4px;
     padding: 0 map-get($horizontal-padding, $size);
     font-size: $font-size;
+
     //line-height: $font-size;
   }
   .#{$namespace}--#{$size}.#{$namespace}-radius {

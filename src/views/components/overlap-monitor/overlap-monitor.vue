@@ -180,7 +180,6 @@ const highlightAreaStyle = computed((): Record<string, any> => {
     grid-area: lf2;
   }
 }
-
 .highlight-area {
   background-color: var(--color-main-bg-1);
   z-index: 5;
