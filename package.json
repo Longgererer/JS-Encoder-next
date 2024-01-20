@@ -2,8 +2,9 @@
   "name": "js-encoder",
   "private": true,
   "version": "4.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "bash src/scripts/dev.sh",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue src/ --fix && stylelint \"./src/**/*.{css,scss,vue}\" --fix"
