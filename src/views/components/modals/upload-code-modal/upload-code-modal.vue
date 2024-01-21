@@ -4,7 +4,7 @@ import HelpPopover from "@views/components/help-popover/help-popover.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Position } from "@type/interface"
+import { ModalName, Position, Size } from "@type/interface"
 import { ref } from "vue"
 
 const commonStore = useCommonStore()
@@ -40,13 +40,13 @@ const bindVal = ref<boolean>(false)
       <custom-button
         fill
         shadow
-        size="xLarge"
+        :size="Size.LARGE"
         custom-class="radius-l font-xs">
         <input
           class="upload-input fill absolute"
           type="file"
           ref="fileInput"
-          multiple="multiple"
+          multiple
           title=""/>
         <span>选择要上传的文件</span>
       </custom-button>
@@ -65,7 +65,7 @@ const bindVal = ref<boolean>(false)
     <custom-button
       fill
       shadow
-      size="xLarge"
+      :size="Size.LARGE"
       custom-class="radius-l font-xs"
     >上传文件</custom-button>
     <div class="mt-xs flex-x-center">
@@ -95,14 +95,14 @@ const bindVal = ref<boolean>(false)
   .file {
     height: 44px;
     border: 2px solid var(--color-form-item);
+    .delete-btn {
+      right: 0;
+      opacity: 0;
+    }
     &:hover {
       .delete-btn {
         opacity: 1;
       }
-    }
-    .delete-btn {
-      right: 0;
-      opacity: 0;
     }
   }
 }

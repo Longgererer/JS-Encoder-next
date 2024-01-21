@@ -1,3 +1,21 @@
+<template>
+  <div class="relative" :class="namespace" ref="dropdownOptsRef">
+    <!--  触发菜单显示的元素  -->
+    <div :class="`${namespace}-trigger-wrapper`" @click="handleClickTrigger">
+      <slot></slot>
+    </div>
+    <!--  菜单项列表  -->
+    <div
+      v-show="modelValue"
+      class="shadow p-y-xs absolute radius-m"
+      :class="`${namespace}-options-wrapper ${namespace}-align-${align}`">
+      <div :class="`${namespace}-options`" @click="handleClickOption">
+        <slot name="options"></slot>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, watch } from "vue"
 import useClickOutside from "@hooks/useClickOutside"
@@ -43,24 +61,6 @@ watch(isClickOutSide, () => {
   }
 })
 </script>
-
-<template>
-  <div class="relative" :class="namespace" ref="dropdownOptsRef">
-    <!--  触发菜单显示的元素  -->
-    <div :class="`${namespace}-trigger-wrapper`" @click="handleClickTrigger">
-      <slot></slot>
-    </div>
-    <!--  菜单项列表  -->
-    <div
-      v-show="modelValue"
-      class="shadow p-y-xs absolute radius-m"
-      :class="`${namespace}-options-wrapper ${namespace}-align-${align}`">
-      <div :class="`${namespace}-options`" @click="handleClickOption">
-        <slot name="options"></slot>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 $namespace: dropdown;

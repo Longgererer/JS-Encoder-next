@@ -44,10 +44,10 @@ onUnmounted(() => {
 $namespace: loading;
 
 .#{$namespace} {
-  animation: Shinning 2s ease infinite;
+  animation: shinning 2s ease infinite;
 }
 
-@keyframes Shinning {
+@keyframes shinning {
   50% {
     color: var(--color-describe);
   }

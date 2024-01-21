@@ -9,7 +9,7 @@ const namespace = "dropdown-item"
 </template>
 
 <style lang="scss" scoped>
-$namespace: dropdown-item;
+$namespace: "dropdown-item";
 
 .#{$namespace} {
   height: 36px;

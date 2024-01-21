@@ -7,7 +7,8 @@
     "dev": "bash src/scripts/dev.sh",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .ts,.vue src/ --fix && stylelint \"./src/**/*.{css,scss,vue}\" --fix"
+    "lint": "eslint --ext .ts,.vue src/ --fix && stylelint \"./src/**/*.{css,scss,vue}\" --fix",
+    "prepare": "husky install"
   },
   "prettier": {
     "eslintIntegration": true,
@@ -50,9 +51,12 @@
     "stylelint-config-standard-scss": "^12.0.0",
     "stylelint-config-standard-vue": "^1.0.0",
     "thememirror": "^2.0.1",
+    "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.4.5"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
     "@types/node": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
@@ -61,6 +65,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.1.1",
+    "husky": "^8.0.3",
     "pinia": "^2.1.7",
     "postcss-html": "^1.6.0",
     "prettier": "^2.7.1",

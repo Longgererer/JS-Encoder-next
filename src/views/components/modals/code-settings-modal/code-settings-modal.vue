@@ -6,6 +6,7 @@ import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { computed, ref } from "vue"
 import { useCommonStore } from "@store/common"
 import { ModalName } from "@type/interface"
+import { InputType } from "@components/form/custom-input/custom-input"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -44,17 +45,17 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
         <div class="modal-sub-title">缩进</div>
         <div class="pt-xs"><checkbox v-model="bindVal">使用制表符缩进</checkbox></div>
         <div class="active-text font-xxs mt-m">缩进长度:</div>
-        <div class="mt-s"><custom-input type="number" v-model="bindInputNumber"/></div>
+        <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="bindInputNumber"/></div>
 
         <div class="modal-sub-title">执行</div>
         <div class="pt-xs"><checkbox v-model="bindVal">自动执行</checkbox></div>
         <div class="font-xxs mt-m" :class="bindVal ? 'active-text' : 'no-active-text'">延迟(执行)时间(ms):</div>
-        <div class="mt-s"><custom-input type="number" v-model="bindInputNumber"/></div>
+        <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="bindInputNumber"/></div>
       </div>
       <div class="flex-col flex-1">
         <div class="modal-sub-title">字体</div>
         <div class="active-text font-xxs mt-m">字号(px):</div>
-        <div class="mt-s"><custom-input type="number" v-model="bindInputNumber"/></div>
+        <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="bindInputNumber"/></div>
         <div class="active-text font-xxs mt-m">字体:</div>
         <div class="mt-s"><custom-select :data-list="bindDataList" v-model="bindSelectItem"/></div>
 
@@ -63,7 +64,7 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
         <div class="mt-s">
           <custom-input
             v-model="bindInputText"
-            type="textarea"
+            :type="InputType.TEXTAREA"
             placeholder="输入你想在<head>中添加的标签如<meta...>"
             width="325px"
             :minRows="4"
@@ -74,6 +75,4 @@ const bindSelectItem = ref<typeof bindDataList[number]>(bindDataList[0])
   </modal>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

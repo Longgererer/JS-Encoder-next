@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { Size } from "@type/interface"
 import { computed, ref } from "vue"
-
-type InputSize = Exclude<Size, Size.MINI | Size.X_LARGE>
+import { InputSize, InputType } from "./custom-input"
 
 const inputFontSizeMap = {
   [Size.SMALL]: 12,
@@ -14,15 +13,6 @@ const inputPaddingMap = {
   [Size.SMALL]: 2,
   [Size.MEDIUM]: 5,
   [Size.LARGE]: 8,
-}
-
-enum InputType {
-  /** 文本 */
-  TEXT = "text",
-  /** 数字 */
-  NUMBER = "number",
-  /** 文本区 */
-  TEXTAREA = "textarea",
 }
 
 interface IProps {
@@ -96,7 +86,7 @@ const commonStyle = computed(() => {
 })
 
 /** type = text */
-const handleInputTextChange = (e: InputEvent): void => {
+const handleInputTextChange = (e: Event): void => {
   emits("update:modelValue", (e.target as HTMLInputElement)?.value)
 }
 
@@ -104,7 +94,7 @@ const handleInputTextChange = (e: InputEvent): void => {
  * type = number
  */
 /** 数字输入框失焦时检测输入框内容 */
-const handleInputNumberBlur = (e: InputEvent): void => {
+const handleInputNumberBlur = (e: FocusEvent): void => {
   let value = Number((e.target as HTMLInputElement)?.value)
   if (Number.isNaN(value) || value < props.min) {
     value = props.min
@@ -148,7 +138,7 @@ const virtualBoxRef = ref<HTMLElement | null>(null)
 
 const textareaHeight = ref<number>(textAreaHeightRange.minHeight)
 
-const handleInputTextAreaChange = (e: InputEvent): void => {
+const handleInputTextAreaChange = (e: Event): void => {
   const borderHeight = 4
   const value = (e.target as HTMLInputElement)?.value
   const scrollHeight = (textareaRef.value || {}).scrollHeight || 0
@@ -303,9 +293,9 @@ $input-border-radius: (
 }
 
 @each $size in (small, medium, large) {
-  $radius: map-get($input-border-radius, $size);
-  $padding: map-get($input-padding, $size);
-  $font-size: map-get($input-font-size, $size);
+  $radius: map.get($input-border-radius, $size);
+  $padding: map.get($input-padding, $size);
+  $font-size: map.get($input-font-size, $size);
   .#{$namespace}--#{$size} {
     input, textarea {
       border-radius: $radius;

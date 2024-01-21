@@ -108,14 +108,14 @@ $select-border-radius: (
   medium: 4px,
   large: 8px,
 );
-$borderWidth: 2px;
+$border-width: 2px;
 
 .#{$namespace}-wrapper {
   width: 200px;
   .#{$namespace} {
     width: 100%;
     height: 100%;
-    border: $borderWidth solid var(--color-form-item);
+    border: $border-width solid var(--color-form-item);
     box-sizing: border-box;
     border-radius: inherit;
     &.highlight {
@@ -150,9 +150,9 @@ $borderWidth: 2px;
 }
 
 @each $size in (small, medium, large) {
-  $radius: map-get($select-border-radius, $size);
-  $padding: map-get($select-padding, $size);
-  $font-size: map-get($select-font-size, $size);
+  $radius: map.get($select-border-radius, $size);
+  $padding: map.get($select-padding, $size);
+  $font-size: map.get($select-font-size, $size);
   .#{$namespace}-wrapper--#{$size} {
     border-radius: $radius;
     .#{$namespace}--#{$size} {

@@ -1,3 +1,29 @@
+<template>
+  <button
+    class="cursor-pointer flex-center no-select fade-ease"
+    :class="[
+      `${NAMESPACE}`,
+      `${NAMESPACE}--${size}`,
+      `${NAMESPACE}--${type}`,
+      icon ? `${NAMESPACE}-only-icon` : '',
+      isDisabled ? `${NAMESPACE}-disabled` : '',
+      shadow ? `shadow` : '',
+      outline ? `${NAMESPACE}-outline` : '',
+      radius ? `${NAMESPACE}-radius` : '',
+      fill ? 'flex fill-w' : 'inline-flex',
+      customClass,
+    ]"
+    :disabled="isDisabled"
+    @click.stop="$emit('click')"
+  >
+    <span class="loading-action" :class="`${NAMESPACE}-load`" v-show="loading">-</span>
+    <span class="inline-block" :class="`${NAMESPACE}-content ${loading ? 'ml-s' : ''}`">
+      <i v-if="icon || showIcon" :class="`${NAMESPACE}-icon icon iconfont ${iconClass}`"></i>
+      <slot v-if="!icon"></slot>
+    </span>
+  </button>
+</template>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { BtnType, Size } from "@type/interface"
@@ -52,32 +78,6 @@ const isDisabled = computed(() => props.loading || props.disabled)
 
 const NAMESPACE = "custom-button"
 </script>
-
-<template>
-  <button
-    class="cursor-pointer flex-center no-select fade-ease"
-    :class="[
-      `${NAMESPACE}`,
-      `${NAMESPACE}--${size}`,
-      `${NAMESPACE}--${type}`,
-      icon ? `${NAMESPACE}-only-icon` : '',
-      isDisabled ? `${NAMESPACE}-disabled` : '',
-      shadow ? `shadow` : '',
-      outline ? `${NAMESPACE}-outline` : '',
-      radius ? `${NAMESPACE}-radius` : '',
-      fill ? 'flex fill-w' : 'inline-flex',
-      customClass,
-    ]"
-    :disabled="isDisabled"
-    @click.stop="$emit('click')"
-  >
-    <span class="loading-action" :class="`${NAMESPACE}-load`" v-show="loading">-</span>
-    <span class="inline-block" :class="`${NAMESPACE}-content ${loading ? 'ml-s' : ''}`">
-      <i v-if="icon || showIcon" :class="`${NAMESPACE}-icon icon iconfont ${iconClass}`"></i>
-      <slot v-if="!icon"></slot>
-    </span>
-  </button>
-</template>
 
 <style lang="scss" scoped>
 $namespace: custom-button;
@@ -177,38 +177,38 @@ $horizontal-padding: (
     }
   }
   .#{$namespace}--#{$type} {
-    background-color: map-get($btn-theme, $type);
+    background-color: map.get($btn-theme, $type);
     &:hover {
-      background-color: map-get($btn-theme, #{$type}-hover);
+      background-color: map.get($btn-theme, #{$type}-hover);
     }
     &:active {
-      background-color: map-get($btn-theme, #{$type}-active) !important;
+      background-color: map.get($btn-theme, #{$type}-active) !important;
     }
     .#{$namespace}-content {
       color: inherit;
     }
   }
   .#{$namespace}--#{$type}.#{$namespace}-outline {
-    color: map-get($btn-theme, $type);
-    border: 2px solid map-get($btn-theme, $type);
+    color: map.get($btn-theme, $type);
+    border: 2px solid map.get($btn-theme, $type);
     background-color: transparent;
     &:hover {
-      color: map-get($btn-theme, #{$type}-hover);
-      border-color: map-get($btn-theme, #{$type}-hover);
+      color: map.get($btn-theme, #{$type}-hover);
+      border-color: map.get($btn-theme, #{$type}-hover);
     }
   }
 }
 
 @each $size in (mini, small, medium, large, xLarge) {
-  $font-size: map-get($btn-font-size, $size);
-  $padding: map-get($round-padding, $size);
+  $font-size: map.get($btn-font-size, $size);
+  $padding: map.get($round-padding, $size);
   .#{$namespace}--#{$size} {
     height: calc($font-size + 2.6 * $padding);
     border-radius: 4px;
-    padding: 0 map-get($horizontal-padding, $size);
+    padding: 0 map.get($horizontal-padding, $size);
     font-size: $font-size;
 
-    //line-height: $font-size;
+    // line-height: $font-size;
   }
   .#{$namespace}--#{$size}.#{$namespace}-radius {
     border-radius: calc(($font-size + 2.6 * $padding) / 2);

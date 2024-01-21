@@ -44,7 +44,7 @@ const namespace = "badge"
 </template>
 
 <style lang="scss" scoped>
-$namespace: 'badge';
+$namespace: "badge";
 
 /** 组件尺寸 */
 $comp-size: (

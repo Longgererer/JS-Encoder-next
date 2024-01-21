@@ -59,7 +59,7 @@ import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { useSideMenu } from "./hooks/sideMenu"
 import useDragleaveJudge from "@hooks/useDragleaveJudge"
 import Dropdown from "@components/dropdown/dropdown.vue"
-import DropdownItem from "@components/dropdown/dropdownItem.vue"
+import DropdownItem from "@components/dropdown/dropdown-item.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import UtilService from "@utils/services/util-service"
 

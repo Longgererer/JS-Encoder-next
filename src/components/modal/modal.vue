@@ -157,7 +157,6 @@ $namespace: 'modal';
       background-color: var(--color-main-bg-2);
     }
   }
-  .#{$namespace}-footer {}
 }
 
 .#{$namespace}-enter-from,
