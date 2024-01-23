@@ -293,9 +293,9 @@ $input-border-radius: (
 }
 
 @each $size in (small, medium, large) {
-  $radius: map.get($input-border-radius, $size);
-  $padding: map.get($input-padding, $size);
-  $font-size: map.get($input-font-size, $size);
+  $radius: map-get($input-border-radius, $size);
+  $padding: map-get($input-padding, $size);
+  $font-size: map-get($input-font-size, $size);
   .#{$namespace}--#{$size} {
     input, textarea {
       border-radius: $radius;

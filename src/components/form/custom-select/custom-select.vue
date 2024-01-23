@@ -150,9 +150,9 @@ $border-width: 2px;
 }
 
 @each $size in (small, medium, large) {
-  $radius: map.get($select-border-radius, $size);
-  $padding: map.get($select-padding, $size);
-  $font-size: map.get($select-font-size, $size);
+  $radius: map-get($select-border-radius, $size);
+  $padding: map-get($select-padding, $size);
+  $font-size: map-get($select-font-size, $size);
   .#{$namespace}-wrapper--#{$size} {
     border-radius: $radius;
     .#{$namespace}--#{$size} {
