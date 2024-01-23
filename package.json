@@ -4,7 +4,8 @@
   "version": "4.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bash src/scripts/dev.sh",
+    "start": "bash src/scripts/start.sh",
+    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue src/ --fix && stylelint \"./src/**/*.{css,scss,vue}\" --fix",
