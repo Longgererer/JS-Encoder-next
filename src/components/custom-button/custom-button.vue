@@ -80,7 +80,7 @@ const NAMESPACE = "custom-button"
 </script>
 
 <style lang="scss" scoped>
-$namespace: custom-button;
+$namespace: "custom-button";
 $btn-theme: (
   default: transparent,
   default-hover: transparent,
@@ -100,21 +100,21 @@ $btn-font-size: (
   small: 12px,
   medium: 14px,
   large: 16px,
-  xlarge: 18px,
+  xLarge: 18px,
 );
 $round-padding: (
   mini: 2px,
   small: 4px,
   medium: 6px,
   large: 8px,
-  xlarge: 10px,
+  xLarge: 10px,
 );
 $horizontal-padding: (
   mini: 12px,
   small: 16px,
   medium: 20px,
   large: 24px,
-  xlarge: 28px,
+  xLarge: 28px,
 );
 
 .#{$namespace} {
@@ -177,35 +177,35 @@ $horizontal-padding: (
     }
   }
   .#{$namespace}--#{$type} {
-    background-color: map-get($btn-theme, $type);
+    background-color: map.get($btn-theme, $type);
     &:hover {
-      background-color: map-get($btn-theme, #{$type}-hover);
+      background-color: map.get($btn-theme, #{$type}-hover);
     }
     &:active {
-      background-color: map-get($btn-theme, #{$type}-active) !important;
+      background-color: map.get($btn-theme, #{$type}-active) !important;
     }
     .#{$namespace}-content {
       color: inherit;
     }
   }
   .#{$namespace}--#{$type}.#{$namespace}-outline {
-    color: map-get($btn-theme, $type);
-    border: 2px solid map-get($btn-theme, $type);
+    color: map.get($btn-theme, $type);
+    border: 2px solid map.get($btn-theme, $type);
     background-color: transparent;
     &:hover {
-      color: map-get($btn-theme, #{$type}-hover);
-      border-color: map-get($btn-theme, #{$type}-hover);
+      color: map.get($btn-theme, #{$type}-hover);
+      border-color: map.get($btn-theme, #{$type}-hover);
     }
   }
 }
 
 @each $size in (mini, small, medium, large, xLarge) {
-  $font-size: map-get($btn-font-size, $size);
-  $padding: map-get($round-padding, $size);
+  $font-size: map.get($btn-font-size, $size);
+  $padding: map.get($round-padding, $size);
   .#{$namespace}--#{$size} {
     height: calc($font-size + 2.6 * $padding);
     border-radius: 4px;
-    padding: 0 map-get($horizontal-padding, $size);
+    padding: 0 map.get($horizontal-padding, $size);
     font-size: $font-size;
 
     // line-height: $font-size;

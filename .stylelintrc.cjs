@@ -11,5 +11,6 @@ module.exports = {
       "except": ["after-rule", "after-single-line-comment", "inside-block-and-after-rule", "inside-block", "first-nested"],
       "ignore": ["after-comment", "first-nested", "inside-block"]
     }],
+    "value-keyword-case": null,
   }
 }

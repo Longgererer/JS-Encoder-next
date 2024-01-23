@@ -35,9 +35,9 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  position: "bottom" as Position,
-  align: "left" as Align,
-  trigger: "click" as Trigger,
+  position: Position.BOTTOM,
+  align: Align.LEFT,
+  trigger: Trigger.CLICK,
   modelValue: false,
 })
 const emits = defineEmits(["update:modelValue"])

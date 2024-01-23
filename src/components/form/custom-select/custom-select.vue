@@ -150,9 +150,9 @@ $border-width: 2px;
 }
 
 @each $size in (small, medium, large) {
-  $radius: map-get($select-border-radius, $size);
-  $padding: map-get($select-padding, $size);
-  $font-size: map-get($select-font-size, $size);
+  $radius: map.get($select-border-radius, $size);
+  $padding: map.get($select-padding, $size);
+  $font-size: map.get($select-font-size, $size);
   .#{$namespace}-wrapper--#{$size} {
     border-radius: $radius;
     .#{$namespace}--#{$size} {
@@ -163,7 +163,7 @@ $border-width: 2px;
       border-radius: $radius;
       padding: $padding 0;
       .#{$namespace}-option {
-        padding: calc($padding + $borderWidth);
+        padding: calc($padding + $border-width);
       }
     }
   }
