@@ -192,14 +192,14 @@ function setChildrenSplitterSize(changeSize: number, changeDirection?: SplitDire
 }
 
 
-const handleResizeSplitter = (e: MouseEvent) => {
+const handleResizeSplitter = (e: MouseEvent): void => {
   const { direction, children = [] } = editorSplitter
   const isHorizontal = direction === SplitDirection.HORIZONTAL
   const startPos = isHorizontal ? e.clientX : e.clientY
   const [splitterId1, splitterId2] = children
   const splitter1Size = childrenSizeMap.value[splitterId1]
   const splitter2Size = childrenSizeMap.value[splitterId2]
-  document.onmousemove = (event: MouseEvent) => {
+  document.onmousemove = (event: MouseEvent): void => {
     const changeSize = startPos - (isHorizontal ? event.clientX : event.clientY)
     const [size1, size2] = moduleSizeService.getNewModulesSize(
       splitter1Size,
@@ -211,7 +211,7 @@ const handleResizeSplitter = (e: MouseEvent) => {
       [splitterId1]: size1 as ISize,
       [splitterId2]: size2 as ISize,
     }
-    document.onmouseup = () => {
+    document.onmouseup = (): void => {
       document.onmouseup = null
       document.onmousemove = null
     }
@@ -220,7 +220,7 @@ const handleResizeSplitter = (e: MouseEvent) => {
 
 /** tab拖动所导致的splitter分割 */
 // eslint-disable-next-line max-lines-per-function
-const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
+const handleSelectSplitPosition = (splitPosition: AreaPosition): void => {
   // 获取拖动tab的信息
   const { tabId, editorId: fromEditorId, splitterId: fromSplitterId } = draggingTabInfo.value!
   // 获取释放tab所在splitter的信息
@@ -324,7 +324,7 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
  * @param tabId 被拖动的tab
  * @param splitPosition 分割位置
  */
-const processSplitArea = (splitterId: number, tabId: number, splitPosition: AreaPosition) => {
+const processSplitArea = (splitterId: number, tabId: number, splitPosition: AreaPosition): void => {
   // 判断分割方向
   const splitDirectionInfo = getSplitDirectionInfo(splitPosition)
   if (!splitDirectionInfo) { return }

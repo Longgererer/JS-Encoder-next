@@ -51,13 +51,13 @@ const startObserveWindowSize = (): void => {
   })
 }
 
-const handleResizeEditorAndResult = (e: MouseEvent) => {
+const handleResizeEditorAndResult = (e: MouseEvent): void => {
   const { resultWidth, editorWidth } = modulesSize
   // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
   updateIsModulesResizing(true)
   const startX = e.clientX
   // 鼠标拖拉editor分隔栏改变editor和结果窗口的宽度
-  document.onmousemove = (event: MouseEvent) => {
+  document.onmousemove = (event: MouseEvent): void => {
     // 获取editor和result窗口的新尺寸
     const [editor, result] = moduleSizeService.getNewModulesSize(
       { width: editorWidth, minWidth: EDITOR_MIN_WIDTH },
@@ -73,12 +73,12 @@ const handleResizeEditorAndResult = (e: MouseEvent) => {
   }
 }
 
-const handleResizeConsoleAndPreview = (startY: number) => {
+const handleResizeConsoleAndPreview = (startY: number): void => {
   const { consoleHeight, previewHeight } = modulesSize
   // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
   updateIsModulesResizing(true)
   // 鼠标拖拉console分隔栏改变console和iframe的高度
-  document.onmousemove = (event: MouseEvent) => {
+  document.onmousemove = (event: MouseEvent): void => {
     // 获取console和preview窗口的新尺寸
     const [preview, console] = moduleSizeService.getNewModulesSize(
       { height: previewHeight, minHeight: PREVIEW_MIN_HEIGHT },
@@ -96,7 +96,7 @@ const handleResizeConsoleAndPreview = (startY: number) => {
 }
 
 const processFinishResize = (): void => {
-  document.onmouseup = () => {
+  document.onmouseup = (): void => {
     updateIsModulesResizing(false)
     document.onmouseup = null
     document.onmousemove = null

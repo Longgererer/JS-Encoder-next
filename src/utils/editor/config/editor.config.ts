@@ -18,6 +18,8 @@ import { autocompletion } from "@codemirror/autocomplete"
 import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
+import { Theme } from "@type/interface"
+import themes from "@utils/editor/themes"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -34,7 +36,7 @@ export const getDefaultEditorExtensions = (): Extension => {
   ]
 }
 
-const Prep2DefaultExtensionMap = {
+const Prep2DefaultExtensionMap: Record<Prep, () => Extension> = {
   [Prep.HTML]: () => [
     emmetConfig.of({
       syntax: "css",
@@ -64,55 +66,59 @@ export const getDefaultEditorConfigByPrep = (prep: Prep): Extension => {
   return Prep2DefaultExtensionMap[prep]()
 }
 
-const Prep2LanguageExtensionMap = {
-  [Prep.HTML]: html,
+const Prep2LanguageExtensionMap: Record<Prep, () => Extension | StreamLanguage<unknown>> = {
+  [Prep.HTML]: () => html(),
   [Prep.MARKDOWN]: () => markdown({ extensions: [] }),
-  [Prep.PUG]: () => {},
-  [Prep.CSS]: css,
+  [Prep.PUG]: () => [],
+  [Prep.CSS]: () => css(),
   [Prep.SASS]: () => sass({ indented: true }),
-  [Prep.SCSS]: sass,
-  [Prep.LESS]: less,
-  [Prep.JAVASCRIPT]: javascript,
+  [Prep.SCSS]: () => sass(),
+  [Prep.LESS]: () => less(),
+  [Prep.JAVASCRIPT]: () => javascript(),
   [Prep.TYPESCRIPT]: () => javascript({ typescript: true }),
   [Prep.JSX]: () => javascript({ jsx: true }),
   // maybe should support tsx :)
   [Prep.VUE2]: () => vue({ base: html() }),
   [Prep.VUE3]: () => vue({ base: html() }),
-}
-
-/** legacy-modes 下面的语言扩展 */
-const Prep2LegacyExtensionMap = {
+  // legacy-modes 下面的语言扩展
   [Prep.STYLUS]: () => StreamLanguage.define(stylus),
   [Prep.COFFEESCRIPT]: () => StreamLanguage.define(coffeeScript),
 }
 
 /** 获取语言对应的基础扩展 */
-export const getPrepBaseExtension = (prep: Prep) => {
-  return {
-    ...Prep2LanguageExtensionMap,
-    ...Prep2LegacyExtensionMap,
-  }[prep]()
+export const getPrepBaseExtension = (prep: Prep): Extension => {
+  return Prep2LanguageExtensionMap[prep]()
 }
 
-const Prep2LinterExtensionMap = {
-  [Prep.HTML]: htmlLinter,
-  [Prep.MARKDOWN]: () => {},
-  [Prep.PUG]: () => {},
-  [Prep.CSS]: cssLinter,
-  [Prep.SASS]: scssLinter,
-  [Prep.SCSS]: scssLinter,
-  [Prep.LESS]: lessLinter,
-  [Prep.STYLUS]: stylusLinter,
-  [Prep.JAVASCRIPT]: javascriptLinter,
-  [Prep.TYPESCRIPT]: typeScriptLinter,
-  [Prep.JSX]: () => {},
-  [Prep.COFFEESCRIPT]: () => {},
-  [Prep.VUE2]: () => {},
-  [Prep.VUE3]: () => {},
+/** 语言对应的linter扩展 */
+const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
+  [Prep.HTML]: () => htmlLinter,
+  [Prep.MARKDOWN]: () => [],
+  [Prep.PUG]: () => [],
+  [Prep.CSS]: () => cssLinter,
+  [Prep.SASS]: () => scssLinter,
+  [Prep.SCSS]: () => scssLinter,
+  [Prep.LESS]: () => lessLinter,
+  [Prep.STYLUS]: () => stylusLinter,
+  [Prep.JAVASCRIPT]: () => javascriptLinter,
+  [Prep.TYPESCRIPT]: () => typeScriptLinter,
+  [Prep.JSX]: () => [],
+  [Prep.COFFEESCRIPT]: () => [],
+  [Prep.VUE2]: () => [],
+  [Prep.VUE3]: () => [],
 }
 
 /** 获取语言对应的linter扩展 */
-export const getPrepLintExtension = (prep: Prep) => {
-  return Prep2LinterExtensionMap[prep]
+export const getPrepLintExtension = (prep: Prep): Extension => {
+  return Prep2LinterExtensionMap[prep]()
 }
 
+/** 主题对应的编辑器样式拓展 */
+const theme2EditorStyleMap: Record<Theme, () => Extension> = {
+  [Theme.DARK]: () => themes.darkTheme,
+  [Theme.LIGHT]: () => themes.lightTheme,
+}
+
+export const getEditorThemeExtension = (theme: Theme): Extension => {
+  return theme2EditorStyleMap[theme]()
+}

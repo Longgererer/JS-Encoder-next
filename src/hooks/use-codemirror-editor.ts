@@ -42,7 +42,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
    */
 
   /** 获取扩展更新方法 */
-  const getExtensionUpdater = () => {
+  const getExtensionUpdater = (): (extension: Extension) => void => {
     const compartment = new Compartment()
     // 返回个函数保留compartment引用
     return (extension: Extension) => {
@@ -55,7 +55,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
   }
 
   /** 开启或关闭扩展 */
-  const getExtensionToggler = (extension: Extension) => {
+  const getExtensionToggler = (extension: Extension): (newStatus?: boolean) => void => {
     const updater = getExtensionUpdater()
     return (newStatus?: boolean) => {
       updater(newStatus ? extension : [])

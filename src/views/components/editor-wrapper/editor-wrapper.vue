@@ -17,7 +17,7 @@ const { createTab, createSplitter, createEditor, updateSplitter, updateEditor } 
 const rootSplitter = ref<IEditorSplitter | null>(null)
 
 /** 初始化编辑窗口结构 */
-const initEditorWrapperConfig = () => {
+const initEditorWrapperConfig = (): void => {
   // 先创建一个splitter根节点
   rootSplitter.value = createSplitter({})
   const tabHTML = createTab(Prep.HTML, Origin.HTML)

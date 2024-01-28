@@ -1,3 +1,4 @@
+import { noop } from "@type/interface"
 import { onMounted, Ref } from "vue"
 
 /**
@@ -6,7 +7,7 @@ import { onMounted, Ref } from "vue"
  * 只有在dragging为0时，即一个dragenter事件刚好对应一个dragleave的时候才会执行dragleave事件的内容
  * 加上setTimeout是为了兼容火狐会同时执行dragenter事件和dragleave事件的问题
  */
-const useDragleaveJudge = (eleRef: Ref<HTMLElement | null>, callback: () => void) => {
+const useDragleaveJudge = (eleRef: Ref<HTMLElement | null>, callback: () => void): noop => {
   let dragging = 0
   onMounted(() => {
     const ele = eleRef.value
@@ -23,7 +24,7 @@ const useDragleaveJudge = (eleRef: Ref<HTMLElement | null>, callback: () => void
     })
   })
 
-  return () => {
+  return (): void => {
     dragging = 0
   }
 }
