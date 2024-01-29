@@ -17,7 +17,7 @@ export enum Prep {
 }
 
 /** 原生语言列表 */
-export enum Origin {
+export enum OriginLang {
   HTML = "HTML",
   CSS = "CSS",
   JAVASCRIPT = "JAVASCRIPT",

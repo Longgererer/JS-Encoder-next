@@ -28,12 +28,13 @@ import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 import Editor from "@views/components/editor/editor.vue"
-import { computed } from "vue"
+import { computed, watch } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/common"
-import { AnyObject } from "@type/interface"
-import { IEmits, IProps } from "./editor-view"
+import { AnyObject, Theme } from "@type/interface"
+import { IEmits, IProps, getEditorExtensions } from "./editor-view"
 import { Extension } from "@codemirror/state"
+import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
 
 /** props */
 const props = defineProps<IProps>()
@@ -98,6 +99,12 @@ const getEditorStyle = (): Record<string, AnyObject> => {
   }
 }
 
+/** editor扩展处理 */
+const editorExtensionsService = new EditorExtensionsService()
+watch(() => theme.value, (newTheme: Theme) => {
+  editorExtensionsService.updateThemeExtension()
+})
+
 /** code改变存入store */
 const handleCodeChanged = (newCode: string): void => {
   const { execute } = editorConfigStoreRefs
@@ -105,12 +112,6 @@ const handleCodeChanged = (newCode: string): void => {
   debounce(() => {
     editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
   }, execute.value.delayTimeOfExecute)()
-}
-
-const getEditorExtensions = (): Extension => {
-  return [
-
-  ]
 }
 </script>
 

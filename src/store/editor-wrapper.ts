@@ -1,4 +1,4 @@
-import { Origin, Prep } from "@type/prep"
+import { OriginLang, Prep } from "@type/prep"
 import { defineStore } from "pinia"
 import {
   EditorCodeMap,
@@ -59,7 +59,7 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       this.draggingTabInfo = draggingTabInfo
     },
     /** 创建编辑窗口tab */
-    createTab(prep: Prep, origin: Origin): IEditorTab {
+    createTab(prep: Prep, origin: OriginLang): IEditorTab {
       const id = ++ this.tabIdCount
       this.tabMap[id] = { id, prep, origin }
       return this.tabMap[id]

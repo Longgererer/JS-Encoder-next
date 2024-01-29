@@ -1,4 +1,4 @@
-import { Origin, Prep } from "@type/prep"
+import { OriginLang, Prep } from "@type/prep"
 import { ISize } from "@type/interface"
 
 /** 编辑窗口tab */
@@ -7,7 +7,7 @@ export interface IEditorTab {
   /** 当前tab对应编辑器使用的预处理语言 */
   prep: Prep
   /** 预处理语言对应的原生语言 */
-  origin: Origin
+  origin: OriginLang
 }
 
 /** 编辑窗口 */

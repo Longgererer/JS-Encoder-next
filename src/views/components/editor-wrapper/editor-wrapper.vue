@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /** module */
 import { useEditorWrapperStore } from "@store/editor-wrapper"
-import { Origin, Prep } from "@type/prep"
+import { OriginLang, Prep } from "@type/prep"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import { IEditorSplitter } from "@type/editor"
 import { useLayoutStore } from "@store/layout"
@@ -20,9 +20,9 @@ const rootSplitter = ref<IEditorSplitter | null>(null)
 const initEditorWrapperConfig = (): void => {
   // 先创建一个splitter根节点
   rootSplitter.value = createSplitter({})
-  const tabHTML = createTab(Prep.HTML, Origin.HTML)
-  const tabCSS = createTab(Prep.CSS, Origin.CSS)
-  const tabJavaScript = createTab(Prep.JAVASCRIPT, Origin.JAVASCRIPT)
+  const tabHTML = createTab(Prep.HTML, OriginLang.HTML)
+  const tabCSS = createTab(Prep.CSS, OriginLang.CSS)
+  const tabJavaScript = createTab(Prep.JAVASCRIPT, OriginLang.JAVASCRIPT)
   const editor = createEditor({
     displayTabId: tabHTML.id,
     parentId: rootSplitter.value.id,

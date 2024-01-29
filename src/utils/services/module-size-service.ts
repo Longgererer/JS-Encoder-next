@@ -123,19 +123,3 @@ export default class ModuleSizeService {
     ]
   }
 }
-
-/**
- * splitter本身没有尺寸，完全依赖内部的editor将其撑开，因此在拖动splitter的分割线的时候
- * 首先需要找到splitter内部的所有editor
- * 找出来所有editor之后需要根据分割的方向来决定是更改宽度还是高度
- * 可能需要用到递归
- * 需要更改editor尺寸的途径有如下几种：
- * 1. 新建splitter（拖动tab在已有splitter下创建新的splitter）
- * 这种情况下需要获取已有splitter(父splitter)
- *
- * 2. 删除splitter（拖动tab将splitter与另一个splitter合并）
- *
- *
- * 3. 拖动splitter分割线直接改变editor尺寸
- *
- */
