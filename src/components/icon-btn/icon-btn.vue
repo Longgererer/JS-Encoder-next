@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 
 interface IProps {
@@ -26,7 +25,7 @@ const size2ClassMap = {
   [IconBtnSize.LG]: "font-l",
 }
 
-const handleClick = () => {
+const handleClick = (): void => {
   emits("click")
 }
 </script>

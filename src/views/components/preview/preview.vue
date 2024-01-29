@@ -38,10 +38,10 @@ const previewOpts: IPreviewOpt[] = [
  * 新手引导
  */
 const isShowNewUserGuide = ref<boolean>(false)
-const handleJumpToHelp = () => {
+const handleJumpToHelp = (): void => {
   window.open(HELP_DOCS_URL, "_blank")
 }
-const handleSkipGuide = () => {
+const handleSkipGuide = (): void => {
   // 隐藏引导
   isShowNewUserGuide.value = false
   // 存储状态

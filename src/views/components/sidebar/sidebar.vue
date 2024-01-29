@@ -19,7 +19,7 @@ const processThemeChanged = (): void => {
   updateTheme(theme.value === Theme.DARK ? Theme.LIGHT : Theme.DARK)
 }
 
-const handleClickItem = (type: SidebarType) => {
+const handleClickItem = (type: SidebarType): void => {
   switch (type) {
     case SidebarType.THEME: {
       processThemeChanged()

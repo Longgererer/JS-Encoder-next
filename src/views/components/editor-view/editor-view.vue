@@ -22,6 +22,7 @@
 /** modules */
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { useEditorConfigStore } from "@store/editor-config"
+import { useCommonStore } from "@store/common"
 import { AreaPosition, IEditorTab } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
@@ -30,34 +31,33 @@ import Editor from "@views/components/editor/editor.vue"
 import { computed } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/common"
+import { AnyObject } from "@type/interface"
+import { IEmits, IProps } from "./editor-view"
+import { Extension } from "@codemirror/state"
 
 /** props */
-const props = defineProps<{
-  splitterId: number
-  id: number
-}>()
+const props = defineProps<IProps>()
 /** emits */
-const emits = defineEmits<{
-  (e: "selectSplitPosition", splitPosition: AreaPosition): void
-}>()
+const emits = defineEmits<IEmits>()
 
 const editorWrapperStore = useEditorWrapperStore()
 const editorConfigStore = useEditorConfigStore()
+const commonStore = useCommonStore()
 const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 const { editorMap, tabMap, codeMap } = storeToRefs(editorWrapperStore)
-// const editor = editorMap.value[props.id]
+const { theme } = storeToRefs(commonStore)
 
 /**
  * tab事件
  */
 
 /** 点击tab处理 */
-const handleClickTab = (tabId: number) => {
+const handleClickTab = (tabId: number): void => {
   editorWrapperStore.updateEditor(props.id, { displayTabId: tabId })
 }
 
 /** 拖动tab分割窗口 */
-const handleSelectSplitPosition = (splitPosition: AreaPosition) => {
+const handleSelectSplitPosition = (splitPosition: AreaPosition): void => {
   emits("selectSplitPosition", splitPosition)
 }
 
@@ -88,7 +88,7 @@ const editorSettings = computed<ICodemirrorEditorSettings>(() => {
 })
 
 /** 获取编辑器内部需要设置的样式 */
-const getEditorStyle = () => {
+const getEditorStyle = (): Record<string, AnyObject> => {
   const { font } = editorConfigStoreRefs
   return {
     "&": {
@@ -99,12 +99,18 @@ const getEditorStyle = () => {
 }
 
 /** code改变存入store */
-const handleCodeChanged = (newCode: string) => {
+const handleCodeChanged = (newCode: string): void => {
   const { execute } = editorConfigStoreRefs
-  /** 延迟同步store，进而延迟编译 */
+  // 延迟同步store，进而延迟编译
   debounce(() => {
     editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
   }, execute.value.delayTimeOfExecute)()
+}
+
+const getEditorExtensions = (): Extension => {
+  return [
+
+  ]
 }
 </script>
 

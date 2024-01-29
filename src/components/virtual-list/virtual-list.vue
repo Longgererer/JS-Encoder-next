@@ -37,7 +37,7 @@ onMounted(() => {
     listItemSelector: `.${V_LIST_ITEM_CLASS}`,
     rootMargin: "0px",
     threshold: 0,
-    cb: () => {
+    cb: (): void => {
       processToBeUpdatedItemQueue()
     },
   })

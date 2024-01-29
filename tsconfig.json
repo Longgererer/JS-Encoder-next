@@ -17,7 +17,7 @@
     "checkJs": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "types": ["unplugin-vue-define-options/macros-global"],
+    "types": ["unplugin-vue-define-options/macros-global", "node"],
     "baseUrl": ".",
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,

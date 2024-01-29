@@ -77,7 +77,7 @@ const handleEnterArea = (e: DragEvent): void => {
   currPos.value = ((e.target as HTMLElement).dataset.pos as AreaPosition)
 }
 
-const handleDrop = (e: MouseEvent) => {
+const handleDrop = (e: MouseEvent): void => {
   emits("selectPosition", currPos.value)
   dragging = 0
   currPos.value = AreaPosition.NULL
