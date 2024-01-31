@@ -9,12 +9,16 @@
       v-if="editorWrapperStore.draggingTabInfo"
       @selectPosition="handleSelectSplitPosition"
     ></overlap-monitor>
-    <editor
-      :code="currEditorCode"
-      :prep="displayTabInfo.prep"
-      :settings="editorSettings"
-      @codeChanged="handleCodeChanged"
-    ></editor>
+    <template v-for="item in editor.tabIds" :key="item">
+      <editor
+        v-show="item === editor.displayTabId"
+        :code="currEditorCode"
+        :prep="tabMap[item].prep"
+        :settings="editorSettings"
+        :extensions="prep2ExtensionsMap[tabMap[item].prep]"
+        @codeChanged="handleCodeChanged"
+      ></editor>
+    </template>
   </div>
 </template>
 
@@ -23,18 +27,19 @@
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { useEditorConfigStore } from "@store/editor-config"
 import { useCommonStore } from "@store/common"
-import { AreaPosition, IEditorTab } from "@type/editor"
+import { AreaPosition, IEditor, IEditorTab } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 import Editor from "@views/components/editor/editor.vue"
-import { computed, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/common"
 import { AnyObject, Theme } from "@type/interface"
-import { IEmits, IProps, getEditorExtensions } from "./editor-view"
+import { IEmits, IProps } from "./editor-view"
 import { Extension } from "@codemirror/state"
 import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
+import { Prep } from "@type/prep"
 
 /** props */
 const props = defineProps<IProps>()
@@ -65,11 +70,11 @@ const handleSelectSplitPosition = (splitPosition: AreaPosition): void => {
 /**
  * editor组件所需
  */
+const editor = ref<IEditor>(editorMap.value[props.id])
 
 /** 获取当前editor展示tab的信息 */
 const displayTabInfo = computed<IEditorTab>(() => {
-  const { displayTabId } = editorMap.value[props.id]
-  return tabMap.value[displayTabId]
+  return tabMap.value[editor.value.displayTabId]
 })
 
 /** 获取当前editor中展示tab下的code */
@@ -92,26 +97,37 @@ const editorSettings = computed<ICodemirrorEditorSettings>(() => {
 const getEditorStyle = (): Record<string, AnyObject> => {
   const { font } = editorConfigStoreRefs
   return {
-    "&": {
+    ".cm-scroller": {
       fontSize: `${font.value.fontSize}px`,
       fontFamily: `${font.value.fontFamily}`,
+      lineHeight: 1.6,
+    },
+    "&.cm-focused": {
+      outline: "none",
     },
   }
 }
 
 /** editor扩展处理 */
 const editorExtensionsService = new EditorExtensionsService()
-watch(() => theme.value, (newTheme: Theme) => {
-  editorExtensionsService.updateThemeExtension()
+
+/** 生成prep对应的拓展列表 */
+const prep2ExtensionsMap = computed(() => {
+  const prepList = Object.values(tabMap.value).map(({ prep }) => prep)
+  return prepList.reduce((extensionsMap, currPrep) => {
+    extensionsMap[currPrep] = editorExtensionsService.getEditorExtensions(currPrep, theme.value)
+    return extensionsMap
+  }, {} as Record<Prep, Extension[]>)
 })
+
 
 /** code改变存入store */
 const handleCodeChanged = (newCode: string): void => {
   const { execute } = editorConfigStoreRefs
   // 延迟同步store，进而延迟编译
-  debounce(() => {
-    editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
-  }, execute.value.delayTimeOfExecute)()
+  // debounce(() => {
+  //   editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
+  // }, execute.value.delayTimeOfExecute)()
 }
 </script>
 

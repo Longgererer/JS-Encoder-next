@@ -9,8 +9,8 @@
 import useCodemirrorEditor from "@hooks/use-codemirror-editor"
 import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
-import { getDefaultEditorExtensions } from "@utils/editor/config/editor.config"
 import { EditorView } from "codemirror"
+
 /** props */
 const props = defineProps<IProps>()
 /** emits */
@@ -24,7 +24,7 @@ onMounted(() => {
   const editor = useCodemirrorEditor({
     parent: editorRef.value!,
     extensions: [
-      getDefaultEditorExtensions(),
+      ...(props.extensions || []),
       EditorView.updateListener.of((update) => {
         // 监听内容改变
         if (update.docChanged) {
@@ -41,9 +41,10 @@ onMounted(() => {
   watch(
     () => props.code,
     (newContent) => {
-      if (newContent !== editor.getContent()) { return }
+      if (newContent === editor.getContent()) { return }
       editor.setContent(newContent)
     },
+    { immediate: true },
   )
   watch(
     () => props.settings.tabSize,
@@ -57,7 +58,14 @@ onMounted(() => {
   )
   watch(
     () => props.settings.style,
-    (newStyle) => editor.setStyle(newStyle),
+    (newStyle) => {
+      editor.setStyle(newStyle)
+    },
+    { immediate: true },
+  )
+  watch(
+    () => props.extensions,
+    (newExtensions) => editor.extensionUpdater(newExtensions!),
     { immediate: true },
   )
 

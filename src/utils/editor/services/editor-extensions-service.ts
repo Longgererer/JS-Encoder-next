@@ -2,30 +2,43 @@ import { Extension } from "@codemirror/state"
 import { OriginLang, Prep } from "@type/prep"
 import SingleInstance from "@utils/decorators/single-instance"
 import { getDefaultEditorConfigByPrep, getDefaultEditorExtensions, getEditorThemeExtension, getPrepBaseExtension, getPrepLintExtension } from "../config/editor.config"
-import { Theme } from "@type/interface"
+import { AnyArray, Theme } from "@type/interface"
 import { getPrepOrigin } from "@utils/prep"
+import { reactive } from "vue"
+
+interface IExtensionsInfo {
+  prep: Prep,
+  // fix: 这里如果要填Extension类型的话会提示"Type instantiation is excessively deep and possibly infinite."
+  extensions: AnyArray,
+}
 
 /**
  * 处理缓存编辑器的扩展
  */
 @SingleInstance
 export default class EditorExtensionsService {
-  private lang2ExtensionsMap: Record<OriginLang, Extension[]> = {
-    [OriginLang.HTML]: [],
-    [OriginLang.CSS]: [],
-    [OriginLang.JAVASCRIPT]: [],
+  private lang2ExtensionsMap = reactive<Map<OriginLang, IExtensionsInfo>>(new Map())
+  /** 所有editor通用的拓展 */
+  private commonEditorExtensions: Extension[] = []
+  private themeExtensions: Extension = []
+
+  constructor() {
+    this.commonEditorExtensions = getDefaultEditorExtensions()
   }
 
-  constructor() {}
-
-  public setExtensionsByPrep(prep: Prep, extensions: Extension[]): void {
+  public setExtensionsInfo(prep: Prep, extensions: Extension[]): void {
     const originLang = getPrepOrigin(prep)
-    this.lang2ExtensionsMap[originLang!] = extensions
+    this.lang2ExtensionsMap.set(originLang!, { prep, extensions })
   }
 
-  public getExtensionsByPrep(prep: Prep): Extension[] {
+  /** 获取编辑器所需扩展，首次设置必须传theme */
+  public getExtensionsByPrep(prep: Prep, theme?: Theme): Extension[] {
     const originLang = getPrepOrigin(prep)
-    return this.lang2ExtensionsMap[originLang!]
+    const originExtensionsInfo = this.lang2ExtensionsMap.get(originLang!)
+    if (!originExtensionsInfo || prep !== originExtensionsInfo.prep) {
+      this.setEditorExtensionsByPrep(prep, theme)
+    }
+    return this.lang2ExtensionsMap.get(originLang!)?.extensions!
   }
 
   /** 获取预处理相关拓展 */
@@ -37,29 +50,34 @@ export default class EditorExtensionsService {
     ]
   }
 
-  /** 获取编辑器所需扩展 */
-  public getAndCacheEditorExtensions = (prep: Prep, theme: Theme): Extension[] => {
+  public getEditorExtensions(prep: Prep, theme?: Theme): Extension[] {
     const extensions = [
-      getDefaultEditorExtensions(),
-      getEditorThemeExtension(theme),
-      this.getEditorExtensionsByPrep(prep),
+      ...this.commonEditorExtensions,
+      ...this.getEditorExtensionsByPrep(prep),
     ]
-    this.setExtensionsByPrep(prep, extensions)
+    if (theme) {
+      const extension = getEditorThemeExtension(theme)
+      extensions.push(extension)
+      this.themeExtensions = extension
+    } else {
+      extensions.push(this.themeExtensions)
+    }
     return extensions
   }
 
-  public updateThemeExtension(theme: Theme): void {
-    Object.keys(this.lang2ExtensionsMap).forEach((originLang) => {
-      const extensions = this.lang2ExtensionsMap[originLang as OriginLang]
-      extensions.push(getEditorThemeExtension(theme))
-    })
+  /** 设置编辑器所需扩展，首次设置必须传theme */
+  public setEditorExtensionsByPrep(prep: Prep, theme?: Theme): void {
+    this.setExtensionsInfo(prep, this.getEditorExtensions(prep, theme))
   }
 
-  public updatePrepExtension(prep: Prep): void {
-    const extensions = this.getExtensionsByPrep(prep)
-    this.setExtensionsByPrep(prep, [
-      ...extensions,
-      this.getEditorExtensionsByPrep(prep),
-    ])
-  }
+  // public updateThemeExtension(theme: Theme): void {
+  //   this.themeExtensions = getEditorThemeExtension(theme)
+  //   Object.keys(this.lang2ExtensionsMap).forEach((originLang) => {
+  //     const originExtensionsInfo = this.lang2ExtensionsMap.get(originLang as OriginLang)
+  //     this.lang2ExtensionsMap.set(originLang as OriginLang, {
+  //       prep: originExtensionsInfo!.prep,
+  //       extensions: [...originExtensionsInfo!.extensions, this.themeExtensions],
+  //     })
+  //   })
+  // }
 }

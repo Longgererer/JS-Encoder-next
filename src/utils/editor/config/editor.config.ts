@@ -28,7 +28,7 @@ export const ShortCutMode2ExtensionMap = {
 }
 
 /** 获取编辑器通用默认配置 */
-export const getDefaultEditorExtensions = (): Extension => {
+export const getDefaultEditorExtensions = (): Extension[] => {
   return [
     basicSetup,
     autocompletion({ defaultKeymap: false }),
@@ -36,7 +36,7 @@ export const getDefaultEditorExtensions = (): Extension => {
   ]
 }
 
-const Prep2DefaultExtensionMap: Record<Prep, () => Extension> = {
+const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.HTML]: () => [
     emmetConfig.of({
       syntax: "css",
@@ -62,7 +62,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension> = {
 }
 
 /** 获取每个预处理器的默认配置 */
-export const getDefaultEditorConfigByPrep = (prep: Prep): Extension => {
+export const getDefaultEditorConfigByPrep = (prep: Prep): Extension[] => {
   return Prep2DefaultExtensionMap[prep]()
 }
 
@@ -110,7 +110,8 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
 
 /** 获取语言对应的linter扩展 */
 export const getPrepLintExtension = (prep: Prep): Extension => {
-  return Prep2LinterExtensionMap[prep]()
+  // return Prep2LinterExtensionMap[prep]()
+  return []
 }
 
 /** 主题对应的编辑器样式拓展 */

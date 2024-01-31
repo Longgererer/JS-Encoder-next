@@ -5,6 +5,7 @@ import { EditorView, EditorViewConfig, keymap } from "@codemirror/view"
 import { AnyObject } from "@type/interface"
 import { ShortcutMode } from "@type/settings"
 import { ShortCutMode2ExtensionMap } from "@utils/editor/config/editor.config"
+import { CSSProperties } from "vue"
 
 /** 构建并配置codemirror编辑器 */
 // eslint-disable-next-line max-lines-per-function
@@ -42,7 +43,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
    */
 
   /** 获取扩展更新方法 */
-  const getExtensionUpdater = (): (extension: Extension) => void => {
+  const getExtensionUpdater = () => {
     const compartment = new Compartment()
     // 返回个函数保留compartment引用
     return (extension: Extension) => {
@@ -55,7 +56,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
   }
 
   /** 开启或关闭扩展 */
-  const getExtensionToggler = (extension: Extension): (newStatus?: boolean) => void => {
+  const getExtensionToggler = (extension: Extension) => {
     const updater = getExtensionUpdater()
     return (newStatus?: boolean) => {
       updater(newStatus ? extension : [])
@@ -87,9 +88,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
       },
    */
   const setStyle = (style: Record<string, AnyObject> = {}): void => {
-    styleUpdater([
-      EditorView.theme(style),
-    ])
+    styleUpdater(EditorView.theme(style))
   }
 
   /** 是否用tab缩进开关 */
