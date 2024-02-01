@@ -3,20 +3,19 @@
     <editor-bar
       :editor-id="id"
       :splitter-id="splitterId"
-      @click-tab="handleClickTab"
     ></editor-bar>
     <overlap-monitor
       v-if="editorWrapperStore.draggingTabInfo"
-      @selectPosition="handleSelectSplitPosition"
+      @select-position="handleSelectSplitPosition"
     ></overlap-monitor>
     <template v-for="item in editor.tabIds" :key="item">
       <editor
         v-show="item === editor.displayTabId"
-        :code="currEditorCode"
+        :code="codeMap[item]"
         :prep="tabMap[item].prep"
         :settings="editorSettings"
         :extensions="prep2ExtensionsMap[tabMap[item].prep]"
-        @codeChanged="handleCodeChanged"
+        @code-changed="($event) => handleCodeChanged($event, item)"
       ></editor>
     </template>
   </div>
@@ -27,19 +26,20 @@
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { useEditorConfigStore } from "@store/editor-config"
 import { useCommonStore } from "@store/common"
-import { AreaPosition, IEditor, IEditorTab } from "@type/editor"
+import { AreaPosition, IEditor } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 import Editor from "@views/components/editor/editor.vue"
-import { computed, ref, watch } from "vue"
+import { computed, ref } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/common"
-import { AnyObject, Theme } from "@type/interface"
+import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
 import { Extension } from "@codemirror/state"
 import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
 import { Prep } from "@type/prep"
+import useTaskQueueControl from "@hooks/use-task-queue-control"
 
 /** props */
 const props = defineProps<IProps>()
@@ -53,34 +53,13 @@ const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 const { editorMap, tabMap, codeMap } = storeToRefs(editorWrapperStore)
 const { theme } = storeToRefs(commonStore)
 
-/**
- * tab事件
- */
-
-/** 点击tab处理 */
-const handleClickTab = (tabId: number): void => {
-  editorWrapperStore.updateEditor(props.id, { displayTabId: tabId })
-}
-
 /** 拖动tab分割窗口 */
 const handleSelectSplitPosition = (splitPosition: AreaPosition): void => {
   emits("selectSplitPosition", splitPosition)
 }
 
-/**
- * editor组件所需
- */
+/** 当前视口editor */
 const editor = ref<IEditor>(editorMap.value[props.id])
-
-/** 获取当前editor展示tab的信息 */
-const displayTabInfo = computed<IEditorTab>(() => {
-  return tabMap.value[editor.value.displayTabId]
-})
-
-/** 获取当前editor中展示tab下的code */
-const currEditorCode = computed(() => {
-  return codeMap.value[displayTabInfo.value.id]
-})
 
 /** 编辑器内部设置 */
 const editorSettings = computed<ICodemirrorEditorSettings>(() => {
@@ -120,14 +99,16 @@ const prep2ExtensionsMap = computed(() => {
   }, {} as Record<Prep, Extension[]>)
 })
 
-
+const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
+/** 延迟执行任务队列时间(ms) */
+const DELAY_EXECUTE_TIME_MS = 500
 /** code改变存入store */
-const handleCodeChanged = (newCode: string): void => {
-  const { execute } = editorConfigStoreRefs
-  // 延迟同步store，进而延迟编译
-  // debounce(() => {
-  //   editorWrapperStore.updateCodeMap(displayTabInfo.value.id, newCode)
-  // }, execute.value.delayTimeOfExecute)()
+const saveDebounce = debounce(executeAndClearTaskQueue, DELAY_EXECUTE_TIME_MS)
+const handleCodeChanged = (code: string, tabId: number): void => {
+  addTask(() => {
+    editorWrapperStore.updateCodeMap(tabId, code)
+  }, tabId)
+  saveDebounce()
 }
 </script>
 

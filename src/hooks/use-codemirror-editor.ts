@@ -5,7 +5,6 @@ import { EditorView, EditorViewConfig, keymap } from "@codemirror/view"
 import { AnyObject } from "@type/interface"
 import { ShortcutMode } from "@type/settings"
 import { ShortCutMode2ExtensionMap } from "@utils/editor/config/editor.config"
-import { CSSProperties } from "vue"
 
 /** 构建并配置codemirror编辑器 */
 // eslint-disable-next-line max-lines-per-function
