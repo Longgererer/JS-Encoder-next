@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { IEditorSettings, ShortcutMode } from "@type/settings"
+import { IEditorSettings, ShortcutMode, CodeFontFamily } from "@type/settings"
 
 export const useEditorConfigStore = defineStore("editorSetting", {
   state: (): IEditorSettings => {
@@ -20,7 +20,7 @@ export const useEditorConfigStore = defineStore("editorSetting", {
       },
       font: {
         fontSize: 14,
-        fontFamily: "JetBrains Mono",
+        fontFamily: CodeFontFamily.JET_BRAINS_MONO,
       },
       other: {
         headTags: "",

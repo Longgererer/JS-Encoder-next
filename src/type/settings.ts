@@ -25,7 +25,7 @@ export interface IEditorSettings {
     /** 字号 */
     fontSize: number
     /** 字体 */
-    fontFamily: string
+    fontFamily: CodeFontFamily
   },
   other: {
     /** 头部标签 */
@@ -35,8 +35,22 @@ export interface IEditorSettings {
   }
 }
 
+/** 快捷键模式 */
 export const enum ShortcutMode {
   VSCODE = "VSCode",
   EMACS = "EMACS",
   // SUBLIME = "Sublime",
+}
+
+/** 代码字体 */
+export const enum CodeFontFamily {
+  JET_BRAINS_MONO = "JetBrains Mono",
+  FIRA_CODE = "Fira Code",
+  HACK = "Hack",
+  SOURCE_CODE_PRO = "Source Code Pro",
+  MONACO = "Monaco",
+  SPACE_MONO = "Space Mono",
+  IBM_PLEX_MONO = "IBM Plex Mono",
+  INCONSOLATA = "Inconsolata",
+  COURIER_PRIME = "Courier Prime",
 }
