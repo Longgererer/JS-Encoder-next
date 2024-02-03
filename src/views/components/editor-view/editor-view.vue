@@ -100,10 +100,12 @@ const prep2ExtensionsMap = computed(() => {
 })
 
 const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
-/** 延迟执行任务队列时间(ms) */
-const DELAY_EXECUTE_TIME_MS = 500
+/** 延迟存储 */
+const saveDebounce = debounce(
+  executeAndClearTaskQueue,
+  editorConfigStoreRefs.execute.value.delayTimeOfExecute,
+)
 /** code改变存入store */
-const saveDebounce = debounce(executeAndClearTaskQueue, DELAY_EXECUTE_TIME_MS)
 const handleCodeChanged = (code: string, tabId: number): void => {
   addTask(() => {
     editorWrapperStore.updateCodeMap(tabId, code)

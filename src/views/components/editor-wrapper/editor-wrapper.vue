@@ -5,7 +5,7 @@ import { OriginLang, Prep } from "@type/prep"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import { IEditorSplitter } from "@type/editor"
 import { useLayoutStore } from "@store/layout"
-import { ref, shallowRef, watch } from "vue"
+import { ref, watch } from "vue"
 
 /** store */
 const editorWrapperStore = useEditorWrapperStore()
@@ -20,11 +20,13 @@ const rootSplitter = ref<IEditorSplitter | null>(null)
 const initEditorWrapperConfig = (): void => {
   // 先创建一个splitter根节点
   rootSplitter.value = createSplitter({})
+  // 创建tab
   const tabHTML = createTab(Prep.HTML, OriginLang.HTML)
   const tabCSS = createTab(Prep.CSS, OriginLang.CSS)
   const tabJavaScript = createTab(Prep.JAVASCRIPT, OriginLang.JAVASCRIPT)
+  // 创建编辑器
   const editor = createEditor({
-    displayTabId: tabHTML.id,
+    displayTabId: tabJavaScript.id,
     parentId: rootSplitter.value.id,
     tabIds: [ tabHTML.id, tabCSS.id, tabJavaScript.id ],
   })

@@ -16,7 +16,7 @@ export const useEditorConfigStore = defineStore("editorSetting", {
       },
       execute: {
         autoExecute: true,
-        delayTimeOfExecute: 200,
+        delayTimeOfExecute: 500,
       },
       font: {
         fontSize: 14,

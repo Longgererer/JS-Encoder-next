@@ -45,7 +45,10 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     editorIdCount: 0,
     splitterIdCount: 0,
     draggingTabInfo: null,
-    codeMap: {},
+    codeMap: {
+      // eslint-disable-next-line @typescript-eslint/comma-dangle, comma-dangle, max-len
+      "3": "import React, {FC, render} from 'react';\n\n// Super useful comment\nclass Counter {\n\tvalue: number = 5;\n\n\tincrement() {\n\t\tthis.value++;\n\t}\n}\n\nconst counter = new Counter();\ncounter.increment();\n\nconst isBrowser = typeof window === 'function';\nconst isAwesome = true;\n\nif (isBrowser && isAwesome) {\n\tconsole.log(`Counter is ${counter.value}`);\n}\n\ntype Props = {\n\tname: string | null\n}\n\nconst Component: FC<Props> = ({name = null}) => {\n\treturn (\n\t\t<h1 className=\"text-xl font-bold\">Hello, {name}</h1>\n\t);\n};\n\nrender(<Component/>, document.body);\n"
+    },
     editorMap: {},
     tabMap: {},
     editorSplitterMap: {},
