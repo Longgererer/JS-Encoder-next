@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { LogType } from "@type/console"
-import { ISelectOption } from "@components/form/custom-select/custom-select.interface"
+import { ISelectOption } from "@components/form/custom-select/custom-select"
 import { ref, watch } from "vue"
 import { useConsoleStore } from "@store/console"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"

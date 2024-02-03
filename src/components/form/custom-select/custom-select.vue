@@ -1,60 +1,3 @@
-<script lang="ts" setup>
-import { ref, watch } from "vue"
-import useClickOutside from "@hooks/useClickOutside"
-import { SelectSize, ISelectOption } from "./custom-select.interface"
-
-interface IProps {
-  /** 内容 */
-  modelValue: ISelectOption
-  /** 数据列表, 如果不传label，就直接使用value代替label展示 */
-  dataList: ISelectOption[]
-  /** 尺寸 */
-  size?: SelectSize
-  customSelectStyle?: string
-  customOptionListStyle?: string
-  customSelectInnerStyle?: string
-  customOptionStyle?: string
-}
-
-const props = withDefaults(defineProps<IProps>(), {
-  size: "medium" as SelectSize,
-})
-
-const emits = defineEmits<{
-  (event: "update:modelValue", state: ISelectOption): void,
-}>()
-
-const namespace = "custom-select"
-/** 是否折叠 */
-const isFoldOptions = ref<boolean>(true)
-/** 是否高亮边框 */
-const isHighlightBorder = ref<boolean>(false)
-const selectRef = ref<HTMLElement | null>(null)
-const isClickOutSide = useClickOutside(selectRef)
-
-const handleClickSelect = (): void => {
-  isFoldOptions.value = !isFoldOptions.value
-  isHighlightBorder.value = true
-}
-
-const handleClickOption = (item: ISelectOption): void => {
-  emits("update:modelValue", item)
-  isFoldOptions.value = true
-  isHighlightBorder.value = false
-}
-
-watch(isClickOutSide, () => {
-  if (isClickOutSide.value) {
-    isFoldOptions.value = true
-    isHighlightBorder.value = false
-  }
-})
-
-const getFinalLabel = (item: ISelectOption): string => {
-  return String(item.label === undefined ? item.value : item.label)
-}
-</script>
-
 <template>
   <div
     class="active-text relative bg-form-item code-font cursor-pointer"
@@ -66,7 +9,7 @@ const getFinalLabel = (item: ISelectOption): string => {
       class="fade-ease"
       :class="`${namespace} ${namespace}--${size} ${isHighlightBorder ? 'highlight' : ''}`"
       :style="customSelectInnerStyle">
-      <span :class="`${namespace}-value`">{{getFinalLabel(modelValue)}}</span>
+      <span :class="`${namespace}-value`">{{getOptionLabel(currSelectItem)}}</span>
       <div class="icon-area flex-y-center absolute">
         <i
           class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
@@ -81,91 +24,67 @@ const getFinalLabel = (item: ISelectOption): string => {
       :style="customOptionListStyle">
       <div
         class="cursor-pointer fade-ease fill-w"
-        :class="`${namespace}-option ${modelValue.value === item.value ? 'selected' : ''}`"
+        :class="`${namespace}-option ${modelValue === item.value ? 'selected' : ''}`"
         :style="customOptionStyle"
         v-for="(item, index) in dataList"
         :key="index"
         @click.stop="handleClickOption(item)"
-      >{{getFinalLabel(item)}}</div>
+      >{{getOptionLabel(item)}}</div>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-$namespace: custom-select;
-$select-padding: (
-  small: 2px,
-  medium: 5px,
-  large: 8px,
-);
-$select-font-size: (
-  small: 12px,
-  medium: 14px,
-  large: 16px,
-);
-$select-border-radius: (
-  small: 2px,
-  medium: 4px,
-  large: 8px,
-);
-$border-width: 2px;
+<script lang="ts" setup>
+import { computed, ref, watch } from "vue"
+import useClickOutside from "@hooks/useClickOutside"
+import { ISelectOption, IProps, IEmits } from "./custom-select"
+import { Size } from "@type/interface"
 
-.#{$namespace}-wrapper {
-  width: 200px;
-  .#{$namespace} {
-    width: 100%;
-    height: 100%;
-    border: $border-width solid var(--color-form-item);
-    box-sizing: border-box;
-    border-radius: inherit;
-    &.highlight {
-      border-color: var(--color-primary1);
-    }
-  }
-  .icon-area {
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    .up {
-      &::before {
-        display: inline-block;
-        transform: rotate(180deg);
-      }
-    }
-  }
-  .#{$namespace}-options {
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    z-index: 100;
-    width: 100%;
-    .#{$namespace}-option {
-      color: var(--color-no-active-color);
-      &:hover, &.selected {
-        color: var(--color-active-color);
-        background-color: var(--color-main-bg-3);
-      }
-    }
-  }
+const props = withDefaults(defineProps<IProps>(), {
+  size: Size.MEDIUM,
+})
+const emits = defineEmits<IEmits>()
+
+const namespace = "custom-select"
+/** 是否折叠 */
+const isFoldOptions = ref<boolean>(true)
+/** 是否高亮边框 */
+const isHighlightBorder = ref<boolean>(false)
+
+/** 当前选中选项 */
+const currSelectItem = computed(() => {
+  const { modelValue, dataList } = props
+  console.log(modelValue, dataList)
+  return dataList.filter(({ value }) => value === modelValue)[0]
+})
+/** 获取选项的label，如果不传就取当前选中选项的label */
+const getOptionLabel = (item?: ISelectOption): string => {
+  return item
+    ? String(item.label === undefined ? item.value : item.label)
+    : ""
 }
 
-@each $size in (small, medium, large) {
-  $radius: map.get($select-border-radius, $size);
-  $padding: map.get($select-padding, $size);
-  $font-size: map.get($select-font-size, $size);
-  .#{$namespace}-wrapper--#{$size} {
-    border-radius: $radius;
-    .#{$namespace}--#{$size} {
-      padding: $padding;
-      font-size: $font-size;
-    }
-    .#{$namespace}-options--#{$size} {
-      border-radius: $radius;
-      padding: $padding 0;
-      .#{$namespace}-option {
-        padding: calc($padding + $border-width);
-      }
-    }
-  }
+/** 点击选择框 */
+const handleClickSelect = (): void => {
+  isFoldOptions.value = !isFoldOptions.value
+  isHighlightBorder.value = true
 }
-</style>
+/** 点击选项缓存下选项内容 */
+const handleClickOption = (item: ISelectOption): void => {
+  emits("update:modelValue", item.value)
+  isFoldOptions.value = true
+  isHighlightBorder.value = false
+}
+
+// 监听弹窗外点击事件
+const selectRef = ref<HTMLElement | null>(null)
+const isClickOutSide = useClickOutside(selectRef)
+watch(isClickOutSide, () => {
+  if (isClickOutSide.value) {
+    isFoldOptions.value = true
+    isHighlightBorder.value = false
+  }
+})
+</script>
+
+<style src="./custom-select.scss" lang="scss" scoped></style>
