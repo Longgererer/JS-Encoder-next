@@ -26,9 +26,9 @@ const initEditorWrapperConfig = (): void => {
   const tabJavaScript = createTab(Prep.JAVASCRIPT, OriginLang.JAVASCRIPT)
   // 创建编辑器
   const editor = createEditor({
-    displayTabId: tabJavaScript.id,
+    displayTabId: tabHTML.id,
     parentId: rootSplitter.value.id,
-    tabIds: [ tabHTML.id, tabCSS.id, tabJavaScript.id ],
+    tabIds: [tabHTML.id, tabCSS.id, tabJavaScript.id],
   })
   updateSplitter(rootSplitter.value.id, { editorId: editor.id })
   const { editorWidth, editorHeight } = layoutStore.modulesSize
