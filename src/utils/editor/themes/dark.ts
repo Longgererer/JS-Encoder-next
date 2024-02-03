@@ -83,30 +83,37 @@ const theme = createTheme({
       tag: tags.className,
       color: "#ffc777",
     },
+    // 类型名称定义
     {
       tag: tags.definition(tags.typeName),
       color: "#ffc777",
     },
+    // 类型名称
     {
       tag: tags.typeName,
       color: "#ff966c",
     },
+    // `<` and `>`
     {
       tag: tags.angleBracket,
       color: "#86e1fc",
     },
+    // 标签名
     {
       tag: tags.tagName,
       color: "#ff6959",
     },
+    // html标签属性名
     {
       tag: tags.attributeName,
       color: "#c099ff",
     },
+    // javascript属性名
     {
       tag: tags.propertyName,
       color: "#c3e88d",
     },
+    // 函数内的变量名
     {
       tag: tags.function(tags.variableName),
       color: "#c3e88d",
