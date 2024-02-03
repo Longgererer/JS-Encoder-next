@@ -2,9 +2,6 @@ import { createApp } from "vue"
 import { createPinia } from "pinia"
 import App from "./App.vue"
 
-// themes
-import "../public/css/font.css"
-
 const pinia = createPinia()
 const app = createApp(App)
 
