@@ -1,13 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue"
-import projectConfig from "../../../../package.json"
-
-/** 是否显示结果窗口 */
-const showResult = ref<boolean>(true)
-const handleClickTogglePreview = (): void => {
-  showResult.value = !showResult.value
-}
-</script>
 <template>
   <div class="navbar fill-w pr-xl code-font flex-y-center bg-main1 no-select">
     <!-- logo信息 -->
@@ -33,29 +23,16 @@ const handleClickTogglePreview = (): void => {
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-.navbar {
-  height: 49px;
-  border-bottom: 1px solid var(--color-main-bg-3);
-  .logo {
-    width: 48px;
-    img {
-      width: 20px;
-    }
-  }
-  .logo-text {
-    font-size: 1.125rem;
-    background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(135deg, var(--color-primary2), var(--color-primary1))
-  }
-  .right-side-menu {
-    .menu-item {
-      color: var(--color-no-active-color);
-      &:hover {
-        color: var(--color-active-color);
-      }
-    }
-  }
+
+<script setup lang="ts">
+import { ref } from "vue"
+import projectConfig from "../../../../package.json"
+
+/** 是否显示结果窗口 */
+const showResult = ref<boolean>(true)
+const handleClickTogglePreview = (): void => {
+  showResult.value = !showResult.value
 }
-</style>
+</script>
+
+<style src="./navbar.scss" lang="scss" scoped></style>

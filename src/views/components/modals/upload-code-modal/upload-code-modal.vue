@@ -1,18 +1,3 @@
-<script lang="ts" setup>
-import Modal from "@components/modal/modal.vue"
-import HelpPopover from "@views/components/help-popover/help-popover.vue"
-import CustomButton from "@components/custom-button/custom-button.vue"
-import Checkbox from "@components/form/checkbox/checkbox.vue"
-import { useCommonStore } from "@store/common"
-import { ModalName, Position, Size } from "@type/interface"
-import { ref } from "vue"
-
-const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const bindVal = ref<boolean>(false)
-</script>
-
 <template>
   <modal
     title="上传文件"
@@ -81,6 +66,21 @@ const bindVal = ref<boolean>(false)
     </div>
   </modal>
 </template>
+
+<script lang="ts" setup>
+import Modal from "@components/modal/modal.vue"
+import HelpPopover from "@views/components/help-popover/help-popover.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import Checkbox from "@components/form/checkbox/checkbox.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName, Position, Size } from "@type/interface"
+import { ref } from "vue"
+
+const commonStore = useCommonStore()
+const { updateDisplayModal } = commonStore
+
+const bindVal = ref<boolean>(false)
+</script>
 
 <style lang="scss" scoped>
 .upload-btn {
