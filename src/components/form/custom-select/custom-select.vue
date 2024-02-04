@@ -13,12 +13,12 @@
       <div class="icon-area flex-y-center absolute">
         <i
           class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
-          :class="isFoldOptions ? '' : 'up'"
+          :class="isUnfoldOptions ? 'up' : ''"
         ></i>
       </div>
     </div>
     <div
-      v-if="!isFoldOptions"
+      v-if="isUnfoldOptions"
       class="absolute fade-ease bg-form-item shadow"
       :class="`${namespace}-options ${namespace}-options--${size}`"
       :style="customOptionListStyle">
@@ -46,8 +46,8 @@ const props = withDefaults(defineProps<IProps>(), {
 const emits = defineEmits<IEmits>()
 
 const namespace = "custom-select"
-/** 是否折叠 */
-const isFoldOptions = ref<boolean>(true)
+/** 是否展开 */
+const isUnfoldOptions = ref<boolean>(false)
 /** 是否高亮边框 */
 const isHighlightBorder = ref<boolean>(false)
 
@@ -65,13 +65,13 @@ const getOptionLabel = (item?: ISelectOption): string => {
 
 /** 点击选择框 */
 const handleClickSelect = (): void => {
-  isFoldOptions.value = !isFoldOptions.value
+  isUnfoldOptions.value = !isUnfoldOptions.value
   isHighlightBorder.value = true
 }
 /** 点击选项缓存下选项内容 */
 const handleClickOption = (item: ISelectOption): void => {
   emits("update:modelValue", item.value)
-  isFoldOptions.value = true
+  isUnfoldOptions.value = false
   isHighlightBorder.value = false
 }
 
@@ -80,7 +80,7 @@ const selectRef = ref<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(selectRef)
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
-    isFoldOptions.value = true
+    isUnfoldOptions.value = false
     isHighlightBorder.value = false
   }
 })
