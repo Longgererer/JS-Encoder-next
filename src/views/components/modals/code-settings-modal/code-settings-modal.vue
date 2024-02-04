@@ -23,11 +23,14 @@
 
         <div class="modal-sub-title">执行</div>
         <div class="pt-xs"><checkbox v-model="settings.execute.autoExecute">自动执行</checkbox></div>
-        <div
+        <!-- 暂时不需要这个选项 -->
+        <!-- <div
           class="font-xxs mt-m"
           :class="settings.execute.autoExecute ? 'active-text' : 'no-active-text'"
-        >延迟(执行)时间(ms):</div>
-        <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="settings.execute.delayTimeOfExecute"/></div>
+        >延迟(执行)时间(ms):</div> -->
+        <!-- <div class="mt-s">
+          <custom-input :type="InputType.NUMBER" v-model="settings.execute.delayTimeOfExecute"/>
+        </div> -->
       </div>
       <div class="flex-col flex-1">
         <div class="modal-sub-title">字体</div>
@@ -57,15 +60,13 @@ import Modal from "@components/modal/modal.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
-import { reactive, ref, toRaw, toValue } from "vue"
+import { reactive } from "vue"
 import { useCommonStore } from "@store/common"
 import { ModalName } from "@type/interface"
 import { InputType } from "@components/form/custom-input/custom-input"
 import { useEditorConfigStore, initialSettings } from "@store/editor-config"
-import { storeToRefs } from "pinia"
 import { deepCopy } from "@utils/common"
 import { CodeFontFamily } from "@type/settings"
-import { ISelectOption } from "@components/form/custom-select/custom-select"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore

@@ -54,7 +54,6 @@ const isHighlightBorder = ref<boolean>(false)
 /** 当前选中选项 */
 const currSelectItem = computed(() => {
   const { modelValue, dataList } = props
-  console.log(modelValue, dataList)
   return dataList.filter(({ value }) => value === modelValue)[0]
 })
 /** 获取选项的label，如果不传就取当前选中选项的label */
