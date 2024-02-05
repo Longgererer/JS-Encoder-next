@@ -18,6 +18,7 @@ export interface IProps {
   customOptionListStyle?: string
   customSelectInnerStyle?: string
   customOptionStyle?: string
+  appendToBody?: boolean
 }
 
 export interface IEmits {

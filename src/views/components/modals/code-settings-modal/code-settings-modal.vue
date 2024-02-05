@@ -37,7 +37,13 @@
         <div class="active-text font-xxs mt-m">字号(px):</div>
         <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="settings.font.fontSize"/></div>
         <div class="active-text font-xxs mt-m">字体:</div>
-        <div class="mt-s"><custom-select :data-list="codeFontFamilyOptions" v-model="settings.font.fontFamily"/></div>
+        <div class="mt-s">
+          <custom-select
+            v-model="settings.font.fontFamily"
+            :data-list="codeFontFamilyOptions"
+            appendToBody
+          ></custom-select>
+        </div>
 
         <div class="modal-sub-title">其他</div>
         <div class="active-text font-xxs mt-m">头部标签:</div>
@@ -48,7 +54,7 @@
             placeholder="输入你想在<head>中添加的标签如<meta...>"
             width="325px"
             :minRows="4"
-          />
+          ></custom-input>
         </div>
       </div>
     </div>

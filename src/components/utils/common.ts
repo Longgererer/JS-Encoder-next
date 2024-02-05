@@ -1,4 +1,3 @@
-import { computed } from "vue"
 import { Position } from "@type/interface"
 
 /** 计算偏移样式 */
@@ -13,15 +12,16 @@ export function getOffsetStyle(offset: number | string, position: Position): Rec
 }
 
 /** 计算位置样式 */
-export function getPosStyle(
-  left: number,
-  top: number,
-  bottom: number,
-  right: number,
-  width: number,
-  height: number,
-  position: Position,
-): Record<string, string> {
+export function getPosStyle(params: {
+  left?: number,
+  top?: number,
+  bottom?: number,
+  right?: number,
+  width?: number,
+  height?: number,
+  position?: Position,
+}): Record<string, string> {
+  const { left = 0, top = 0, bottom = 0, right = 0, width = 0, height = 0, position = Position.BOTTOM } = params
   const posToStyleMap = {
     [Position.TOP]: {
       left: `${left + width / 2}px`,
@@ -51,4 +51,21 @@ export function getPosStyle(
     },
   }
   return posToStyleMap[position]
+}
+
+/** 获取元素相对于body的偏移量 */
+export function getOffsetByBody(element: HTMLElement): { left: number, top: number } {
+  console.log(element.getBoundingClientRect())
+  let left = element.offsetLeft
+  let top = element.offsetTop
+  console.log(element, left, top)
+  let elementParent = element.offsetParent as HTMLElement
+  console.log(elementParent.clientWidth, elementParent.clientHeight)
+  while (elementParent) {
+    console.log(elementParent, elementParent.offsetLeft, elementParent.offsetTop)
+    left += elementParent.offsetLeft
+    top += elementParent.offsetTop
+    elementParent = elementParent.offsetParent as HTMLElement
+  }
+  return { left, top }
 }

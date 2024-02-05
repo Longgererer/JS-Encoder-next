@@ -17,31 +17,35 @@
         ></i>
       </div>
     </div>
-    <div
-      v-if="isUnfoldOptions"
-      class="absolute fade-ease bg-form-item shadow"
-      :class="`${namespace}-options ${namespace}-options--${size}`"
-      :style="customOptionListStyle">
+    <teleport to="body" :disabled="!appendToBody">
       <div
-        class="cursor-pointer fade-ease fill-w"
-        :class="`${namespace}-option ${modelValue === item.value ? 'selected' : ''}`"
-        :style="customOptionStyle"
-        v-for="(item, index) in dataList"
-        :key="index"
-        @click.stop="handleClickOption(item)"
-      >{{getOptionLabel(item)}}</div>
-    </div>
+        v-if="isUnfoldOptions"
+        class="absolute fade-ease bg-form-item shadow"
+        :class="`${namespace}-options ${namespace}-options--${size}`"
+        :style="{...posStyle}">
+        <div
+          class="cursor-pointer fade-ease fill-w"
+          :class="`${namespace}-option ${modelValue === item.value ? 'selected' : ''}`"
+          :style="customOptionStyle"
+          v-for="(item, index) in dataList"
+          :key="index"
+          @click.stop="handleClickOption(item)"
+        >{{getOptionLabel(item)}}</div>
+      </div>
+    </teleport>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 import useClickOutside from "@hooks/useClickOutside"
 import { ISelectOption, IProps, IEmits } from "./custom-select"
-import { Size } from "@type/interface"
+import { Position, Size } from "@type/interface"
+import { getOffsetByBody, getPosStyle } from "@components/utils/common"
 
 const props = withDefaults(defineProps<IProps>(), {
   size: Size.MEDIUM,
+  appendToBody: false,
 })
 const emits = defineEmits<IEmits>()
 
@@ -82,6 +86,20 @@ watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
     isUnfoldOptions.value = false
     isHighlightBorder.value = false
+  }
+})
+
+/** 定位样式 */
+const posStyle = ref<Record<string, string>>({})
+onMounted(() => {
+  if (props.appendToBody) {
+    const selectOffset = getOffsetByBody(selectRef.value!)
+    console.log(selectOffset)
+    posStyle.value = getPosStyle({
+      ...selectOffset,
+      bottom: selectRef.value!.clientHeight + selectOffset.top,
+      position: Position.BOTTOM,
+    })
   }
 })
 </script>

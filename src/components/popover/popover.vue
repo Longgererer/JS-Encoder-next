@@ -78,7 +78,10 @@ const showPopover = (): void => {
       width = 0,
       height = 0,
     } = relativeEle?.getBoundingClientRect() || {}
-    posStyle.value = getPosStyle(left, top, bottom, right, width, height, props.position)
+    posStyle.value = getPosStyle({
+      left, top, bottom, right, width, height,
+      position: props.position,
+    })
   } else {
     posStyle.value = {}
   }
