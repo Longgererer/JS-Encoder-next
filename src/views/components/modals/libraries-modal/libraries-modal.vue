@@ -1,16 +1,3 @@
-<script lang="ts" setup>
-import Modal from "@components/modal/modal.vue"
-import CustomInput from "@components/form/custom-input/custom-input.vue"
-import { useCommonStore } from "@store/common"
-import { ModalName } from "@type/interface"
-import { ref } from "vue"
-
-const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const bindInputText = ref<string>("")
-</script>
-
 <template>
   <modal
     title="库"
@@ -19,26 +6,24 @@ const bindInputText = ref<string>("")
     bottom="85"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
     :show-footer="false"
-    @close="updateDisplayModal(null)"
-  >
+    @close="updateDisplayModal(null)">
     <div>
       <div class="modal-sub-title">外部样式</div>
       <div class="modal-small-desc-text">你所添加的外部样式，将按照顺序在本地 CSS 执行之前依次执行，支持 http 和 https 协议链接</div>
       <div class="mt-s">
         <custom-input
-          size="large"
           width="100%"
           placeholder="输入想查找的样式库..."
           v-model="bindInputText"
+          :size="Size.LARGE"
         ></custom-input>
       </div>
       <div class="mt-s flex">
         <custom-input
-          size="large"
           width="100%"
-          :radius="0"
           v-model="bindInputText"
-        >
+          :size="Size.LARGE"
+          :radius="0">
           <template v-slot:leftSide>
             <div class="fill-h cursor-pointer flex-col-center inline-flex">
               <div class="flex-1 flex-y-center">
@@ -66,10 +51,10 @@ const bindInputText = ref<string>("")
       <div class="modal-small-desc-text">你所添加的外部样式，将按照顺序在本地 JavaScript 执行之前依次执行，支持 http 和 https 协议链接</div>
       <div class="mt-s">
         <custom-input
-          size="large"
           width="100%"
           placeholder="输入想查找的脚本库..."
           v-model="bindInputText"
+          :size="Size.LARGE"
         ></custom-input>
       </div>
       <div class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease">
@@ -79,6 +64,19 @@ const bindInputText = ref<string>("")
     </div>
   </modal>
 </template>
+
+<script lang="ts" setup>
+import Modal from "@components/modal/modal.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName, Size } from "@type/interface"
+import { ref } from "vue"
+
+const commonStore = useCommonStore()
+const { updateDisplayModal } = commonStore
+
+const bindInputText = ref<string>("")
+</script>
 
 <style lang="scss" scoped>
 .add-new-item {
