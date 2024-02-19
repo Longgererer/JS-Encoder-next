@@ -18,7 +18,7 @@
 
         <div class="modal-sub-title">缩进</div>
         <div class="pt-xs"><checkbox v-model="settings.indent.indentWithTab">使用制表符缩进</checkbox></div>
-        <div class="active-text font-xxs mt-m">缩进长度:</div>
+        <div class="active-text font-xxs mt-m">缩进长度</div>
         <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="settings.indent.tabSize"/></div>
 
         <div class="modal-sub-title">执行</div>
@@ -34,9 +34,9 @@
       </div>
       <div class="flex-col flex-1">
         <div class="modal-sub-title">字体</div>
-        <div class="active-text font-xxs mt-m">字号(px):</div>
+        <div class="active-text font-xxs mt-m">字号(px)</div>
         <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="settings.font.fontSize"/></div>
-        <div class="active-text font-xxs mt-m">字体:</div>
+        <div class="active-text font-xxs mt-m">字体</div>
         <div class="mt-s">
           <custom-select
             v-model="settings.font.fontFamily"
@@ -46,7 +46,7 @@
         </div>
 
         <div class="modal-sub-title">其他</div>
-        <div class="active-text font-xxs mt-m">头部标签:</div>
+        <div class="active-text font-xxs mt-m">头部标签</div>
         <div class="mt-s">
           <custom-input
             v-model="settings.other.headTags"

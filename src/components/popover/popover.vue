@@ -17,9 +17,9 @@
             namespace,
             appendToBody ? '' : 'absolute pos-origin no-append-to-body',
           ]"
+          :style="{ zIndex: level }"
           @mouseover="handleOverTarget"
-          @mouseleave="handleLeaveTarget"
-          :style="{ zIndex: level }">
+          @mouseleave="handleLeaveTarget">
           <div
             class="p-x-l p-y-l absolute shadow radius-l"
             :class="`${namespace}-container ${namespace}-${position}`"

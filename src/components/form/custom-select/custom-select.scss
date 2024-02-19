@@ -39,18 +39,19 @@ $border-width: 2px;
       }
     }
   }
-  .#{$namespace}-options {
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    z-index: 100;
-    width: 100%;
-    .#{$namespace}-option {
-      color: var(--color-no-active-color);
-      &:hover, &.selected {
-        color: var(--color-active-color);
-        background-color: var(--color-main-bg-3);
-      }
+}
+
+.#{$namespace}-options {
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  width: 100%;
+  .#{$namespace}-option {
+    color: var(--color-no-active-color);
+    &:hover, &.selected {
+      color: var(--color-active-color);
+      background-color: var(--color-main-bg-3);
     }
   }
 }
@@ -65,12 +66,13 @@ $border-width: 2px;
       padding: $padding;
       font-size: $font-size;
     }
-    .#{$namespace}-options--#{$size} {
-      border-radius: $radius;
-      padding: $padding 0;
-      .#{$namespace}-option {
-        padding: calc($padding + $border-width);
-      }
+  }
+  .#{$namespace}-options--#{$size} {
+    border-radius: $radius;
+    padding: $padding 0;
+    font-size: $font-size;
+    .#{$namespace}-option {
+      padding: calc($padding + $border-width);
     }
   }
 }

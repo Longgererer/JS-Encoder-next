@@ -52,20 +52,3 @@ export function getPosStyle(params: {
   }
   return posToStyleMap[position]
 }
-
-/** 获取元素相对于body的偏移量 */
-export function getOffsetByBody(element: HTMLElement): { left: number, top: number } {
-  console.log(element.getBoundingClientRect())
-  let left = element.offsetLeft
-  let top = element.offsetTop
-  console.log(element, left, top)
-  let elementParent = element.offsetParent as HTMLElement
-  console.log(elementParent.clientWidth, elementParent.clientHeight)
-  while (elementParent) {
-    console.log(elementParent, elementParent.offsetLeft, elementParent.offsetTop)
-    left += elementParent.offsetLeft
-    top += elementParent.offsetTop
-    elementParent = elementParent.offsetParent as HTMLElement
-  }
-  return { left, top }
-}

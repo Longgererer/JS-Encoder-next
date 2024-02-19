@@ -20,9 +20,9 @@
     <teleport to="body" :disabled="!appendToBody">
       <div
         v-if="isUnfoldOptions"
-        class="absolute fade-ease bg-form-item shadow"
+        class="absolute bg-form-item shadow code-font"
         :class="`${namespace}-options ${namespace}-options--${size}`"
-        :style="{...posStyle}">
+        :style="{...optionsStyle}">
         <div
           class="cursor-pointer fade-ease fill-w"
           :class="`${namespace}-option ${modelValue === item.value ? 'selected' : ''}`"
@@ -40,8 +40,7 @@
 import { computed, onMounted, ref, watch } from "vue"
 import useClickOutside from "@hooks/useClickOutside"
 import { ISelectOption, IProps, IEmits } from "./custom-select"
-import { Position, Size } from "@type/interface"
-import { getOffsetByBody, getPosStyle } from "@components/utils/common"
+import { Size } from "@type/interface"
 
 const props = withDefaults(defineProps<IProps>(), {
   size: Size.MEDIUM,
@@ -90,18 +89,18 @@ watch(isClickOutSide, () => {
 })
 
 /** 定位样式 */
-const posStyle = ref<Record<string, string>>({})
+const optionsStyle = ref<Record<string, string>>({})
 onMounted(() => {
   if (props.appendToBody) {
-    const selectOffset = getOffsetByBody(selectRef.value!)
-    console.log(selectOffset)
-    posStyle.value = getPosStyle({
-      ...selectOffset,
-      bottom: selectRef.value!.clientHeight + selectOffset.top,
-      position: Position.BOTTOM,
-    })
+    const { width = 0, height = 0, top = 0, left = 0 } = selectRef.value!.getBoundingClientRect()
+    optionsStyle.value = {
+      top: `${top + height}px`,
+      left: `${left}px`,
+      width: `${width}px`,
+      transform: "none",
+    }
   }
 })
 </script>
 
-<style src="./custom-select.scss" lang="scss" scoped></style>
+<style src="./custom-select.scss" lang="scss"></style>
