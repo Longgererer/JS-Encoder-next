@@ -32,7 +32,7 @@
       <div class="filter flex-y-center">
         <span class="mr-s">Filter:</span>
         <custom-select
-          v-model="currFilterOption"
+          v-model="filterType"
           :size="Size.SMALL"
           :data-list="filterSelectOptions"
           custom-select-style="height: 20px; border-radius: 4px; width: 100px;"
