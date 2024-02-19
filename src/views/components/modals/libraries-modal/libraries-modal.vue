@@ -71,11 +71,19 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
 import { ref } from "vue"
+import useLibraries from "./use-libraries"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
 const bindInputText = ref<string>("")
+
+const { setCDNLibraries } = useLibraries()
+setCDNLibraries()
+
+const handleChangeKeyword = () => {
+
+}
 </script>
 
 <style lang="scss" scoped>
