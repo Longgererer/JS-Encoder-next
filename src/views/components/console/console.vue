@@ -1,49 +1,3 @@
-<script lang="ts" setup>
-import { LogType } from "@type/console"
-import { ISelectOption } from "@components/form/custom-select/custom-select"
-import { ref, watch } from "vue"
-import { useConsoleStore } from "@store/console"
-import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-import { Size } from "@type/interface"
-import CustomSelect from "@components/form/custom-select/custom-select.vue"
-import IconBtn from "@components/icon-btn/icon-btn.vue"
-import Checkbox from "@components/form/checkbox/checkbox.vue"
-
-const emits = defineEmits<{
-  (e: "resize", startY: number): void
-}>()
-
-const namespace = "console"
-const { updateFilter } = useConsoleStore()
-
-/** 日志过滤选项列表 */
-const filterSelectOptions: ISelectOption[] = [
-  { value: LogType.ALL },
-  { value: LogType.MESSAGE },
-  { value: LogType.INFO },
-  { value: LogType.WARN },
-  { value: LogType.ERROR },
-]
-/** 当前过滤日志类型选项 */
-const currFilterOption = ref<ISelectOption>(filterSelectOptions[0])
-watch(currFilterOption, (newOption) => {
-  updateFilter(newOption.value as LogType)
-})
-
-/** 是否展示console设置 */
-const isShowConsoleSettings = ref<boolean>(false)
-const handleClickConsoleSettingsBtn = (): void => {
-  isShowConsoleSettings.value = !isShowConsoleSettings.value
-}
-
-/**
- * console拖拽
- */
-const handleResize = (e: MouseEvent) => {
-  emits("resize", e.clientY)
-}
-</script>
-
 <template>
   <div class="flex-col fill-w" :class="namespace">
     <!--头部-->
@@ -113,6 +67,52 @@ const handleResize = (e: MouseEvent) => {
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { LogType } from "@type/console"
+import { ISelectOption } from "@components/form/custom-select/custom-select"
+import { ref, watch } from "vue"
+import { useConsoleStore } from "@store/console"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
+import { Size } from "@type/interface"
+import CustomSelect from "@components/form/custom-select/custom-select.vue"
+import IconBtn from "@components/icon-btn/icon-btn.vue"
+import Checkbox from "@components/form/checkbox/checkbox.vue"
+
+const emits = defineEmits<{
+  (e: "resize", startY: number): void
+}>()
+
+const namespace = "console"
+const { updateFilter } = useConsoleStore()
+
+/** 日志过滤选项列表 */
+const filterSelectOptions: ISelectOption[] = [
+  { value: LogType.ALL },
+  { value: LogType.MESSAGE },
+  { value: LogType.INFO },
+  { value: LogType.WARN },
+  { value: LogType.ERROR },
+]
+/** 当前过滤日志类型选项 */
+const filterType = ref<LogType>(LogType.ALL)
+watch(filterType, (newType) => {
+  updateFilter(newType)
+})
+
+/** 是否展示console设置 */
+const isShowConsoleSettings = ref<boolean>(false)
+const handleClickConsoleSettingsBtn = (): void => {
+  isShowConsoleSettings.value = !isShowConsoleSettings.value
+}
+
+/**
+ * console拖拽
+ */
+const handleResize = (e: MouseEvent) => {
+  emits("resize", e.clientY)
+}
+</script>
 
 <style lang="scss" scoped>
 $namespace: console;
