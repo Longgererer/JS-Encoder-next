@@ -17,8 +17,8 @@ const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
   <modal
     title="快捷键"
     width="500"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     v-if="commonStore.displayModal === ModalName.SHORTCUT"
     :show-footer="false"
     @close="updateDisplayModal(null)"

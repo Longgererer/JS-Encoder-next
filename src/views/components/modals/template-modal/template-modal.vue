@@ -1,43 +1,9 @@
-<script setup lang="ts">
-import Modal from "@components/modal/modal.vue"
-import HelpPopover from "@views/components/help-popover/help-popover.vue"
-import CustomButton from "@components/custom-button/custom-button.vue"
-import { computed, ref, reactive } from "vue"
-import { useCommonStore } from "@store/common"
-import { AnyObject, ModalName, Position, Size } from "@type/interface"
-import { inbuiltTemplateList, TemplateLang2IconMap } from "./template-modal.interface"
-import { getCustomTemplateList } from "./template-modal.util"
-import { TemplateLang, TemplateType } from "@type/template"
-
-const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const selectedTemplate = ref<AnyObject>({
-  /** 是否为自定义模板 */
-  isCustom: false,
-  /** 选中的模板下标 */
-  index: -1,
-})
-
-const customTemplateList = getCustomTemplateList()
-
-const templateModalConfirmBtnOpts = reactive<AnyObject>({
-  customClass: "p-l",
-  disabled: true,
-})
-
-const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): void => {
-  selectedTemplate.value = { index, isCustom }
-  templateModalConfirmBtnOpts.disabled = false
-}
-</script>
-
 <template>
   <modal
     title="模板"
     width="730"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     okText="使用该模板"
     v-if="commonStore.displayModal === ModalName.TEMPLATE"
     :show-footer="true"
@@ -87,6 +53,40 @@ const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): v
     </div>
   </modal>
 </template>
+
+<script setup lang="ts">
+import Modal from "@components/modal/modal.vue"
+import HelpPopover from "@views/components/help-popover/help-popover.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { ref, reactive } from "vue"
+import { useCommonStore } from "@store/common"
+import { AnyObject, ModalName, Size } from "@type/interface"
+import { inbuiltTemplateList, TemplateLang2IconMap } from "./template-modal.interface"
+import { getCustomTemplateList } from "./template-modal.util"
+import { TemplateType } from "@type/template"
+
+const commonStore = useCommonStore()
+const { updateDisplayModal } = commonStore
+
+const selectedTemplate = ref<AnyObject>({
+  /** 是否为自定义模板 */
+  isCustom: false,
+  /** 选中的模板下标 */
+  index: -1,
+})
+
+const customTemplateList = getCustomTemplateList()
+
+const templateModalConfirmBtnOpts = reactive<AnyObject>({
+  customClass: "p-l",
+  disabled: true,
+})
+
+const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): void => {
+  selectedTemplate.value = { index, isCustom }
+  templateModalConfirmBtnOpts.disabled = false
+}
+</script>
 
 <style lang="scss" scoped>
 .inbuilt-template-list {

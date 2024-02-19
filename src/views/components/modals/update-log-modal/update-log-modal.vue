@@ -24,8 +24,8 @@ const updateLogList = ref<IUpdateLog[]>([])
   <modal
     title="更新日志"
     width="730"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     v-if="commonStore.displayModal === ModalName.UPDATE_LOG"
     :show-footer="false"
     @close="updateDisplayModal(null)"

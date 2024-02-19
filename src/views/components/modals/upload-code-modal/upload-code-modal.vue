@@ -2,8 +2,8 @@
   <modal
     title="上传文件"
     width="500"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
     :show-footer="false"
     @close="updateDisplayModal(null)">

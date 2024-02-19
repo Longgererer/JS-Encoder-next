@@ -2,8 +2,8 @@
   <modal
     title="编码设置"
     width="730"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     v-if="commonStore.displayModal === ModalName.CODE_SETTINGS"
     :show-footer="false"
     @close="handleCloseModal"

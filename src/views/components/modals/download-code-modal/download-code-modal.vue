@@ -24,8 +24,8 @@ const bindInputText = ref<string>("")
   <modal
     title="下载文件"
     width="500"
-    top="80"
-    bottom="80"
+    top="85"
+    bottom="85"
     v-if="commonStore.displayModal === ModalName.DOWNLOAD_CODE"
     :show-footer="false"
     @close="updateDisplayModal(null)"
