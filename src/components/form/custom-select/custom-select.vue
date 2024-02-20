@@ -3,13 +3,20 @@
     class="active-text relative bg-form-item code-font cursor-pointer"
     ref="selectRef"
     :class="`${namespace}-wrapper ${namespace}-wrapper--${size}`"
-    :style="customSelectStyle"
+    :style="selectStyle"
     @click="handleClickSelect">
     <div
       class="fade-ease"
-      :class="`${namespace} ${namespace}--${size} ${isHighlightBorder ? 'highlight' : ''}`"
-      :style="customSelectInnerStyle">
-      <span :class="`${namespace}-value`">{{getOptionLabel(currSelectItem)}}</span>
+      :class="`${namespace} ${namespace}--${size} ${isFocus ? 'highlight' : ''}`"
+      :style="selectInnerStyle">
+      <input
+        v-if="showSearch"
+        class="fill-w bg-form-item fade-ease code-font block"
+        type="search"
+        :value="getOptionLabel(currSelectItem)"
+        :placeholder="placeholder"
+        @input="handleInputTextChange($event)"/>
+      <span v-else :class="`${namespace}-value`">{{getOptionLabel(currSelectItem)}}</span>
       <div class="icon-area flex-y-center absolute">
         <i
           class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
@@ -26,7 +33,7 @@
         <div
           class="cursor-pointer fade-ease fill-w"
           :class="`${namespace}-option ${modelValue === item.value ? 'selected' : ''}`"
-          :style="customOptionStyle"
+          :style="optionStyle"
           v-for="(item, index) in dataList"
           :key="index"
           @click.stop="handleClickOption(item)"
@@ -45,14 +52,15 @@ import { Size } from "@type/interface"
 const props = withDefaults(defineProps<IProps>(), {
   size: Size.MEDIUM,
   appendToBody: false,
+  dataList: () => [],
 })
 const emits = defineEmits<IEmits>()
 
 const namespace = "custom-select"
 /** 是否展开 */
 const isUnfoldOptions = ref<boolean>(false)
-/** 是否高亮边框 */
-const isHighlightBorder = ref<boolean>(false)
+/** 是否聚焦 */
+const isFocus = ref<boolean>(false)
 
 /** 当前选中选项 */
 const currSelectItem = computed(() => {
@@ -68,14 +76,20 @@ const getOptionLabel = (item?: ISelectOption): string => {
 
 /** 点击选择框 */
 const handleClickSelect = (): void => {
-  isUnfoldOptions.value = !isUnfoldOptions.value
-  isHighlightBorder.value = true
+  if (props.dataList.length) {
+    isUnfoldOptions.value = !isUnfoldOptions.value
+  }
+  isFocus.value = true
 }
 /** 点击选项缓存下选项内容 */
 const handleClickOption = (item: ISelectOption): void => {
   emits("update:modelValue", item.value)
   isUnfoldOptions.value = false
-  isHighlightBorder.value = false
+  isFocus.value = false
+}
+/** 搜索模式下更改搜索框内容 */
+const handleInputTextChange = (e: Event): void => {
+  emits("update:modelValue", (e.target as HTMLInputElement)?.value)
 }
 
 // 监听弹窗外点击事件
@@ -84,7 +98,7 @@ const isClickOutSide = useClickOutside(selectRef)
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
     isUnfoldOptions.value = false
-    isHighlightBorder.value = false
+    isFocus.value = false
   }
 })
 

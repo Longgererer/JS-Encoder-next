@@ -35,10 +35,9 @@
           v-model="filterType"
           :size="Size.SMALL"
           :data-list="filterSelectOptions"
-          custom-select-style="height: 20px; border-radius: 4px; width: 100px;"
-          custom-option-list-style="width: 100px;"
-          custom-select-inner-style="padding: 0 8px;"
-          custom-option-style="padding-left: 8px;"
+          select-style="height: 20px; border-radius: 4px; width: 100px;"
+          select-inner-style="padding: 0 8px;"
+          option-style="padding-left: 8px;"
         ></custom-select>
       </div>
       <!--操作按钮-->

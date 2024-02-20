@@ -35,13 +35,19 @@ const useLibraries = () => {
     }
   }
 
-  const searchStyleLibraries = (keyword: string): ILibraryItem[] => {
+  const searchLibraries = async (keyword: string, libraries: ILibraryItem[]) => {
+    await setCDNLibraries()
     const regExp = new RegExp(`${keyword}`, "ig")
-    return styleLibraries.filter(({ latest }) => regExp.test(latest))
+    return libraries.filter(({ latest }) => regExp.test(latest))
   }
 
+  const searchStyleLibraries = (keyword: string) => searchLibraries(keyword, styleLibraries)
+
+  const searchScriptLibraries = (keyword: string) => searchLibraries(keyword, scriptLibraries)
+
   return {
-    setCDNLibraries,
+    searchStyleLibraries,
+    searchScriptLibraries,
   }
 }
 

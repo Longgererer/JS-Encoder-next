@@ -11,16 +11,20 @@ export interface IProps {
   /** 内容 */
   modelValue: ISelectOption["value"]
   /** 数据列表, 如果不传label，就直接使用value代替label展示 */
-  dataList: ISelectOption[]
+  dataList?: ISelectOption[]
   /** 尺寸 */
   size?: SelectSize
-  customSelectStyle?: string
-  customOptionListStyle?: string
-  customSelectInnerStyle?: string
-  customOptionStyle?: string
+  /** 是否将选择项列表插入到body中 */
   appendToBody?: boolean
+  /** 描述文字 */
+  placeholder?: string
+  /** 是否可以搜索 */
+  showSearch?: boolean
+  selectStyle?: string
+  optionStyle?: string
+  selectInnerStyle?: string
 }
 
 export interface IEmits {
-  (event: "update:modelValue", state: ISelectOption["value"]): void,
+  (event: "update:modelValue", state: ISelectOption["value"]): void
 }
