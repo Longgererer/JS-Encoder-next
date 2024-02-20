@@ -63,7 +63,7 @@
         <div class="mt-s flex draggable-library" v-for="(item, index) in scriptLibraryList" :key="item">
           <custom-input
             width="100%"
-            v-model="styleLibraryList[index]"
+            v-model="scriptLibraryList[index]"
             :size="Size.LARGE"
             :radius="0">
             <template v-slot:leftSide>
@@ -100,7 +100,7 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
-import { onMounted, reactive, ref } from "vue"
+import { onMounted, reactive, ref, watch } from "vue"
 import useLibraries from "./use-libraries"
 import useDragSortable from "@hooks/use-drag-sortable"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
@@ -112,8 +112,12 @@ const styleLibraryKeyword = ref<string>("")
 const scriptLibraryKeyword = ref<string>("")
 
 /** 初始选中的样式和脚本库列表，默认提供一个空的 */
-const styleLibraryList = reactive<string[]>([""])
-const scriptLibraryList = reactive<string[]>([""])
+const styleLibraryList = ref<string[]>([""])
+const scriptLibraryList = ref<string[]>(["3", "1", "2"])
+
+watch(scriptLibraryList, (list) => {
+  console.log(list)
+})
 
 const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
 
