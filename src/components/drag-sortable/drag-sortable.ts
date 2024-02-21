@@ -2,8 +2,8 @@ import { AnyArray } from "@type/interface"
 
 export interface IProps {
   modelValue: AnyArray
-  /** 可拖拽的目标，可以为类名 */
-  draggableTarget: string
+  /** 列表遍历和插槽需要用到的key */
+  uniqueKey: string
 }
 
 export interface IEmits {

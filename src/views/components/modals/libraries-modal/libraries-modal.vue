@@ -19,10 +19,10 @@
           :size="Size.LARGE"
         ></custom-select>
       </div>
-      <div class="mt-s flex" v-for="(item, index) in styleLibraryList" :key="item">
+      <div class="mt-s flex" v-for="(item, index) in styleLibraryList" :key="item.id">
         <custom-input
           width="100%"
-          v-model="styleLibraryList[index]"
+          v-model="styleLibraryList[index].url"
           :size="Size.LARGE"
           :radius="0">
           <template v-slot:leftSide>
@@ -59,32 +59,34 @@
           :size="Size.LARGE"
         ></custom-select>
       </div>
-      <drag-sortable v-model="scriptLibraryList" draggable-target=".draggable-library">
-        <div class="mt-s flex draggable-library" v-for="(item, index) in scriptLibraryList" :key="item">
-          <custom-input
-            width="100%"
-            v-model="scriptLibraryList[index]"
-            :size="Size.LARGE"
-            :radius="0">
-            <template v-slot:leftSide>
-              <div class="fill-h cursor-pointer flex-col-center inline-flex font-s">
-                <div class="flex-1 flex-y-center">
-                  <i class="icon iconfont icon-down line-h-unset icon-rotate-180 flex-1
-                    inline-flex font-active fade-ease p-x-s pt-xs"></i>
+      <drag-sortable v-model="scriptLibraryList" uniqueKey="id">
+        <template v-for="(item, index) in scriptLibraryList" :key="item.id" v-slot:[`item-${item.id}`]>
+          <div class="mt-s flex draggable-library">
+            <custom-input
+              width="100%"
+              v-model="scriptLibraryList[index].url"
+              :size="Size.LARGE"
+              :radius="0">
+              <template v-slot:leftSide>
+                <div class="fill-h cursor-pointer flex-col-center inline-flex font-s">
+                  <div class="flex-1 flex-y-center">
+                    <i class="icon iconfont icon-down line-h-unset icon-rotate-180 flex-1
+                      inline-flex font-active fade-ease p-x-s pt-xs"></i>
+                  </div>
+                  <div class="flex-1 flex-y-center">
+                    <i class="icon iconfont icon-down line-h-unset flex-1 inline-flex
+                      font-active fade-ease p-x-s pb-xs"></i>
+                  </div>
                 </div>
-                <div class="flex-1 flex-y-center">
-                  <i class="icon iconfont icon-down line-h-unset flex-1 inline-flex
-                    font-active fade-ease p-x-s pb-xs"></i>
+              </template>
+              <template v-slot:rightSide>
+                <div class="cursor-pointer flex-y-center fill-h">
+                  <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
                 </div>
-              </div>
-            </template>
-            <template v-slot:rightSide>
-              <div class="cursor-pointer flex-y-center fill-h">
-                <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
-              </div>
-            </template>
-          </custom-input>
-        </div>
+              </template>
+            </custom-input>
+          </div>
+        </template>
       </drag-sortable>
       <div class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease">
         <i class="icon iconfont icon-add font-s"></i>
@@ -100,10 +102,10 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
-import { onMounted, reactive, ref, watch } from "vue"
+import { onMounted, ref } from "vue"
 import useLibraries from "./use-libraries"
-import useDragSortable from "@hooks/use-drag-sortable"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
+import { ISelectedLibraryItem } from "./libraries.modal"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -112,12 +114,12 @@ const styleLibraryKeyword = ref<string>("")
 const scriptLibraryKeyword = ref<string>("")
 
 /** 初始选中的样式和脚本库列表，默认提供一个空的 */
-const styleLibraryList = ref<string[]>([""])
-const scriptLibraryList = ref<string[]>(["3", "1", "2"])
-
-watch(scriptLibraryList, (list) => {
-  console.log(list)
-})
+const styleLibraryList = ref<ISelectedLibraryItem[]>([{ id: 1, url: "" }])
+const scriptLibraryList = ref<ISelectedLibraryItem[]>([
+  { id: 1, url: "1" },
+  { id: 2, url: "2" },
+  { id: 3, url: "3" },
+])
 
 const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
 

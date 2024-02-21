@@ -1,73 +1,55 @@
 <template>
-  <div class="drag-sortable" ref="dragSortable">
-    <!-- 外部传入的可拖拽项列表 -->
-    <slot></slot>
-  </div>
+  <transition-group name="drag">
+    <div
+      v-for="(item, index) in modelValue"
+      :key="item[uniqueKey]"
+      draggable="true"
+      :class="dragIndex === index ? 'dragging' : ''"
+      @dragstart="handleDragstart(index)"
+      @dragend.prevent="handleDragend()"
+      @dragenter.prevent="handleDragenter(index)"
+      @dragover.prevent="() => {}">
+      <!-- 外部传入的可拖拽项列表 -->
+      <slot :name="`item-${item[uniqueKey]}`"></slot>
+    </div>
+  </transition-group>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { IEmits, IProps } from "./drag-sortable"
 import { AnyArray } from "@type/interface"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
 
-const list = [...props.modelValue]
-
-let dragIndex = -1
-const handleDragstart = (event: DragEvent, index: number) => {
-  console.log("handleDragstart")
-  event.stopPropagation()
-  dragIndex = index
-  ;(event.target as HTMLElement)?.classList.add("dragging")
-}
-const handleDragend = (event: DragEvent, index: number) => {
-  event.preventDefault()
-  dragIndex = -1
-  ;(event.target as HTMLElement)?.classList.remove("dragging")
-}
-const handleDragenter = (event: DragEvent, index: number) => {
-  event.preventDefault()
-
-}
-const handleDragover = (event: DragEvent, index: number) => {
-  event.preventDefault()
-  if (dragIndex === index) { return }
-  console.log("handleDragover")
-  const dragItem = list[dragIndex]
-  list.splice(dragIndex, 1)
-  list.splice(index, 0, dragItem)
-  console.log(dragIndex, index, dragItem)
-  dragIndex = index
-  listenDrag()
-  console.log(list)
-  emits("update:modelValue", [...list])
-}
-
-const dragSortable = ref<HTMLElement | null>(null)
-onMounted(() => {
-  listenDrag()
+// eslint-disable-next-line vue/no-setup-props-destructure
+let list: AnyArray = props.modelValue
+watchEffect(() => {
+  /** 浅复制一份传入的数组 */
+  list = props.modelValue
 })
 
-const listenDrag = () => {
-  // eslint-disable-next-line no-undef
-  const draggableChildren: NodeListOf<HTMLElement> = dragSortable.value!.querySelectorAll(props.draggableTarget)
-  draggableChildren.forEach((element, index) => {
-    element.draggable = true
-    element.addEventListener("dragstart", (event) => handleDragstart(event, index))
-    element.addEventListener("dragend", (event) => handleDragend(event, index))
-    element.addEventListener("dragenter", (event) => handleDragenter(event, index))
-    element.addEventListener("dragover", (event) => handleDragover(event, index))
-  })
+const dragIndex = ref<number>(-1)
+const handleDragstart = (index: number) => {
+  dragIndex.value = index
+}
+const handleDragend = () => {
+  dragIndex.value = -1
+}
+const handleDragenter = (index: number) => {
+  if (dragIndex.value === index) { return }
+  const dragItem = list[dragIndex.value]
+  list.splice(dragIndex.value, 1)
+  list.splice(index, 0, dragItem)
+  dragIndex.value = index
+  emits("update:modelValue", [...list])
 }
 </script>
 
 <style lang="scss" scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-    transition: all 0.2s ease;
+.drag-move {
+  transition: transform 0.3s;
 }
 .dragging {
   opacity: 0.5;
