@@ -63,22 +63,24 @@ const editor = ref<IEditor>(editorMap.value[props.id])
 
 /** 编辑器内部设置 */
 const editorSettings = computed<ICodemirrorEditorSettings>(() => {
-  const { edit, indent, other } = editorConfigStoreRefs
+  const { settings } = editorConfigStoreRefs
+  const { edit, indent, other } = settings.value
   return {
-    ...edit.value,
-    ...indent.value,
+    ...edit,
+    ...indent,
     style: getEditorStyle(),
-    shortcutTemplate: other.value.shortcutTemplate,
+    shortcutTemplate: other.shortcutTemplate,
   }
 })
 
 /** 获取编辑器内部需要设置的样式 */
 const getEditorStyle = (): Record<string, AnyObject> => {
-  const { font } = editorConfigStoreRefs
+  const { settings } = editorConfigStoreRefs
+  const { font } = settings.value
   return {
     ".cm-scroller": {
-      fontSize: `${font.value.fontSize}px`,
-      fontFamily: `${font.value.fontFamily}`,
+      fontSize: `${font.fontSize}px`,
+      fontFamily: `${font.fontFamily}`,
       lineHeight: 1.6,
     },
     "&.cm-focused": {
@@ -103,7 +105,7 @@ const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
 /** 延迟存储 */
 const saveDebounce = debounce(
   executeAndClearTaskQueue,
-  editorConfigStoreRefs.execute.value.delayTimeOfExecute,
+  editorConfigStoreRefs.settings.value.execute.delayTimeOfExecute,
 )
 /** code改变存入store */
 const handleCodeChanged = (code: string, tabId: number): void => {

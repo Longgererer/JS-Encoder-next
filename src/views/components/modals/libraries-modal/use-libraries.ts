@@ -1,6 +1,6 @@
 import { BOOT_CDN_URL } from "@utils/config"
 
-interface ILibraryItem {
+export interface ILibraryItem {
   name: string
   latest: string
 }
@@ -38,7 +38,7 @@ const useLibraries = () => {
   const searchLibraries = async (keyword: string, libraries: ILibraryItem[]) => {
     await setCDNLibraries()
     const regExp = new RegExp(`${keyword}`, "ig")
-    return libraries.filter(({ latest }) => regExp.test(latest))
+    return libraries.filter(({ name }) => regExp.test(name))
   }
 
   const searchStyleLibraries = (keyword: string) => searchLibraries(keyword, styleLibraries)

@@ -1,6 +1,11 @@
 import { defineStore } from "pinia"
-import { IEditorSettings, ShortcutMode, CodeFontFamily } from "@type/settings"
+import { IEditorSettings, ShortcutMode, CodeFontFamily, IEditorLibraries } from "@type/settings"
 import { DeepPartial } from "@type/types"
+
+interface IEditorConfig {
+  settings: IEditorSettings
+  libraries: IEditorLibraries
+}
 
 export const initialSettings: IEditorSettings = {
   edit: {
@@ -27,12 +32,23 @@ export const initialSettings: IEditorSettings = {
   },
 }
 
-export const useEditorConfigStore = defineStore("editorSetting", {
-  state: (): IEditorSettings => initialSettings,
+export const initialLibraries: IEditorLibraries = {
+  style: [],
+  script: [],
+}
+
+export const useEditorConfigStore = defineStore("editorConfig", {
+  state: (): IEditorConfig => ({
+    settings: initialSettings,
+    libraries: initialLibraries,
+  }),
   actions: {
     /** 更新若干设置 */
     updateSettings(settings: DeepPartial<IEditorSettings>): void {
-      this.$patch(settings)
+      this.$patch({ settings })
+    },
+    updateLibraries(libraries: DeepPartial<IEditorLibraries>): void {
+      this.$patch({ libraries })
     },
   },
 })

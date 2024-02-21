@@ -6,7 +6,7 @@
     bottom="85"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
     :show-footer="false"
-    @close="updateDisplayModal(null)">
+    @close="handleCloseModal">
     <div>
       <div class="modal-sub-title">外部样式</div>
       <div class="modal-small-desc-text">你所添加的外部样式，将按照顺序在本地 CSS 执行之前依次执行，支持 http 和 https 协议链接</div>
@@ -25,18 +25,6 @@
           v-model="styleLibraryList[index].url"
           :size="Size.LARGE"
           :radius="0">
-          <template v-slot:leftSide>
-            <div class="fill-h cursor-pointer flex-col-center inline-flex font-s">
-              <div class="flex-1 flex-y-center">
-                <i class="icon iconfont icon-down line-h-unset icon-rotate-180 flex-1
-                  inline-flex font-active fade-ease p-x-s pt-xs"></i>
-              </div>
-              <div class="flex-1 flex-y-center">
-                <i class="icon iconfont icon-down line-h-unset flex-1 inline-flex
-                  font-active fade-ease p-x-s pb-xs"></i>
-              </div>
-            </div>
-          </template>
           <template v-slot:rightSide>
             <div class="cursor-pointer flex-y-center fill-h">
               <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
@@ -67,18 +55,6 @@
               v-model="scriptLibraryList[index].url"
               :size="Size.LARGE"
               :radius="0">
-              <template v-slot:leftSide>
-                <div class="fill-h cursor-pointer flex-col-center inline-flex font-s">
-                  <div class="flex-1 flex-y-center">
-                    <i class="icon iconfont icon-down line-h-unset icon-rotate-180 flex-1
-                      inline-flex font-active fade-ease p-x-s pt-xs"></i>
-                  </div>
-                  <div class="flex-1 flex-y-center">
-                    <i class="icon iconfont icon-down line-h-unset flex-1 inline-flex
-                      font-active fade-ease p-x-s pb-xs"></i>
-                  </div>
-                </div>
-              </template>
               <template v-slot:rightSide>
                 <div class="cursor-pointer flex-y-center fill-h">
                   <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
@@ -102,35 +78,75 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
-import { onMounted, ref } from "vue"
-import useLibraries from "./use-libraries"
+import { ref, watch } from "vue"
+import useLibraries, { ILibraryItem } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
 import { ISelectedLibraryItem } from "./libraries.modal"
+import { useEditorConfigStore } from "@store/editor-config"
+import { storeToRefs } from "pinia"
+import { debounce } from "@utils/common"
 
 const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const styleLibraryKeyword = ref<string>("")
-const scriptLibraryKeyword = ref<string>("")
+const editorConfigStore = useEditorConfigStore()
+const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 
 /** 初始选中的样式和脚本库列表，默认提供一个空的 */
-const styleLibraryList = ref<ISelectedLibraryItem[]>([{ id: 1, url: "" }])
-const scriptLibraryList = ref<ISelectedLibraryItem[]>([
-  { id: 1, url: "1" },
-  { id: 2, url: "2" },
-  { id: 3, url: "3" },
-])
+const styleLibraryList = ref<ISelectedLibraryItem[]>([])
+const scriptLibraryList = ref<ISelectedLibraryItem[]>([])
 
-const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
-
-const handleChangeKeyword = () => {
-
-}
-
-// const styleDraggableArea =
-onMounted(() => {
-  // useDragSortable()
+/** id自增 */
+let libraryIdCount: number = 1
+const getSelectedLibraryItem = (url: string = ""): ISelectedLibraryItem => ({
+  id: libraryIdCount ++,
+  url,
 })
+
+/** 初始化外部库内容 */
+const initSelectedLibraries = () => {
+  const { libraries } = editorConfigStoreRefs
+  const { style, script } = libraries.value
+  const styles = style.length
+    ? style.map((url) => getSelectedLibraryItem(url))
+    : [getSelectedLibraryItem()]
+  const scripts = script.length
+    ? script.map((url) => getSelectedLibraryItem(url))
+    : [getSelectedLibraryItem()]
+  styleLibraryList.value = styles
+  scriptLibraryList.value = scripts
+}
+initSelectedLibraries()
+
+/** 处理搜索 */
+const styleLibraryKeyword = ref<string>("")
+const scriptLibraryKeyword = ref<string>("")
+const matchStyleLibraries = ref<ILibraryItem[]>([])
+const matchScriptLibraries = ref<ILibraryItem[]>([])
+const styleLibraryLoading = ref<boolean>(false)
+const scriptLibraryLoading = ref<boolean>(false)
+const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
+/** 监听搜索词改变查询匹配库列表 */
+watch(styleLibraryKeyword, debounce((newKeyword) => {
+  styleLibraryLoading.value = true
+  searchStyleLibraries(newKeyword).then((res) => {
+    styleLibraryLoading.value = false
+    matchStyleLibraries.value = res
+  })
+}, 300))
+watch(scriptLibraryKeyword, debounce((newKeyword) => {
+  scriptLibraryLoading.value = true
+  searchScriptLibraries(newKeyword).then((res) => {
+    scriptLibraryLoading.value = false
+    matchScriptLibraries.value = res
+  })
+}, 300))
+
+const handleCloseModal = () => {
+  commonStore.updateDisplayModal(null)
+  editorConfigStore.updateLibraries({
+    style: styleLibraryList.value.map(({ url }) => url),
+    script: scriptLibraryList.value.map(({ url }) => url),
+  })
+}
 </script>
 
 <style lang="scss" scoped>

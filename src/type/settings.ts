@@ -54,3 +54,10 @@ export const enum CodeFontFamily {
   INCONSOLATA = "Inconsolata",
   COURIER_PRIME = "Courier Prime",
 }
+
+export interface IEditorLibraries {
+  /** 样式库列表 */
+  style: string[]
+  /** 脚本库列表 */
+  script: string[]
+}
