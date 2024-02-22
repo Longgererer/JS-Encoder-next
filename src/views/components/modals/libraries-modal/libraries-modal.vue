@@ -16,22 +16,27 @@
           placeholder="查找样式库..."
           select-style="width: 100%;"
           appendToBody
-          v-model="styleLibraryKeyword"
+          v-model="styleLibraryInfo.keyword"
           :size="Size.LARGE"
-          :data-list="matchStyleLibraries"
-          @selected="handleSelectStyleLibrary"
+          :data-list="styleLibraryInfo.match"
+          @selected="($event) => handleSelectLibrary($event, LibraryType.STYLE)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="styleLibraryList" uniqueKey="id">
-        <template v-for="(item, index) in styleLibraryList" :key="item.id" v-slot:[`item-${item.id}`]>
+      <drag-sortable v-model="styleLibraryInfo.selected" uniqueKey="id">
+        <template
+          v-for="(item, index) in styleLibraryInfo.selected"
+          :key="item.id"
+          v-slot:[`item-${item.id}`]>
           <div class="mt-s flex">
             <custom-input
               width="100%"
               placeholder="请输入样式库链接..."
-              v-model="styleLibraryList[index].url"
+              v-model="styleLibraryInfo.selected[index].url"
               :size="Size.LARGE">
               <template v-slot:rightSide>
-                <div class="cursor-pointer flex-y-center fill-h">
+                <div
+                  class="cursor-pointer flex-y-center fill-h"
+                  @click="handleDeleteLibrary(index, LibraryType.STYLE)">
                   <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
                 </div>
               </template>
@@ -39,7 +44,9 @@
           </div>
         </template>
       </drag-sortable>
-      <div class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease">
+      <div
+        class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease"
+        @click="handleAddLibrary(LibraryType.STYLE)">
         <i class="icon iconfont icon-add font-s"></i>
         <span class="ml-s font-xs">添加新样式</span>
       </div>
@@ -51,22 +58,27 @@
           placeholder="查找脚本库..."
           select-style="width: 100%;"
           appendToBody
-          v-model="scriptLibraryKeyword"
+          v-model="scriptLibraryInfo.keyword"
           :size="Size.LARGE"
-          :data-list="matchScriptLibraries"
-          @selected="handleSelectScriptLibrary"
+          :data-list="scriptLibraryInfo.match"
+          @selected="($event) => handleSelectLibrary($event, LibraryType.SCRIPT)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="scriptLibraryList" uniqueKey="id">
-        <template v-for="(item, index) in scriptLibraryList" :key="item.id" v-slot:[`item-${item.id}`]>
+      <drag-sortable v-model="scriptLibraryInfo.selected" uniqueKey="id">
+        <template
+          v-for="(item, index) in scriptLibraryInfo.selected"
+          :key="item.id"
+          v-slot:[`item-${item.id}`]>
           <div class="mt-s flex">
             <custom-input
               width="100%"
               placeholder="请输入脚本库链接..."
-              v-model="scriptLibraryList[index].url"
+              v-model="scriptLibraryInfo.selected[index].url"
               :size="Size.LARGE">
               <template v-slot:rightSide>
-                <div class="cursor-pointer flex-y-center fill-h">
+                <div
+                  class="cursor-pointer flex-y-center fill-h"
+                  @click="handleDeleteLibrary(index, LibraryType.SCRIPT)">
                   <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
                 </div>
               </template>
@@ -74,7 +86,9 @@
           </div>
         </template>
       </drag-sortable>
-      <div class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease">
+      <div
+        class="add-new-item no-active-text flex-center cursor-pointer mt-s fade-ease"
+        @click="handleAddLibrary(LibraryType.SCRIPT)">
         <i class="icon iconfont icon-add font-s"></i>
         <span class="ml-s font-xs">添加新脚本</span>
       </div>
@@ -88,10 +102,10 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
-import { ref, watch } from "vue"
-import useLibraries, { ILibraryItem } from "./use-libraries"
+import { reactive, watch } from "vue"
+import useLibraries, { ILibrary } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
-import { IMatchLibraryItem, ISelectedLibraryItem } from "./libraries.modal"
+import { ILibraryInfo, ISelectedLibrary, LibraryType } from "./libraries.modal"
 import { useEditorConfigStore } from "@store/editor-config"
 import { storeToRefs } from "pinia"
 import { debounce } from "@utils/common"
@@ -101,13 +115,25 @@ const commonStore = useCommonStore()
 const editorConfigStore = useEditorConfigStore()
 const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 
-/** 选中的样式和脚本库列表，默认提供一个空的 */
-const styleLibraryList = ref<ISelectedLibraryItem[]>([])
-const scriptLibraryList = ref<ISelectedLibraryItem[]>([])
+const styleLibraryInfo = reactive<ILibraryInfo>({
+  selected: [],
+  match: [],
+  loading: false,
+  keyword: "",
+})
+const scriptLibraryInfo = reactive<ILibraryInfo>({
+  selected: [],
+  match: [],
+  loading: false,
+  keyword: "",
+})
+const getLibraryInfo = (type: LibraryType): ILibraryInfo => {
+  return type === LibraryType.STYLE ? styleLibraryInfo : scriptLibraryInfo
+}
 
 /** id自增 */
 let libraryIdCount: number = 1
-const getSelectedLibraryItem = (url: string = ""): ISelectedLibraryItem => ({
+const getSelectedLibrary = (url: string = ""): ISelectedLibrary => ({
   id: libraryIdCount ++,
   url,
 })
@@ -116,59 +142,51 @@ const getSelectedLibraryItem = (url: string = ""): ISelectedLibraryItem => ({
 const initSelectedLibraries = () => {
   const { libraries } = editorConfigStoreRefs
   const { style, script } = libraries.value
-  const styles = style.length
-    ? style.map((url) => getSelectedLibraryItem(url))
-    : [getSelectedLibraryItem()]
-  const scripts = script.length
-    ? script.map((url) => getSelectedLibraryItem(url))
-    : [getSelectedLibraryItem()]
-  styleLibraryList.value = styles
-  scriptLibraryList.value = scripts
+  const styles = style.map((url) => getSelectedLibrary(url))
+  const scripts = script.map((url) => getSelectedLibrary(url))
+  styleLibraryInfo.selected = styles
+  scriptLibraryInfo.selected = scripts
 }
 initSelectedLibraries()
 
 /** 处理搜索 */
-/** 搜索词 */
-const styleLibraryKeyword = ref<string>("")
-const scriptLibraryKeyword = ref<string>("")
-/** 匹配的库列表 */
-const matchStyleLibraries = ref<IMatchLibraryItem[]>([])
-const matchScriptLibraries = ref<IMatchLibraryItem[]>([])
-/** 搜索时展示loading */
-const styleLibraryLoading = ref<boolean>(false)
-const scriptLibraryLoading = ref<boolean>(false)
 const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
-const trans2MatchLibrary = ({ name: value, url }: ILibraryItem) => ({ value, url })
+const trans2MatchLibrary = ({ name: value, url }: ILibrary) => ({ value, url })
 /** 监听搜索词改变查询匹配库列表 */
-watch(styleLibraryKeyword, debounce((newKeyword) => {
-  styleLibraryLoading.value = true
-  searchStyleLibraries(newKeyword).then((res) => {
-    styleLibraryLoading.value = false
-    matchStyleLibraries.value = res.map((item) => trans2MatchLibrary(item))
-  })
-}, 300))
-watch(scriptLibraryKeyword, debounce((newKeyword) => {
-  scriptLibraryLoading.value = true
-  searchScriptLibraries(newKeyword).then((res) => {
-    scriptLibraryLoading.value = false
-    matchScriptLibraries.value = res.map((item) => trans2MatchLibrary(item))
-  })
-}, 300))
-/** 选中库后设置到选中的样式和脚本库列表中 */
-const handleSelectStyleLibrary = ({ url }: ISelectOption) => {
-  styleLibraryList.value.push(getSelectedLibraryItem(url))
-  styleLibraryKeyword.value = ""
+const processKeywordChanged = (type: LibraryType) => {
+  return debounce((newKeyword) => {
+    const libraryInfo = getLibraryInfo(type)
+    libraryInfo.loading = true
+    const searchReq = LibraryType.STYLE ? searchStyleLibraries : searchScriptLibraries
+    searchReq(newKeyword).then((res) => {
+      libraryInfo.loading = false
+      libraryInfo.match = res.map((item) => trans2MatchLibrary(item))
+    })
+  }, 300)
 }
-const handleSelectScriptLibrary = ({ url }: ISelectOption) => {
-  scriptLibraryList.value.push(getSelectedLibraryItem(url))
-  scriptLibraryKeyword.value = ""
+watch(styleLibraryInfo.keyword, processKeywordChanged(LibraryType.STYLE))
+watch(scriptLibraryInfo.keyword, processKeywordChanged(LibraryType.SCRIPT))
+
+/** 选中库后设置到选中的样式和脚本库列表中 */
+const handleSelectLibrary = ({ url }: ISelectOption, type: LibraryType) => {
+  const libraryInfo = getLibraryInfo(type)
+  libraryInfo.selected.push(getSelectedLibrary(url))
+  libraryInfo.keyword = ""
+}
+/** 删除库 */
+const handleDeleteLibrary = (index: number, type: LibraryType) => {
+  getLibraryInfo(type).selected.splice(index, 1)
+}
+/** 添加库 */
+const handleAddLibrary = (type: LibraryType) => {
+  getLibraryInfo(type).selected.push(getSelectedLibrary())
 }
 
 const handleCloseModal = () => {
   commonStore.updateDisplayModal(null)
   editorConfigStore.updateLibraries({
-    style: styleLibraryList.value.map(({ url }) => url),
-    script: scriptLibraryList.value.map(({ url }) => url),
+    style: styleLibraryInfo.selected.map(({ url }) => url),
+    script: scriptLibraryInfo.selected.map(({ url }) => url),
   })
 }
 </script>

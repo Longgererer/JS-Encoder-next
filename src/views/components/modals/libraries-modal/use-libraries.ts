@@ -5,15 +5,15 @@ interface IRemoteLibraryInfo {
   latest: string
 }
 
-export interface ILibraryItem {
+export interface ILibrary {
   name: string
   url: string
 }
 
 /** 处理样式库、脚本库内容的获取和查询 */
 const useLibraries = () => {
-  const styleLibraries: ILibraryItem[] = []
-  const scriptLibraries: ILibraryItem[] = []
+  const styleLibraries: ILibrary[] = []
+  const scriptLibraries: ILibrary[] = []
 
   const fetchCDNLibraries = () => {
     return fetch(BOOT_CDN_URL)
@@ -39,7 +39,7 @@ const useLibraries = () => {
     }
   }
 
-  const searchLibraries = async (keyword: string, libraries: ILibraryItem[]) => {
+  const searchLibraries = async (keyword: string, libraries: ILibrary[]) => {
     await setCDNLibraries()
     const regExp = new RegExp(`${keyword}`, "ig")
     return libraries.filter(({ name }) => regExp.test(name))
