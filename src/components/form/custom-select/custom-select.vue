@@ -12,8 +12,9 @@
       <input
         v-if="showSearch"
         class="fill-w bg-form-item fade-ease code-font block"
-        type="search"
-        :value="getOptionLabel(currSelectItem)"
+        type="text"
+        spellcheck="false"
+        :value="modelValue"
         :placeholder="placeholder"
         @input="handleInputTextChange($event)"/>
       <span v-else :class="`${namespace}-value`">{{getOptionLabel(currSelectItem)}}</span>
@@ -44,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from "vue"
+import { computed, onMounted, ref, watch, watchEffect } from "vue"
 import useClickOutside from "@hooks/useClickOutside"
 import { ISelectOption, IProps, IEmits } from "./custom-select"
 import { Size } from "@type/interface"
@@ -74,6 +75,12 @@ const getOptionLabel = (item?: ISelectOption): string => {
     : ""
 }
 
+watchEffect(() => {
+  if (props.dataList.length && isFocus.value) {
+    isUnfoldOptions.value = true
+  }
+})
+
 /** 点击选择框 */
 const handleClickSelect = (): void => {
   if (props.dataList.length) {
@@ -83,6 +90,7 @@ const handleClickSelect = (): void => {
 }
 /** 点击选项缓存下选项内容 */
 const handleClickOption = (item: ISelectOption): void => {
+  emits("selected", item)
   emits("update:modelValue", item.value)
   isUnfoldOptions.value = false
   isFocus.value = false
@@ -107,8 +115,9 @@ const optionsStyle = ref<Record<string, string>>({})
 onMounted(() => {
   if (props.appendToBody) {
     const { width = 0, height = 0, top = 0, left = 0 } = selectRef.value!.getBoundingClientRect()
+    console.log(selectRef.value, selectRef.value!.getBoundingClientRect(), selectRef.value?.offsetLeft)
     optionsStyle.value = {
-      top: `${top + height}px`,
+      top: `${top + height + 4}px`,
       left: `${left}px`,
       width: `${width}px`,
       transform: "none",

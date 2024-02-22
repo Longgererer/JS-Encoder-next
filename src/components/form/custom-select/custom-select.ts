@@ -5,6 +5,7 @@ export type SelectSize = Exclude<Size, Size.MINI | Size.X_LARGE>
 export interface ISelectOption {
   value: string | number | boolean
   label?: string | number
+  [key: string]: any
 }
 
 export interface IProps {
@@ -27,4 +28,6 @@ export interface IProps {
 
 export interface IEmits {
   (event: "update:modelValue", state: ISelectOption["value"]): void
+  /** 选择了选项之后触发 */
+  (event: "selected", state: ISelectOption): void
 }

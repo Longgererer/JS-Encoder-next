@@ -1,8 +1,13 @@
 import { BOOT_CDN_URL } from "@utils/config"
 
-export interface ILibraryItem {
+interface IRemoteLibraryInfo {
   name: string
   latest: string
+}
+
+export interface ILibraryItem {
+  name: string
+  url: string
 }
 
 /** 处理样式库、脚本库内容的获取和查询 */
@@ -13,16 +18,15 @@ const useLibraries = () => {
   const fetchCDNLibraries = () => {
     return fetch(BOOT_CDN_URL)
       .then((res) => res.json())
-      .then(({ results }) => results as ILibraryItem[])
+      .then(({ results }) => results as IRemoteLibraryInfo[])
   }
 
-  const processLibrariesType = (libraries: ILibraryItem[]) => {
-    libraries.forEach((library) => {
-      const { latest } = library
-      if (/\.css$/.test(latest)) {
-        styleLibraries.push(library)
+  const processLibraries = (libraries: IRemoteLibraryInfo[]) => {
+    libraries.forEach(({ name, latest: url }) => {
+      if (/\.css$/.test(url)) {
+        styleLibraries.push({ name, url })
       } else {
-        scriptLibraries.push(library)
+        scriptLibraries.push({ name, url })
       }
     })
   }
@@ -31,7 +35,7 @@ const useLibraries = () => {
   const setCDNLibraries = async () => {
     if (!styleLibraries.length && !scriptLibraries.length) {
       const libraries = await fetchCDNLibraries()
-      processLibrariesType(libraries)
+      processLibraries(libraries)
     }
   }
 

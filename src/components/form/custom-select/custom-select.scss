@@ -1,7 +1,7 @@
 $namespace: custom-select;
 $select-padding: (
   small: 2px,
-  medium: 5px,
+  medium: 4px,
   large: 8px,
 );
 $select-font-size: (
@@ -51,6 +51,8 @@ $border-width: 2px;
   right: 0;
   z-index: 1001;
   width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
   .#{$namespace}-option {
     color: var(--color-no-active-color);
     &:hover, &.selected {
