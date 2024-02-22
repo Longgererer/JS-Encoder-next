@@ -12,7 +12,7 @@
         class="fill-w bg-form-item fade-ease code-font"
         type="text"
         :class="`${inputClass}`"
-        :style="{ ...commonStyle }"
+        :style="{ borderRadius: getTextInputRadius() }"
         :value="modelValue"
         :placeholder="placeholder"
         :maxlength="maxLength || Infinity"
@@ -28,8 +28,7 @@
       <input
         class="fill-w bg-form-item fade-ease code-font"
         type="text"
-        :class="`${inputClass}}`"
-        :style="{ ...commonStyle }"
+        :class="`${inputClass}`"
         :value="modelValue"
         :placeholder="placeholder"
         @blur="handleInputNumberBlur"/>
@@ -65,7 +64,6 @@
           minHeight: `${textAreaHeightRange.minHeight}px`,
           maxHeight: `${textAreaHeightRange.maxHeight}px`,
           height: `${textareaHeight}px`,
-          ...commonStyle,
         }"
         :maxlength="maxLength || Infinity"
         :placeholder="placeholder"
@@ -87,7 +85,7 @@
 
 <script lang="ts" setup>
 import { Size } from "@type/interface"
-import { computed, ref } from "vue"
+import { ref, useSlots } from "vue"
 import { IEmits, IProps, InputSize, InputType } from "./custom-input"
 
 const inputFontSizeMap = {
@@ -98,19 +96,24 @@ const inputFontSizeMap = {
 
 const inputPaddingMap = {
   [Size.SMALL]: 2,
-  [Size.MEDIUM]: 5,
+  [Size.MEDIUM]: 4,
+  [Size.LARGE]: 8,
+}
+
+const inputRadiusMap = {
+  [Size.SMALL]: 2,
+  [Size.MEDIUM]: 4,
   [Size.LARGE]: 8,
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
   disabled: false,
-  type: "text" as InputType,
+  type: InputType.TEXT,
   placeholder: "",
   inputClass: "",
-  size: "medium" as InputSize,
+  size: Size.MEDIUM,
   width: "200px",
-  radius: 5,
   /** number input 特有属性 */
   min: -Infinity,
   max: Infinity,
@@ -125,13 +128,13 @@ const emits = defineEmits<IEmits>()
 
 const namespace = "custom-input"
 
-const commonStyle = computed(() => {
-  const radius = props.radius >= 0 ? props.radius : inputPaddingMap[props.size]
-  const isNumberType = props.type === InputType.NUMBER
-  return {
-    borderRadius: `${radius} ${isNumberType ? radius : 0} ${isNumberType ? radius : 0} ${radius}`,
-  }
-})
+const getTextInputRadius = () => {
+  const radius = props.radius && props.radius >= 0 ? props.radius : inputRadiusMap[props.size]
+  const slots = useSlots()
+  const leftRadius = `${slots.leftSide ? 0 : radius}px`
+  const rightRadius = `${slots.rightSide ? 0 : radius}px`
+  return `${leftRadius} ${rightRadius} ${rightRadius} ${leftRadius}`
+}
 
 /** type = text */
 const handleInputTextChange = (e: Event): void => {
