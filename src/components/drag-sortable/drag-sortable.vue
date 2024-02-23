@@ -7,7 +7,7 @@
       :class="dragIndex === index ? 'dragging' : ''"
       @dragstart="handleDragstart(index)"
       @dragend.prevent="handleDragend()"
-      @dragenter.prevent="handleDragenter(index)"
+      @dragenter.prevent="handleDragenter($event, index)"
       @dragover.prevent="() => {}">
       <!-- 外部传入的可拖拽项列表 -->
       <slot :name="`item-${item[uniqueKey]}`"></slot>
@@ -33,13 +33,15 @@ watchEffect(() => {
 const dragIndex = ref<number>(-1)
 const handleDragstart = (index: number) => {
   dragIndex.value = index
+  console.log("handleDragstart", list[dragIndex.value])
 }
 const handleDragend = () => {
   dragIndex.value = -1
 }
-const handleDragenter = (index: number) => {
+const handleDragenter = (event: DragEvent, index: number) => {
   if (dragIndex.value === index) { return }
   const dragItem = list[dragIndex.value]
+  console.log("handleDragenter", dragItem)
   list.splice(dragIndex.value, 1)
   list.splice(index, 0, dragItem)
   dragIndex.value = index

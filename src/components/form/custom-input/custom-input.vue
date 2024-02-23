@@ -86,7 +86,7 @@
 <script lang="ts" setup>
 import { Size } from "@type/interface"
 import { ref, useSlots } from "vue"
-import { IEmits, IProps, InputSize, InputType } from "./custom-input"
+import { IEmits, IProps, InputType } from "./custom-input"
 
 const inputFontSizeMap = {
   [Size.SMALL]: 12,
