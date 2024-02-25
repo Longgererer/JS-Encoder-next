@@ -115,7 +115,6 @@ const optionsStyle = ref<Record<string, string>>({})
 onMounted(() => {
   if (props.appendToBody) {
     const { width = 0, height = 0, top = 0, left = 0 } = selectRef.value!.getBoundingClientRect()
-    console.log(selectRef.value, selectRef.value!.getBoundingClientRect(), selectRef.value?.offsetLeft)
     optionsStyle.value = {
       top: `${top + height + 4}px`,
       left: `${left}px`,
