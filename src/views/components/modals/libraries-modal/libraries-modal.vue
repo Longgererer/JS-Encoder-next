@@ -22,7 +22,7 @@
           @selected="($event) => handleSelectLibrary($event, LibraryType.STYLE)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="styleLibraryInfo.selected" uniqueKey="id">
+      <drag-sortable v-model="styleLibraryInfo.selected" uniqueKey="id" group="styles">
         <template
           v-for="(item, index) in styleLibraryInfo.selected"
           :key="item.id"
@@ -64,7 +64,7 @@
           @selected="($event) => handleSelectLibrary($event, LibraryType.SCRIPT)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="scriptLibraryInfo.selected" uniqueKey="id">
+      <drag-sortable v-model="scriptLibraryInfo.selected" uniqueKey="id" group="scripts">
         <template
           v-for="(item, index) in scriptLibraryInfo.selected"
           :key="item.id"

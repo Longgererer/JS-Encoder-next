@@ -4,6 +4,7 @@ export interface IProps {
   modelValue: AnyArray
   /** 列表遍历和插槽需要用到的key */
   uniqueKey: string
+  group?: string
 }
 
 export interface IEmits {

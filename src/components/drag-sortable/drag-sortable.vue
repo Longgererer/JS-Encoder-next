@@ -4,8 +4,10 @@
       v-for="(item, index) in modelValue"
       :key="item[uniqueKey]"
       draggable="true"
-      :class="dragIndex === index ? 'dragging' : ''"
-      @dragstart="handleDragstart(index)"
+      :data-drag-sortable="true"
+      :data-group="group"
+      :class="[dragIndex === index ? 'dragging' : '']"
+      @dragstart="handleDragstart($event, index)"
       @dragend.prevent="handleDragend()"
       @dragenter.prevent="handleDragenter($event, index)"
       @dragover.prevent="() => {}">
@@ -19,29 +21,37 @@
 import { ref, watchEffect } from "vue"
 import { IEmits, IProps } from "./drag-sortable"
 import { AnyArray } from "@type/interface"
+import DragSortableService from "./drag-sortable-service"
 
-const props = defineProps<IProps>()
+const props = withDefaults(defineProps<IProps>(), {
+  modelValue: () => [],
+})
 const emits = defineEmits<IEmits>()
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-let list: AnyArray = props.modelValue
+const dragSortableService = new DragSortableService()
+
+let list: AnyArray = [...props.modelValue]
 watchEffect(() => {
   /** 浅复制一份传入的数组 */
-  list = props.modelValue
+  list = [...props.modelValue]
 })
 
 const dragIndex = ref<number>(-1)
-const handleDragstart = (index: number) => {
+const handleDragstart = (event: DragEvent, index: number) => {
   dragIndex.value = index
-  console.log("handleDragstart", list[dragIndex.value])
+  const group = (event.target as HTMLElement).dataset.group
+  dragSortableService.setDraggingGroup(group || "")
 }
 const handleDragend = () => {
   dragIndex.value = -1
+  dragSortableService.setDraggingGroup("")
 }
 const handleDragenter = (event: DragEvent, index: number) => {
-  if (dragIndex.value === index) { return }
+  if (index === undefined
+    || dragIndex.value === index
+    || !dragSortableService.judgeSameGroup(event.target as HTMLElement)
+  ) { return }
   const dragItem = list[dragIndex.value]
-  console.log("handleDragenter", dragItem)
   list.splice(dragIndex.value, 1)
   list.splice(index, 0, dragItem)
   dragIndex.value = index

@@ -16,7 +16,8 @@
         :value="modelValue"
         :placeholder="placeholder"
         :maxlength="maxLength || Infinity"
-        @input="handleInputTextChange($event)"/>
+        @input="handleInputTextChange($event)"
+        @dragenter.prevent="() => {}"/>
       <div class="bg-form-item right-side-slot">
         <slot name="rightSide"></slot>
       </div>
