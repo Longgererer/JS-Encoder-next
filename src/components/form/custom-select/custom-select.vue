@@ -28,7 +28,7 @@
     <teleport to="body" :disabled="!appendToBody">
       <div
         v-if="isUnfoldOptions"
-        class="absolute bg-form-item shadow code-font"
+        class="absolute bg-form-item shadow code-font common-scrollbar"
         :class="`${namespace}-options ${namespace}-options--${size}`"
         :style="{...optionsStyle}">
         <div
