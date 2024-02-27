@@ -12,5 +12,6 @@ module.exports = {
       "ignore": ["after-comment", "first-nested", "inside-block"]
     }],
     "value-keyword-case": null,
+    "color-hex-length": null,
   }
 }
