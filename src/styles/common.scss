@@ -261,10 +261,10 @@
     cursor: default;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--color-main-bg-1);
+    background-color: var(--color-main-bg-2);
   }
   &::-webkit-scrollbar-track {
-    background-color: var(--color-main-bg-2);
+    background-color: transparent;
   }
 }
 
