@@ -78,14 +78,12 @@ const getOptionLabel = (item?: ISelectOption): string => {
 watchEffect(() => {
   if (props.dataList.length && isFocus.value) {
     isUnfoldOptions.value = true
+    setOptionStyle()
   }
 })
 
 /** 点击选择框 */
 const handleClickSelect = (): void => {
-  if (props.dataList.length) {
-    isUnfoldOptions.value = !isUnfoldOptions.value
-  }
   isFocus.value = true
 }
 /** 点击选项缓存下选项内容 */
@@ -113,16 +111,19 @@ watch(isClickOutSide, () => {
 /** 定位样式 */
 const optionsStyle = ref<Record<string, string>>({})
 onMounted(() => {
-  if (props.appendToBody) {
-    const { width = 0, height = 0, top = 0, left = 0 } = selectRef.value!.getBoundingClientRect()
-    optionsStyle.value = {
-      top: `${top + height + 4}px`,
-      left: `${left}px`,
-      width: `${width}px`,
-      transform: "none",
-    }
-  }
+  setOptionStyle()
 })
+
+const setOptionStyle = () => {
+  if (!props.appendToBody || !selectRef.value) { return }
+  const { width = 0, height = 0, top = 0, left = 0 } = selectRef.value.getBoundingClientRect()
+  optionsStyle.value = {
+    top: `${top + height + 4}px`,
+    left: `${left}px`,
+    width: `${width}px`,
+    transform: "none",
+  }
+}
 </script>
 
 <style src="./custom-select.scss" lang="scss"></style>

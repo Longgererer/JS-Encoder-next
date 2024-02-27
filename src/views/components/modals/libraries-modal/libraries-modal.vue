@@ -157,20 +157,27 @@ const processKeywordChanged = (type: LibraryType) => {
   return debounce((newKeyword) => {
     const libraryInfo = getLibraryInfo(type)
     libraryInfo.loading = true
-    const searchReq = LibraryType.STYLE ? searchStyleLibraries : searchScriptLibraries
+    const searchReq = type === LibraryType.STYLE ? searchStyleLibraries : searchScriptLibraries
     searchReq(newKeyword).then((res) => {
       libraryInfo.loading = false
       libraryInfo.match = res.map((item) => trans2MatchLibrary(item))
     })
   }, 300)
 }
-watch(styleLibraryInfo.keyword, processKeywordChanged(LibraryType.STYLE))
-watch(scriptLibraryInfo.keyword, processKeywordChanged(LibraryType.SCRIPT))
+watch(
+  () => styleLibraryInfo.keyword,
+  processKeywordChanged(LibraryType.STYLE),
+)
+watch(
+  () => scriptLibraryInfo.keyword,
+  processKeywordChanged(LibraryType.SCRIPT),
+)
 
 /** 选中库后设置到选中的样式和脚本库列表中 */
 const handleSelectLibrary = ({ url }: ISelectOption, type: LibraryType) => {
   const libraryInfo = getLibraryInfo(type)
   libraryInfo.selected.push(getSelectedLibrary(url))
+  console.log(url, type, libraryInfo)
   libraryInfo.keyword = ""
 }
 /** 删除库 */
