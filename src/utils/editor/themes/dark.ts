@@ -4,12 +4,12 @@ import { tags } from "@lezer/highlight"
 const theme = createTheme({
   variant: "dark",
   settings: {
-    background: "#121212",
+    background: "#121214",
     foreground: "#c8d3f5",
     caret: "#c8d3f5",
     selection: "#333333",
-    lineHighlight: "#1f1f1f",
-    gutterBackground: "#121212",
+    lineHighlight: "#222228",
+    gutterBackground: "#121214",
     gutterForeground: "#555555",
   },
   styles: [
