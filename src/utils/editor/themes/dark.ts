@@ -1,5 +1,5 @@
-import { createTheme } from "thememirror"
 import { tags } from "@lezer/highlight"
+import createTheme from "./create-theme"
 
 const theme = createTheme({
   variant: "dark",
@@ -7,8 +7,10 @@ const theme = createTheme({
     background: "#121214",
     foreground: "#c8d3f5",
     caret: "#c8d3f5",
-    selection: "#333333",
-    lineHighlight: "#222228",
+    selection: "#28282F",
+    focusedSelection: "#28283F",
+    selectionMatch: "#99ff7740",
+    lineHighlight: "#33333944",
     gutterBackground: "#121214",
     gutterForeground: "#555555",
   },
