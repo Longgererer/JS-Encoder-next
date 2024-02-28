@@ -15,7 +15,7 @@ import { Extension } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { autocompletion } from "@codemirror/autocomplete"
-import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
+import { emmetConfig, abbreviationTracker, expandAbbreviation } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
@@ -38,13 +38,8 @@ export const getDefaultEditorExtensions = (): Extension[] => {
 
 const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.HTML]: () => [
-    emmetConfig.of({
-      syntax: "css",
-      preview: {
-        // html: yourCustomHighlighter
-      },
-    }),
-    abbreviationTracker(),
+    emmetConfig.of({ syntax: "html" }),
+    abbreviationTracker({ syntax: "html" }),
   ],
   [Prep.MARKDOWN]: () => [],
   [Prep.PUG]: () => [],
@@ -55,7 +50,10 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.STYLUS]: () => [emmetConfig.of({ syntax: "stylus" })],
   [Prep.JAVASCRIPT]: () => [],
   [Prep.TYPESCRIPT]: () => [],
-  [Prep.JSX]: () => [emmetConfig.of({ syntax: "jsx" })],
+  [Prep.JSX]: () => [
+    emmetConfig.of({ syntax: "jsx" }),
+    abbreviationTracker({ syntax: "jsx" }),
+  ],
   [Prep.COFFEESCRIPT]: () => [],
   [Prep.VUE2]: () => [emmetConfig.of({ syntax: "vue" })],
   [Prep.VUE3]: () => [emmetConfig.of({ syntax: "vue" })],

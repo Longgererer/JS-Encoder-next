@@ -1,6 +1,7 @@
 import { EditorView } from "@codemirror/view"
 import { HighlightStyle, TagStyle, syntaxHighlighting } from "@codemirror/language"
 import { Extension } from "@codemirror/state"
+import commonStyle from "./common"
 
 interface Settings {
   background: string
@@ -32,13 +33,16 @@ const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
     ".cm-cursor, .cm-dropCursor": {
       borderLeftColor: settings.caret,
     },
+    "&.cm-focused .cm-scroller .cm-content .cm-line::selection": {
+      backgroundColor: `${settings.focusedSelection} !important`,
+    },
     "&.cm-focused .cm-scroller .cm-selectionLayer .cm-selectionBackground": {
-      backgroundColor: settings.focusedSelection,
+      backgroundColor: "transparent",
     },
     "& .cm-scroller .cm-selectionLayer .cm-selectionBackground": {
-      backgroundColor: settings.selection,
+      backgroundColor: "transparent",
     },
-    ".cm-selectionMatch": {
+    ".cm-content .cm-selectionMatch": {
       backgroundColor: settings.selectionMatch,
     },
     ".cm-activeLine": {
@@ -51,6 +55,7 @@ const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
     ".cm-activeLineGutter": {
       backgroundColor: settings.lineHighlight,
     },
+    ...commonStyle,
   }, {
     dark: variant === "dark",
   })
