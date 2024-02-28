@@ -165,7 +165,7 @@ const handleClickInputNumberUp = (): void => {
 }
 /** 点击下箭头 */
 const handleClickInputNumberDown = (): void => {
-  const value = Number(props.modelValue) + props.step
+  const value = Number(props.modelValue) - props.step
   if (value < props.min) { return }
   emits("update:modelValue", value)
 }
