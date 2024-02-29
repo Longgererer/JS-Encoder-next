@@ -1,18 +1,3 @@
-<script lang="ts" setup>
-import Modal from "@components/modal/modal.vue"
-import CustomInput from "@components/form/custom-input/custom-input.vue"
-import { useCommonStore } from "@store/common"
-import { ModalName, Position } from "@type/interface"
-import { ShortcutMapList, IShortcutMap } from "./shortcut-modal.interface"
-import { ref } from "vue"
-
-const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const bindInputText = ref<string>("")
-const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
-</script>
-
 <template>
   <modal
     title="快捷键"
@@ -21,27 +6,31 @@ const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
     bottom="85"
     v-if="commonStore.displayModal === ModalName.SHORTCUT"
     :show-footer="false"
-    @close="updateDisplayModal(null)"
-  >
-    <div class="pt-s pb-l flex-ais sticky bg-main2" style="top:0">
+    @close="updateDisplayModal(null)">
+    <div class="search-bar pt-s pb-l flex-ais sticky bg-main2">
       <custom-input
-        size="large"
         width="100%"
         placeholder="查询快捷键..."
-        v-model="bindInputText"
-      ></custom-input>
+        v-model="shortcutKeyword"
+        :size="Size.LARGE">
+        <template #leftSide>
+          <div class="flex-y-center fill-h pl-s">
+            <i class="icon iconfont icon-search font-s line-h-unset no-active-text"></i>
+          </div>
+        </template>
+      </custom-input>
     </div>
-    <div class="shortcut-list-wrapper font-xs fill-h flex-1 common-scrollbar">
-      <template v-for="(item, index) in ShortcutMapList" :key="index">
-        <div class="shortcut-list-name active-text pb-s">
-          <span>{{item.name}}</span>
+    <div class="shortcut-list-wrapper font-xs fill-h flex-1 common-scrollbar relative">
+      <template v-for="(item, index) in searchResult" :key="index">
+        <div class="shortcut-list-name active-text pb-s sticky bg-main2">
+          <span>{{item.type}}</span>
         </div>
-        <template v-for="shortcut in item.keymap" :key="shortcut.describe">
-          <div class="flex-y-center mt-s">
-            <span class="describe-text">{{shortcut.describe}}</span>
+        <template v-for="shortcut in item.keymap" :key="shortcut.name">
+          <div class="shortcut flex-y-center">
+            <span class="active-text">{{shortcut.name}}</span>
             <div class="flex-1"></div>
-            <template v-for="key in shortcut.list" :key="key">
-              <kbd class="key active-text code-font radius-l p-y-xs p-x-s">{{key}}</kbd>
+            <template v-for="key in shortcut.keys" :key="key">
+              <kbd class="key describe-text code-font radius-l p-y-xs p-x-s">{{key}}</kbd>
             </template>
           </div>
         </template>
@@ -50,17 +39,55 @@ const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
   </modal>
 </template>
 
+<script lang="ts" setup>
+import Modal from "@components/modal/modal.vue"
+import CustomInput from "@components/form/custom-input/custom-input.vue"
+import { useCommonStore } from "@store/common"
+import { ModalName, Size } from "@type/interface"
+import { ShortcutMapList, IShortcutMap } from "./shortcut-modal.interface"
+import { ref, watch } from "vue"
+
+const commonStore = useCommonStore()
+const { updateDisplayModal } = commonStore
+
+const shortcutKeyword = ref<string>("")
+const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
+
+const searchShortcut = (keyword: string): IShortcutMap[] => {
+  if (!keyword) { return ShortcutMapList }
+  return ShortcutMapList.map((shortcutMap) => {
+    const regExp = new RegExp(`${keyword}`, "g")
+    const { type, keymap } = shortcutMap
+    return {
+      type,
+      keymap: keymap.filter(({ name }) => regExp.test(name)),
+    }
+  }).filter(({ keymap }) => !!keymap.length)
+}
+
+watch(shortcutKeyword, (newKeyword) => {
+  searchResult.value = searchShortcut(newKeyword)
+})
+</script>
+
 <style lang="scss" scoped>
+.search-bar {
+  z-index: 1;
+  top: 0;
+}
 .shortcut-list-name {
   height: 28px;
   border-bottom: 1px solid var(--color-form-item);
+  top: 64px;
   &:not(:first-child) {
     margin-top: 16px;
   }
 }
+.shortcut {
+  margin-top: 8px;
+}
 .key {
-  border: 1px solid var(--color-describe);
-  box-shadow: 0 2px var(--color-no-active-color);
+  background-color: var(--color-main-bg-3);
   &:not(:last-child) {
     margin-right: 4px;
   }

@@ -1,52 +1,52 @@
 export interface IShortcutMap {
-  /** 集合名称 */
-  name: string
+  /** 集合类型 */
+  type: string
   keymap: Array<{
-    /** 功能描述 */
-    describe: string
+    /** 功能名称 */
+    name: string
     /** 键位列表 */
-    list: string[]
+    keys: string[]
   }>
 }
 
 export const ShortcutMapList: IShortcutMap[] = [
   {
-    name: "编码",
+    type: "编码",
     keymap: [
-      { describe: "缩进代码", list: ["Tab"] },
-      { describe: "格式化代码", list: ["Shift", "Alt", "F"] },
-      { describe: "智能提示", list: ["Ctrl / Cmd", "Alt"] },
-      { describe: "收起代码", list: ["Ctrl / Cmd", "Q"] },
-      { describe: "注释", list: ["Ctrl / Cmd", "/"] },
-      { describe: "行复制", list: ["Ctrl / Cmd", "Shift", "D"] },
-      { describe: "选择当前行", list: ["Ctrl / Cmd", "D"] },
-      { describe: "向上互换行", list: ["Shift", "Ctrl / Cmd", "Up"] },
-      { describe: "向下互换行", list: ["Shift", "Ctrl / Cmd", "Down"] },
-      { describe: "左缩进代码", list: ["Ctrl / Cmd", "["] },
-      { describe: "右缩进代码", list: ["Ctrl / Cmd", "]"] },
-      { describe: "代码查询", list: ["Ctrl / Cmd", "F"] },
-      { describe: "代码替换", list: ["Ctrl / Cmd", "Shift", "F"] },
-      { describe: "跳至某行", list: ["Alt", "G"] },
+      { name: "缩进代码", keys: ["Tab"] },
+      { name: "格式化代码", keys: ["Shift", "Alt", "F"] },
+      { name: "智能提示", keys: ["Ctrl / Cmd", "Alt"] },
+      { name: "收起代码", keys: ["Ctrl / Cmd", "Q"] },
+      { name: "注释", keys: ["Ctrl / Cmd", "/"] },
+      { name: "行复制", keys: ["Ctrl / Cmd", "Shift", "D"] },
+      { name: "选择当前行", keys: ["Ctrl / Cmd", "D"] },
+      { name: "向上互换行", keys: ["Shift", "Ctrl / Cmd", "Up"] },
+      { name: "向下互换行", keys: ["Shift", "Ctrl / Cmd", "Down"] },
+      { name: "左缩进代码", keys: ["Ctrl / Cmd", "["] },
+      { name: "右缩进代码", keys: ["Ctrl / Cmd", "]"] },
+      { name: "代码查询", keys: ["Ctrl / Cmd", "F"] },
+      { name: "代码替换", keys: ["Ctrl / Cmd", "Shift", "F"] },
+      { name: "跳至某行", keys: ["Alt", "G"] },
     ],
   },
   {
-    name: "MarkDown",
+    type: "MarkDown",
     keymap: [
-      { describe: "加粗", list: ["Ctrl / Cmd", "B"] },
-      { describe: "倾斜", list: ["Ctrl / Cmd", "I"] },
-      { describe: "中划线", list: ["Ctrl / Cmd", "D"] },
-      { describe: "链接", list: ["Ctrl / Cmd", "L"] },
-      { describe: "图片", list: ["Ctrl / Cmd", "P"] },
-      { describe: "引用", list: ["Ctrl / Cmd", "Shift", "Q"] },
-      { describe: "代码块", list: ["Ctrl / Cmd", "K"] },
-      { describe: "无序列表", list: ["Ctrl / Cmd", "U"] },
-      { describe: "有序列表", list: ["Ctrl / Cmd", "O"] },
-      { describe: "横线", list: ["Ctrl / Cmd", "H"] },
-      { describe: "列表延伸", list: ["Ctrl / Cmd", "Enter"] },
+      { name: "加粗", keys: ["Ctrl / Cmd", "B"] },
+      { name: "倾斜", keys: ["Ctrl / Cmd", "I"] },
+      { name: "中划线", keys: ["Ctrl / Cmd", "D"] },
+      { name: "链接", keys: ["Ctrl / Cmd", "L"] },
+      { name: "图片", keys: ["Ctrl / Cmd", "P"] },
+      { name: "引用", keys: ["Ctrl / Cmd", "Shift", "Q"] },
+      { name: "代码块", keys: ["Ctrl / Cmd", "K"] },
+      { name: "无序列表", keys: ["Ctrl / Cmd", "U"] },
+      { name: "有序列表", keys: ["Ctrl / Cmd", "O"] },
+      { name: "横线", keys: ["Ctrl / Cmd", "H"] },
+      { name: "列表延伸", keys: ["Ctrl / Cmd", "Enter"] },
     ],
   },
   {
-    name: "其它",
+    type: "其它",
     keymap: [],
   },
 ]
