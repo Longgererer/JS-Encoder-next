@@ -26,6 +26,9 @@ $input-border-radius: (
     &:focus {
       border-color: var(--color-primary1);
     }
+    &::placeholder {
+      color: var(--color-no-active-color);
+    }
   }
   .virtual-box {
     border: 2px solid transparent;
