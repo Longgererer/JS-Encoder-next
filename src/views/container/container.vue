@@ -84,7 +84,7 @@ onMounted(() => {
 /** 监听窗口尺寸变化更新对应模块尺寸 */
 const startObserveWindowSize = (): void => {
   watch(clientWidth, (newWidth: number, oldWidth: number) => {
-    updateModuleSize(getModulesWidth(newWidth - oldWidth, modulesSize))
+    updateModuleSize(getModulesWidth(newWidth - oldWidth, modulesSize, isShowResult.value))
   })
   watch(clientHeight, (newHeight: number, oldHeight: number) => {
     updateModuleSize(getModulesHeight(newHeight - oldHeight, modulesSize))

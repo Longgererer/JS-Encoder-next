@@ -27,11 +27,31 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import projectConfig from "../../../../package.json"
+import { IModulesSize, useLayoutStore } from "@store/layout"
+
+const layoutStore = useLayoutStore()
+/** 缓存隐藏之前结果窗口的宽度 */
+// let cacheModulesSize: Partial<IModulesSize> = {}
+const processHideResult = () => {
+  const { modulesSize: { resultWidth, editorWidth } } = layoutStore
+  layoutStore.updateModuleSize({ editorWidth: editorWidth + resultWidth })
+  layoutStore.updateIsShowResult(false)
+}
+const processShowResult = () => {
+  const { modulesSize: { resultWidth, editorWidth } } = layoutStore
+  layoutStore.updateModuleSize({ editorWidth: editorWidth - resultWidth })
+  layoutStore.updateIsShowResult(true)
+}
 
 /** 是否显示结果窗口 */
 const showResult = ref<boolean>(true)
 const handleClickTogglePreview = (): void => {
   showResult.value = !showResult.value
+  if (showResult.value) {
+    processShowResult()
+  } else {
+    processHideResult()
+  }
 }
 </script>
 

@@ -13,13 +13,17 @@ import {
  * 如果任意一个窗口宽度达到了最小值，只改变另一个窗口的宽度
  * changedWidth < 0 表示宽度变小，> 0 则为宽度变大
  */
-export const getModulesWidth = (changedWidth: number, modulesSize: IModulesSize): Partial<IModulesSize> => {
+export const getModulesWidth = (
+  changedWidth: number,
+  modulesSize: IModulesSize,
+  isShowResult: boolean,
+): Partial<IModulesSize> => {
   const { editorWidth, resultWidth } = modulesSize
   const isWindowWidthDecreased = changedWidth < 0
 
   // 均分改变的宽度（为避免出现小数点，使用floor）
-  const editorChangeWidth = Math.floor(changedWidth / 2)
-  const resultChangeWidth = changedWidth - editorChangeWidth
+  const editorChangeWidth = isShowResult ? Math.floor(changedWidth / 2) : changedWidth
+  const resultChangeWidth = changedWidth - Math.floor(changedWidth / 2)
   // 处理宽度变小的情况
   if (isWindowWidthDecreased) {
     const changedEditorWidth = editorWidth + editorChangeWidth
