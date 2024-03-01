@@ -21,20 +21,25 @@
       </custom-input>
     </div>
     <div class="shortcut-list-wrapper font-xs fill-h flex-1 common-scrollbar relative">
-      <template v-for="(item, index) in searchResult" :key="index">
-        <div class="shortcut-list-name active-text pb-s sticky bg-main2">
-          <span>{{item.type}}</span>
-        </div>
-        <template v-for="shortcut in item.keymap" :key="shortcut.name">
-          <div class="shortcut flex-y-center">
-            <span class="active-text">{{shortcut.name}}</span>
-            <div class="flex-1"></div>
-            <template v-for="key in shortcut.keys" :key="key">
-              <kbd class="key describe-text code-font radius-l p-y-xs p-x-s">{{key}}</kbd>
-            </template>
+      <template v-if="searchResult.length">
+        <template v-for="(item, index) in searchResult" :key="index">
+          <div class="shortcut-list-name active-text pb-s sticky bg-main2">
+            <span>{{item.type}}</span>
           </div>
+          <template v-for="shortcut in item.keymap" :key="shortcut.name">
+            <div class="shortcut flex-y-center">
+              <span class="active-text">{{shortcut.name}}</span>
+              <div class="flex-1"></div>
+              <template v-for="key in shortcut.keys" :key="key">
+                <kbd class="key describe-text code-font radius-l p-y-xs p-x-s">{{key}}</kbd>
+              </template>
+            </div>
+          </template>
         </template>
       </template>
+      <div v-else class="flex-x-center p-y-xl">
+        <span class="describe-text">没有匹配的快捷键~</span>
+      </div>
     </div>
   </modal>
 </template>
