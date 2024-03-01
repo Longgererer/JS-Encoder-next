@@ -1,14 +1,16 @@
 <template>
-  <div
-    class="split-line fade-ease"
-    :class="[
-      isActive ? 'active' : '',
-      showCursor && direction === SplitDirection.HORIZONTAL ? 'cursor-x-resize' : 'cursor-y-resize',
-    ]"
-    :style="splitLineSizeStyle"
-    @mouseenter="handleMouseenter"
-    @mouseleave="handleMouseleave"
-  ></div>
+  <div class="split-line-wrapper fill relative">
+    <div
+      class="split-line fill fade-ease absolute"
+      :class="[
+        isActive ? 'active' : '',
+        showCursor && direction === SplitDirection.HORIZONTAL ? 'cursor-x-resize' : 'cursor-y-resize',
+      ]"
+      :style="{ width: `${size}px`, ...splitLineSizeStyle }"
+      @mouseenter="isActive = true"
+      @mouseleave="isActive = false">
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -27,52 +29,32 @@ const props = withDefaults(defineProps<IProps>(), {
 
 /** 动态设置分割线宽高 */
 const splitLineSizeStyle = computed(() => {
-  const { size, direction, activeSize = size } = props
+  const { direction } = props
   const isHorizontal = direction === SplitDirection.HORIZONTAL
   if (isHorizontal) {
     return {
-      width: `${activeSize}px`,
-      height: "100%",
-      borderBottom: 0,
-      borderRight: `${size}px solid var(--color-main-bg-2)`,
-      "--hover-width": `${activeSize}px`,
-      "--hover-height": "100%",
+      top: 0,
+      bottom: 0,
+      left: "50%",
+      transform: "translateX(-50%)",
     }
   } else {
     return {
-      width: "100%",
-      height: `${activeSize}px`,
-      borderBottom: `${size}px solid var(--color-main-bg-2)`,
-      borderRight: 0,
-      "--hover-width": "100%",
-      "--hover-height": `${activeSize}px`,
+      left: 0,
+      right: 0,
+      top: "50%",
+      transform: "translateY(-50%)",
     }
   }
 })
 
 const isActive = ref<boolean>(false)
-let timer: NodeJS.Timeout | null = null
-/** 延迟置为活跃的时间(ms) */
-const activeDelay = 100
-/** 监听移入移出事件，移入500ms置为活跃高亮展示分割线 */
-const handleMouseenter = (): void => {
-  timer = setTimeout(() => {
-    isActive.value = true
-  }, activeDelay)
-}
-const handleMouseleave = (): void => {
-  if (!timer) { return }
-  clearTimeout(timer)
-  isActive.value = false
-}
 </script>
 
 <style lang="scss" scoped>
 .split-line {
+  z-index: 1;
   &.active {
-    width: var(--hover-width) !important;
-    height: var(--hover-height) !important;
-    border: 0 !important;
     background-color: var(--color-primary1);
   }
 }

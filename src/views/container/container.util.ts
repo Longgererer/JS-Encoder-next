@@ -3,9 +3,8 @@ import { IModulesSize } from "@store/layout"
 import {
   CONSOLE_MIN_HEIGHT,
   EDITOR_MIN_WIDTH,
-  NAV_BAR_HEIGHT, PREVIEW_MIN_HEIGHT,
-  RESIZE_LINE_SIZE, RESULT_MIN_WIDTH,
-  SIDEBAR_WIDTH,
+  PREVIEW_MIN_HEIGHT,
+  RESULT_MIN_WIDTH,
 } from "@utils/services/module-size-service"
 
 /**

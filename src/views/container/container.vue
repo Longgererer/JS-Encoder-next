@@ -1,3 +1,44 @@
+<template>
+  <navbar></navbar>
+  <div class="main-content flex">
+    <sidebar></sidebar>
+    <!--编辑-->
+    <div class="over-hidden">
+      <editor-wrapper></editor-wrapper>
+    </div>
+    <!--结果-->
+    <div class="flex" :style="{ width: `${isShowResult ? modulesSize.resultWidth : 0}px` }">
+      <div class="resize-line fill-h">
+        <!--分割线-->
+        <split-line
+          v-if="isShowResult"
+          :size="4"
+          :direction="SplitDirection.HORIZONTAL"
+          @mousedown="handleResizeEditorAndResult"
+        ></split-line>
+      </div>
+      <div class="flex-1">
+        <preview
+        :style="{ height: `${modulesSize.previewHeight}px` }"
+        :isShowScreen="layoutStore.isModulesResizing"
+        ></preview>
+        <console
+          :style="{ height: `${modulesSize.consoleHeight}px` }"
+          @resize="handleResizeConsoleAndPreview"
+        ></console>
+      </div>
+    </div>
+  </div>
+  <!--modals-->
+  <template-modal></template-modal>
+  <code-settings-modal></code-settings-modal>
+  <libraries-modal></libraries-modal>
+  <upload-code-modal></upload-code-modal>
+  <download-code-modal></download-code-modal>
+  <shortcut-modal></shortcut-modal>
+  <update-log-modal></update-log-modal>
+</template>
+
 <script setup lang="ts">
 import Navbar from "@views/components/navbar/navbar.vue"
 import Sidebar from "@views/components/sidebar/sidebar.vue"
@@ -12,12 +53,9 @@ import DownloadCodeModal from "@views/components/modals/download-code-modal/down
 import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
 import UpdateLogModal from "@views/components/modals/update-log-modal/update-log-modal.vue"
 import SplitLine from "@views/components/split-line/split-line.vue"
-import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
-import { onMounted, ref, watch } from "vue"
-import {
-  getModulesHeight,
-  getModulesWidth,
-} from "@views/container/container.util"
+import { SplitDirection } from "@type/editor"
+import { onMounted, watch } from "vue"
+import { getModulesHeight, getModulesWidth } from "@views/container/container.util"
 import { useLayoutStore } from "@store/layout"
 import useWindowResize from "@hooks/useWindowResize"
 import ModuleSizeService, {
@@ -26,9 +64,11 @@ import ModuleSizeService, {
   PREVIEW_MIN_HEIGHT,
   RESULT_MIN_WIDTH,
 } from "@utils/services/module-size-service"
+import { storeToRefs } from "pinia"
 
 const layoutStore = useLayoutStore()
 const { updateModuleSize, updateIsModulesResizing, updateHasInitModulesSize, modulesSize } = layoutStore
+const { isShowResult } = storeToRefs(layoutStore)
 const { clientWidth, clientHeight } = useWindowResize()
 
 const moduleSizeService = new ModuleSizeService()
@@ -104,57 +144,12 @@ const processFinishResize = (): void => {
 }
 </script>
 
-<template>
-  <navbar></navbar>
-  <div class="main-content flex">
-    <sidebar></sidebar>
-    <!--编辑-->
-    <div class="over-hidden">
-      <editor-wrapper></editor-wrapper>
-    </div>
-    <!--分割线-->
-    <split-line
-      :size="4"
-      :activeSize="4"
-      :direction="SplitDirection.HORIZONTAL"
-      full-default-bg
-      @mousedown="handleResizeEditorAndResult"
-    ></split-line>
-    <!--结果-->
-    <div :style="{ width: `${modulesSize.resultWidth}px` }">
-      <preview
-        :style="{ height: `${modulesSize.previewHeight}px` }"
-        :isShowScreen="layoutStore.isModulesResizing"
-      ></preview>
-      <console
-        :style="{ height: `${modulesSize.consoleHeight}px` }"
-        @resize="handleResizeConsoleAndPreview"
-      ></console>
-    </div>
-  </div>
-  <!--modals-->
-  <template-modal></template-modal>
-  <code-settings-modal></code-settings-modal>
-  <libraries-modal></libraries-modal>
-  <upload-code-modal></upload-code-modal>
-  <download-code-modal></download-code-modal>
-  <shortcut-modal></shortcut-modal>
-  <update-log-modal></update-log-modal>
-</template>
-
 <style lang="scss" scoped>
 .main-content {
   height: calc(100% - 50px);
   .resize-line {
-    &.resize-x {
-      height: 4px;
-    }
-    &.resize-y {
-      width: 4px;
-    }
-    &:hover {
-      background-color: var(--color-primary1);
-    }
+    width: 1px;
+    background-color: var(--color-main-bg-2);
   }
 }
 </style>

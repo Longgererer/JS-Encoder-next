@@ -4,8 +4,6 @@ import { IModulesSize } from "@store/layout"
 
 /** 侧边栏宽度 */
 export const SIDEBAR_WIDTH = 49
-/** 预览窗口与编辑窗口分割线宽度 */
-export const RESIZE_LINE_SIZE = 4
 /** navbar高度 */
 export const NAV_BAR_HEIGHT = 49
 /** 结果(预览和console)窗口最小宽度 */
@@ -41,7 +39,7 @@ export default class ModuleSizeService {
   public getResizeAreaSize(): ISize {
     const { width, height } = this.getWindowSize()
     return {
-      width: width - SIDEBAR_WIDTH - RESIZE_LINE_SIZE,
+      width: width - SIDEBAR_WIDTH,
       height: height - NAV_BAR_HEIGHT,
     }
   }
