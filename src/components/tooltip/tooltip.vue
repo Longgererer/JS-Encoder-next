@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Position } from "@type/interface"
-import { computed, ref } from "vue"
+import { ref } from "vue"
 import { getOffsetStyle } from "@components/utils/common"
 
 interface IProps {

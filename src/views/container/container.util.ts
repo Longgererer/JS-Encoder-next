@@ -53,11 +53,15 @@ export const getModulesWidth = (
  * 如果任意一个窗口高度达到了最小值，只改变另一个窗口的高度
  * changedHeight < 0 表示高度变小，> 0 则为高度变大
  */
-export const getModulesHeight = (changedHeight: number, modulesSize: IModulesSize): any => {
+export const getModulesHeight = (
+  changedHeight: number,
+  modulesSize: IModulesSize,
+  isFoldConsole: boolean,
+): any => {
   const { previewHeight, consoleHeight, editorHeight } = modulesSize
   const isWindowHeightDecreased = changedHeight < 0
   // 均分改变的宽度为避免出现小数点，使用floor
-  const consoleChangeHeight = Math.floor(changedHeight / 2)
+  const consoleChangeHeight = isFoldConsole ? 0 : Math.floor(changedHeight / 2)
   const previewChangeWidth = changedHeight - consoleChangeHeight
   // 处理宽度变小的情况
   if (isWindowHeightDecreased) {

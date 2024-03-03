@@ -67,8 +67,14 @@ import ModuleSizeService, {
 import { storeToRefs } from "pinia"
 
 const layoutStore = useLayoutStore()
-const { updateModuleSize, updateIsModulesResizing, updateHasInitModulesSize, modulesSize } = layoutStore
-const { isShowResult } = storeToRefs(layoutStore)
+const {
+  updateModuleSize,
+  updateIsModulesResizing,
+  updateHasInitModulesSize,
+  modulesSize,
+  updateIsFoldConsole,
+} = layoutStore
+const { isShowResult, isFoldConsole } = storeToRefs(layoutStore)
 const { clientWidth, clientHeight } = useWindowResize()
 
 const moduleSizeService = new ModuleSizeService()
@@ -87,7 +93,7 @@ const startObserveWindowSize = (): void => {
     updateModuleSize(getModulesWidth(newWidth - oldWidth, modulesSize, isShowResult.value))
   })
   watch(clientHeight, (newHeight: number, oldHeight: number) => {
-    updateModuleSize(getModulesHeight(newHeight - oldHeight, modulesSize))
+    updateModuleSize(getModulesHeight(newHeight - oldHeight, modulesSize, isFoldConsole.value))
   })
 }
 
@@ -117,6 +123,7 @@ const handleResizeConsoleAndPreview = (startY: number): void => {
   const { consoleHeight, previewHeight } = modulesSize
   // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
   updateIsModulesResizing(true)
+  updateIsFoldConsole(false)
   // 鼠标拖拉console分隔栏改变console和iframe的高度
   document.onmousemove = (event: MouseEvent): void => {
     // 获取console和preview窗口的新尺寸

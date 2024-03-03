@@ -11,7 +11,7 @@ export const RESULT_MIN_WIDTH = 50
 /** 编辑窗口最小宽度 */
 export const EDITOR_MIN_WIDTH = 150
 /** console最小高度 */
-export const CONSOLE_MIN_HEIGHT = 28
+export const CONSOLE_MIN_HEIGHT = 24
 /** 预览窗口最小高度 */
 export const PREVIEW_MIN_HEIGHT = 36
 /** splitter的最小宽度 */

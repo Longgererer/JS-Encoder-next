@@ -1,5 +1,20 @@
+<template>
+  <div
+    class="fade-ease cursor-pointer flex-center"
+    :class="`${namespace} ${namespace}-${size}`"
+    :style="{
+      ...(highlight ? highlightStyle : null),
+      '--hover-bg': hoverBg,
+    }"
+    :title="title"
+    @click="emits('click')">
+    <i class="icon iconfont" :class="[iconClass, size2ClassMap[size]]"></i>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
+import { AnyObject } from "@type/interface"
 
 interface IProps {
   /** icon类名 */
@@ -8,10 +23,11 @@ interface IProps {
   size?: IconBtnSize
   title?: string
   highlight?: boolean
-  highlightStyle?: string
+  highlightStyle?: AnyObject
+  hoverBg?: string
 }
-const props = withDefaults(defineProps<IProps>(), {
-  size: "md" as IconBtnSize,
+withDefaults(defineProps<IProps>(), {
+  size: IconBtnSize.MD,
   title: "",
 })
 const emits = defineEmits<{
@@ -24,43 +40,36 @@ const size2ClassMap = {
   [IconBtnSize.MD]: "font-m",
   [IconBtnSize.LG]: "font-l",
 }
-
-const handleClick = (): void => {
-  emits("click")
-}
 </script>
 
-<template>
-  <div
-    class="fade-ease cursor-pointer flex-center radius-l"
-    :class="`${namespace} ${namespace}-${size}`"
-    :style="`${highlight ? highlightStyle : ''}`"
-    :title="title"
-    @click="handleClick">
-    <i class="fade-ease icon iconfont" :class="[iconClass, size2ClassMap[size]]"></i>
-  </div>
-</template>
-
 <style lang="scss" scoped>
-$namespace: icon-btn;
+$namespace: "icon-btn";
 $comp-size: (
   sm: 24,
   md: 28,
   lg: 36,
 );
+$radius-size: (
+  sm: 4,
+  md: 6,
+  lg: 8,
+);
 
 .#{$namespace} {
+  --hover-bg: var(--color-main-bg-3);
+
   color: var(--color-no-active-color);
   &:hover {
-    background-color: var(--color-main-bg-3);
+    background-color: var(--hover-bg);
     color: var(--color-active-color);
   }
 }
 
-@each $name, $size in ($comp-size) {
-  .#{$namespace}-#{$name} {
-    width: #{$size}px;
-    height: #{$size}px;
+@each $size in (sm, md, lg) {
+  .#{$namespace}-#{$size} {
+    width: #{map.get($comp-size, $size)}px;
+    height: #{map.get($comp-size, $size)}px;
+    border-radius: #{map.get($radius-size, $size)}px;
   }
 }
 </style>

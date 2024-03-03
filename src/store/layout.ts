@@ -23,6 +23,8 @@ interface ILayoutStore {
   isModulesResizing: boolean
   /** 是否已经初始化了模块的尺寸 */
   hasInitModulesSize: boolean
+  /** 是否收起console */
+  isFoldConsole: boolean
 }
 
 export const useLayoutStore = defineStore("layout", {
@@ -35,6 +37,7 @@ export const useLayoutStore = defineStore("layout", {
       resultWidth: 0,
     },
     isShowResult: true,
+    isFoldConsole: false,
     isModulesResizing: false,
     hasInitModulesSize: false,
   }),
@@ -50,6 +53,9 @@ export const useLayoutStore = defineStore("layout", {
     },
     updateHasInitModulesSize(): void {
       this.hasInitModulesSize = true
+    },
+    updateIsFoldConsole(newState?: boolean): void {
+      this.isFoldConsole = isUndefined(newState) ? !this.isFoldConsole : newState!
     },
   },
 })
