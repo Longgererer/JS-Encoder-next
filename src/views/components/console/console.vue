@@ -1,13 +1,13 @@
 <template>
-  <div class="flex-col fill-w" :class="namespace">
+  <div class="flex-col fill-w">
     <!--头部-->
-    <div class="bg-main1 active-text font-xxs flex p-x-l no-select" :class="`${namespace}-header`">
-      <div class="flex-y-center" :class="`${namespace}-title`">
+    <div class="console-header bg-main1 active-text font-xxs flex p-x-l no-select">
+      <div class="console-title flex-y-center">
         <i class="icon iconfont icon-console font-s"></i>
         <span class="ml-s renew-line-xxs mt-xs code-font">Console</span>
       </div>
       <!--占位 + 拖拽-->
-      <div class="flex-1 cursor-y-resize" :class="`${namespace}-resizer`" @mousedown="handleResize"></div>
+      <div class="flex-1 cursor-y-resize" @mousedown="handleResize"></div>
       <div class="log-type-count-wrapper flex-y-center">
         <div class="error-count mr-m flex-y-center">
           <i class="icon iconfont icon-error mr-xs inline-block"></i>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <!--工具栏-->
-    <div class="bg-main2 active-text font-xxs flex p-x-l code-font flex-sh no-select" :class="`${namespace}-toolbar`">
+    <div class="console-toolbar bg-main2 active-text font-xxs flex p-x-l code-font flex-sh no-select">
       <!--类型过滤-->
       <div class="filter flex-y-center">
         <span class="mr-s">Filter:</span>
@@ -57,9 +57,9 @@
     </div>
     <div class="relative flex-1">
       <!--日志列表-->
-      <div class="" :class="`${namespace}-log-list-wrapper`"></div>
+      <div class="console-log-list-wrapper"></div>
       <!--设置-->
-      <div v-show="isShowConsoleSettings" class="pt-m pl-m flex-col" :class="`${namespace}-settings`">
+      <div v-show="isShowConsoleSettings" class="console-settings pt-m pl-m flex-col">
         <checkbox>每次执行前自动清空日志</checkbox>
         <checkbox class="mt-s">控制台日志不进行高亮</checkbox>
       </div>
@@ -82,7 +82,6 @@ const emits = defineEmits<{
   (e: "resize", startY: number): void
 }>()
 
-const namespace = "console"
 const { updateFilter } = useConsoleStore()
 
 /** 日志过滤选项列表 */
@@ -114,10 +113,8 @@ const handleResize = (e: MouseEvent) => {
 </script>
 
 <style lang="scss" scoped>
-$namespace: console;
-
-.#{$namespace} {
-  .#{$namespace}-header {
+.console {
+  .console-header {
     height: 28px;
     .error-count,
     .warn-count,
@@ -138,7 +135,7 @@ $namespace: console;
       height: 28px;
     }
   }
-  .#{$namespace}-toolbar {
+  .console-toolbar {
     height: 28px;
     .tool-btn-group {
       margin-left: 22px;
