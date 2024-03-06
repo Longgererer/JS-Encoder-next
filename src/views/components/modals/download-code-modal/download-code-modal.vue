@@ -43,7 +43,7 @@
       <custom-button
         fill
         custom-class="radius-l font-s"
-        :size="Size.LARGE"
+        :size="Size.X_LARGE"
       >下载文件</custom-button>
     </div>
   </modal>

@@ -1,6 +1,38 @@
+<template>
+  <div class="bg-main1 fill-h flex-col-x-center" :class="NAMESPACE">
+    <template v-for="(list, index) in SidebarList" :key="index">
+      <!-- 分割线 -->
+      <div v-if="index > 0 && index !== SidebarList.length - 1 && list.length" class="split-line"></div>
+      <!-- 子选项列表 -->
+      <div v-if="list.length" class="fill-w p-y-s" :class="`${NAMESPACE}-sub`">
+        <div
+          class="flex-center"
+          :class="`${NAMESPACE}-item-wrapper`"
+          v-for="item in list"
+          :key="item">
+          <tooltip
+            :content="SidebarTypeToText[item]"
+            :show-triangle="false"
+            :delay="200"
+            offset="8"
+            level="15">
+            <icon-btn
+              :size="IconBtnSize.LG"
+              :icon-class="item === SidebarType.THEME ? ThemeIcon[theme] : SidebarTypeToIcon[item]"
+              @click="handleClickItem(item)"
+            ></icon-btn>
+          </tooltip>
+        </div>
+      </div>
+      <div class="flex-1" v-else></div>
+    </template>
+  </div>
+</template>
+
 <script setup lang="ts">
 import Tooltip from "@components/tooltip/tooltip.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { Theme } from "@type/interface"
 import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/config"
 import {
@@ -39,35 +71,7 @@ const handleClickItem = (type: SidebarType): void => {
     }
   }
 }
-
 </script>
-
-<template>
-  <div class="bg-main1 fill-h flex-col-x-center" :class="NAMESPACE">
-    <template v-for="(list, index) in SidebarList" :key="index">
-      <!-- 分割线 -->
-      <div class="split-line" v-if="index > 0 && index !== SidebarList.length - 1 && list.length"></div>
-      <!-- 子选项列表 -->
-      <div class="fill-w p-y-s" :class="`${NAMESPACE}-sub`" v-if="list.length">
-        <div
-          class="flex-center"
-          :class="`${NAMESPACE}-item-wrapper`"
-          v-for="item in list"
-          :key="item"
-        >
-          <tooltip :content="SidebarTypeToText[item]" :show-triangle="false" offset="8" level="15">
-            <icon-btn
-              size="lg"
-              :icon-class="item === SidebarType.THEME ? ThemeIcon[theme] : SidebarTypeToIcon[item]"
-              @click="handleClickItem(item)"
-            ></icon-btn>
-          </tooltip>
-        </div>
-      </div>
-      <div class="flex-1" v-else></div>
-    </template>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 $namespace: sidebar;
