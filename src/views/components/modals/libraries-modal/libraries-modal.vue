@@ -1,7 +1,7 @@
 <template>
   <modal
     title="库"
-    width="500"
+    width="550"
     top="85"
     bottom="85"
     v-if="commonStore.displayModal === ModalName.LIBRARIES"
@@ -10,7 +10,7 @@
     <div>
       <div class="modal-sub-title">外部样式</div>
       <div class="modal-small-desc-text">你所添加的外部样式，将按照顺序在本地 CSS 执行之前依次执行，支持 http 和 https 协议链接</div>
-      <div class="mt-s">
+      <div class="mt-s mb-l">
         <custom-select
           showSearch
           placeholder="查找样式库..."
@@ -22,7 +22,11 @@
           @selected="($event) => handleSelectLibrary($event, LibraryType.STYLE)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="styleLibraryInfo.selected" uniqueKey="id" group="styles">
+      <drag-sortable
+        v-model="styleLibraryInfo.selected"
+        uniqueKey="id"
+        group="styles"
+        :disabled="disabledDrag">
         <template
           v-for="(item, index) in styleLibraryInfo.selected"
           :key="item.id"
@@ -32,12 +36,19 @@
               width="100%"
               placeholder="请输入样式库链接..."
               v-model="styleLibraryInfo.selected[index].url"
-              :size="Size.LARGE">
+              :size="Size.LARGE"
+              @blur="disabledDrag = false"
+              @focus="disabledDrag = true">
+              <template v-slot:leftSide>
+                <div class="cursor-move flex-y-center fill-h">
+                  <i class="icon iconfont icon-drag font-xs p-x-s no-active-text"></i>
+                </div>
+              </template>
               <template v-slot:rightSide>
                 <div
                   class="cursor-pointer flex-y-center fill-h"
                   @click="handleDeleteLibrary(index, LibraryType.STYLE)">
-                  <i class="icon iconfont icon-close text-hover-active fade-ease font-xs p-x-s"></i>
+                  <i class="icon iconfont icon-close text-hover-active font-xs p-x-s"></i>
                 </div>
               </template>
             </custom-input>
@@ -52,7 +63,7 @@
       </div>
       <div class="modal-sub-title">外部脚本</div>
       <div class="modal-small-desc-text">你所添加的外部样式，将按照顺序在本地 JavaScript 执行之前依次执行，支持 http 和 https 协议链接</div>
-      <div class="mt-s">
+      <div class="mt-s mb-l">
         <custom-select
           showSearch
           placeholder="查找脚本库..."
@@ -64,7 +75,11 @@
           @selected="($event) => handleSelectLibrary($event, LibraryType.SCRIPT)"
         ></custom-select>
       </div>
-      <drag-sortable v-model="scriptLibraryInfo.selected" uniqueKey="id" group="scripts">
+      <drag-sortable
+        v-model="scriptLibraryInfo.selected"
+        uniqueKey="id"
+        group="scripts"
+        :disabled="disabledDrag">
         <template
           v-for="(item, index) in scriptLibraryInfo.selected"
           :key="item.id"
@@ -74,7 +89,14 @@
               width="100%"
               placeholder="请输入脚本库链接..."
               v-model="scriptLibraryInfo.selected[index].url"
-              :size="Size.LARGE">
+              :size="Size.LARGE"
+              @blur="disabledDrag = false"
+              @focus="disabledDrag = true">
+              <template v-slot:leftSide>
+                <div class="cursor-move flex-y-center fill-h">
+                  <i class="icon iconfont icon-drag font-xs p-x-s no-active-text"></i>
+                </div>
+              </template>
               <template v-slot:rightSide>
                 <div
                   class="cursor-pointer flex-y-center fill-h"
@@ -102,7 +124,7 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
-import { reactive, watch } from "vue"
+import { reactive, ref, watch } from "vue"
 import useLibraries, { ILibrary } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
 import { ILibraryInfo, ISelectedLibrary, LibraryType } from "./libraries.modal"
@@ -114,7 +136,9 @@ import { ISelectOption } from "@components/form/custom-select/custom-select"
 const commonStore = useCommonStore()
 const { displayModal } = storeToRefs(commonStore)
 const editorConfigStore = useEditorConfigStore()
-const editorConfigStoreRefs = storeToRefs(editorConfigStore)
+
+const disabledDrag = ref<boolean>(false)
+
 
 const styleLibraryInfo = reactive<ILibraryInfo>({
   selected: [],

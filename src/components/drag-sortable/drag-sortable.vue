@@ -2,11 +2,11 @@
   <transition-group name="drag">
     <div
       v-for="(item, index) in modelValue"
+      :draggable="disabled ? 'false' : 'true'"
+      :class="[dragIndex === index ? 'dragging' : '']"
       :key="item[uniqueKey]"
-      draggable="true"
       :data-drag-sortable="true"
       :data-group="group"
-      :class="[dragIndex === index ? 'dragging' : '']"
       @dragstart="handleDragstart($event, index)"
       @dragend.prevent="handleDragend()"
       @dragenter.prevent="handleDragenter($event, index)"
@@ -25,6 +25,7 @@ import DragSortableService from "./drag-sortable-service"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: () => [],
+  disabled: false,
 })
 const emits = defineEmits<IEmits>()
 

@@ -179,6 +179,7 @@
 .cursor-x-resize { cursor: e-resize; }
 .cursor-y-resize { cursor: n-resize; }
 .cursor-default { cursor: default; }
+.cursor-move { cursor: move; }
 
 /** transition */
 .fade-ease { @include transition(all, .2s, ease); }

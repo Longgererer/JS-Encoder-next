@@ -5,6 +5,8 @@ export interface IProps {
   /** 列表遍历和插槽需要用到的key */
   uniqueKey: string
   group?: string
+  /** 是否禁止拖拽 */
+  disabled: boolean
 }
 
 export interface IEmits {

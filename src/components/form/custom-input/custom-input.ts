@@ -50,4 +50,5 @@ export interface IProps {
 
 export interface IEmits {
   (event: "update:modelValue", state: string | number): void
+  (event: "focus" | "blur"): void
 }
