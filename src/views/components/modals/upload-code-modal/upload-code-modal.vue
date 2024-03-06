@@ -1,12 +1,12 @@
 <template>
   <modal
     title="上传文件"
-    width="500"
+    width="600"
     top="85"
     bottom="85"
     v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
     :show-footer="false"
-    @close="updateDisplayModal(null)">
+    @close="handleCloseModal">
     <div class="font-s active-text code-font mt-s">
       <span>支持 HTML、CSS、JS、MD、PUG、SASS、SCSS、STYL、LESS、COFFEE、TS、VUE 及 JSX 格式的文件</span>
     </div>
@@ -21,41 +21,57 @@
         ></help-popover>
       </div>
     </div>
-    <div class="upload-btn relative cursor-pointer">
-      <custom-button
-        fill
-        shadow
-        :size="Size.LARGE"
-        custom-class="radius-l font-xs">
-        <input
-          class="upload-input fill absolute"
-          type="file"
-          ref="fileInput"
-          multiple
-          title=""/>
-        <span>选择要上传的文件</span>
-      </custom-button>
+    <!-- 拖拽上传文件区域 -->
+    <div
+      class="upload-area mt-l cursor-pointer relative p-y-l"
+      :class="highlightDragArea ? 'active' : ''"
+      @click="handleClickDragArea"
+      @dragover.prevent=""
+      @dragenter="highlightDragArea = true"
+      @dragleave="highlightDragArea = false"
+      @drop.prevent="handleDropFile">
+      <div class="font-xs describe-text text-center p-y-xxl events-none">
+        <span>拖拽文件到此区域/</span>
+        <span class="primary-text">点击上传文件</span>
+      </div>
+      <input
+        class="display-none"
+        type="file"
+        ref="fileInput"
+        multiple
+        @change="handleChooseFiles($event)"/>
     </div>
 
     <!-- start 已上传文件列表 -->
-    <div class="file-list mt-l">
-      <div class="file radius-l bg-main1 flex-center mb-s relative">
-        <span class="file-name code-font active-text font-s flex-1 text-center">config.json</span>
-        <div class="delete-btn cursor-pointer font-error fade-ease fill-h p-x-l flex-y-center absolute">
+    <div v-if="chosenFiles.length" class="file-list mt-l">
+      <div class="describe-text mb-s">已选择文件列表</div>
+      <div
+        v-for="(file, index) in chosenFiles"
+        :key="index"
+        class="file relative p-y-s flex-jcb font-xs">
+        <span class="file-name code-font active-text font-xs flex-1">{{ file.name }}</span>
+        <span class="no-active-text mr-l">{{ getFileSizeText(file) }}</span>
+        <div
+          class="delete-btn cursor-pointer text-hover-error fade-ease fill-h p-x-l flex-y-center"
+          title="删除文件"
+          @click="chosenFiles.splice(index, 1)">
           <i class="icon iconfont icon-bin font-m"></i>
         </div>
       </div>
     </div>
 
     <custom-button
+      class="mt-l"
       fill
       shadow
-      :size="Size.LARGE"
       custom-class="radius-l font-xs"
+      :disabled="!chosenFiles.length"
+      :size="Size.X_LARGE"
+      @click="handleUpdateFiles"
     >上传文件</custom-button>
     <div class="mt-xs flex-x-center">
       <div class="active-text flex-y-center renew-line-s">
-        <checkbox v-model="bindVal">分解HTML</checkbox>
+        <checkbox v-model="isSplitHTML">分解HTML</checkbox>
         <help-popover
           append-to-body
           level="1002"
@@ -75,35 +91,67 @@ import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Position, Size } from "@type/interface"
 import { ref } from "vue"
+import { getFileSizeText } from "@utils/tools/file"
+import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const bindVal = ref<boolean>(false)
+const fileInput = ref<HTMLInputElement | null>(null)
+/** 清除input中上一次传入的文件，因为如果不清除，下次上传同一个文件时不会触发change事件 */
+const clearInputFiles = () => {
+  if (!fileInput.value) { return }
+  fileInput.value.value = ""
+}
+/** 点击拖拽区域 */
+const handleClickDragArea = () => {
+  // 手动触发input点击，如果直接将input展示在拖拽区域内会影响拖拽文件进入时的高亮效果
+  fileInput.value?.click()
+}
+/** input选择文件 */
+const handleChooseFiles = (e: Event) => {
+  const inputElement = e.target as HTMLInputElement
+  const files = inputElement.files
+  if (!files?.length) { return }
+  setAllowMimeTypeFiles(files)
+  clearInputFiles()
+}
+
+const highlightDragArea = ref<boolean>(false)
+/** 文件拖拽到上传区域释放 */
+const handleDropFile = (e: DragEvent) => {
+  highlightDragArea.value = false
+  const files = e.dataTransfer?.files
+  if (!files?.length) { return }
+  setAllowMimeTypeFiles(files)
+}
+
+const processCloseModal = () => {
+  clearInputFiles()
+  updateDisplayModal(null)
+}
+const handleCloseModal = () => {
+  processCloseModal()
+}
+
+const handleUpdateFiles = async () => {
+  processUploadFiles(chosenFiles)
+  chosenFiles.splice(0)
+  processCloseModal()
+}
 </script>
 
 <style lang="scss" scoped>
-.upload-btn {
-  margin-top: 32px;
+.upload-area {
+  border: 2px dashed var(--color-form-item);
+  border-radius: 8px;
+  &.active {
+    background-color: var(--color-main-bg-1);
+  }
   .upload-input {
     right: 0;
     top: 0;
     opacity: 0;
-  }
-}
-.file-list {
-  .file {
-    height: 44px;
-    border: 2px solid var(--color-form-item);
-    .delete-btn {
-      right: 0;
-      opacity: 0;
-    }
-    &:hover {
-      .delete-btn {
-        opacity: 1;
-      }
-    }
   }
 }
 </style>

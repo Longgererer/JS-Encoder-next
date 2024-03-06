@@ -12,8 +12,7 @@ export enum Prep {
   TYPESCRIPT = "TypeScript",
   COFFEESCRIPT = "CoffeeScript",
   JSX = "JSX",
-  VUE2 = "Vue2",
-  VUE3 = "Vue3",
+  VUE = "Vue",
 }
 
 /** 原生语言列表 */
@@ -37,8 +36,7 @@ export enum MimeType {
   TYPESCRIPT = "ts",
   COFFEESCRIPT = "coffee",
   JSX = "jsx",
-  VUE2 = "vue",
-  VUE3 = "vue",
+  VUE = "vue",
 }
 
 /** 语言对应的codemirror高亮配置 */
@@ -55,6 +53,5 @@ export enum ModeStyle {
   JAVASCRIPT = "text/typescript",
   COFFEESCRIPT = "text/coffeescript",
   JSX = "text/jsx",
-  VUE2 = "text/x-vue",
-  VUE3 = "text/x-vue",
+  VUE = "text/x-vue",
 }

@@ -33,11 +33,11 @@ const updateLogList = ref<IUpdateLog[]>([])
     <div class="flex mt-m active-text code-font">
       <div class="version-list">
         <div class="version mb-m cursor-pointer flex-y-center">
-          <span class="font-xs font-active fade-ease">v4.0.0</span>
+          <span class="font-xs text-hover-active fade-ease">v4.0.0</span>
           <span class="version-tag font-xxs ml-m">Latest</span>
         </div>
         <div class="version mb-m cursor-pointer flex-y-center">
-          <span class="font-xs font-active fade-ease">v4.0.0</span>
+          <span class="font-xs text-hover-active fade-ease">v4.0.0</span>
         </div>
       </div>
       <div class="log-detail flex-col">

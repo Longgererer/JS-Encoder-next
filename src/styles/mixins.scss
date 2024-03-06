@@ -34,7 +34,7 @@
 }
 
 /** 文字图标的默认及hover样式 */
-@mixin font-active($defColor, $activeColor) {
+@mixin text-hover($defColor, $activeColor) {
   color: $defColor;
 
   &:hover {

@@ -12,6 +12,7 @@ import {
 } from "@type/editor"
 import ModuleSizeService from "@utils/services/module-size-service"
 import UtilService from "@utils/services/util-service"
+import { DeepPartial } from "@type/types"
 
 /**
  * 编辑器视图展示的数据结构如state所示
@@ -52,8 +53,8 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
   }),
   actions: {
     /** 批量更新配置 */
-    updateBatchConfig(config: IEditorWrapper): void {
-      Object.assign(this, { ...config })
+    batchUpdateConfig(config: DeepPartial<IEditorWrapper>): void {
+      this.$patch({ ...config })
     },
     updateDraggingTabInfo(draggingTabInfo: IDraggingTabInfo | null): void {
       this.draggingTabInfo = draggingTabInfo
@@ -151,6 +152,15 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       Object.keys(this.codeMap).forEach((tabId) => {
         this.codeMap[Number(tabId)] = ""
       })
+    },
+  },
+  getters: {
+    origin2TabIdMap(state: IEditorWrapper) {
+      return Object.entries(state.tabMap).reduce((acc, [tabId, tabInfo]) => {
+        const { origin } = tabInfo
+        acc[origin] = Number(tabId)
+        return acc
+      }, {} as Record<OriginLang, number>)
     },
   },
 })

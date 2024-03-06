@@ -24,8 +24,7 @@ export const editorSideOpts = {
   [Prep.TYPESCRIPT]: { displayOpts: [], moreOpts: [1] },
   [Prep.COFFEESCRIPT]: { displayOpts: [], moreOpts: [1] },
   [Prep.JSX]: { displayOpts: [], moreOpts: [1] },
-  [Prep.VUE2]: { displayOpts: [], moreOpts: [1] },
-  [Prep.VUE3]: { displayOpts: [], moreOpts: [1] },
+  [Prep.VUE]: { displayOpts: [], moreOpts: [1] },
 }
 
 /** Github仓库的网址 */

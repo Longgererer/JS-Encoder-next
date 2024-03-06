@@ -37,7 +37,7 @@
                 <div
                   class="cursor-pointer flex-y-center fill-h"
                   @click="handleDeleteLibrary(index, LibraryType.STYLE)">
-                  <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
+                  <i class="icon iconfont icon-close text-hover-active fade-ease font-xs p-x-s"></i>
                 </div>
               </template>
             </custom-input>
@@ -79,7 +79,7 @@
                 <div
                   class="cursor-pointer flex-y-center fill-h"
                   @click="handleDeleteLibrary(index, LibraryType.SCRIPT)">
-                  <i class="icon iconfont icon-close font-active fade-ease font-xs p-x-s"></i>
+                  <i class="icon iconfont icon-close text-hover-active fade-ease font-xs p-x-s"></i>
                 </div>
               </template>
             </custom-input>
@@ -112,6 +112,7 @@ import { debounce } from "@utils/common"
 import { ISelectOption } from "@components/form/custom-select/custom-select"
 
 const commonStore = useCommonStore()
+const { displayModal } = storeToRefs(commonStore)
 const editorConfigStore = useEditorConfigStore()
 const editorConfigStoreRefs = storeToRefs(editorConfigStore)
 
@@ -140,14 +141,16 @@ const getSelectedLibrary = (url: string = ""): ISelectedLibrary => ({
 
 /** 初始化外部库内容 */
 const initSelectedLibraries = () => {
-  const { libraries } = editorConfigStoreRefs
-  const { style, script } = libraries.value
+  const { libraries: { style, script } } = editorConfigStore
   const styles = style.map((url) => getSelectedLibrary(url))
   const scripts = script.map((url) => getSelectedLibrary(url))
   styleLibraryInfo.selected = styles
   scriptLibraryInfo.selected = scripts
 }
-initSelectedLibraries()
+watch(displayModal, (modalName) => {
+  if (modalName !== ModalName.LIBRARIES) { return }
+  initSelectedLibraries()
+})
 
 /** 处理搜索 */
 const { searchStyleLibraries, searchScriptLibraries } = useLibraries()
@@ -177,7 +180,6 @@ watch(
 const handleSelectLibrary = ({ url }: ISelectOption, type: LibraryType) => {
   const libraryInfo = getLibraryInfo(type)
   libraryInfo.selected.push(getSelectedLibrary(url))
-  console.log(url, type, libraryInfo)
   libraryInfo.keyword = ""
 }
 /** 删除库 */

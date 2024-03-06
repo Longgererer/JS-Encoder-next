@@ -5,7 +5,7 @@ import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/config"
 import { ref } from "vue"
 import { useLayoutStore } from "@store/layout"
-import { storeToRefs } from "pinia"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 
 interface IProps {
   isShowScreen?: boolean
@@ -53,7 +53,7 @@ const handleSkipGuide = (): void => {
     <div class="bg-main2 flex no-select pr-l flex-sh" :class="`${namespace}-bar`">
       <!--tab-->
       <div
-        class="fill-h font-active cursor-pointer transition-all flex-y-center active"
+        class="fill-h text-hover-active cursor-pointer transition-all flex-y-center active"
         :class="`${namespace}-tab`">
         <span class="code-font">Output</span>
       </div>
@@ -65,7 +65,7 @@ const handleSkipGuide = (): void => {
         :class="`${namespace}-options`"
         v-for="option in previewOpts"
         :key="option.name">
-        <icon-btn size="md" :icon-class="option.icon" :title="option.title"></icon-btn>
+        <icon-btn :size="IconBtnSize.MD" :icon-class="option.icon" :title="option.title"></icon-btn>
       </div>
     </div>
     <div class="flex-1 relative" style="height: calc(100% - 36px)">
@@ -104,7 +104,10 @@ const handleSkipGuide = (): void => {
         <!--占位-->
         <div class="flex-1"></div>
         <custom-button class="flex-sh" :type="BtnType.PRIMARY" @click="handleJumpToHelp">前往文档</custom-button>
-        <span class="font-active fade-ease cursor-pointer mt-m font-xs skip-help" @click="handleSkipGuide">跳过</span>
+        <span
+          class="text-hover-active fade-ease cursor-pointer mt-m font-xs skip-help"
+          @click="handleSkipGuide"
+        >跳过</span>
       </div>
     </div>
   </div>

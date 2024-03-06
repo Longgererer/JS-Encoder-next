@@ -221,6 +221,7 @@
 .block { display: block; }
 .inline-block { display: inline-block; }
 .table { display: table; }
+.display-none { display: none; }
 
 /** triangle */
 .triangle-top, .triangle-right, .triangle-left, .triangle-bottom { display: block; height: 0; width: 0; border: 6px solid transparent; }
@@ -230,8 +231,8 @@
 .triangle-bottom { border-bottom-color: inherit; }
 
 /** color */
-.font-active { @include font-active(var(--color-no-active-color), var(--color-active-color)); }
-.font-error { @include font-active(var(--color-no-active-color), var(--color-red1)); }
+.text-hover-active { @include text-hover(var(--color-no-active-color), var(--color-active-color)); }
+.text-hover-error { @include text-hover(var(--color-no-active-color), var(--color-red1)); }
 
 /** transition */
 .transition-all { @include transition(all, .2s, ease); }
@@ -267,6 +268,9 @@
     background-color: transparent;
   }
 }
+
+/** pointer-events */
+.events-none { pointer-events: none; }
 
 /** other */
 .no-select { user-select: none; }

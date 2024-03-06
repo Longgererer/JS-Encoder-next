@@ -20,7 +20,7 @@
       <span v-else :class="`${namespace}-value`">{{getOptionLabel(currSelectItem)}}</span>
       <div class="icon-area flex-y-center absolute">
         <i
-          class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"
+          class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex text-hover-active fade-ease p-x-s"
           :class="isUnfoldOptions ? 'up' : ''"
         ></i>
       </div>

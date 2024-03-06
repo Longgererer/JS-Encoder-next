@@ -146,3 +146,7 @@ export const debounce = (cb: noop, delay: number = 0) => {
     timeoutId = setTimeout(() => cb.apply(this, args), delay)
   }
 }
+
+export const isHttpUrl = (url: string) => {
+  return /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&@=]*)?$/.test(url)
+}

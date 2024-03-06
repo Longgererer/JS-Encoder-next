@@ -55,8 +55,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
     abbreviationTracker({ syntax: "jsx" }),
   ],
   [Prep.COFFEESCRIPT]: () => [],
-  [Prep.VUE2]: () => [emmetConfig.of({ syntax: "vue" })],
-  [Prep.VUE3]: () => [emmetConfig.of({ syntax: "vue" })],
+  [Prep.VUE]: () => [emmetConfig.of({ syntax: "vue" })],
 }
 
 /** 获取每个预处理器的默认配置 */
@@ -76,8 +75,7 @@ const Prep2LanguageExtensionMap: Record<Prep, () => Extension | StreamLanguage<u
   [Prep.TYPESCRIPT]: () => javascript({ typescript: true }),
   [Prep.JSX]: () => javascript({ jsx: true }),
   // maybe should support tsx :)
-  [Prep.VUE2]: () => vue({ base: html() }),
-  [Prep.VUE3]: () => vue({ base: html() }),
+  [Prep.VUE]: () => vue({ base: html() }),
   // legacy-modes 下面的语言扩展
   [Prep.STYLUS]: () => StreamLanguage.define(stylus),
   [Prep.COFFEESCRIPT]: () => StreamLanguage.define(coffeeScript),
@@ -102,8 +100,7 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
   [Prep.TYPESCRIPT]: () => typeScriptLinter,
   [Prep.JSX]: () => [],
   [Prep.COFFEESCRIPT]: () => [],
-  [Prep.VUE2]: () => [],
-  [Prep.VUE3]: () => [],
+  [Prep.VUE]: () => [],
 }
 
 /** 获取语言对应的linter扩展 */

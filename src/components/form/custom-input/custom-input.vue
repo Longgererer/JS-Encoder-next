@@ -39,12 +39,13 @@
           class="flex-1 flex-y-center"
           @click="handleClickInputNumberUp">
           <i class="icon iconfont icon-down font-xs line-h-unset icon-rotate-180 flex-1 inline-flex
-            font-active fade-ease p-x-s"></i>
+            text-hover-active fade-ease p-x-s"></i>
         </div>
         <div
           class="flex-1 flex-y-center"
           @click="handleClickInputNumberDown">
-          <i class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex font-active fade-ease p-x-s"></i>
+          <i class="icon iconfont icon-down font-xs line-h-unset flex-1 inline-flex
+            text-hover-active fade-ease p-x-s"></i>
         </div>
       </div>
     </template>

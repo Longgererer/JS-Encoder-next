@@ -105,7 +105,7 @@ const handleCloseModal = (): void => {
             <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
             <div class="flex-1"></div>
             <i
-              class="icon iconfont icon-close cursor-pointer fade-ease font-active"
+              class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
               @click.stop="handleCloseModal"
             ></i>
           </div>
