@@ -29,7 +29,7 @@ export const setAllowMimeTypeFiles = (files: FileList) => {
 }
 
 /** 是否分解HTML */
-export const isSplitHTML = ref<boolean>(false)
+export const isSplitHTML = ref<boolean>(true)
 /** 获取源(OriginLang)到文件信息的映射 */
 const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInfo> => {
   return files.reduce((acc, file) => {
