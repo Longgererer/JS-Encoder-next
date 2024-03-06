@@ -64,7 +64,7 @@
       class="mt-l"
       fill
       shadow
-      custom-class="radius-l font-xs"
+      custom-class="radius-l font-s"
       :disabled="!chosenFiles.length"
       :size="Size.X_LARGE"
       @click="handleUpdateFiles"
