@@ -11,10 +11,10 @@
     <div class="flex">
       <div class="flex-col flex-1">
         <div class="modal-sub-title">编码</div>
-        <div class="pt-xs"><checkbox v-model="settings.edit.codeHinting" disabled>智能提示</checkbox></div>
-        <div class="mt-xs"><checkbox v-model="settings.edit.codeLint">lint检查</checkbox></div>
-        <div class="mt-xs"><checkbox v-model="settings.edit.lineWrapping" disabled>自动换行</checkbox></div>
-        <div class="mt-xs"><checkbox v-model="settings.edit.useEmmet">使用Emmet</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.codeHinting" disabled>智能提示</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.codeLint">lint检查</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.lineWrapping" disabled>自动换行</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.useEmmet">使用Emmet</checkbox></div>
 
         <div class="modal-sub-title">缩进</div>
         <div class="pt-xs"><checkbox v-model="settings.indent.indentWithTab">使用制表符缩进</checkbox></div>
