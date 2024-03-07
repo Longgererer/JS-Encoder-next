@@ -44,6 +44,7 @@
         fill
         custom-class="radius-l font-s"
         :size="Size.X_LARGE"
+        @click="handleDownloadFiles"
       >下载文件</custom-button>
     </div>
   </modal>
@@ -57,6 +58,7 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
 import { ModalName, Size } from "@type/interface"
 import { ref } from "vue"
+import useDownloadCode from "./hooks/use-download-code"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -67,8 +69,21 @@ const enum DownloadType {
 }
 const currDownloadType = ref<DownloadType>(DownloadType.SINGLE)
 
+const { downloadMultipleFiles } = useDownloadCode()
+
+/** 下载编译后的文件 */
 const isDownloadCompiledFiles = ref<boolean>(false)
+/** 下载文件/文件夹名 */
 const fileOrFolderName = ref<string>("")
+
+/** 下载文件 */
+const handleDownloadFiles = () => {
+  if (currDownloadType.value === DownloadType.SINGLE) {
+    // processDownloadSingleFile()
+  } else {
+    // downloadMultipleFiles()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
