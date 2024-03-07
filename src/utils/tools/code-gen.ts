@@ -8,7 +8,7 @@ export const genCSSLinksCode = (cssLinks: string[]) => {
 
 export const genScriptLinksCode = (scriptLinks: string[]) => {
   return scriptLinks
-    .map((link) => `<script src="${link}"></script>`)
+    .map((link) => `<script type="text/javascript" src="${link}"></script>`)
     .join("\n")
 }
 
