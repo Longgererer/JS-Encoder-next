@@ -1,6 +1,6 @@
 import JSZip from "jszip"
 
-interface IZipFile {
+export interface IZipFile {
   /** 文件名 */
   name: string
   /** 文件内容 */
@@ -9,7 +9,7 @@ interface IZipFile {
   mimeType: string
 }
 
-interface IZipInfo {
+export interface IZipInfo {
   /** zip文件名 */
   name: string
   /** 文件列表 */
