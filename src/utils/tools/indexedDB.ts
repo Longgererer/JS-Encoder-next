@@ -2,8 +2,8 @@
  * 对于上一个版本(v3)来说，虽然是纯前端项目，但需要存储的数据量不大，完全可以使用sessionStorage和localStorage来应付。
  * 在v4中新增了可以存储自定义模板的功能，因为无法预知自定义模板的数据大小，所以使用indexedDB更加保险。
  */
-import { ErrorCode, throwError } from "@utils/error"
-import { deepCopy } from "@utils/common"
+import { ErrorCode, throwError } from "@utils/tools/error"
+import { deepCopy } from "@utils/tools/common"
 
 
 interface IndexedDBStoreIndex {
@@ -62,7 +62,7 @@ export class IndexedDBHelper {
 
     const indexedDb =  window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB
     if (!indexedDb) {
-      throwError(ErrorCode.INDEXEDDB_NOT_SUPPORT)
+      throwError(ErrorCode.INDEXED_DB_NOT_SUPPORT)
     }
 
     this.indexedDb = indexedDb
@@ -75,7 +75,7 @@ export class IndexedDBHelper {
   /** 添加单条数据 */
   public add(storeName: string, data: any): Promise<any> {
     return this.setSingleReqCallback(
-      ErrorCode.INDEXEDDB_ADD_SINGLE_FAILED,
+      ErrorCode.INDEXED_DB_ADD_SINGLE_FAILED,
       () => this.beginTransaction(storeName).add(deepCopy(data)),
       storeName, data,
     )
@@ -84,7 +84,7 @@ export class IndexedDBHelper {
   /** 获取单条数据 */
   public get(storeName: string, primaryKey: string): Promise<any> {
     return this.setSingleReqCallback(
-      ErrorCode.INDEXEDDB_GET_SINGLE_FAILED,
+      ErrorCode.INDEXED_DB_GET_SINGLE_FAILED,
       () => this.beginTransaction(storeName).get(primaryKey),
       storeName, primaryKey,
     )
@@ -93,7 +93,7 @@ export class IndexedDBHelper {
   /** 获取所有数据 */
   public getAll(storeName: string): Promise<any[]> {
     return this.setMultipleDataReqCallBack(
-      ErrorCode.INDEXEDDB_GET_ALL_FAILED,
+      ErrorCode.INDEXED_DB_GET_ALL_FAILED,
       () => this.beginTransaction(storeName).openCursor(),
       storeName,
     )
@@ -102,7 +102,7 @@ export class IndexedDBHelper {
   /** 通过索引获取数据 */
   public getByIndex(storeName: string, indexName: string): Promise<any> {
     return this.setMultipleDataReqCallBack(
-      ErrorCode.INDEXEDDB_GET_BY_INDEX_FAILED,
+      ErrorCode.INDEXED_DB_GET_BY_INDEX_FAILED,
       () => this.beginTransaction(storeName).index(indexName).openCursor(),
       storeName, indexName,
     )
@@ -111,7 +111,7 @@ export class IndexedDBHelper {
   /** 更新数据 */
   public update(storeName: string, data: any, primaryKey?: string): Promise<any> {
     return this.setSingleReqCallback(
-      ErrorCode.INDEXEDDB_UPDATE_FAILED,
+      ErrorCode.INDEXED_DB_UPDATE_FAILED,
       () => this.beginTransaction(storeName).put(data, primaryKey),
       storeName, data, primaryKey,
     )
@@ -120,7 +120,7 @@ export class IndexedDBHelper {
   /** 删除数据 */
   public delete(storeName: string, primaryKey: string): Promise<any> {
     return this.setSingleReqCallback(
-      ErrorCode.INDEXEDDB_DELETE_FAILED,
+      ErrorCode.INDEXED_DB_DELETE_FAILED,
       () => this.beginTransaction(storeName).delete(primaryKey),
       storeName, primaryKey,
     )
@@ -129,7 +129,7 @@ export class IndexedDBHelper {
   /** 获取条数 */
   public count(storeName: string): Promise<any> {
     return this.setSingleReqCallback(
-      ErrorCode.INDEXEDDB_COUNT_FAILED,
+      ErrorCode.INDEXED_DB_COUNT_FAILED,
       () => this.beginTransaction(storeName, "readonly").count(),
       storeName,
     )
@@ -145,10 +145,10 @@ export class IndexedDBHelper {
   private initRequestHandler(): void {
     const dbReq = this.dbReq!
     dbReq.onerror = (event) => {
-      throwError(ErrorCode.INDEXEDDB_CONNECT_FAILED, { data: event })
+      throwError(ErrorCode.INDEXED_DB_CONNECT_FAILED, { data: event })
     }
     dbReq.onblocked = (event) => {
-      throwError(ErrorCode.INDEXEDDB_CONNECT_BLOCKED, { data: event })
+      throwError(ErrorCode.INDEXED_DB_CONNECT_BLOCKED, { data: event })
     }
     dbReq.onsuccess = (event) => {
       console.log("数据库连接成功")
@@ -184,7 +184,7 @@ export class IndexedDBHelper {
     const transaction = this.db?.transaction(storeName, mode)
 
     transaction!.onerror = (event) => {
-      throwError(ErrorCode.INDEXEDDB_CREATE_TRANSACTION_FAILED, { data: event })
+      throwError(ErrorCode.INDEXED_DB_CREATE_TRANSACTION_FAILED, { data: event })
     }
     transaction!.oncomplete = () => {
       console.log("数据库修改结束，事务完成")

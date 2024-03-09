@@ -1,4 +1,4 @@
-import { getObjOwnKeyList } from "@utils/common"
+import { getObjOwnKeyList } from "@utils/tools/common"
 
 export function isDom(type: string): boolean {
   return /^HTML/.test(type)

@@ -1,7 +1,7 @@
 /**
  * 公共工具方法集合
  */
-import { ErrorCode, throwError } from "@utils/error"
+import { ErrorCode, throwError } from "@utils/tools/error"
 import { ObjKey, Type, noop } from "@type/interface"
 
 /**

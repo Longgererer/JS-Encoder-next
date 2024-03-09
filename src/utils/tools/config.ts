@@ -31,5 +31,21 @@ export const editorSideOpts = {
 export const GITHUB_REPO_URL = "https://github.com/JS-Encoder/JS-Encoder"
 /** 帮助文档的网址 */
 export const HELP_DOCS_URL = "http://docs.lliiooiill.cn/"
-
+/** 获取cdn列表的json请求地址 */
 export const BOOT_CDN_URL = "https://api.bootcdn.cn/libraries?output=human"
+/** katex公式渲染样式 */
+export const KATEX_STYLE_URL = "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.css"
+/** sass编译sass.js */
+export const SASS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/sass.js/0.11.1/sass.min.js"
+/** sass编译sass.worker.js */
+export const SASS_WORKER_JS_URL = "https://cdn.bootcdn.net/ajax/libs/sass.js/0.11.1/sass.worker.min.js"
+/** less编译less.js */
+export const LESS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/less.js/4.2.0/less.min.js"
+/** stylus编译stylus.js */
+export const STYLUS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/stylus/0.32.1/stylus.min.js"
+/** typescript编译typescript.js */
+export const TYPESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/typescript/5.2.2/typescript.min.js"
+/** coffeescript编译coffeescript.js */
+export const COFFEESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/coffee-script/2.7.0/coffeescript.min.js"
+/** babel编译jsx */
+export const BABEL_URL = "https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.22.17/babel.min.js"

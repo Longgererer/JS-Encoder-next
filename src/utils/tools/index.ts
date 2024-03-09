@@ -1,4 +1,4 @@
-import { stringifyDOM } from "@utils/common"
+import { stringifyDOM } from "@utils/tools/common"
 
 export function getType(data: any): string {
   if (data === null) { return "null" }
