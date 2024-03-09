@@ -34,7 +34,7 @@ import Tooltip from "@components/tooltip/tooltip.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { Theme } from "@type/interface"
-import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/config"
+import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/tools/config"
 import {
   SidebarList, SidebarType, SidebarTypeToIcon, SidebarTypeToModalNameMap, SidebarTypeToText, ThemeIcon,
 } from "./sidebar.interface"

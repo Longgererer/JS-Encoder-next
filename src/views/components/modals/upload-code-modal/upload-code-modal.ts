@@ -1,5 +1,5 @@
 import { MimeType, OriginLang, Prep } from "@type/prep"
-import { getOriginByMimeType, mimeType2PrepMap } from "@utils/prep"
+import { getOriginByMimeType, mimeType2PrepMap } from "@utils/tools/prep"
 import { getFileContent, getFileMimeType } from "@utils/tools/file"
 import { ref, shallowReactive } from "vue"
 import { splitHTML } from "./split-html"

@@ -1,4 +1,4 @@
-import { BOOT_CDN_URL } from "@utils/config"
+import { BOOT_CDN_URL } from "@utils/tools/config"
 
 interface IRemoteLibraryInfo {
   name: string

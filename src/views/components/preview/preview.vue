@@ -2,7 +2,7 @@
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
-import { HELP_DOCS_URL } from "@utils/config"
+import { HELP_DOCS_URL } from "@utils/tools/config"
 import { ref } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"

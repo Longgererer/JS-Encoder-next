@@ -51,7 +51,7 @@
 <script setup lang="ts">
 /** modules */
 import { ref } from "vue"
-import { optionsListMap } from "@utils/config"
+import { optionsListMap } from "@utils/tools/config"
 import { storeToRefs } from "pinia"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { Align } from "@type/interface"

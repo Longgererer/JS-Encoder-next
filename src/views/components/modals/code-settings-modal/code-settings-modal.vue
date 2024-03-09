@@ -71,7 +71,7 @@ import { useCommonStore } from "@store/common"
 import { ModalName } from "@type/interface"
 import { InputType } from "@components/form/custom-input/custom-input"
 import { useEditorConfigStore, initialSettings } from "@store/editor-config"
-import { deepCopy } from "@utils/common"
+import { deepCopy } from "@utils/tools/common"
 import { CodeFontFamily } from "@type/settings"
 
 const commonStore = useCommonStore()

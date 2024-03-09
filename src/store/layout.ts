@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { isUndefined } from "@utils/judge"
+import { isUndefined } from "@utils/tools/judge"
 
 export interface IModulesSize {
   /** 编辑器窗口宽度 */

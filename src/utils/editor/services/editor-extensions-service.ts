@@ -3,7 +3,7 @@ import { OriginLang, Prep } from "@type/prep"
 import SingleInstance from "@utils/decorators/single-instance"
 import { getDefaultEditorConfigByPrep, getDefaultEditorExtensions, getEditorThemeExtension, getPrepBaseExtension, getPrepLintExtension } from "../config/editor.config"
 import { AnyArray, Theme } from "@type/interface"
-import { getPrepOrigin } from "@utils/prep"
+import { getPrepOrigin } from "@utils/tools/prep"
 import { reactive } from "vue"
 
 interface IExtensionsInfo {

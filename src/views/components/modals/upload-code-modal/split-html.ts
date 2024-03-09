@@ -1,4 +1,4 @@
-import { isHttpUrl } from "@utils/common"
+import { isHttpUrl } from "@utils/tools/common"
 
 /** 解析文档获取style标签中的内容 */
 const getStyleContent = (doc: Document) => {

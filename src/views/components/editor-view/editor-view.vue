@@ -33,7 +33,7 @@ import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vu
 import Editor from "@views/components/editor/editor.vue"
 import { computed, ref } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
-import { debounce } from "@utils/common"
+import { debounce } from "@utils/tools/common"
 import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
 import { Extension } from "@codemirror/state"
