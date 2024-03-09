@@ -9,6 +9,16 @@ declare module "*.vue" {
 
 declare module "eslint4b-prebuilt"
 
+declare class Sass {
+  compile: (input: string, cb: (result: string) => void) => void
+}
+
 declare interface Window {
   stylelint: any
+  less: GlobalType.lessJS
+  stylus: GlobalType.stylusJS
+  ts: GlobalType.typescript
+  CoffeeScript: GlobalType.coffeescript
+  Babel: GlobalType.babelStandalone
 }
+
