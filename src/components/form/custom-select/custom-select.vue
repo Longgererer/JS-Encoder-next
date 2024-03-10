@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch, watchEffect } from "vue"
-import useClickOutside from "@hooks/useClickOutside"
+import useClickOutside from "@hooks/use-click-outside"
 import { ISelectOption, IProps, IEmits } from "./custom-select"
 import { Size } from "@type/interface"
 

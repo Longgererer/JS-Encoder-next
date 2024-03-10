@@ -42,7 +42,7 @@
 import { Position, Trigger } from "@type/interface"
 import { ref, watch } from "vue"
 import { getOffsetStyle, getPosStyle } from "@components/utils/common"
-import useClickOutside from "@hooks/useClickOutside"
+import useClickOutside from "@hooks/use-click-outside"
 import { IProps } from "./popover"
 
 const props = withDefaults(defineProps<IProps>(), {

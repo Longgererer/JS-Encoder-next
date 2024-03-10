@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue"
-import useClickOutside from "@hooks/useClickOutside"
+import useClickOutside from "@hooks/use-click-outside"
 import { Trigger, Position, Align } from "@type/interface"
 
 interface IProps {
