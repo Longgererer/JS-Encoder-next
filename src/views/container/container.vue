@@ -57,7 +57,7 @@ import { SplitDirection } from "@type/editor"
 import { onMounted, watch } from "vue"
 import { getModulesHeight, getModulesWidth } from "@views/container/container.util"
 import { useLayoutStore } from "@store/layout"
-import useWindowResize from "@hooks/useWindowResize"
+import useWindowResize from "@hooks/use-window-resize"
 import ModuleSizeService, {
   CONSOLE_MIN_HEIGHT,
   EDITOR_MIN_WIDTH,

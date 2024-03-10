@@ -2,7 +2,7 @@
 import MaskLayer from "@components/mask-layer/mask-layer.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { toRef } from "vue"
-import useEscClose from "@hooks/useEscClose"
+import useEscClose from "@hooks/use-esc-close"
 import { BtnType, Size } from "@type/interface"
 
 interface IProps {
