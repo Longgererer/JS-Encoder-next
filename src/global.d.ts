@@ -6,9 +6,7 @@ import type babel from "@babel/standalone"
 
 declare namespace GlobalType {
   interface lessJS extends less {}
-  interface stylusJS {
-    render(str: string, callback: stylus.RenderCallback): void
-  }
+  type stylusJS = typeof stylus
   type typescript = typeof ts
   type coffeescript = typeof coffee
   type babelStandalone = typeof babel
