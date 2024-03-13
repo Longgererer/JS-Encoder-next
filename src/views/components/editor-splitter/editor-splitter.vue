@@ -48,7 +48,7 @@ import { ISize } from "@type/interface"
 import ModuleSizeService, { SPLITTER_MIN_HEIGHT, SPLITTER_MIN_WIDTH } from "@utils/services/module-size-service"
 import EditorView from "@views/components/editor-view/editor-view.vue"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
-import SplitLine from "@views/components/split-line/split-line.vue"
+import SplitLine from "@components/split-line/split-line.vue"
 import UtilService from "@utils/services/util-service"
 
 const props = defineProps<{

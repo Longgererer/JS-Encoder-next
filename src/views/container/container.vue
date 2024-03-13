@@ -52,7 +52,7 @@ import UploadCodeModal from "@views/components/modals/upload-code-modal/upload-c
 import DownloadCodeModal from "@views/components/modals/download-code-modal/download-code-modal.vue"
 import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
 import UpdateLogModal from "@views/components/modals/update-log-modal/update-log-modal.vue"
-import SplitLine from "@views/components/split-line/split-line.vue"
+import SplitLine from "@components/split-line/split-line.vue"
 import { SplitDirection } from "@type/editor"
 import { onMounted, watch } from "vue"
 import { getModulesHeight, getModulesWidth } from "@views/container/container.util"
