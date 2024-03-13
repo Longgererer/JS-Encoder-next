@@ -49,14 +49,13 @@
 </template>
 
 <script setup lang="ts">
-/** modules */
 import { ref } from "vue"
 import { optionsListMap } from "@utils/tools/config"
 import { storeToRefs } from "pinia"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { Align } from "@type/interface"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-import { useSideMenu } from "./hooks/sideMenu"
+import { useSideMenu } from "./hooks/use-side-menu"
 import useDragleaveJudge from "@hooks/use-dragleave-judge"
 import Dropdown from "@components/dropdown/dropdown.vue"
 import DropdownItem from "@components/dropdown/dropdown-item.vue"
@@ -189,9 +188,9 @@ const handleTabDrop = (): void => {
  * 如果不一样的话只删除fromSplitter
  */
 const processUniqueTabEditor = (): void => {
-  const { editorId: fromEditorId, tabId: draggingTabId } = draggingTabInfo.value!
-  const { tabIds: fromTabIds, parentId: fromParentId } = editorMap.value[fromEditorId]
-  const { id: toEditorId, tabIds: toTabIds, parentId: toParentId } = editor
+  const { editorId: fromEditorId } = draggingTabInfo.value!
+  const { parentId: fromParentId } = editorMap.value[fromEditorId]
+  const { id: toEditorId, parentId: toParentId } = editor
   const { id: fromSplitterId } = editorSplitterMap.value[fromParentId!]
   const { id: toSplitterId, parentId: toSplitterParentId } = editorSplitterMap.value[toParentId!]
   const isSameParent = checkIsSameParent(fromSplitterId, toSplitterId)
@@ -223,4 +222,4 @@ const resetDragState = () => {
 const { showSideMenu, sideOpts } = useSideMenu(editor, tabMap)
 </script>
 
-<style src="./editor-bar.scss" lang="scss" scoped></style>
+<style src="./editor-bar.scss" lang="scss" scoped></style>./hooks/use-side-menu
