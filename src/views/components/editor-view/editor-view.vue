@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-/** modules */
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { useEditorConfigStore } from "@store/editor-config"
 import { useCommonStore } from "@store/common"
@@ -41,9 +40,7 @@ import EditorExtensionsService from "@utils/editor/services/editor-extensions-se
 import { Prep } from "@type/prep"
 import useTaskQueueControl from "@hooks/use-task-queue-control"
 
-/** props */
 const props = defineProps<IProps>()
-/** emits */
 const emits = defineEmits<IEmits>()
 
 const editorWrapperStore = useEditorWrapperStore()

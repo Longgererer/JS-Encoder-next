@@ -1,5 +1,5 @@
 <template>
-  <div class="fill" ref="editorRef"></div>
+  <div class="fill over-hidden" ref="editorRef"></div>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +34,6 @@ onMounted(() => {
     ],
   })
   editorView.value = editor.view
-
   /**
    * 监听各种编辑器状态设置
    */
@@ -73,6 +72,14 @@ onMounted(() => {
     editorView.value?.destroy()
   })
 })
+
+/** TODO: 设置编辑器的底部内边距 */
+const setEditorBottomPadding = () => {
+  if (!editorRef.value) { return }
+  // 底部内边距 = 编辑器整体高度 - 编辑器行高度
+  const editorHeight = editorRef.value.clientHeight || 0
+  const lineHeight = (editorView.value?.lineBlockAt(1).height || 0) * 1.6
+}
 </script>
 
 <style lang="scss" scoped></style>

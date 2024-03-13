@@ -24,6 +24,7 @@ interface IThemeInfo {
 const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
   const theme = EditorView.theme({
     "&": {
+      height: "100%",
       backgroundColor: settings.background,
       color: settings.foreground,
     },
