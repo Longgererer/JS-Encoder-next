@@ -42,10 +42,10 @@
 <script setup lang="ts">
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { computed, ref, watch } from "vue"
-import { AreaPosition, IEditorSplitter, SplitDirection } from "@type/editor"
+import { AreaPosition, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"
 import { ISize } from "@type/interface"
-import ModuleSizeService, { SPLITTER_MIN_HEIGHT, SPLITTER_MIN_WIDTH } from "@utils/services/module-size-service"
+import ModuleSizeService from "@utils/services/module-size-service"
 import EditorView from "@views/components/editor-view/editor-view.vue"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import SplitLine from "@components/split-line/split-line.vue"
