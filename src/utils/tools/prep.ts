@@ -25,7 +25,7 @@ export const getPrepOrigin = (prep: string): OriginLang | void => {
 }
 
 export const getOriginByMimeType = (mimeType: string): OriginLang | void => {
-  switch(mimeType) {
+  switch (mimeType) {
     case MimeType.HTML:
     case MimeType.MARKDOWN:
     case MimeType.PUG:
