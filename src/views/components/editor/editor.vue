@@ -11,9 +11,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { IEmits, IProps } from "./editor"
 import { EditorView } from "codemirror"
 
-/** props */
 const props = defineProps<IProps>()
-/** emits */
 const emits = defineEmits<IEmits>()
 
 const editorRef = ref<HTMLElement | null>(null)
@@ -64,8 +62,10 @@ onMounted(() => {
   )
   watch(
     () => props.extensions,
-    (newExtensions) => editor.extensionUpdater(newExtensions!),
-    { immediate: true },
+    (newExtensions) => {
+      console.log(newExtensions)
+      editor.extensionUpdater(newExtensions!)
+    },
   )
 
   onBeforeUnmount(() => {
