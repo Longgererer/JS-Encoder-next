@@ -50,7 +50,7 @@ const handleCloseModal = () => {
 }
 
 const handleConfirmModal = () => {
-  updatePrepMap(cachePrepMap.value)
+  updatePrepMap({ ...cachePrepMap.value })
   commonStore.updateDisplayModal(null)
 }
 </script>
