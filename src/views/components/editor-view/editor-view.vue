@@ -14,7 +14,7 @@
         :code="codeMap[tabId] || ''"
         :prep="tabId2PrepMap[tabId]"
         :settings="editorSettings"
-        :extensions="prep2ExtensionsMap[tabId2PrepMap[tabId]]"
+        :extensions="getExtensions(tabId2PrepMap[tabId])"
         @code-changed="($event) => handleCodeChanged($event, tabId)"
       ></editor>
     </template>
@@ -35,10 +35,9 @@ import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/tools/common"
 import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
-import { Extension } from "@codemirror/state"
 import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
-import { Prep } from "@type/prep"
 import useTaskQueueControl from "@hooks/use-task-queue-control"
+import { Prep } from "@type/prep"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
@@ -87,15 +86,9 @@ const getEditorStyle = (): Record<string, AnyObject> => {
 /** editor扩展处理 */
 const editorExtensionsService = new EditorExtensionsService()
 
-
-/** 生成prep对应的拓展列表 */
-const prep2ExtensionsMap = computed(() => {
-  const prepList = Object.values(tabId2PrepMap.value)
-  return prepList.reduce((extensionsMap, currPrep) => {
-    extensionsMap[currPrep] = editorExtensionsService.getEditorExtensions(currPrep, theme.value)
-    return extensionsMap
-  }, {} as Record<Prep, Extension[]>)
-})
+const getExtensions = (prep: Prep) => {
+  return editorExtensionsService.getEditorExtensions(prep, theme.value)
+}
 
 const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
 /** 延迟存储 */

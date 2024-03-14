@@ -69,15 +69,4 @@ export default class EditorExtensionsService {
   public setEditorExtensionsByPrep(prep: Prep, theme?: Theme): void {
     this.setExtensionsInfo(prep, this.getEditorExtensions(prep, theme))
   }
-
-  // public updateThemeExtension(theme: Theme): void {
-  //   this.themeExtensions = getEditorThemeExtension(theme)
-  //   Object.keys(this.lang2ExtensionsMap).forEach((originLang) => {
-  //     const originExtensionsInfo = this.lang2ExtensionsMap.get(originLang as OriginLang)
-  //     this.lang2ExtensionsMap.set(originLang as OriginLang, {
-  //       prep: originExtensionsInfo!.prep,
-  //       extensions: [...originExtensionsInfo!.extensions, this.themeExtensions],
-  //     })
-  //   })
-  // }
 }
