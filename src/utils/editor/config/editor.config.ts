@@ -71,7 +71,7 @@ const Prep2LanguageExtensionMap: Record<Prep, () => Extension | StreamLanguage<u
   [Prep.SASS]: () => sass({ indented: true }),
   [Prep.SCSS]: () => sass(),
   [Prep.LESS]: () => less(),
-  [Prep.JAVASCRIPT]: () => javascript({ typescript: true, jsx: true }),
+  [Prep.JAVASCRIPT]: () => javascript(),
   [Prep.TYPESCRIPT]: () => javascript({ typescript: true }),
   [Prep.JSX]: () => javascript({ jsx: true }),
   // maybe should support tsx :)
