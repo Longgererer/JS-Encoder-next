@@ -85,6 +85,9 @@ watchEffect(() => {
 /** 点击选择框 */
 const handleClickSelect = (): void => {
   isFocus.value = true
+  if (!props.showSearch && props.dataList.length) {
+    isUnfoldOptions.value = !isUnfoldOptions.value
+  }
 }
 /** 点击选项缓存下选项内容 */
 const handleClickOption = (item: ISelectOption): void => {

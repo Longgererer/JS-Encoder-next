@@ -13,6 +13,7 @@ import {
 import ModuleSizeService from "@utils/services/module-size-service"
 import UtilService from "@utils/services/util-service"
 import { DeepPartial } from "@type/types"
+import { useEditorConfigStore } from "./editor-config"
 
 /**
  * 编辑器视图展示的数据结构如state所示
@@ -60,9 +61,9 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       this.draggingTabInfo = draggingTabInfo
     },
     /** 创建编辑窗口tab */
-    createTab(prep: Prep, origin: OriginLang): IEditorTab {
+    createTab(origin: OriginLang): IEditorTab {
       const id = ++ this.tabIdCount
-      this.tabMap[id] = { id, prep, origin }
+      this.tabMap[id] = { id, origin }
       return this.tabMap[id]
     },
     updateTab(id: number, options: Partial<Omit<IEditorTab, "id">>): IEditorTab {
@@ -146,6 +147,7 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       Reflect.deleteProperty(this.editorMap, id)
     },
     updateCodeMap(tabId: number, code: string): void {
+      console.log(tabId, code)
       this.codeMap[tabId] = code
     },
     clearCodeMap(): void {
@@ -161,6 +163,14 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
         acc[origin] = Number(tabId)
         return acc
       }, {} as Record<OriginLang, number>)
+    },
+    tabId2PrepMap(state: IEditorWrapper) {
+      const { prepMap } = useEditorConfigStore()
+      return Object.entries(state.tabMap).reduce((acc, [tabId, tabInfo]) => {
+        const { origin } = tabInfo
+        acc[Number(tabId)] = prepMap[origin]
+        return acc
+      }, {} as Record<number, Prep>)
     },
   },
 })

@@ -1,3 +1,5 @@
+import { OriginLang, Prep } from "./prep"
+
 export interface IEditorSettings {
   edit: {
     /** 智能提示 */
@@ -61,3 +63,5 @@ export interface IEditorLibraries {
   /** 脚本库列表 */
   script: string[]
 }
+
+export type IEditorPrepMap = Record<OriginLang, Prep>

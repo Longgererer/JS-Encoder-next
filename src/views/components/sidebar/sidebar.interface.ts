@@ -3,6 +3,8 @@ import { ModalName, Theme } from "@type/interface"
 export enum SidebarType {
   /** 模板 */
   TEMPLATE = "template",
+  /** 预处理 */
+  PREPROCESSOR = "preprocessor",
   /** 编码设置 */
   CODE_SETTINGS = "codeSettings",
   /** 库 */
@@ -25,6 +27,7 @@ export enum SidebarType {
 
 export const SidebarTypeToText = {
   [SidebarType.TEMPLATE]: "模板",
+  [SidebarType.PREPROCESSOR]: "预处理",
   [SidebarType.CODE_SETTINGS]: "编码设置",
   [SidebarType.LIBRARIES]: "库",
   [SidebarType.UPLOAD_CODE]: "上传代码",
@@ -38,6 +41,7 @@ export const SidebarTypeToText = {
 
 export const SidebarTypeToIcon = {
   [SidebarType.TEMPLATE]: "icon-template",
+  [SidebarType.PREPROCESSOR]: "icon-preprocessor",
   [SidebarType.CODE_SETTINGS]: "icon-setting",
   [SidebarType.LIBRARIES]: "icon-library",
   [SidebarType.UPLOAD_CODE]: "icon-upload",
@@ -56,7 +60,7 @@ export const ThemeIcon = {
 
 /** 侧边栏选项列表，每个子列表之间用横线分割 */
 export const SidebarList: SidebarType[][] = [
-  [SidebarType.TEMPLATE, SidebarType.CODE_SETTINGS, SidebarType.LIBRARIES],
+  [SidebarType.TEMPLATE, SidebarType.PREPROCESSOR, SidebarType.CODE_SETTINGS, SidebarType.LIBRARIES],
   [SidebarType.UPLOAD_CODE, SidebarType.DOWNLOAD_CODE],
   [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG, SidebarType.HELP_DOCUMENT],
   [],
@@ -65,6 +69,7 @@ export const SidebarList: SidebarType[][] = [
 
 export const SidebarTypeToModalNameMap: Map<SidebarType, ModalName> = new Map([
   [SidebarType.TEMPLATE, ModalName.TEMPLATE],
+  [SidebarType.PREPROCESSOR, ModalName.PREPROCESSOR],
   [SidebarType.CODE_SETTINGS, ModalName.CODE_SETTINGS],
   [SidebarType.LIBRARIES, ModalName.LIBRARIES],
   [SidebarType.UPLOAD_CODE, ModalName.UPLOAD_CODE],

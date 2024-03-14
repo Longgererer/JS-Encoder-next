@@ -8,14 +8,14 @@
       v-if="editorWrapperStore.draggingTabInfo"
       @select-position="handleSelectSplitPosition"
     ></overlap-monitor>
-    <template v-for="item in editor.tabIds" :key="item">
+    <template v-for="tabId in editor.tabIds" :key="tabId">
       <editor
-        v-show="item === editor.displayTabId"
-        :code="codeMap[item]"
-        :prep="tabMap[item].prep"
+        v-show="tabId === editor.displayTabId"
+        :code="codeMap[tabId] || ''"
+        :prep="tabId2PrepMap[tabId]"
         :settings="editorSettings"
-        :extensions="prep2ExtensionsMap[tabMap[item].prep]"
-        @code-changed="($event) => handleCodeChanged($event, item)"
+        :extensions="prep2ExtensionsMap[tabId2PrepMap[tabId]]"
+        @code-changed="($event) => handleCodeChanged($event, tabId)"
       ></editor>
     </template>
   </div>
@@ -46,8 +46,8 @@ const emits = defineEmits<IEmits>()
 const editorWrapperStore = useEditorWrapperStore()
 const editorConfigStore = useEditorConfigStore()
 const commonStore = useCommonStore()
-const editorConfigStoreRefs = storeToRefs(editorConfigStore)
-const { editorMap, tabMap, codeMap } = storeToRefs(editorWrapperStore)
+const { settings } = storeToRefs(editorConfigStore)
+const { editorMap, codeMap, tabId2PrepMap } = storeToRefs(editorWrapperStore)
 const { theme } = storeToRefs(commonStore)
 
 /** 拖动tab分割窗口 */
@@ -60,7 +60,6 @@ const editor = ref<IEditor>(editorMap.value[props.id])
 
 /** 编辑器内部设置 */
 const editorSettings = computed<ICodemirrorEditorSettings>(() => {
-  const { settings } = editorConfigStoreRefs
   const { edit, indent, other } = settings.value
   return {
     ...edit,
@@ -72,7 +71,6 @@ const editorSettings = computed<ICodemirrorEditorSettings>(() => {
 
 /** 获取编辑器内部需要设置的样式 */
 const getEditorStyle = (): Record<string, AnyObject> => {
-  const { settings } = editorConfigStoreRefs
   const { font } = settings.value
   return {
     ".cm-scroller": {
@@ -89,9 +87,10 @@ const getEditorStyle = (): Record<string, AnyObject> => {
 /** editor扩展处理 */
 const editorExtensionsService = new EditorExtensionsService()
 
+
 /** 生成prep对应的拓展列表 */
 const prep2ExtensionsMap = computed(() => {
-  const prepList = Object.values(tabMap.value).map(({ prep }) => prep)
+  const prepList = Object.values(tabId2PrepMap.value)
   return prepList.reduce((extensionsMap, currPrep) => {
     extensionsMap[currPrep] = editorExtensionsService.getEditorExtensions(currPrep, theme.value)
     return extensionsMap
@@ -102,7 +101,7 @@ const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
 /** 延迟存储 */
 const saveDebounce = debounce(
   executeAndClearTaskQueue,
-  editorConfigStoreRefs.settings.value.execute.delayTimeOfExecute,
+  settings.value.execute.delayTimeOfExecute,
 )
 /** code改变存入store */
 const handleCodeChanged = (code: string, tabId: number): void => {

@@ -1,12 +1,11 @@
 <template>
   <modal
+    v-if="commonStore.displayModal === ModalName.TEMPLATE"
     title="模板"
     width="730"
     top="85"
     bottom="85"
     okText="使用该模板"
-    v-if="commonStore.displayModal === ModalName.TEMPLATE"
-    :show-footer="true"
     :confirm-btn-opts="templateModalConfirmBtnOpts"
     @close="updateDisplayModal(null)"
   >

@@ -1,10 +1,10 @@
 <template>
   <modal
+    v-if="commonStore.displayModal === ModalName.LIBRARIES"
     title="库"
     width="550"
     top="85"
     bottom="85"
-    v-if="commonStore.displayModal === ModalName.LIBRARIES"
     :show-footer="false"
     @close="handleCloseModal">
     <div>

@@ -72,6 +72,8 @@ export enum Align {
 export const enum ModalName {
   /** 模板 */
   TEMPLATE = "template",
+  /** 预处理 */
+  PREPROCESSOR = "preprocessor",
   /** 编码设置 */
   CODE_SETTINGS = "codeSettings",
   /** 库 */

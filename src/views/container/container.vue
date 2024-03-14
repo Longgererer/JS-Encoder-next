@@ -31,6 +31,7 @@
   </div>
   <!--modals-->
   <template-modal></template-modal>
+  <preprocessor-modal></preprocessor-modal>
   <code-settings-modal></code-settings-modal>
   <libraries-modal></libraries-modal>
   <upload-code-modal></upload-code-modal>
@@ -46,6 +47,7 @@ import Preview from "@views/components/preview/preview.vue"
 import Console from "@views/components/console/console.vue"
 import EditorWrapper from "@views/components/editor-wrapper/editor-wrapper.vue"
 import TemplateModal from "@views/components/modals/template-modal/template-modal.vue"
+import PreprocessorModal from "@views/components/modals/preprocessor-modal/preprocessor-modal.vue"
 import CodeSettingsModal from "@views/components/modals/code-settings-modal/code-settings-modal.vue"
 import LibrariesModal from "@views/components/modals/libraries-modal/libraries-modal.vue"
 import UploadCodeModal from "@views/components/modals/upload-code-modal/upload-code-modal.vue"

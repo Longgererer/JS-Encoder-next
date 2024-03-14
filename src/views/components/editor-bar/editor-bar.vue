@@ -3,7 +3,7 @@
     <!-- tab位置切换动画 -->
     <template v-for="(tabId, index) in editor.tabIds" :key="tabId">
       <!-- tab间的分隔线 -->
-      <div class="split-line fill-h bg-main3" v-if="index > 0"></div>
+      <div class="split-line fill-h bg-main3" v-if="!!index"></div>
       <!-- tab本身 -->
       <div
         class="editor-tab fill-h text-hover-active cursor-pointer transition-all flex-y-center"
@@ -18,7 +18,7 @@
         @dragend="handleTabDragend()"
         @drop.prevent="handleTabDrop()"
         @dragover.prevent="handleTabDragover(tabId)">
-        <span class="editor-tab-title code-font">{{ (tabMap[tabId]).prep }}</span>
+        <span class="editor-tab-title code-font">{{ tabId2PrepMap[tabId] }}</span>
       </div>
     </template>
     <div
@@ -70,7 +70,7 @@ const props = defineProps<{
 /** store */
 const editorWrapperStore = useEditorWrapperStore()
 const { updateEditor, updateDraggingTabInfo, deleteSplitter, updateSplitter } = editorWrapperStore
-const { editorMap, draggingTabInfo, tabMap, editorSplitterMap } = storeToRefs(editorWrapperStore)
+const { editorMap, draggingTabInfo, tabMap, editorSplitterMap, tabId2PrepMap } = storeToRefs(editorWrapperStore)
 
 /** service */
 const utilService = new UtilService()
