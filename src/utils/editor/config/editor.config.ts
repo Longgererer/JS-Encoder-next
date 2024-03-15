@@ -1,4 +1,3 @@
-import { basicSetup } from "codemirror"
 import { StreamLanguage } from "@codemirror/language"
 import { javascript, javascriptLanguage } from "@codemirror/lang-javascript"
 import { css, cssLanguage } from "@codemirror/lang-css"
@@ -6,7 +5,7 @@ import { html, htmlLanguage } from "@codemirror/lang-html"
 import { less } from "@codemirror/lang-less"
 import { vue } from "@codemirror/lang-vue"
 import { sass } from "@codemirror/lang-sass"
-import { markdown, markdownLanguage, markdownKeymap } from "@codemirror/lang-markdown"
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
@@ -15,7 +14,7 @@ import { Extension } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { autocompletion } from "@codemirror/autocomplete"
-import { emmetConfig, abbreviationTracker, expandAbbreviation } from "@emmetio/codemirror6-plugin"
+import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
@@ -30,7 +29,6 @@ export const ShortCutMode2ExtensionMap = {
 /** 获取编辑器通用默认配置 */
 export const getDefaultEditorExtensions = (): Extension[] => {
   return [
-    basicSetup,
     autocompletion({ defaultKeymap: false }),
     keymap.of(vscodeKeymap),
   ]

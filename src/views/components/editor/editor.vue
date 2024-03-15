@@ -3,26 +3,27 @@
 </template>
 
 <script setup lang="ts">
-/**
- * desc: 编辑器实例
- */
-import useCodemirrorEditor from "@hooks/use-codemirror-editor"
-import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue"
+import { onBeforeUnmount, onMounted, shallowRef, watch } from "vue"
 import { IEmits, IProps } from "./editor"
-import { EditorView } from "codemirror"
+import { EditorView, basicSetup } from "codemirror"
+import { EditorState } from "@codemirror/state"
+import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
+import { CodemirrorExtensionsUpdater } from "@utils/editor/utils/codemirror-extensions-updater"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
 
 const editorRef = shallowRef<HTMLElement | null>(null)
+const editorState = shallowRef<EditorState>()
 const editorView = shallowRef<EditorView>()
 
+// eslint-disable-next-line max-lines-per-function
 onMounted(() => {
   // 初始化编辑器
-  const editor = useCodemirrorEditor({
-    parent: editorRef.value!,
+  editorState.value = EditorState.create({
+    doc: props.code,
     extensions: [
-      ...(props.extensions || []),
+      basicSetup,
       EditorView.updateListener.of((update) => {
         // 监听内容改变
         if (update.docChanged) {
@@ -31,40 +32,44 @@ onMounted(() => {
       }),
     ],
   })
-  editorView.value = editor.view
+  editorView.value = new EditorView({
+    state: editorState.value,
+    parent: editorRef.value!,
+  })
+
+  const baseUtil = new CodemirrorBase(editorView.value)
+  const extensionsUpdater = new CodemirrorExtensionsUpdater(editorView.value)
   /**
    * 监听各种编辑器状态设置
    */
   watch(
     () => props.code,
     (newContent) => {
-      if (newContent === editor.getContent()) { return }
-      editor.setContent(newContent)
+      if (newContent === baseUtil.getContent()) { return }
+      baseUtil.setContent(newContent)
     },
-    { immediate: true },
   )
   watch(
     () => props.settings.tabSize,
-    (newTabSize) => editor.setTabSize(newTabSize),
+    (newTabSize) => extensionsUpdater.setTabSize(newTabSize),
     { immediate: true },
   )
   watch(
     () => props.settings.indentWithTab,
-    (newStatus) => editor.tabIndentToggler(newStatus),
+    (newStatus) => extensionsUpdater.tabIndentToggler(newStatus),
     { immediate: true },
   )
   watch(
     () => props.settings.style,
-    (newStyle) => {
-      editor.setStyle(newStyle)
-    },
+    (newStyle) => extensionsUpdater.setStyle(newStyle),
     { immediate: true },
   )
   watch(
     () => props.extensions,
     (newExtensions) => {
-      editor.extensionUpdater(newExtensions!)
+      extensionsUpdater.extensionUpdater(newExtensions!)
     },
+    { immediate: true },
   )
 
   onBeforeUnmount(() => {

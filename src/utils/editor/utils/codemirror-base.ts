@@ -1,4 +1,4 @@
-import { Line, SelectionRange } from "@codemirror/state"
+import { EditorSelection, Line, SelectionRange, Text } from "@codemirror/state"
 import { EditorView } from "@codemirror/view"
 
 export interface IPos {
@@ -15,7 +15,7 @@ export interface IRangeBothSides {
   anchor: IPos
 }
 
-/** 封装的codemirror底层api调用方法 */
+/** 封装的codemirror底层api调用 */
 export class CodemirrorBase {
   protected view: EditorView
 
@@ -23,9 +23,34 @@ export class CodemirrorBase {
     this.view = view
   }
 
+  public getDoc(): Text {
+    return this.view.state.doc
+  }
+
+  public getSelection(): EditorSelection {
+    return this.view.state.selection
+  }
+
+  /** 获取编辑器内容 */
+  public getContent(): string {
+    return this.getDoc().toString()
+  }
+
+  /** 设置编辑器内容 */
+  public setContent(newContent: string): void {
+    if (newContent === this.getContent()) { return }
+    this.view.dispatch({
+      changes: {
+        from: 0,
+        to: this.getDoc().length,
+        insert: newContent,
+      },
+    })
+  }
+
   /** 获取选中信息列表 */
   public getListSelections(): readonly SelectionRange[] {
-    return this.view.state.selection.ranges
+    return this.getSelection().ranges
   }
 
   /** 是否有文本被选中 */
@@ -35,7 +60,7 @@ export class CodemirrorBase {
 
   /** 获取光标位置 */
   public getCursor(): IPos {
-    return this.transOffset2Pos(this.view.state.selection.main.head)
+    return this.transOffset2Pos(this.getSelection().main.head)
   }
 
   /** 设置光标位置 */
@@ -46,12 +71,12 @@ export class CodemirrorBase {
 
   /** 获取行信息 */
   public getLine(line: number): Line {
-    return this.view.state.doc.line(line)
+    return this.getDoc().line(line)
   }
 
   /** 获取偏移量所在行信息 */
   public getLineByPos(offset: number): Line {
-    return this.view.state.doc.lineAt(offset)
+    return this.getDoc().lineAt(offset)
   }
 
   /** 获得范围内的文本 */
@@ -64,7 +89,7 @@ export class CodemirrorBase {
 
   /** 获取选中的文本 */
   public getSelectionText(): string {
-    const { from, to } = this.view.state.selection.main
+    const { from, to } = this.getSelection().main
     return this.getRangeText(from, to)
   }
 

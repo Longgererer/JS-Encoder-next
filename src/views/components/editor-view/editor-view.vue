@@ -14,7 +14,7 @@
         :code="codeMap[tabId] || ''"
         :prep="tabId2PrepMap[tabId]"
         :settings="editorSettings"
-        :extensions="getExtensions(tabId2PrepMap[tabId])"
+        :extensions="tabId2Extensions[tabId]"
         @code-changed="($event) => handleCodeChanged($event, tabId)"
       ></editor>
     </template>
@@ -30,14 +30,14 @@ import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 import Editor from "@views/components/editor/editor.vue"
-import { computed, ref } from "vue"
+import { computed, ref, shallowRef, watch } from "vue"
 import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/tools/common"
 import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
 import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
 import useTaskQueueControl from "@hooks/use-task-queue-control"
-import { Prep } from "@type/prep"
+import { Extension } from "@codemirror/state"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
@@ -86,9 +86,17 @@ const getEditorStyle = (): Record<string, AnyObject> => {
 /** editor扩展处理 */
 const editorExtensionsService = new EditorExtensionsService()
 
-const getExtensions = (prep: Prep) => {
-  return editorExtensionsService.getEditorExtensions(prep, theme.value)
-}
+const tabId2Extensions = shallowRef<Record<number, Extension[]>>({})
+
+watch(tabId2PrepMap, (newMap, oldMap) => {
+  Object.keys(newMap).forEach((item) => {
+    const tabId = Number(item)
+    if (!oldMap || newMap[tabId] !== oldMap[tabId]) {
+      const prep = tabId2PrepMap.value[tabId]
+      tabId2Extensions.value[tabId] = editorExtensionsService.getEditorExtensions(prep, theme.value)
+    }
+  })
+}, { immediate: true })
 
 const { addTask, executeAndClearTaskQueue } = useTaskQueueControl()
 /** 延迟存储 */
