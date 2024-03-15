@@ -9,26 +9,25 @@
     @mouseover="handleOverTarget"
     ref="popoverRef">
     <teleport to="body" :disabled="!appendToBody">
-      <transition :name="namespace">
+      <transition name="popover">
         <div
           v-show="visible"
-          class="absolute pos-origin"
+          class="popover absolute pos-origin"
           :class="[
-            namespace,
             appendToBody ? '' : 'absolute pos-origin no-append-to-body',
           ]"
           :style="{ zIndex: level }"
           @mouseover="handleOverTarget"
           @mouseleave="handleLeaveTarget">
           <div
-            class="p-x-l p-y-l absolute shadow radius-l"
-            :class="`${namespace}-container ${namespace}-${position}`"
+            class="popover-container p-x-l p-y-l absolute shadow radius-l"
+            :class="`popover-${position}`"
             :style="{...offsetStyle, ...posStyle}">
             <slot name="content"></slot>
             <span
               v-if="showTriangle"
-              class="absolute"
-              :class="`${namespace}-triangle triangle-${position}`"
+              class="popover-triangle absolute"
+              :class="`triangle-${position}`"
             ></span>
           </div>
         </div>
@@ -55,7 +54,6 @@ const props = withDefaults(defineProps<IProps>(), {
   delay: 300,
 })
 
-const namespace = "popover"
 const popoverRef = ref<HTMLElement | null>(null)
 const visible = ref<boolean>(false)
 
@@ -125,20 +123,18 @@ const handleLeaveTarget = (): void => {
 </script>
 
 <style lang="scss">
-$namespace: "popover";
-
-.#{$namespace}-enter-from,
-.#{$namespace}-leave-to {
+.popover-enter-from,
+.popover-leave-to {
   opacity: 0;
 }
 
-.#{$namespace}-enter-to,
-.#{$namespace}-leave-from {
+.popover-enter-to,
+.popover-leave-from {
   opacity: 1;
 }
 
-.#{$namespace}-enter-active,
-.#{$namespace}-leave-active {
+.popover-enter-active,
+.popover-leave-active {
   @include transition(all, 0.1s, ease);
 }
 </style>

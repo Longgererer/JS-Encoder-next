@@ -108,17 +108,14 @@ $border-width: 6;
     inset: 100% 0 0 calc(50% - #{$border-width}px);
   }
 }
-
 .tooltip-enter-from,
 .tooltip-leave-to {
   opacity: 0;
 }
-
 .tooltip-enter-to,
 .tooltip-leave-from {
   opacity: 1;
 }
-
 .tooltip-enter-active,
 .tooltip-leave-active {
   @include transition(all, 0.3s, ease);
