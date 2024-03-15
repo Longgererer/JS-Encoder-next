@@ -1,26 +1,36 @@
+<template>
+  <div
+    class="tooltip relative inline-block"
+    @mouseleave="handleMouseLeave"
+    @mouseover="handleMouseover">
+    <transition name="tooltip">
+      <div
+        v-show="!hidden && !disable"
+        class="tooltip-container p-y-s p-x-l absolute shadow radius-m"
+        :class="`tooltip-${position}`"
+        :style="{ ...offsetStyle, zIndex: level }">
+        <template v-if="$slots.content">
+          <slot name="content"></slot>
+        </template>
+        <template v-else>
+          <span class="font-xs text-nowrap">{{ content }}</span>
+        </template>
+        <span
+          v-if="showTriangle"
+          class="tooltip-triangle absolute"
+          :class="`triangle-${position}`"
+        ></span>
+      </div>
+    </transition>
+    <slot></slot>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { Position } from "@type/interface"
 import { ref } from "vue"
 import { getOffsetStyle } from "@components/utils/common"
-
-interface IProps {
-  /** 提示文字，如果使用slot#content则忽略此属性 */
-  content?: string
-  /** 提示展示位置 */
-  position?: Position
-  /** 偏移量，单位px */
-  offset?: number | string
-  /** 延迟消失时间，单位ms */
-  delay?: number
-  /** 是否禁用 */
-  disable?: boolean
-  /** 是否显示小三角 */
-  showTriangle?: boolean
-  /** 是否消失 */
-  hidden?: boolean
-  /** 层级，对应z-index */
-  level?: string
-}
+import { IProps } from "./tooltip"
 
 const props = withDefaults(defineProps<IProps>(), {
   content: "",
@@ -29,13 +39,11 @@ const props = withDefaults(defineProps<IProps>(), {
   delay: 300,
   disable: false,
   showTriangle: true,
-  position: "right" as Position,
+  position: Position.RIGHT,
   level: "auto",
 })
 
 const hidden = ref<boolean>(true)
-
-const namespace = "tooltip"
 
 /** 计算偏移样式 */
 const offsetStyle = getOffsetStyle(props.offset, props.position)
@@ -58,63 +66,31 @@ const handleMouseLeave = (): void => {
 }
 </script>
 
-<template>
-  <div
-    class="relative inline-block"
-    :class="namespace"
-    @mouseleave="handleMouseLeave"
-    @mouseover="handleMouseover"
-  >
-    <transition :name="namespace">
-      <div
-        v-show="!hidden && !disable"
-        class="p-y-s p-x-l absolute shadow radius-m"
-        :class="`${namespace}-container ${namespace}-${position}`"
-        :style="{...offsetStyle, zIndex: level}"
-      >
-        <template v-if="$slots.content">
-          <slot name="content"></slot>
-        </template>
-        <template v-else>
-          <span class="font-xs text-nowrap">{{ content }}</span>
-        </template>
-        <span
-          v-if="showTriangle"
-          class="absolute"
-          :class="`${namespace}-triangle triangle-${position}`"
-        ></span>
-      </div>
-    </transition>
-    <slot></slot>
-  </div>
-</template>
-
 <style lang="scss" scoped>
-$namespace: tooltip;
 $border-width: 6;
 
-.#{$namespace} {
+.tooltip {
   color: var(--color-tooltip-color);
-  .#{$namespace}-container {
+  .tooltip-container {
     background-color: var(--color-main-bg-1);
     border-color: var(--color-main-bg-1);
   }
-  .#{$namespace}-bottom {
+  .tooltip-bottom {
     top: calc(100% + #{$border-width}px);
     left: 50%;
     transform: scale(1) translateX(-50%);
   }
-  .#{$namespace}-left {
+  .tooltip-left {
     top: 50%;
     right: calc(100% + #{$border-width}px);
     transform: scale(1) translateY(-50%);
   }
-  .#{$namespace}-right {
+  .tooltip-right {
     left: calc(100% + #{$border-width}px);
     top: 50%;
     transform: scale(1) translateY(-50%);
   }
-  .#{$namespace}-top {
+  .tooltip-top {
     bottom: calc(100% + #{$border-width}px);
     left: 50%;
     transform: scale(1) translateX(-50%);
@@ -133,18 +109,18 @@ $border-width: 6;
   }
 }
 
-.#{$namespace}-enter-from,
-.#{$namespace}-leave-to {
+.tooltip-enter-from,
+.tooltip-leave-to {
   opacity: 0;
 }
 
-.#{$namespace}-enter-to,
-.#{$namespace}-leave-from {
+.tooltip-enter-to,
+.tooltip-leave-from {
   opacity: 1;
 }
 
-.#{$namespace}-enter-active,
-.#{$namespace}-leave-active {
+.tooltip-enter-active,
+.tooltip-leave-active {
   @include transition(all, 0.3s, ease);
 }
 </style>
