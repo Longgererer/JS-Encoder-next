@@ -13,6 +13,8 @@ interface IConsoleStore {
   setting: IConsoleSetting
   /** 日志类型过滤选项 */
   filter: LogType
+  /** 各种日志类型数量 */
+  logTypeCountMap: Partial<Record<LogType, number>>
 }
 
 export const useConsoleStore = defineStore("console", {
@@ -23,6 +25,7 @@ export const useConsoleStore = defineStore("console", {
         highlightLog: true,
       },
       filter: LogType.ALL,
+      logTypeCountMap: {},
     }
   },
   actions: {
