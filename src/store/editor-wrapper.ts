@@ -147,7 +147,6 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       Reflect.deleteProperty(this.editorMap, id)
     },
     updateCodeMap(tabId: number, code: string): void {
-      console.log(tabId, code)
       this.codeMap[tabId] = code
     },
     clearCodeMap(): void {

@@ -43,10 +43,6 @@ const theme = createTheme({
       color: "#7f85a3",
     },
     {
-      tag: tags.atom,
-      color: "#000",
-    },
-    {
       tag: tags.punctuation,
       color: "#78dbff",
     },
@@ -124,6 +120,84 @@ const theme = createTheme({
     {
       tag: tags.attributeValue,
       color: "#c3e88d",
+    },
+    /** 标题 */
+    {
+      tag: tags.heading,
+      fontWeight: "bold",
+      color: "#ffc777",
+    },
+    {
+      tag: tags.meta,
+      color: "#78dbff",
+    },
+    /** 链接 */
+    {
+      tag: tags.link,
+      color: "#7cafff",
+    },
+    /** 斜体 */
+    {
+      tag: tags.emphasis,
+      fontStyle: "italic",
+      color: "#ff757f",
+    },
+    /** 粗体 */
+    {
+      tag: tags.strong,
+      fontWeight: "bold",
+      color: "#ff757f",
+    },
+    /** 删除 */
+    {
+      tag: tags.strikethrough,
+      textDecoration: "line-through",
+      color: "#F00",
+    },
+    {
+      tag: [tags.atom, tags.bool, tags.url, tags.contentSeparator, tags.labelName],
+      color: "#FF966C",
+    },
+    {
+      tag: tags.url,
+      color: "#FF966C",
+      textDecoration: "underline",
+    },
+    {
+      tag: [tags.literal, tags.inserted],
+      color: "#78dbff",
+    },
+    {
+      tag: tags.deleted,
+      color: "#F00",
+    },
+    {
+      tag: [tags.regexp, tags.escape, tags.special(tags.string)],
+      color: "#F00",
+    },
+    {
+      tag: tags.definition(tags.variableName),
+      color: "#F00",
+    },
+    {
+      tag: tags.local(tags.variableName),
+      color: "#F00",
+    },
+    {
+      tag: [tags.namespace],
+      color: "#F00",
+    },
+    {
+      tag: [tags.special(tags.variableName), tags.macroName],
+      color: "#F00",
+    },
+    {
+      tag: tags.definition(tags.propertyName),
+      color: "#F00",
+    },
+    {
+      tag: tags.invalid,
+      color: "#F00",
     },
   ],
 })

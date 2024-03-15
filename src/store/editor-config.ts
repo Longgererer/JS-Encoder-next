@@ -40,7 +40,7 @@ export const initialLibraries: IEditorLibraries = {
 }
 
 export const initialPrepMap: IEditorPrepMap = {
-  [OriginLang.HTML]: Prep.HTML,
+  [OriginLang.HTML]: Prep.MARKDOWN,
   [OriginLang.CSS]: Prep.CSS,
   [OriginLang.JAVASCRIPT]: Prep.JAVASCRIPT,
 }

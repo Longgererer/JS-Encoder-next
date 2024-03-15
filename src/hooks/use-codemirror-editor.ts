@@ -46,7 +46,7 @@ const useCodemirrorEditor = (config: EditorViewConfig) => {
     const compartment = new Compartment()
     // 返回个函数保留compartment引用
     return (extension: Extension) => {
-      return compartment.get(view.state)
+      compartment.get(view.state)
         // 重新配置插件
         ? view.dispatch({ effects: compartment.reconfigure(extension) })
         // 注入新插件

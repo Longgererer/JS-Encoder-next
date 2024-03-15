@@ -1,12 +1,12 @@
 import { basicSetup } from "codemirror"
 import { StreamLanguage } from "@codemirror/language"
-import { javascript } from "@codemirror/lang-javascript"
-import { css } from "@codemirror/lang-css"
-import { html } from "@codemirror/lang-html"
+import { javascript, javascriptLanguage } from "@codemirror/lang-javascript"
+import { css, cssLanguage } from "@codemirror/lang-css"
+import { html, htmlLanguage } from "@codemirror/lang-html"
 import { less } from "@codemirror/lang-less"
 import { vue } from "@codemirror/lang-vue"
 import { sass } from "@codemirror/lang-sass"
-import { markdown } from "@codemirror/lang-markdown"
+import { markdown, markdownLanguage, markdownKeymap } from "@codemirror/lang-markdown"
 import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
@@ -63,9 +63,33 @@ export const getDefaultEditorConfigByPrep = (prep: Prep): Extension[] => {
   return Prep2DefaultExtensionMap[prep]()
 }
 
+const markdownCodeLanguages = (info: string) => {
+  switch (info) {
+    case "javascript":
+    case "js":
+    case "ts":
+    case "typescript":
+    case "tsx":
+    case "jsx":
+      return javascriptLanguage
+    case "css":
+      return cssLanguage
+    case "html":
+      return htmlLanguage
+    case "markdown":
+    case "md":
+      return markdownLanguage
+    default:
+      return null
+  }
+}
+
 const Prep2LanguageExtensionMap: Record<Prep, () => Extension | StreamLanguage<unknown>> = {
   [Prep.HTML]: () => html(),
-  [Prep.MARKDOWN]: () => markdown({ extensions: [] }),
+  [Prep.MARKDOWN]: () => markdown({
+    base: markdownLanguage,
+    codeLanguages: markdownCodeLanguages,
+  }),
   [Prep.PUG]: () => [],
   [Prep.CSS]: () => css(),
   [Prep.SASS]: () => sass({ indented: true }),

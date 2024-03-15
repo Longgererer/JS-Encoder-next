@@ -7,15 +7,15 @@
  * desc: 编辑器实例
  */
 import useCodemirrorEditor from "@hooks/use-codemirror-editor"
-import { onBeforeUnmount, onMounted, ref, watch } from "vue"
+import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue"
 import { IEmits, IProps } from "./editor"
 import { EditorView } from "codemirror"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
 
-const editorRef = ref<HTMLElement | null>(null)
-const editorView = ref<EditorView>()
+const editorRef = shallowRef<HTMLElement | null>(null)
+const editorView = shallowRef<EditorView>()
 
 onMounted(() => {
   // 初始化编辑器
@@ -63,7 +63,6 @@ onMounted(() => {
   watch(
     () => props.extensions,
     (newExtensions) => {
-      console.log(newExtensions)
       editor.extensionUpdater(newExtensions!)
     },
   )
