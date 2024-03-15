@@ -61,7 +61,7 @@ import { ref, reactive } from "vue"
 import { useCommonStore } from "@store/common"
 import { AnyObject, ModalName, Size } from "@type/interface"
 import { inbuiltTemplateList, TemplateLang2IconMap } from "./template-modal.interface"
-import { getCustomTemplateList } from "./template-modal.util"
+import { getCustomTemplateList } from "./template-modal"
 import { TemplateType } from "@type/template"
 
 const commonStore = useCommonStore()

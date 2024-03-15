@@ -57,7 +57,7 @@ import UpdateLogModal from "@views/components/modals/update-log-modal/update-log
 import SplitLine from "@components/split-line/split-line.vue"
 import { SplitDirection } from "@type/editor"
 import { onMounted, watch } from "vue"
-import { getModulesHeight, getModulesWidth } from "@views/container/container.util"
+import { getModulesHeight, getModulesWidth } from "@views/container/container"
 import { useLayoutStore } from "@store/layout"
 import useWindowResize from "@hooks/use-window-resize"
 import ModuleSizeService, {

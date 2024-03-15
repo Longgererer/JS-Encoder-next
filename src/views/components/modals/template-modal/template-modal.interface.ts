@@ -1,5 +1,4 @@
 import { IEditor } from "@type/editor"
-import { OriginLang, Prep } from "@type/prep"
 import { TemplateLang, TemplateType } from "@type/template"
 
 export interface ITemplateItem {
