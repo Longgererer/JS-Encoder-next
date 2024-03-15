@@ -127,12 +127,10 @@ const handleLeaveTarget = (): void => {
 .popover-leave-to {
   opacity: 0;
 }
-
 .popover-enter-to,
 .popover-leave-from {
   opacity: 1;
 }
-
 .popover-enter-active,
 .popover-leave-active {
   @include transition(all, 0.1s, ease);
