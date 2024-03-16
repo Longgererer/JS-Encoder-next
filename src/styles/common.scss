@@ -4,12 +4,14 @@
 @import "./modal";
 
 /** padding */
+.p-xxs { padding: 2px; }
 .p-xs { padding: 4px; }
 .p-s { padding: 8px; }
 .p-m { padding: 12px; }
 .p-l { padding: 16px; }
 .p-xl { padding: 20px; }
 .p-xxl { padding: 24px; }
+.p-x-xxs { @include edge(p, x, 2px); }
 .p-x-xs { @include edge(p, x, 4px); }
 .p-x-s { @include edge(p, x, 8px); }
 .p-x-m { @include edge(p, x, 12px); }

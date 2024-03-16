@@ -1,13 +1,13 @@
 /** 日志类型 */
 export const enum LogType {
   /** 所有日志 */
-  ALL = "All",
+  ALL = "all",
   /** 普通日志 */
-  MESSAGE = "Message",
+  MESSAGE = "message",
   /** 提示日志 */
-  INFO = "Info",
+  INFO = "info",
   /** 警告日志 */
-  WARN = "Warn",
+  WARN = "warn",
   /** 错误日志 */
-  ERROR = "Error",
+  ERROR = "error",
 }

@@ -1,27 +1,28 @@
 <template>
-  <div class="console flex-col fill-w">
-    <!--头部-->
-    <div class="console-header bg-main1 active-text font-xxs flex pl-l pr-l no-select">
+  <div class="console flex-col fill-w code-font">
+    <!-- 头部 -->
+    <div class="console-header bg-main1 active-text font-xs flex pl-l pr-l no-select">
       <div class="console-title flex-y-center">
         <i class="icon iconfont icon-console font-s"></i>
-        <span class="ml-s renew-line-xxs code-font">Console</span>
+        <span class="ml-s renew-line-xxs">Console</span>
+        <!-- 总数计算 -->
+        <div class="font-xxs bg-main3 p-x-xxs ml-xs describe-text radius-m">12</div>
       </div>
-      <!--占位 + 拖拽-->
-      <div class="flex-1 cursor-y-resize" @mousedown="handleResize"></div>
-      <div class="log-type-count-wrapper flex-y-center">
-        <div class="error-count mr-m flex-y-center">
-          <i class="icon iconfont icon-error mr-xs inline-block"></i>
-          <div class="renew-line-xxs code-font">2</div>
-        </div>
-        <div class="warn-count mr-m flex-y-center">
-          <i class="icon iconfont icon-warn mr-xs inline-block"></i>
-          <div class="renew-line-xxs code-font">15</div>
-        </div>
-        <div class="info-count flex-y-center">
-          <i class="icon iconfont icon-info mr-xs inline-block"></i>
-          <div class="renew-line-xxs code-font">23</div>
-        </div>
+      <!-- 占位 + 拖拽 -->
+      <div class="flex-1 cursor-y-resize" @mousedown="emits('resize', $event.clientY)"></div>
+      <!-- 展示总数的日志类型列表 -->
+      <div class="flex-y-center font-xxs">
+        <template v-for="item in countLogInfoList" :key="item.logType">
+          <div
+            v-if="!!item.count"
+            class="mr-m flex-y-center"
+            :class="`${item.logType}-count`">
+            <i class="icon iconfont mr-xs inline-block" :class="item.icon"></i>
+            <div class="renew-line-xxs">{{ item.count }}</div>
+          </div>
+        </template>
       </div>
+      <!-- 最小化 -->
       <div class="flex-center ml-l">
         <icon-btn
           icon-class="icon-fold"
@@ -33,7 +34,7 @@
       </div>
     </div>
     <!--工具栏-->
-    <div class="console-toolbar bg-main2 active-text font-xxs flex p-x-l code-font flex-sh no-select">
+    <div class="console-toolbar bg-main2 active-text font-xxs flex p-x-l flex-sh no-select">
       <!--类型过滤-->
       <div class="filter flex-y-center">
         <span class="mr-s">过滤:</span>
@@ -63,7 +64,7 @@
             :highlight-style="{ color: 'var(--color-primary1)' }"
             :size="IconBtnSize.SM"
             :highlight="isShowConsoleSettings"
-            @click="handleClickConsoleSettingsBtn"
+            @click="isShowConsoleSettings = !isShowConsoleSettings"
           ></icon-btn>
         </div>
       </div>
@@ -89,7 +90,7 @@ import { Size } from "@type/interface"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
-import { IEmits, filterSelectOptions } from "./console"
+import { IEmits, countLogInfoList, filterSelectOptions } from "./console"
 import { useLayoutStore } from "@store/layout"
 import { CONSOLE_MIN_HEIGHT } from "@utils/services/module-size-service"
 
@@ -101,20 +102,16 @@ const { updateIsFoldConsole, updateModuleSize } = layoutStyle
 
 /** 当前过滤日志类型选项 */
 const filterType = ref<LogType>(LogType.ALL)
+// TODO: 使用computed
+const filterLogTypeList = (logType: LogType) => {
+
+}
 watch(filterType, (newType) => {
-  updateFilter(newType)
+  filterLogTypeList(newType)
 })
 
 /** 是否展示console设置 */
 const isShowConsoleSettings = ref<boolean>(false)
-const handleClickConsoleSettingsBtn = (): void => {
-  isShowConsoleSettings.value = !isShowConsoleSettings.value
-}
-
-/** console拖拽 */
-const handleResize = (e: MouseEvent) => {
-  emits("resize", e.clientY)
-}
 
 /** 收起console */
 const handleClickToggleConsole = () => {
