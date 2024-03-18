@@ -1,13 +1,7 @@
 import { defineStore } from "pinia"
-import { IEditorSettings, ShortcutMode, CodeFontFamily, IEditorLibraries, IEditorPrepMap } from "@type/settings"
+import { IEditorSettings, ShortcutMode, CodeFontFamily, IEditorLibraries, IEditorPrepMap, IEditorConfig } from "@type/settings"
 import { DeepPartial } from "@type/types"
 import { OriginLang, Prep } from "@type/prep"
-
-interface IEditorConfig {
-  settings: IEditorSettings
-  libraries: IEditorLibraries
-  prepMap: IEditorPrepMap
-}
 
 export const initialSettings: IEditorSettings = {
   edit: {

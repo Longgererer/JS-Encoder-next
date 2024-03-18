@@ -1,19 +1,7 @@
-import { IEditor } from "@type/editor"
-import { TemplateLang, TemplateType } from "@type/template"
-
-export interface ITemplateItem {
-  lang: TemplateLang
-  type: TemplateType
-}
-
-/** 内置模板列表 */
-export const inbuiltTemplateList: ITemplateItem[] = [
-  { lang: TemplateLang.VUE, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.VANILLA, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.REACT, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.ANGULAR, type: TemplateType.DEFAULT },
-  { lang: TemplateLang.VUE, type: TemplateType.COMPONENT },
-]
+import { OriginLang, Prep } from "@type/prep"
+import { ITemplate, TemplateLang, TemplateType } from "@type/template"
+import { ITemplateInfo } from "@utils/config/indexed-db"
+import { templateCodeMap, templateLibrariesMap, templatePrepMap } from "@utils/config/template"
 
 /** 不同类型模板对应的icon */
 export const TemplateLang2IconMap = {
@@ -24,14 +12,33 @@ export const TemplateLang2IconMap = {
   [TemplateLang.CUSTOM]: "icon-custom-template",
 }
 
-export interface ITemplateContent {
-  /** 模板名 */
-  name: string
-  editorList: IEditor[]
-  links: []
-}
-
 /** 获取本地存储的自定义模板列表 */
-export const getCustomTemplateList = (): ITemplateContent[] => {
+export const getCustomTemplateList = (): ITemplateInfo[] => {
+  // const db = new IndexedDBService({
+  //   dbName: INDEXED_DB_NAME,
+  //   version: INDEXED_DB_VERSION,
+  // })
   return []
 }
+
+/** 内置模板列表 */
+export const inbuiltTemplateList: ITemplate[] = [
+  {
+    lang: TemplateLang.VUE,
+    type: TemplateType.INBUILT,
+    codeMap: templateCodeMap[TemplateLang.VUE],
+    editorConfig: {
+      libraries: templateLibrariesMap[TemplateLang.VUE],
+      prepMap: templatePrepMap[TemplateLang.VUE],
+    },
+  },
+  {
+    lang: TemplateLang.VANILLA,
+    type: TemplateType.INBUILT,
+    codeMap: templateCodeMap[TemplateLang.VANILLA],
+  },
+  { lang: TemplateLang.VANILLA, type: TemplateType.CUSTOM },
+  { lang: TemplateLang.REACT, type: TemplateType.CUSTOM },
+  { lang: TemplateLang.ANGULAR, type: TemplateType.CUSTOM },
+  { lang: TemplateLang.VUE, type: TemplateType.COMPONENT },
+]

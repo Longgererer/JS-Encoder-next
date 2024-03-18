@@ -7,8 +7,7 @@
     bottom="85"
     okText="使用该模板"
     :confirm-btn-opts="templateModalConfirmBtnOpts"
-    @close="updateDisplayModal(null)"
-  >
+    @close="updateDisplayModal(null)">
     <div class="modal-sub-title">内置模板</div>
     <div class="modal-desc-text">选择你想使用的模板</div>
     <!--内置模板列表-->
@@ -18,8 +17,7 @@
         :class="index === selectedTemplate.index ? 'active' : ''"
         v-for="(item, index) in inbuiltTemplateList"
         :key="index"
-        @mousedown="handleClickInbuiltTemplate(index)"
-      >
+        @mousedown="handleClickInbuiltTemplate(index)">
         <svg class="lang-icon" aria-hidden="true">
           <use :xlink:href="`#${TemplateLang2IconMap[item.lang]}`"></use>
         </svg>
@@ -38,13 +36,13 @@
     </div>
     <template v-if="customTemplateList.length">
       <div>
-
+        <loading></loading>
       </div>
     </template>
     <template v-else>
       <div class="flex-col flex-center bg-main3 radius-l blank-tip-area">
         <span class="no-active-text font-xxs mb-s">当前未创建任何自定义模板</span>
-        <custom-button :size="Size.SMALL">+ 以当前代码创建</custom-button>
+        <custom-button :size="Size.SMALL" @click="handleClickCreate">+ 以当前代码创建</custom-button>
       </div>
     </template>
     <!--自定义模板列表-->
@@ -54,9 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import Modal from "@components/modal/modal.vue"
-import HelpPopover from "@views/components/help-popover/help-popover.vue"
-import CustomButton from "@components/custom-button/custom-button.vue"
+import modal from "@components/modal/modal.vue"
+import helpPopover from "@views/components/help-popover/help-popover.vue"
+import customButton from "@components/custom-button/custom-button.vue"
+import loading from "@components/loading/loading.vue"
 import { ref, reactive } from "vue"
 import { useCommonStore } from "@store/common"
 import { AnyObject, ModalName, Size } from "@type/interface"
@@ -80,9 +79,19 @@ const templateModalConfirmBtnOpts = reactive<AnyObject>({
   disabled: true,
 })
 
-const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false): void => {
+const handleClickInbuiltTemplate = (index: number, isCustom: boolean = false) => {
   selectedTemplate.value = { index, isCustom }
   templateModalConfirmBtnOpts.disabled = false
+}
+
+/** 更新模板 */
+const handleUpdateTemplate = () => {
+
+}
+
+/** 创建新模板 */
+const handleClickCreate = () => {
+
 }
 </script>
 

@@ -1,5 +1,11 @@
 import { OriginLang, Prep } from "./prep"
 
+export interface IEditorConfig {
+  settings: IEditorSettings
+  libraries: IEditorLibraries
+  prepMap: IEditorPrepMap
+}
+
 export interface IEditorSettings {
   edit: {
     /** 智能提示 */
@@ -41,7 +47,6 @@ export interface IEditorSettings {
 export const enum ShortcutMode {
   VSCODE = "VSCode",
   EMACS = "EMACS",
-  // SUBLIME = "Sublime",
 }
 
 /** 代码字体 */
