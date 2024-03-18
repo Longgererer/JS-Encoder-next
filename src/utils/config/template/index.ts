@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
 import { initialPrepMap } from "@store/editor-config"
-import { OriginLang } from "@type/prep"
 import { TemplateLang } from "@type/template"
 import vueCodeMap from "./code/vue"
 import reactCodeMap from "./code/react"
+import vanillaCodeMap from "./code/vanilla"
 import vueComponentCodeMap from "./code/vue-component"
 
 export const templateCodeMap = {
   [TemplateLang.VUE]: vueCodeMap,
   [TemplateLang.REACT]: reactCodeMap,
+  [TemplateLang.VANILLA]: vanillaCodeMap,
 }
 
 export const templateLibrariesMap = {
