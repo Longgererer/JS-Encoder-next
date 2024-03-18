@@ -26,7 +26,7 @@ $namespace: "loading";
   width: 10px;
   height: 10px;
   position: absolute;
-  background-color: var(--color-primary0);
+  background-color: var(--color-primary1);
 }
 
 .#{$namespace}-item1 {
