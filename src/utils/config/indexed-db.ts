@@ -1,17 +1,14 @@
-import { OriginLang } from "@type/prep"
-import { IEditorConfig } from "@type/settings"
-import { ITemplate, TemplateLang, TemplateType } from "@type/template"
-import { DeepPartial } from "@type/types"
-import { IndexedDBStore } from "@utils/services/indexed-db-service"
+import { ITemplate } from "@type/template"
+import { IIndexedDBConfig, IndexedDBStore } from "@utils/services/indexed-db-service"
 
-export enum DBStoreName {
+export enum IndexedDBStoreName {
   /** 模板 */
   TEMPLATE = "template",
 }
 
-export interface IDBStoreData {
+export interface IIndexedDBStoreData {
   /** 存储模板信息的表 */
-  [DBStoreName.TEMPLATE]: ITemplateInfo
+  [IndexedDBStoreName.TEMPLATE]: ITemplateInfo
 }
 
 export interface ITemplateInfo extends ITemplate {
@@ -31,3 +28,15 @@ export const INDEXED_DB_STORES: IndexedDBStore[] = [
     isClear: false,
   },
 ]
+
+export const indexedDBConfig: IIndexedDBConfig = {
+  dbName: INDEXED_DB_NAME,
+  version: INDEXED_DB_VERSION,
+  stores: [
+    {
+      name: IndexedDBStoreName.TEMPLATE,
+      primaryKey: "id",
+      isClear: false,
+    },
+  ],
+}

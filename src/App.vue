@@ -1,12 +1,21 @@
-<script setup lang="ts">
-import container from "./views/container/container.vue"
-</script>
-
 <template>
   <div class="fill over-hidden">
     <container></container>
   </div>
 </template>
+
+<script setup lang="ts">
+import { IndexedDBService } from "@utils/services/indexed-db-service"
+import container from "./views/container/container.vue"
+import { indexedDBConfig } from "@utils/config/indexed-db"
+
+const initApp = () => {
+  // 连接数据库
+  new IndexedDBService(indexedDBConfig).init()
+}
+
+initApp()
+</script>
 
 <style lang="scss">
 #app {

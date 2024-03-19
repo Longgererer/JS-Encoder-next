@@ -1,10 +1,10 @@
-/* eslint-disable max-len */
 import { initialPrepMap } from "@store/editor-config"
 import { TemplateLang } from "@type/template"
 import vueCodeMap from "./code/vue"
 import reactCodeMap from "./code/react"
 import vanillaCodeMap from "./code/vanilla"
 import vueComponentCodeMap from "./code/vue-component"
+import { OriginLang, Prep } from "@type/prep"
 
 export const templateCodeMap = {
   [TemplateLang.VUE]: vueCodeMap,
@@ -25,8 +25,12 @@ export const templateLibrariesMap = {
 }
 
 export const templatePrepMap = {
+  [TemplateLang.VANILLA]: initialPrepMap,
   [TemplateLang.VUE]: initialPrepMap,
-  [TemplateLang.REACT]: initialPrepMap,
+  [TemplateLang.REACT]: {
+    ...initialPrepMap,
+    [OriginLang.JAVASCRIPT]: Prep.JSX,
+  },
 }
 
 export const componentTemplateCodeMap = {
@@ -36,5 +40,10 @@ export const componentTemplateCodeMap = {
 export const componentTemplateLibrariesMap = {
   [TemplateLang.VUE]: {
     script: ["https://cdn.bootcdn.net/ajax/libs/vue/3.3.4/vue.global.min.js"],
+  },
+}
+export const componentTemplatePrepMap = {
+  [TemplateLang.VUE]: {
+    [OriginLang.JAVASCRIPT]: Prep.VUE,
   },
 }

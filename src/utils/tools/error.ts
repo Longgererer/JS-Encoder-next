@@ -28,6 +28,8 @@ export const enum ErrorCode {
   INDEXED_DB_CONNECT_BLOCKED = 2009,
   /** 创建事务失败 */
   INDEXED_DB_CREATE_TRANSACTION_FAILED = 2010,
+  /** 没有传数据库配置 */
+  INDEXED_DB_NO_CONFIG = 2011,
 }
 
 interface IErrorDetail {

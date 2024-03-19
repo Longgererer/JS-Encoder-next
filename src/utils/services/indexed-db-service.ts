@@ -5,7 +5,7 @@
 import { ErrorCode, throwError } from "@utils/tools/error"
 import { deepCopy } from "@utils/tools/common"
 import SingleInstance from "@utils/decorators/single-instance"
-import { DBStoreName, IDBStoreData } from "@utils/config/indexed-db"
+import { IndexedDBStoreName, IIndexedDBStoreData } from "@utils/config/indexed-db"
 
 export interface IndexedDBStoreIndex {
   name: string
@@ -20,10 +20,10 @@ export interface IndexedDBStore {
   /** 索引列表 key：索引名称 value：是否可以重复 */
   indexList?: IndexedDBStoreIndex[]
   /** 版本更新时是否需要删除原来的仓库 */
-  isClear: boolean
+  isClear?: boolean
 }
 
-export interface IndexedDBConfig {
+export interface IIndexedDBConfig {
   /** 数据库名 */
   dbName: string
   /** 对象仓库集合 */
@@ -32,6 +32,17 @@ export interface IndexedDBConfig {
   version?: number
   /** 初始化回调 */
   onReady?: () => void
+}
+
+export enum IndexedDBStatus {
+  /** 初始等待 */
+  PENDING = "pending",
+  /** 连接中 */
+  CONNECTING = "connecting",
+  /** 已连接 */
+  CONNECTED = "connected",
+  /** 连接失败 */
+  FAILED = "failed",
 }
 
 type TransactionMode = "readonly" | "readwrite" | "versionchange"
@@ -46,32 +57,71 @@ declare global {
 
 @SingleInstance
 export class IndexedDBService {
+  /** 数据库状态 */
+  public status: IndexedDBStatus = IndexedDBStatus.PENDING
   /** 数据库 */
   private indexedDb?: IDBFactory
   /** 数据库对象 */
   private db: IDBDatabase | null = null
   /** 数据库信息 */
-  private readonly dbInfo?: IndexedDBConfig
+  private readonly dbInfo?: IIndexedDBConfig
   /** 数据库请求对象 */
   private readonly dbReq?: IDBOpenDBRequest
 
-  constructor(config: IndexedDBConfig) {
+  constructor(config?: IIndexedDBConfig) {
     const indexedDb =  window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB
     if (!indexedDb) {
       throwError(ErrorCode.INDEXED_DB_NOT_SUPPORT)
     }
-
+    if (this.status !== IndexedDBStatus.PENDING) { return }
+    if (!config) {
+      throwError(ErrorCode.INDEXED_DB_NO_CONFIG)
+    }
     this.indexedDb = indexedDb
     this.dbInfo = config
     this.dbReq = this.open()
-    this.initRequestHandler()
+  }
+
+  /** 初始化数据库事件回调 */
+  public init() {
+    this.status = IndexedDBStatus.CONNECTING
+    const dbReq = this.dbReq!
+    dbReq.onblocked = (event) => {
+      throwError(ErrorCode.INDEXED_DB_CONNECT_BLOCKED, { data: event })
+    }
+    dbReq.onupgradeneeded = (event) => {
+      const db: IDBDatabase = (event as any).target?.result
+      this.dbInfo!.stores.forEach((store) => {
+        const { isClear, name } = store
+        if (db.objectStoreNames.contains(name)) {
+          if (!isClear) { return }
+          // 删除旧仓库
+          db.deleteObjectStore(name)
+        }
+        this.createStore(store, db)
+      })
+    }
+    return new Promise<boolean>((resolve, reject) => {
+      dbReq.onsuccess = (event) => {
+        console.log("数据库连接成功")
+        this.status = IndexedDBStatus.CONNECTED
+        this.db = dbReq.result
+        this.dbInfo!.onReady?.()
+        resolve(true)
+      }
+      dbReq.onerror = (event) => {
+        this.status = IndexedDBStatus.FAILED
+        throwError(ErrorCode.INDEXED_DB_CONNECT_FAILED, { data: event })
+        reject(false)
+      }
+    })
   }
 
   /** 添加单条数据 */
-  public add<T extends keyof IDBStoreData>(
-    storeName: DBStoreName,
-    data: IDBStoreData[T],
-  ): Promise<IDBStoreData[T]> {
+  public add<T extends keyof IIndexedDBStoreData>(
+    storeName: IndexedDBStoreName,
+    data: IIndexedDBStoreData[T],
+  ): Promise<IIndexedDBStoreData[T]> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXED_DB_ADD_SINGLE_FAILED,
       () => this.beginTransaction(storeName).add(deepCopy(data)),
@@ -80,10 +130,10 @@ export class IndexedDBService {
   }
 
   /** 获取单条数据 */
-  public get<T extends keyof IDBStoreData>(
-    storeName: DBStoreName,
+  public get<T extends keyof IIndexedDBStoreData>(
+    storeName: IndexedDBStoreName,
     primaryKey: string,
-  ): Promise<IDBStoreData[T]> {
+  ): Promise<IIndexedDBStoreData[T]> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXED_DB_GET_SINGLE_FAILED,
       () => this.beginTransaction(storeName).get(primaryKey),
@@ -92,9 +142,9 @@ export class IndexedDBService {
   }
 
   /** 获取所有数据 */
-  public getAll<T extends keyof IDBStoreData>(
-    storeName: DBStoreName,
-  ): Promise<Array<IDBStoreData[T]>> {
+  public getAll<T extends keyof IIndexedDBStoreData>(
+    storeName: IndexedDBStoreName,
+  ): Promise<Array<IIndexedDBStoreData[T]>> {
     return this.setMultipleDataReqCallBack(
       ErrorCode.INDEXED_DB_GET_ALL_FAILED,
       () => this.beginTransaction(storeName).openCursor(),
@@ -103,10 +153,10 @@ export class IndexedDBService {
   }
 
   /** 通过索引获取数据 */
-  public getByIndex<T extends keyof IDBStoreData>(
-    storeName: DBStoreName,
+  public getByIndex<T extends keyof IIndexedDBStoreData>(
+    storeName: IndexedDBStoreName,
     indexName: string,
-  ): Promise<IDBStoreData[T]> {
+  ): Promise<IIndexedDBStoreData[T]> {
     return this.setMultipleDataReqCallBack(
       ErrorCode.INDEXED_DB_GET_BY_INDEX_FAILED,
       () => this.beginTransaction(storeName).index(indexName).openCursor(),
@@ -115,9 +165,9 @@ export class IndexedDBService {
   }
 
   /** 更新数据 */
-  public update<T extends keyof IDBStoreData>(
-    storeName: DBStoreName,
-    data: IDBStoreData[T],
+  public update<T extends keyof IIndexedDBStoreData>(
+    storeName: IndexedDBStoreName,
+    data: IIndexedDBStoreData[T],
     primaryKey?: string,
   ): Promise<any> {
     return this.setSingleReqCallback(
@@ -128,7 +178,7 @@ export class IndexedDBService {
   }
 
   /** 删除数据 */
-  public delete(storeName: DBStoreName, primaryKey: string): Promise<any> {
+  public delete(storeName: IndexedDBStoreName, primaryKey: string): Promise<any> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXED_DB_DELETE_FAILED,
       () => this.beginTransaction(storeName).delete(primaryKey),
@@ -137,7 +187,7 @@ export class IndexedDBService {
   }
 
   /** 获取条数 */
-  public count(storeName: DBStoreName): Promise<number> {
+  public count(storeName: IndexedDBStoreName): Promise<number> {
     return this.setSingleReqCallback(
       ErrorCode.INDEXED_DB_COUNT_FAILED,
       () => this.beginTransaction(storeName, "readonly").count(),
@@ -149,35 +199,6 @@ export class IndexedDBService {
   private open(): IDBOpenDBRequest {
     const { dbName, version } = this.dbInfo!
     return this.indexedDb!.open(dbName, version)
-  }
-
-  /** 初始化数据库事件回调 */
-  private initRequestHandler(): void {
-    const dbReq = this.dbReq!
-    dbReq.onerror = (event) => {
-      throwError(ErrorCode.INDEXED_DB_CONNECT_FAILED, { data: event })
-    }
-    dbReq.onblocked = (event) => {
-      throwError(ErrorCode.INDEXED_DB_CONNECT_BLOCKED, { data: event })
-    }
-    dbReq.onsuccess = (event) => {
-      console.log("数据库连接成功")
-      this.db = dbReq.result
-      this.dbInfo!.onReady?.()
-    }
-    dbReq.onupgradeneeded = (event) => {
-      const db: IDBDatabase = (event as any).target?.result
-      const dbInfo = this.dbInfo!
-      dbInfo.stores.forEach((store) => {
-        const { isClear, name } = store
-        if (db.objectStoreNames.contains(name)) {
-          if (!isClear) { return }
-          // 删除旧仓库
-          db.deleteObjectStore(name)
-        }
-        this.createStore(store, db)
-      })
-    }
   }
 
   /** 创建仓库 */
