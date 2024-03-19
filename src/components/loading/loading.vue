@@ -1,14 +1,22 @@
 <template>
-  <div :class="namespace">
-    <div
-      v-for="num in 4"
-      :key="num"
-      :class="`${namespace}-item ${namespace}-item${num}`"
-    ></div>
+  <div class="flex-col flex-y-center">
+    <div :class="namespace">
+      <div
+        v-for="num in 4"
+        :key="num"
+        :class="`${namespace}-item ${namespace}-item${num}`"
+      ></div>
+    </div>
+    <div v-if="content" class="font-xxs no-active-text mt-s">{{ content }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
+interface IProps {
+  content?: string
+}
+defineProps<IProps>()
+
 const namespace = "loading"
 </script>
 
