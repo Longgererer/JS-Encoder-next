@@ -35,6 +35,11 @@
     <div class="modal-sub-title flex-y-center">
       <span>自定义模板</span>
       <help-popover describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
+      <div class="flex-1"></div>
+      <custom-button :size="Size.SMALL" @click="handleCreateTemplate">
+        <i class="icon iconfont icon-add font-xxs mr-xs"></i>
+        <span>以当前代码创建</span>
+      </custom-button>
     </div>
     <div v-if="isTemplateLoading" class="mt-l">
       <loading content="加载中"></loading>
@@ -62,7 +67,6 @@
     <template v-else>
       <div class="flex-col flex-center bg-main3 radius-l blank-tip-area">
         <span class="no-active-text font-xxs mb-s">当前未创建任何自定义模板</span>
-        <custom-button :size="Size.SMALL" @click="handleCreateTemplate">+ 以当前代码创建</custom-button>
       </div>
     </template>
     <div>
