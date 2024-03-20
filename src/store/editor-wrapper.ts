@@ -171,5 +171,9 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
         return acc
       }, {} as Record<number, Prep>)
     },
+    isCodeEmpty(state: IEditorWrapper) {
+      const { codeMap } = state
+      return !Object.values(codeMap).some((code) => code)
+    },
   },
 })
