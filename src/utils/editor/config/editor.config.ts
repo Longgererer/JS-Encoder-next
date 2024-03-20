@@ -19,6 +19,7 @@ import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
 import themes from "@utils/editor/themes"
+import { scrollPastEnd } from "@codemirror/view"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -31,6 +32,7 @@ export const getDefaultEditorExtensions = (): Extension[] => {
   return [
     autocompletion({ defaultKeymap: false }),
     keymap.of(vscodeKeymap),
+    scrollPastEnd(),
   ]
 }
 
