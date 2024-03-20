@@ -38,7 +38,7 @@ const commonStore = useCommonStore()
 const editorConfigStore = useEditorConfigStore()
 const { updatePrepMap, prepMap } = editorConfigStore
 
-const cachePrepMap = ref<IEditorPrepMap>({ ...initialPrepMap })
+const cachePrepMap = ref<IEditorPrepMap>(initialPrepMap)
 
 const handleSelectPrep = ({ value }: ISelectOption, origin: OriginLang) => {
   cachePrepMap.value[origin] = value as Prep

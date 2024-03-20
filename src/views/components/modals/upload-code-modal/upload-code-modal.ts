@@ -3,7 +3,7 @@ import { getOriginByMimeType, mimeType2PrepMap } from "@utils/tools/prep"
 import { getFileContent, getFileMimeType } from "@utils/tools/file"
 import { ref, shallowReactive } from "vue"
 import { splitHTML } from "./split-html"
-import { useEditorConfigStore } from "@store/editor-config"
+import { initialPrepMap, useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 
 interface IUploadFileInfo {
@@ -50,12 +50,11 @@ const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInf
 }
 
 /** 更新store中的代码和预处理器 */
-const setCodeAndTabInfo = (content: string, prep: Prep, originLang: OriginLang) => {
+const setCodeAndTabInfo = (content: string, originLang: OriginLang) => {
   const editorWrapperStore = useEditorWrapperStore()
   const { origin2TabIdMap } = editorWrapperStore
   const tabId = origin2TabIdMap[originLang]
   editorWrapperStore.updateCodeMap(tabId, content)
-  editorWrapperStore.updateTab(tabId, { prep })
 }
 
 /** 处理上传的文件列表，将解析出的信息存储至store */
@@ -80,11 +79,12 @@ export const processUploadFiles = async (files: File[]) => {
         style: [...style, ...styleLinks],
         script: [...script, ...scriptLinks],
       })
-      setCodeAndTabInfo(htmlContent, Prep.HTML, OriginLang.HTML)
-      setCodeAndTabInfo(styleContent, Prep.CSS, OriginLang.CSS)
-      setCodeAndTabInfo(scriptContent, Prep.JAVASCRIPT, OriginLang.JAVASCRIPT)
+      editorConfigStore.updatePrepMap(initialPrepMap)
+      setCodeAndTabInfo(htmlContent, OriginLang.HTML)
+      setCodeAndTabInfo(styleContent, OriginLang.CSS)
+      setCodeAndTabInfo(scriptContent, OriginLang.JAVASCRIPT)
     } else {
-      setCodeAndTabInfo(fileContent, fileInfo.prep, fileInfo.originLang)
+      setCodeAndTabInfo(fileContent, fileInfo.originLang)
     }
   }
 }
