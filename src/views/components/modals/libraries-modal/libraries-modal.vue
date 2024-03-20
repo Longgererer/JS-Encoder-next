@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-if="commonStore.displayModal === ModalName.LIBRARIES"
     title="库"
     width="550"
     top="85"
@@ -123,7 +122,7 @@ import Modal from "@components/modal/modal.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Size } from "@type/interface"
+import { Size } from "@type/interface"
 import { reactive, ref, watch } from "vue"
 import useLibraries, { ILibrary } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
@@ -171,10 +170,7 @@ const initSelectedLibraries = () => {
   styleLibraryInfo.selected = styles
   scriptLibraryInfo.selected = scripts
 }
-watch(displayModal, (modalName) => {
-  if (modalName !== ModalName.LIBRARIES) { return }
-  initSelectedLibraries()
-})
+initSelectedLibraries()
 
 /** 处理搜索 */
 const { searchStyleLibraries, searchScriptLibraries } = useLibraries()

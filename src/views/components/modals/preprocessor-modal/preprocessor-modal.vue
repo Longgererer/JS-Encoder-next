@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-if="commonStore.displayModal === ModalName.PREPROCESSOR"
     title="预处理"
     width="500"
     top="120"
@@ -26,7 +25,7 @@
 import Modal from "@components/modal/modal.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Size } from "@type/interface"
+import { Size } from "@type/interface"
 import { ref } from "vue"
 import { prepInfoList } from "./preprocessor-modal"
 import { OriginLang, Prep } from "@type/prep"

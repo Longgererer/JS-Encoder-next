@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import Modal from "@components/modal/modal.vue"
-import Loading from "@components/loading/loading.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName } from "@type/interface"
 import { ref } from "vue"
 
 interface IUpdateLog {
@@ -26,7 +24,6 @@ const updateLogList = ref<IUpdateLog[]>([])
     width="730"
     top="85"
     bottom="85"
-    v-if="commonStore.displayModal === ModalName.UPDATE_LOG"
     :show-footer="false"
     @close="updateDisplayModal(null)"
   >

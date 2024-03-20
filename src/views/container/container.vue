@@ -30,14 +30,7 @@
     </div>
   </div>
   <!--modals-->
-  <template-modal></template-modal>
-  <preprocessor-modal></preprocessor-modal>
-  <code-settings-modal></code-settings-modal>
-  <libraries-modal></libraries-modal>
-  <upload-code-modal></upload-code-modal>
-  <download-code-modal></download-code-modal>
-  <shortcut-modal></shortcut-modal>
-  <update-log-modal></update-log-modal>
+  <component v-if="displayModal" :is="displayModalMap[displayModal]"></component>
 </template>
 
 <script setup lang="ts">
@@ -67,6 +60,8 @@ import ModuleSizeService, {
   RESULT_MIN_WIDTH,
 } from "@utils/services/module-size-service"
 import { storeToRefs } from "pinia"
+import { useCommonStore } from "@store/common"
+import { ModalName } from "@type/interface"
 
 const layoutStore = useLayoutStore()
 const {
@@ -79,8 +74,20 @@ const {
 const { isShowResult, isFoldConsole } = storeToRefs(layoutStore)
 const { clientWidth, clientHeight } = useWindowResize()
 
-const moduleSizeService = new ModuleSizeService()
+const commonStore = useCommonStore()
+const { displayModal } = storeToRefs(commonStore)
+const displayModalMap = {
+  [ModalName.TEMPLATE]: TemplateModal,
+  [ModalName.PREPROCESSOR]: PreprocessorModal,
+  [ModalName.CODE_SETTINGS]: CodeSettingsModal,
+  [ModalName.LIBRARIES]: LibrariesModal,
+  [ModalName.UPLOAD_CODE]: UploadCodeModal,
+  [ModalName.DOWNLOAD_CODE]: DownloadCodeModal,
+  [ModalName.SHORTCUT]: ShortcutModal,
+  [ModalName.UPDATE_LOG]: UpdateLogModal,
+}
 
+const moduleSizeService = new ModuleSizeService()
 onMounted(() => {
   // 设置初始模块尺寸
   updateModuleSize(moduleSizeService.getInitModulesSize())

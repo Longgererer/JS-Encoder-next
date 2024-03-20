@@ -4,7 +4,6 @@
     width="600"
     top="85"
     bottom="85"
-    v-if="commonStore.displayModal === ModalName.UPLOAD_CODE"
     :show-footer="false"
     @close="handleCloseModal">
     <div class="font-s active-text code-font mt-s">
@@ -89,7 +88,7 @@ import HelpPopover from "@views/components/help-popover/help-popover.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Position, Size } from "@type/interface"
+import { Position, Size } from "@type/interface"
 import { ref } from "vue"
 import { getFileSizeText } from "@utils/tools/file"
 import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"

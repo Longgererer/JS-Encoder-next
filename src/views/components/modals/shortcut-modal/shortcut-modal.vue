@@ -4,7 +4,6 @@
     width="500"
     top="85"
     bottom="85"
-    v-if="commonStore.displayModal === ModalName.SHORTCUT"
     :show-footer="false"
     @close="updateDisplayModal(null)">
     <div class="search-bar pt-s pb-l flex-ais sticky bg-main2">
@@ -48,7 +47,7 @@
 import Modal from "@components/modal/modal.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Size } from "@type/interface"
+import { Size } from "@type/interface"
 import { ShortcutMapList, IShortcutMap } from "./shortcut-modal.interface"
 import { ref, watch } from "vue"
 

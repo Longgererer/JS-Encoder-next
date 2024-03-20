@@ -4,7 +4,6 @@
     width="500"
     top="85"
     bottom="85"
-    v-if="commonStore.displayModal === ModalName.DOWNLOAD_CODE"
     :show-footer="false"
     @close="updateDisplayModal(null)">
     <div class="download-type flex code-font">
@@ -56,7 +55,7 @@ import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
-import { ModalName, Size } from "@type/interface"
+import { Size } from "@type/interface"
 import { ref } from "vue"
 import useDownloadCode from "./hooks/use-download-code"
 

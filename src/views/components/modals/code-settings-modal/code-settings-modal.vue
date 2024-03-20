@@ -1,13 +1,11 @@
 <template>
   <modal
-    v-if="commonStore.displayModal === ModalName.CODE_SETTINGS"
     title="编码设置"
     width="730"
     top="85"
     bottom="85"
     :show-footer="false"
-    @close="handleCloseModal"
-  >
+    @close="handleCloseModal">
     <div class="flex">
       <div class="flex-col flex-1">
         <div class="modal-sub-title">编码</div>
@@ -68,7 +66,6 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { reactive } from "vue"
 import { useCommonStore } from "@store/common"
-import { ModalName } from "@type/interface"
 import { InputType } from "@components/form/custom-input/custom-input"
 import { useEditorConfigStore, initialSettings } from "@store/editor-config"
 import { deepCopy } from "@utils/tools/common"
