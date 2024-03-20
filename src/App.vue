@@ -5,13 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { IndexedDBService } from "@utils/services/indexed-db-service"
+import { DBService } from "@utils/services/indexed-db-service"
 import container from "./views/container/container.vue"
-import { indexedDBConfig } from "@utils/config/indexed-db"
+import { dbConfig } from "@utils/config/indexed-db"
 
 const initApp = () => {
   // 连接数据库
-  new IndexedDBService(indexedDBConfig).init()
+  new DBService(dbConfig).init()
 }
 
 initApp()
