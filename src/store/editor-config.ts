@@ -41,20 +41,20 @@ export const initialPrepMap: IEditorPrepMap = {
 
 export const useEditorConfigStore = defineStore("editorConfig", {
   state: (): IEditorConfig => ({
-    settings: initialSettings,
-    libraries: initialLibraries,
-    prepMap: initialPrepMap,
+    settings: { ...initialSettings },
+    libraries: { ...initialLibraries },
+    prepMap: { ...initialPrepMap },
   }),
   actions: {
     /** 更新若干设置 */
     updateSettings(settings: DeepPartial<IEditorSettings>): void {
-      this.$patch({ settings })
+      this.$patch({ settings: { ...settings } })
     },
     updateLibraries(libraries: Partial<IEditorLibraries>): void {
-      this.$patch({ libraries })
+      this.$patch({ libraries: { ...libraries } })
     },
     updatePrepMap(prepMap: Partial<IEditorPrepMap>): void {
-      this.$patch({ prepMap })
+      this.$patch({ prepMap: { ...prepMap } })
     },
   },
 })
