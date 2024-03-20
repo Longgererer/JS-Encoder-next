@@ -79,3 +79,11 @@ export const mimeType2PrepMap = {
   [MimeType.JSX]: Prep.JSX,
   [MimeType.VUE]: Prep.VUE,
 }
+
+export const prep2IconMap: Partial<Record<Prep, string>> = {
+  [Prep.MARKDOWN]: "icon-markdown",
+  [Prep.JAVASCRIPT]: "icon-javascript",
+  [Prep.TYPESCRIPT]: "icon-typescript",
+  [Prep.COFFEESCRIPT]: "icon-coffeescript",
+  [Prep.JSX]: "icon-jsx",
+}
