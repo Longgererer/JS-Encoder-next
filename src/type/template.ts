@@ -1,5 +1,5 @@
 import { OriginLang } from "./prep"
-import { IEditorConfig, IEditorLibraries } from "./settings"
+import { IEditorConfig, IEditorLibraries, IEditorPrepMap } from "./settings"
 import { DeepPartial } from "./types"
 
 /** 模板对应的语言 */
@@ -27,10 +27,10 @@ export interface ITemplate {
   type: TemplateType
   /** 代码 */
   codeMap: Partial<Record<OriginLang, string>>
+  /** 编辑器配置 */
+  editorConfig: DeepPartial<Omit<IEditorConfig, "settings">>
   /** 是否为组件 */
   isComponent?: boolean
-  /** 编辑器配置 */
-  editorConfig?: DeepPartial<IEditorConfig>
   /** 模板名 */
   name?: string
 }

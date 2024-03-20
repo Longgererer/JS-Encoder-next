@@ -13,7 +13,7 @@ export interface IDBStoreData {
 
 export interface ITemplateInfo extends ITemplate {
   /** id自增 */
-  id?: number
+  id: number
 }
 
 /** 数据库名 */
