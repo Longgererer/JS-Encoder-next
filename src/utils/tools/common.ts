@@ -47,7 +47,7 @@ export function escapeRegExp(str: string): string {
  * @param str JSON字符串
  * @param defaultValue 默认解析值
  */
-export function safeJSONParse(str: string, defaultValue: any = {}): any {
+export function safeJSONParse<T>(str: string, defaultValue: any = {}): T {
   try {
     return JSON.parse(str || JSON.stringify(defaultValue))
   } catch (error) {

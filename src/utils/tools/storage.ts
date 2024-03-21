@@ -1,27 +1,27 @@
+import { ILocalStorageData, ISessionStorageData } from "@utils/config/storage"
 import { safeJSONParse } from "@utils/tools/common"
+import { isNull } from "./judge"
 
-export const enum LocalStorageKey {
-  /** 主题 */
-  THEME = "theme",
-}
-
-export const enum SessionStorageKey {
-  /** 状态存储 */
-  JS_ENCODER_STORE = "js_encoder_store",
-}
-
-export function setLocalStorage(key: LocalStorageKey, val: any): void {
+export function setLocalStorage<T extends keyof ILocalStorageData>(
+  key: T,
+  val: ILocalStorageData[T],
+) {
   localStorage.setItem(key, JSON.stringify(val))
 }
 
-export function getLocalStorage(key: LocalStorageKey): any {
-  return safeJSONParse(localStorage.getItem(key) || "")
+export function getLocalStorage<T extends keyof ILocalStorageData>(key: T) {
+  const data = localStorage.getItem(key)
+  return isNull(data) ? data : safeJSONParse<ILocalStorageData[T]>(data!)
 }
 
-export function setSessionStorage(key: SessionStorageKey, val: any): void {
+export function setSessionStorage<T extends keyof ISessionStorageData>(
+  key: T,
+  val: ISessionStorageData[T],
+) {
   sessionStorage.setItem(key, JSON.stringify(val))
 }
 
-export function getSessionStorage(key: SessionStorageKey): any {
-  return safeJSONParse(sessionStorage.getItem(key) || "")
+export function getSessionStorage<T extends keyof ISessionStorageData>(key: T) {
+  const data = sessionStorage.getItem(key)
+  return isNull(data) ? data : safeJSONParse<ISessionStorageData[T]>(data!)
 }
