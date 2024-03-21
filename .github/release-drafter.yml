@@ -25,6 +25,7 @@ categories:
     labels:
       - feature
   - title: 🚀 优化/提升
+    labels:
       - enhancement
   - title: 🐛 Bug修复
     labels:
