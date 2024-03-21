@@ -3,8 +3,6 @@ import { safeJSONParse } from "@utils/tools/common"
 export const enum LocalStorageKey {
   /** 主题 */
   THEME = "theme",
-  /** 自定义模板 */
-  CUSTOM_TEMPLATE = "custom_template",
 }
 
 export const enum SessionStorageKey {
