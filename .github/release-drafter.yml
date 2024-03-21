@@ -43,10 +43,6 @@ template: |
   ## 更新事项
 
   $CHANGES
-
-  **贡献者如下，感谢他们提供的支持：**
-
-  $CONTRIBUTORS
 autolabeler:
   - label: documentation
     files:
