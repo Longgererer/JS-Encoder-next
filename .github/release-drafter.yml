@@ -1,106 +1,70 @@
-# Configuration for Release Drafter: https://github.com/toolmantim/release-drafter
-name-template: $NEXT_MINOR_VERSION
-tag-template: $NEXT_MINOR_VERSION
-# Uses a more common 2-digit versioning in Jenkins plugins. Can be replaced by semver: $MAJOR.$MINOR.$PATCH
-version-template: $MAJOR.$MINOR
-
-# Emoji reference: https://gitmoji.carloscuesta.me/
-# If adding categories, please also update: https://github.com/jenkins-infra/jenkins-maven-cd-action/blob/master/action.yaml#L16
-categories:
-  - title: 💥 Breaking changes
+name-template: v$NEXT_MINOR_VERSION
+tag-template: v$NEXT_MINOR_VERSION
+version-template: v$MAJOR.$MINOR.$PATCH
+category-template: '### $TITLE'
+version-resolver:
+  major:
     labels:
-      - breaking
-  - title: 🚨 Removed
-    labels:
-      - removed
-  - title: 🎉 Major features and improvements
-    labels:
-      - major-enhancement
-      - major-rfe
-  - title: 🐛 Major bug fixes
-    labels:
-      - major-bug
-  - title: ⚠️ Deprecated
-    labels:
-      - deprecated
-  - title: 🚀 New features and improvements
+      - major
+  minor:
     labels:
       - enhancement
       - feature
-      - rfe
-  - title: 🐛 Bug fixes
+  patch:
     labels:
-      - bug
       - fix
-      - bugfix
-      - regression
-      - regression-fix
-  - title: 🌐 Localization and translation
+      - CI/CD
+      - documentation
+  default: patch
+
+categories:
+  - title: 大更新
     labels:
-      - localization
-  - title: 👷 Changes for plugin developers
+      - major
+  - title: 🎨 新特性
     labels:
-      - developer
-  - title: 📝 Documentation updates
+      - feature
+  - title: 🚀 优化/提升
+      - enhancement
+  - title: 🐛 Bug修复
+    labels:
+      - fix
+  - title: CI/CD
+    labels:
+      - CI/CD
+  - title: 📝 文档更新
     labels:
       - documentation
-  - title: 👻 Maintenance
-    labels:
-      - chore
-      - internal
-      - maintenance
-  - title: 🚦 Tests
-    labels:
-      - test
-      - tests
   - title: ✍ Other changes
-  # Default label used by Dependabot
-  - title: 📦 Dependency updates
-    labels:
-      - dependencies
-    collapse-after: 15
-exclude-labels:
-  - reverted
-  - no-changelog
-  - skip-changelog
-  - invalid
-
+sort-by: title
+sort-direction: ascending
 template: |
-  <!-- Optional: add a release summary here -->
+  ## 更新事项
+
   $CHANGES
 
-replacers:
-  - search: '/\[*JENKINS-(\d+)\]*\s*-*\s*/g'
-    replace: '[JENKINS-$1](https://issues.jenkins.io/browse/JENKINS-$1 "JENKINS-$1") - '
-  - search: '/\[*HELPDESK-(\d+)\]*\s*-*\s*/g'
-    replace: '[HELPDESK-$1](https://github.com/jenkins-infra/helpdesk/issues/$1 "HELPDESK-$1") - '
-  # TODO(oleg_nenashev): Find a better way to reference issues
-  - search: '/\[*SECURITY-(\d+)\]*\s*-*\s*/g'
-    replace: '[SECURITY-$1](https://jenkins.io/security/advisories/ "SECURITY-$1") - '
-  - search: '/\[*JEP-(\d+)\]*\s*-*\s*/g'
-    replace: '[JEP-$1](https://github.com/jenkinsci/jep/tree/master/jep/$1 "JEP-$1") - '
-  - search: '/CVE-(\d{4})-(\d+)/g'
-    replace: 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-$1-$2'
-  - search: 'JFR'
-    replace: 'Jenkinsfile Runner'
-  - search: 'CWP'
-    replace: 'Custom WAR Packager'
-  - search: '@dependabot-preview'
-    replace: '@dependabot'
+  **贡献者如下，感谢他们提供的支持：**
 
+  $CONTRIBUTORS
 autolabeler:
-  - label: 'documentation'
+  - label: documentation
     files:
       - '*.md'
     branch:
-      - '/docs{0,1}\/.+/'
-  - label: 'bug'
+      - '/^docs-.+/'
+      - '/^chore-.+/'
+  - label: fix
     branch:
-      - '/fix\/.+/'
-    title:
-      - '/fix/i'
-  - label: 'enhancement'
+      - '/^fix-.+/'
+  - label: feature
     branch:
-      - '/feature\/.+/'
-    body:
-      - '/JENKINS-[0-9]{1,4}/'
+      - '/^feat-.+/'
+      - '/^style-.+/'
+  - label: CI/CD
+    branch:
+      - '/^ci-.+/'
+      - '/^build-.+/'
+  - label: enhancement
+    branch: 
+      - '/^refactor-.+/'
+      - '/^enh-.+/'
