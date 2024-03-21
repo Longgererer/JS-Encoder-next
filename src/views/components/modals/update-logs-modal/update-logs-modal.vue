@@ -1,23 +1,3 @@
-<script lang="ts" setup>
-import Modal from "@components/modal/modal.vue"
-import { useCommonStore } from "@store/common"
-import { ref } from "vue"
-
-interface IUpdateLog {
-  version: string
-  time: string
-  title: string
-  /** 是否最新版本 */
-  isLatest: boolean
-  content: string
-}
-
-const commonStore = useCommonStore()
-const { updateDisplayModal } = commonStore
-
-const updateLogList = ref<IUpdateLog[]>([])
-</script>
-
 <template>
   <modal
     title="更新日志"
@@ -25,8 +5,7 @@ const updateLogList = ref<IUpdateLog[]>([])
     top="85"
     bottom="85"
     :show-footer="false"
-    @close="updateDisplayModal(null)"
-  >
+    @close="updateDisplayModal(null)">
     <div class="flex mt-m active-text code-font">
       <div class="version-list">
         <div class="version mb-m cursor-pointer flex-y-center">
@@ -64,6 +43,26 @@ const updateLogList = ref<IUpdateLog[]>([])
     </div>
   </modal>
 </template>
+
+<script lang="ts" setup>
+import Modal from "@components/modal/modal.vue"
+import { useCommonStore } from "@store/common"
+import { ref } from "vue"
+
+interface IUpdateLog {
+  version: string
+  time: string
+  title: string
+  /** 是否最新版本 */
+  isLatest: boolean
+  content: string
+}
+
+const commonStore = useCommonStore()
+const { updateDisplayModal } = commonStore
+
+const updateLogs = ref<IUpdateLog[]>([])
+</script>
 
 <style lang="scss" scoped>
 .version-list {

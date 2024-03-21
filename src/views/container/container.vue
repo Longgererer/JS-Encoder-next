@@ -46,7 +46,7 @@ import LibrariesModal from "@views/components/modals/libraries-modal/libraries-m
 import UploadCodeModal from "@views/components/modals/upload-code-modal/upload-code-modal.vue"
 import DownloadCodeModal from "@views/components/modals/download-code-modal/download-code-modal.vue"
 import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
-import UpdateLogModal from "@views/components/modals/update-log-modal/update-log-modal.vue"
+import UpdateLogsModal from "@views/components/modals/update-logs-modal/update-logs-modal.vue"
 import SplitLine from "@components/split-line/split-line.vue"
 import { SplitDirection } from "@type/editor"
 import { onMounted, watch } from "vue"
@@ -84,7 +84,7 @@ const displayModalMap = {
   [ModalName.UPLOAD_CODE]: UploadCodeModal,
   [ModalName.DOWNLOAD_CODE]: DownloadCodeModal,
   [ModalName.SHORTCUT]: ShortcutModal,
-  [ModalName.UPDATE_LOG]: UpdateLogModal,
+  [ModalName.UPDATE_LOG]: UpdateLogsModal,
 }
 
 const moduleSizeService = new ModuleSizeService()
