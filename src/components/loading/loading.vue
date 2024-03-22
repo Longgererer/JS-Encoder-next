@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-col flex-y-center">
+  <div class="flex-col flex-center" :style="{ height: height }">
     <div :class="namespace">
       <div
         v-for="num in 4"
@@ -14,8 +14,13 @@
 <script lang="ts" setup>
 interface IProps {
   content?: string
+  height?: string
 }
-defineProps<IProps>()
+
+withDefaults(defineProps<IProps>(), {
+  content: "加载中...",
+  height: "auto",
+})
 
 const namespace = "loading"
 </script>

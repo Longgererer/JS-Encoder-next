@@ -265,10 +265,17 @@
     cursor: default;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--color-main-bg-2);
+    border-style: dashed;
+    border-color: transparent;
+    border-width: 2px;
+    background-color: var(--color-main-bg-1);
+    background-clip: padding-box;
+    &:hover {
+      background: var(--color-main-bg-1);
+    }
   }
   &::-webkit-scrollbar-track {
-    background-color: transparent;
+    background-color: var(--color-main-bg-2);
   }
 }
 

@@ -6,40 +6,45 @@
     bottom="85"
     :show-footer="false"
     @close="updateDisplayModal(null)">
-    <div class="flex mt-m active-text code-font">
-      <div class="version-list">
-        <div class="version mb-m cursor-pointer flex-y-center">
-          <span class="font-xs text-hover-active fade-ease">v4.0.0</span>
-          <span class="version-tag font-xxs ml-m">Latest</span>
-        </div>
-        <div class="version mb-m cursor-pointer flex-y-center">
-          <span class="font-xs text-hover-active fade-ease">v4.0.0</span>
-        </div>
-      </div>
-      <div class="log-detail flex-col">
-        <span class="log-title font-r">JS-Encoder v4.0.0 更新事项</span>
-        <span class="log-time no-active-text font-xxs mt-s">2023-02-12</span>
-        <div class="log-content">
-          <div style="padding-bottom: 10px">
-            <div style="border-left: 4px solid #9246FF;padding-left: 8px;font-size: 12px;margin-bottom: 12px;">
-              <span>Feature</span>
-            </div>
-            <div style="margin-bottom: 8px;font-size: 14px;">1. 这是一个更新事项描述。</div>
-          </div>
-          <div style="padding-bottom: 10px">
-            <div style="border-left: 4px solid #73D13D;padding-left: 8px;font-size: 12px;margin-bottom: 12px;">
-              <span>Optimize</span>
-            </div>
-            <div style="margin-bottom: 8px;font-size: 14px;">1. 这是一个优化事项描述。</div>
-          </div>
-          <div style="padding-bottom: 10px">
-            <div style="border-left: 4px solid #E53935;padding-left: 8px;font-size: 12px;margin-bottom: 12px;">
-              <span>Fix</span>
-            </div>
-            <div style="margin-bottom: 8px;font-size: 14px;">1. 这是一个修复事项描述。</div>
-          </div>
+    <loading v-if="isReleasesLoading" height="200px"></loading>
+    <div v-else-if="releases.length" class="update-logs-wrapper flex mt-m active-text code-font over-hidden">
+      <div class="version-list over-y-auto common-scrollbar">
+        <div
+          class="version p-y-s pl-l mb-s cursor-pointer flex-y-center radius-xl fade-ease"
+          :class="version === currUpdateLog?.version ? 'bg-main3 active-text' : 'text-hover-active'"
+          v-for="(version, index) in versionList"
+          :key="version"
+          @click="handleChooseVersion(version)">
+          <span class="font-xs">{{ version }}</span>
+          <span v-if="!index" class="version-tag font-xxs ml-xs active-text">Latest</span>
         </div>
       </div>
+      <div v-if="currUpdateLog" class="log-detail flex-1 flex-col over-y-auto common-scrollbar">
+        <span class="log-title font-r">JS-Encoder {{ currUpdateLog.version }} 更新事项</span>
+        <span class="log-time no-active-text font-xxs mt-s">{{ currUpdateLog.publishTime }}</span>
+        <div class="log-content mt-xxl">
+          <template v-for="category in currUpdateLog.updateCategories" :key="category.title">
+            <div v-if="category.logs.length" class="pb-s mb-l">
+              <div class="log-title pl-s font-xxs mb-m" :style="categoryTitleStyle[category.title]">
+                <span>{{ category.title }}</span>
+              </div>
+              <div class="mb-s font-xs" v-for="(log, index) in category.logs" :key="index">
+                <span>{{ index + 1 }}. {{ log }}</span>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="text-right">
+          <i
+            class="icon iconfont icon-github-fill cursor-pointer font-l fade-ease text-hover-active"
+            title="view on github"
+            @click="handleClickGithubLink"
+          ></i>
+        </div>
+      </div>
+    </div>
+    <div v-else class="empty-tip flex-center">
+      <span class="describe-text">暂无数据</span>
     </div>
   </modal>
 </template>
@@ -47,36 +52,68 @@
 <script lang="ts" setup>
 import Modal from "@components/modal/modal.vue"
 import { useCommonStore } from "@store/common"
+import loading from "@components/loading/loading.vue"
 import { ref } from "vue"
-
-interface IUpdateLog {
-  version: string
-  time: string
-  title: string
-  /** 是否最新版本 */
-  isLatest: boolean
-  content: string
-}
+import useUpdateLogs, { IRelease, CategoryTitle } from "@hooks/use-update-logs"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const updateLogs = ref<IUpdateLog[]>([])
+const categoryTitleStyle = {
+  [CategoryTitle.FEATURES]: { borderColor: "var(--color-primary2)" },
+  [CategoryTitle.ENHANCEMENTS]: { borderColor: "var(--color-green2)" },
+  [CategoryTitle.BUGFIX]: { borderColor: "var(--color-red2)" },
+}
+
+const isReleasesLoading = ref<boolean>()
+const releases = ref<IRelease[]>([])
+const versionList = ref<string[]>([])
+const currUpdateLog = ref<IRelease>()
+const { getReleases } = useUpdateLogs()
+const setUpdateLogsInfo = async () => {
+  isReleasesLoading.value = true
+  const list = await getReleases()
+  isReleasesLoading.value = false
+  if (!list.length) { return }
+  releases.value = list
+  versionList.value = list.map(({ version }) => version)
+  currUpdateLog.value = list[0]
+}
+setUpdateLogsInfo()
+
+const handleChooseVersion = (version: string) => {
+  const updateLog = releases.value.find(({ version: currVersion }) => currVersion === version)
+  currUpdateLog.value = updateLog
+}
+
+const handleClickGithubLink = () => {
+  window.open(currUpdateLog.value!.url!)
+}
 </script>
 
 <style lang="scss" scoped>
-.version-list {
-  width: 160px;
-  .version-tag {
-    padding: 1px 9px;
-    border-radius: 9px;
-    background-color: var(--color-primary1);
+.update-logs-wrapper {
+  max-height: calc(100vh - 170px - 124px);
+  .version-list {
+    width: 150px;
+    max-height: 100%;
+    .version-tag {
+      padding: 1px 9px;
+      border-radius: 9px;
+      background-color: var(--color-primary1);
+    }
+  }
+  .log-detail {
+    margin-left: 40px;
+    max-height: 100%;
+    .log-content {
+      .log-title {
+        border-left: 4px solid;
+      }
+    }
   }
 }
-.log-detail {
-  margin-left: 40px;
-  .log-content {
-    margin-top: 24px;
-  }
+.empty-tip {
+  height: 200px;
 }
-</style>
+</style>../../../../hooks/use-update-logs
