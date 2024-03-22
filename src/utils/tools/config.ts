@@ -49,3 +49,7 @@ export const TYPESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/typescript/5.2.
 export const COFFEESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/coffee-script/2.7.0/coffeescript.min.js"
 /** babel编译jsx */
 export const BABEL_URL = "https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.22.17/babel.min.js"
+/** github releases */
+export const GITHUB_RELEASES_URL = "https://api.github.com/repos/Longgererer/JS-Encoder-next/releases"
+/** github latest release */
+export const GITHUB_LATEST_RELEASE_URL = "https://api.github.com/repos/Longgererer/JS-Encoder-next/releases/latest"

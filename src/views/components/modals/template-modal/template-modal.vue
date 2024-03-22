@@ -42,7 +42,7 @@
       </custom-button>
     </div>
     <div v-if="isTemplateLoading" class="mt-l">
-      <loading content="加载中"></loading>
+      <loading></loading>
     </div>
     <!--自定义模板列表-->
     <div v-else-if="customTemplateList.length" class="template-list">
