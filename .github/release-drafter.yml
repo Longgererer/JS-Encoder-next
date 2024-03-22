@@ -18,25 +18,25 @@ version-resolver:
   default: patch
 
 categories:
-  - title: 🔮 Major
+  - title: Major
     labels:
       - major
-  - title: 🎨 New Features
+  - title: New Features
     labels:
       - feature
-  - title: 🚀 Enhancements
+  - title: Enhancements
     labels:
       - enhancement
-  - title: 🐛 Bugfix
+  - title: Bugfix
     labels:
       - fix
   - title: CI/CD
     labels:
       - CI/CD
-  - title: 📝 Documentation
+  - title: Documentation
     labels:
       - documentation
-  - title: ✍ Other changes
+  - title: Other changes
 sort-by: title
 sort-direction: ascending
 template: |
