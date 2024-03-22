@@ -18,29 +18,29 @@ version-resolver:
   default: patch
 
 categories:
-  - title: 大更新
+  - title: 🔮 Major
     labels:
       - major
-  - title: 🎨 新特性
+  - title: 🎨 New Features
     labels:
       - feature
-  - title: 🚀 优化/提升
+  - title: 🚀 Enhancements
     labels:
       - enhancement
-  - title: 🐛 Bug修复
+  - title: 🐛 Bugfix
     labels:
       - fix
   - title: CI/CD
     labels:
       - CI/CD
-  - title: 📝 文档更新
+  - title: 📝 Documentation
     labels:
       - documentation
   - title: ✍ Other changes
 sort-by: title
 sort-direction: ascending
 template: |
-  ## 更新事项
+  ## Changes
 
   $CHANGES
 autolabeler:
