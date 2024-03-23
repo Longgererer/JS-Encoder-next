@@ -55,6 +55,9 @@ import { useCommonStore } from "@store/common"
 import loading from "@components/loading/loading.vue"
 import { ref } from "vue"
 import useUpdateLogs, { IRelease, CategoryTitle } from "@hooks/use-update-logs"
+import { setLocalStorage } from "@utils/tools/storage"
+import { SidebarType } from "@views/components/sidebar/sidebar"
+import { LocalStorageKey } from "@utils/config/storage"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -75,9 +78,13 @@ const setUpdateLogsInfo = async () => {
   const list = await getReleases()
   isReleasesLoading.value = false
   if (!list.length) { return }
-  releases.value = list
-  versionList.value = list.map(({ version }) => version)
-  currUpdateLog.value = list[0]
+  // 将最新版本号储存
+  setLocalStorage(LocalStorageKey.VERSION, list[0].version)
+  // 过滤掉没有需要展示日志的release
+  const displayReleases = list.filter(({ updateCategories }) => !!updateCategories.length)
+  releases.value = displayReleases
+  versionList.value = displayReleases.map(({ version }) => version)
+  currUpdateLog.value = displayReleases[0]
 }
 setUpdateLogsInfo()
 
@@ -116,4 +123,4 @@ const handleClickGithubLink = () => {
 .empty-tip {
   height: 200px;
 }
-</style>../../../../hooks/use-update-logs
+</style>

@@ -3,10 +3,13 @@ import { Theme } from "@type/interface"
 export const enum LocalStorageKey {
   /** 主题 */
   THEME = "theme",
+  /** 版本 */
+  VERSION = "version",
 }
 
 export interface ILocalStorageData {
   [LocalStorageKey.THEME]: Theme
+  [LocalStorageKey.VERSION]: string
 }
 
 export const enum SessionStorageKey {

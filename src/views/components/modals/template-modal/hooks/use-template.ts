@@ -10,7 +10,7 @@ const useTemplate = () => {
 
   /** 获取本地存储的自定义模板列表 */
   const getCustomTemplateList = async () => {
-    return await dbService.getAll<DBStoreName.TEMPLATE>(DBStoreName.TEMPLATE)
+    return await dbService.getAll(DBStoreName.TEMPLATE)
   }
 
   const createTemplate = async () => {
@@ -31,11 +31,11 @@ const useTemplate = () => {
       codeMap: origin2CodeMap,
       editorConfig: { libraries, prepMap },
     }
-    return dbService.add<DBStoreName.TEMPLATE>(DBStoreName.TEMPLATE, template)
+    return dbService.add(DBStoreName.TEMPLATE, template)
   }
 
   const updateTemplate = async (template: ITemplateInfo) => {
-    return dbService.update<DBStoreName.TEMPLATE>(DBStoreName.TEMPLATE, template)
+    return dbService.update(DBStoreName.TEMPLATE, template)
   }
 
   return {

@@ -1,26 +1,28 @@
 <template>
-  <div class="bg-main1 fill-h flex-col-x-center" :class="NAMESPACE">
-    <template v-for="(list, index) in SidebarList" :key="index">
+  <div class="bg-main1 fill-h flex-col-x-center" :class="namespace">
+    <template v-for="(list, index) in sidebarTypeList" :key="index">
       <!-- 分割线 -->
-      <div v-if="index > 0 && index !== SidebarList.length - 1 && list.length" class="split-line"></div>
+      <div v-if="!!index && index !== sidebarTypeList.length - 1 && list.length" class="split-line"></div>
       <!-- 子选项列表 -->
-      <div v-if="list.length" class="fill-w p-y-s" :class="`${NAMESPACE}-sub`">
+      <div v-if="list.length" class="fill-w p-y-s" :class="`${namespace}-sub`">
         <div
           class="flex-center"
-          :class="`${NAMESPACE}-item-wrapper`"
+          :class="`${namespace}-item-wrapper`"
           v-for="item in list"
           :key="item">
           <tooltip
-            :content="SidebarTypeToText[item]"
-            :show-triangle="false"
-            :delay="200"
             offset="8"
-            level="15">
+            level="15"
+            :content="sidebarList[item].name"
+            :show-triangle="false"
+            :delay="200">
             <icon-btn
               :size="IconBtnSize.LG"
-              :icon-class="item === SidebarType.THEME ? ThemeIcon[theme] : SidebarTypeToIcon[item]"
-              @click="handleClickItem(item)"
-            ></icon-btn>
+              @click="handleClickItem(item)">
+              <badge :value="sidebarList[item].isShowBadge">
+                <i class="icon iconfont font-inherit" :class="sidebarList[item].icon"></i>
+              </badge>
+            </icon-btn>
           </tooltip>
         </div>
       </div>
@@ -33,48 +35,42 @@
 import Tooltip from "@components/tooltip/tooltip.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-import { Theme } from "@type/interface"
-import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/tools/config"
-import {
-  SidebarList, SidebarType, SidebarTypeToIcon, SidebarTypeToModalNameMap, SidebarTypeToText, ThemeIcon,
-} from "./sidebar.interface"
-import { useCommonStore } from "@store/common"
-import { storeToRefs } from "pinia"
+import { sidebarList, sidebarTypeList, SidebarType } from "./sidebar"
+import useSidebar from "./hooks/use-sidebar"
+import Badge from "@components/badge/badge.vue"
 
-const NAMESPACE = "sidebar"
+const namespace = "sidebar"
 
-const commonStore = useCommonStore()
-const { updateDisplayModal, updateTheme } = commonStore
-const { theme } = storeToRefs(commonStore)
+const {
+  processClickTheme,
+  processClickGithub,
+  processClickHelp,
+  processClickUpdateLogs,
+  processOpenModal,
+  setUpdateLogBadge,
+} = useSidebar()
 
-const processThemeChanged = (): void => {
-  updateTheme(theme.value === Theme.DARK ? Theme.LIGHT : Theme.DARK)
+setUpdateLogBadge()
+
+const sidebarType2Func: Partial<Record<SidebarType, () => void>> = {
+  [SidebarType.THEME]: () => processClickTheme(),
+  [SidebarType.GITHUB]: () => processClickGithub(),
+  [SidebarType.HELP_DOCUMENT]: () => processClickHelp(),
+  [SidebarType.UPDATE_LOG]: () => processClickUpdateLogs(),
 }
 
 const handleClickItem = (type: SidebarType): void => {
-  switch (type) {
-    case SidebarType.THEME: {
-      processThemeChanged()
-      break
-    }
-    case SidebarType.GITHUB: {
-      window.open(GITHUB_REPO_URL, "_blank")
-      break
-    }
-    case SidebarType.HELP_DOCUMENT: {
-      window.open(HELP_DOCS_URL, "_blank")
-      break
-    }
-    default: {
-      const modalName = SidebarTypeToModalNameMap.get(type)
-      if (modalName) { updateDisplayModal(modalName) }
-    }
+  const processor = sidebarType2Func[type]
+  if (processor) {
+    processor()
+  } else {
+    processOpenModal(type)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$namespace: sidebar;
+$namespace: "sidebar";
 
 .#{$namespace} {
   width: 49px;

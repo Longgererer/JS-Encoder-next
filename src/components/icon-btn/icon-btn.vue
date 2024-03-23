@@ -8,7 +8,10 @@
     }"
     :title="title"
     @click="emits('click')">
-    <i class="icon iconfont" :class="[iconClass, size2ClassMap[size]]"></i>
+    <div :class="size2ClassMap[size]">
+      <slot v-if="$slots.default"></slot>
+      <i v-else class="icon iconfont font-inherit" :class="iconClass"></i>
+    </div>
   </div>
 </template>
 
@@ -18,7 +21,7 @@ import { AnyObject } from "@type/interface"
 
 interface IProps {
   /** icon类名 */
-  iconClass: string
+  iconClass?: string
   /** 三种尺寸：sm|md|lg */
   size?: IconBtnSize
   title?: string

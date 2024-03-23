@@ -79,7 +79,6 @@ const useUpdateLogs = () => {
     return originReleases
       .filter(({ prerelease, draft }) => !prerelease && !draft)
       .map((originRelease) => formatUpdateLog(originRelease))
-      .filter(({ updateCategories }) => !!updateCategories.length)
   }
 
   /** 获取最新版本 */

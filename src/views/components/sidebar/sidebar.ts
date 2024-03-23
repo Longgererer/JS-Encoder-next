@@ -1,4 +1,5 @@
 import { ModalName, Theme } from "@type/interface"
+import { reactive } from "vue"
 
 export enum SidebarType {
   /** 模板 */
@@ -25,7 +26,7 @@ export enum SidebarType {
   GITHUB = "Github",
 }
 
-export const SidebarTypeToText = {
+export const sidebarType2Text = {
   [SidebarType.TEMPLATE]: "模板",
   [SidebarType.PREPROCESSOR]: "预处理",
   [SidebarType.CODE_SETTINGS]: "编码设置",
@@ -39,7 +40,12 @@ export const SidebarTypeToText = {
   [SidebarType.GITHUB]: "Github",
 }
 
-export const SidebarTypeToIcon = {
+export const themeIcon = {
+  [Theme.LIGHT]: "icon-moon",
+  [Theme.DARK]: "icon-sun",
+}
+
+export const sidebarType2Icon = {
   [SidebarType.TEMPLATE]: "icon-template",
   [SidebarType.PREPROCESSOR]: "icon-preprocessor",
   [SidebarType.CODE_SETTINGS]: "icon-setting",
@@ -49,17 +55,23 @@ export const SidebarTypeToIcon = {
   [SidebarType.SHORTCUT]: "icon-keyboard",
   [SidebarType.UPDATE_LOG]: "icon-light",
   [SidebarType.HELP_DOCUMENT]: "icon-doc-help",
-  [SidebarType.THEME]: "icon-sun",
+  [SidebarType.THEME]: themeIcon[Theme.DARK],
   [SidebarType.GITHUB]: "icon-github",
 }
 
-export const ThemeIcon = {
-  [Theme.LIGHT]: "icon-moon",
-  [Theme.DARK]: "icon-sun",
+export const sidebarType2ModalName: Partial<Record<SidebarType, ModalName>> = {
+  [SidebarType.TEMPLATE]: ModalName.TEMPLATE,
+  [SidebarType.PREPROCESSOR]: ModalName.PREPROCESSOR,
+  [SidebarType.CODE_SETTINGS]: ModalName.CODE_SETTINGS,
+  [SidebarType.LIBRARIES]: ModalName.LIBRARIES,
+  [SidebarType.UPLOAD_CODE]: ModalName.UPLOAD_CODE,
+  [SidebarType.DOWNLOAD_CODE]: ModalName.DOWNLOAD_CODE,
+  [SidebarType.SHORTCUT]: ModalName.SHORTCUT,
+  [SidebarType.UPDATE_LOG]: ModalName.UPDATE_LOG,
 }
 
 /** 侧边栏选项列表，每个子列表之间用横线分割 */
-export const SidebarList: SidebarType[][] = [
+export const sidebarTypeList: SidebarType[][] = [
   [SidebarType.TEMPLATE, SidebarType.PREPROCESSOR, SidebarType.CODE_SETTINGS, SidebarType.LIBRARIES],
   [SidebarType.UPLOAD_CODE, SidebarType.DOWNLOAD_CODE],
   [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG, SidebarType.HELP_DOCUMENT],
@@ -67,13 +79,24 @@ export const SidebarList: SidebarType[][] = [
   [SidebarType.THEME, SidebarType.GITHUB],
 ]
 
-export const SidebarTypeToModalNameMap: Map<SidebarType, ModalName> = new Map([
-  [SidebarType.TEMPLATE, ModalName.TEMPLATE],
-  [SidebarType.PREPROCESSOR, ModalName.PREPROCESSOR],
-  [SidebarType.CODE_SETTINGS, ModalName.CODE_SETTINGS],
-  [SidebarType.LIBRARIES, ModalName.LIBRARIES],
-  [SidebarType.UPLOAD_CODE, ModalName.UPLOAD_CODE],
-  [SidebarType.DOWNLOAD_CODE, ModalName.DOWNLOAD_CODE],
-  [SidebarType.SHORTCUT, ModalName.SHORTCUT],
-  [SidebarType.UPDATE_LOG, ModalName.UPDATE_LOG],
-])
+export interface ISidebarOption {
+  /** 选项名称 */
+  name: string
+  /** icon class */
+  icon: string
+  /** 模态框名称，如有则点击弹出模态框 */
+  modalName?: ModalName
+  /** 是否展示提示点 */
+  isShowBadge?: boolean
+}
+
+export const sidebarList = reactive(
+  sidebarTypeList.flat().reduce((acc, sidebarType) => {
+    acc[sidebarType] = {
+      name: sidebarType2Text[sidebarType],
+      icon: sidebarType2Icon[sidebarType],
+      modalName: sidebarType2ModalName[sidebarType],
+    }
+    return acc
+  }, {} as Record<SidebarType, ISidebarOption>),
+)

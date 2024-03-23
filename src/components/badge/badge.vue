@@ -1,47 +1,50 @@
+<template>
+  <div class="relative" :class="`${namespace}-wrapper`">
+    <div
+      v-if="value"
+      class="circle absolute high-layer flex-center"
+      :class="[
+        namespace,
+        `${namespace}-${position}`,
+        `${namespace}-${size}`,
+        showBorder ? `${namespace}-border` : '',
+      ]"
+      :style="{ backgroundColor: color }">
+      <span v-if="content" class="font-xs" :class="`${namespace}-content`">{{ content }}</span>
+    </div>
+    <slot></slot>
+  </div>
+</template>
+
 <script setup lang="ts">
+import { BadgeSize, BadgePosition } from "./badge"
+
 interface IProps {
   /** 徽章的显隐 */
   value: boolean
   /** 徽章显示内容 */
   content: string
   /** 徽章位置：top-left|top-right|bottom-left|bottom-right */
-  position?: string
+  position?: BadgePosition
   /** 徽章颜色 */
   color?: string
   /** 邀请徽章尺寸 sm|md|lg */
-  size?: string
+  size?: BadgeSize
   /** 是否显示边框 */
   showBorder?: boolean
 }
 
 withDefaults(defineProps<IProps>(), {
-  value: true,
+  value: false,
   content: "",
-  position: "top-right",
+  position: BadgePosition.TOP_RIGHT,
   color: "#0085ff",
-  size: "md",
-  showBorder: true,
-})
-
-defineOptions({
-  name: "badge",
+  size: BadgeSize.MD,
+  showBorder: false,
 })
 
 const namespace = "badge"
 </script>
-
-<template>
-  <div class="relative" :class="`${namespace}-wrapper`">
-    <div
-      class="circle relative high-layer flex-center"
-      :class="`${namespace} badge-${position} badge-${size} ${showBorder ? `${namespace}-border` : ''}`"
-      :style="{ backgroundColor: color }"
-    >
-      <span class="font-xs" :class="`${namespace}-content`">{{ content }}</span>
-    </div>
-    <slot></slot>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 $namespace: "badge";
