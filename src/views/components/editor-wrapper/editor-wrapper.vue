@@ -1,3 +1,15 @@
+<template>
+  <div class="editor-wrapper fill">
+    <!--  根splitter  -->
+    <editor-splitter
+      v-if="rootSplitter?.id"
+      :id="rootSplitter.id"
+      :width="modulesSize.editorWidth"
+      :height="modulesSize.editorHeight"
+    ></editor-splitter>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { OriginLang } from "@type/prep"
@@ -39,21 +51,6 @@ watch(() => layoutStore.hasInitModulesSize, () => {
   /** 初始化编辑窗口结构 */
   initEditorWrapperConfig()
 })
-
 </script>
 
-<template>
-  <div class="editor-wrapper fill">
-    <!--  根splitter  -->
-    <editor-splitter
-      v-if="rootSplitter?.id"
-      :id="rootSplitter.id"
-      :width="modulesSize.editorWidth"
-      :height="modulesSize.editorHeight"
-    ></editor-splitter>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
