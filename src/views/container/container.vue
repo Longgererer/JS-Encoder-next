@@ -19,8 +19,8 @@
       </div>
       <div class="flex-1">
         <preview
-        :style="{ height: `${modulesSize.previewHeight}px` }"
-        :isShowScreen="layoutStore.isModulesResizing"
+          :style="{ height: `${modulesSize.previewHeight}px` }"
+          :isShowScreen="layoutStore.isModulesResizing"
         ></preview>
         <console
           :style="{ height: `${modulesSize.consoleHeight}px` }"

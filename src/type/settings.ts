@@ -4,6 +4,7 @@ export interface IEditorConfig {
   settings: IEditorSettings
   libraries: IEditorLibraries
   prepMap: IEditorPrepMap
+  isComponentMode: boolean
 }
 
 export interface IEditorSettings {
