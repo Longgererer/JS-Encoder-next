@@ -1,3 +1,4 @@
+import { OriginLang } from "@type/prep"
 import { IEditorLibraries } from "@type/settings"
 
 export const genCSSLinksCode = (cssLinks: string[]) => {
@@ -18,18 +19,18 @@ export interface IGenHTMLCodeOption {
   /** 外部链接 */
   links?: IEditorLibraries
   /** 编辑器代码 */
-  code: {
-    html?: string
-    css?: string
-    javascript?: string
-  }
+  code: Record<OriginLang, string>
 }
 
 /** 生成完整的HTML文件代码 */
 export const genHTMLFileCode = (options: IGenHTMLCodeOption) => {
   const { headTags, links, code } = options
   const { style: styleLinks = [], script: scriptLinks = [] } = links || {}
-  const { html: htmlCode = "", css: cssCode = "", javascript: javascriptCode = "" } = code || {}
+  const {
+    [OriginLang.HTML]: htmlCode = "",
+    [OriginLang.CSS]: cssCode = "",
+    [OriginLang.JAVASCRIPT]: javascriptCode = "",
+  } = code || {}
   const cssLinksCode = genCSSLinksCode(styleLinks)
   const scriptLinksCode = genScriptLinksCode(scriptLinks)
   return `
@@ -55,7 +56,29 @@ export const genHTMLFileCode = (options: IGenHTMLCodeOption) => {
   `.trim()
 }
 
-/** 编译并合并编辑器代码生成最终结果代码 */
-const genResultCode = () => {
-
+export const getMarkdownScriptCode = () => {
+  return `
+    !function() {
+      /** 渲染KaTeX数学公式 */
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\(", right: "\\)", display: false},
+          {left: "\\[", right: "\\]", display: true}
+        ]
+      })
+      /** 渲染markdown中的流程图 */
+      const flows = document.querySelectorAll(".language-flow")
+      for (let i = 0, k = flows.length;i < k;i++) {
+        const currentFlow = flows[i]
+        const pre = currentFlow.parentNode
+        const chartBox = document.createElement("div")
+        chartBox.id = "flow"+i
+        pre.parentNode.replaceChild(chartBox, pre)
+        const code = currentFlow.value || currentFlow.textContent
+        flowchart.parse(code).drawSVG("flow"+i)
+      }
+    }()
+  `.trim()
 }

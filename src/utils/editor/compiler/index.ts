@@ -1,17 +1,18 @@
 import LoaderService from "@utils/services/loader-service"
-import marked from "./marked"
-import pug from "pug"
 import { BABEL_URL, COFFEESCRIPT_URL, LESS_JS_URL, SASS_JS_URL, STYLUS_JS_URL, TYPESCRIPT_URL } from "@utils/tools/config"
 import { ModuleKind } from "typescript"
-import { Prep } from "@type/prep"
+import { OriginLang, Prep } from "@type/prep"
+import hash from "hash-sum"
 
 const loaderService = new LoaderService()
 
 export const compileMarkdown = async (code: string) => {
+  const marked = await import("marked")
   return marked.parse(code, { async: true })
 }
 
 export const compilePug = async (code: string) => {
+  const pug = await import("pug")
   return pug.compile(code)()
 }
 
@@ -71,8 +72,74 @@ export const compileJSX = async (code: string) => {
   return window.Babel.transform(code, { presets: ["react"] }).code || ""
 }
 
+export const compileVue = async (code: string): Promise<Record<OriginLang, string>> => {
+  const vue = await import("@vue/compiler-sfc")
+  const { parse, compileScript, rewriteDefault } = vue
+  const descriptor = parse(code).descriptor
+  const id = hash(code)
+
+  // 解析编译style
+  const styles = descriptor.styles
+  const styleCodes = []
+  for (const style of styles) {
+    const { lang = "", scoped, content } = style
+    const prep = getStylePrepByLang(lang)
+    const cssCode = await compile(content, prep)
+    styleCodes.push(vue.compileStyle({
+      scoped,
+      source: cssCode,
+      id: `data-v-${hash(code)}`,
+      filename: "",
+    }).code.trim())
+  }
+
+  // 解析编译script
+  const compiledScript = compileScript(descriptor, { id })
+  const mainName = "_sfc_main"
+  let scriptCode = rewriteDefault(compiledScript.content, mainName)
+  // 取出通过import引入的变量，改为从Vue中取出
+  const importReg = /import [^<]* from ['|"]vue['|"]/
+  const importList = scriptCode.match(importReg)
+  const importStr = importList?.[0] || ""
+  const importContent = importStr.match(/{.+}/)
+  scriptCode = scriptCode.replace(importReg, `const ${importContent} = Vue`)
+
+  // 获取template
+  const templateCode = descriptor.template?.content.trim() || ""
+
+  // 组装html
+  const htmlCode = `
+    <div id="app"></div>
+    <script type="module">
+      ${scriptCode}
+      const _sfc_app = Vue.createApp({
+        template: \`${templateCode}\`,
+        ...${mainName}
+      }).mount("#app")
+    </script>
+  `.trim()
+
+  return {
+    [OriginLang.HTML]: htmlCode,
+    [OriginLang.CSS]: styleCodes.join("\n"),
+    [OriginLang.JAVASCRIPT]: "",
+  }
+}
+
+const getStylePrepByLang = (lang: string) => {
+  if (/^sass$/i.test(lang)) {
+    return Prep.SASS
+  } else if (/^scss$/i.test(lang)) {
+    return Prep.SCSS
+  } else if (/^less$/i.test(lang)) {
+    return Prep.LESS
+  } else {
+    return Prep.CSS
+  }
+}
+
 type PrepCompiler = (code: string) => Promise<string>
-const prep2CompilerMap: Partial<Record<Prep, PrepCompiler | undefined>> = {
+const prep2CompilerMap: Partial<Record<Prep, PrepCompiler>> = {
   [Prep.MARKDOWN]: compileMarkdown,
   [Prep.PUG]: compilePug,
   [Prep.SASS]: compileSass,
@@ -87,8 +154,35 @@ const prep2CompilerMap: Partial<Record<Prep, PrepCompiler | undefined>> = {
 export const compile = async (code: string, prep: Prep) => {
   const compileFunc = prep2CompilerMap[prep]
   if (compileFunc) {
-    return compileFunc(code).catch((err) => { console.error(err) })
+    return compileFunc(code)
+      .catch((err) => {
+        console.error(err)
+        return ""
+      })
   } else {
     return code
+  }
+}
+
+type PrepComponentCompiler = (code: string) => Promise<Record<OriginLang, string>>
+const prep2ComponentCompilerMap: Partial<Record<Prep, PrepComponentCompiler>> = {
+  [Prep.VUE]: compileVue,
+}
+
+export const compileComponent = async (code: string, prep: Prep) => {
+  const compileFunc = prep2ComponentCompilerMap[prep]
+  const defaultCodeMap = {
+    [OriginLang.HTML]: "",
+    [OriginLang.CSS]: "",
+    [OriginLang.JAVASCRIPT]: "",
+  }
+  if (compileFunc) {
+    return compileFunc(code)
+      .catch((err) => {
+        console.error(err)
+        return defaultCodeMap
+      })
+  } else {
+    return defaultCodeMap
   }
 }
