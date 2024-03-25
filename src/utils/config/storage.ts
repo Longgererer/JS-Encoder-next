@@ -5,11 +5,14 @@ export const enum LocalStorageKey {
   THEME = "theme",
   /** 版本 */
   VERSION = "version",
+  /** 是否隐藏了新人引导 */
+  HAS_HIDED_NEW_USER_GUIDE = "hasHidedNewUserGuide",
 }
 
 export interface ILocalStorageData {
   [LocalStorageKey.THEME]: Theme
   [LocalStorageKey.VERSION]: string
+  [LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE]: boolean
 }
 
 export const enum SessionStorageKey {

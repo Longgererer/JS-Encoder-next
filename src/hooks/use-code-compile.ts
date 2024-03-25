@@ -54,7 +54,7 @@ const useCodeCompile = () => {
     const { settings: { other: { headTags } } } = editorConfigStore
     const code = await getCompiledCode()
     const links = getResultLinks()
-    genHTMLFileCode({
+    return genHTMLFileCode({
       headTags,
       links,
       code,

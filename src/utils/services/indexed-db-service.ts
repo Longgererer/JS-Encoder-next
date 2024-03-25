@@ -74,7 +74,6 @@ export class DBService {
   private readonly dbReq?: IDBOpenDBRequest
 
   constructor(config?: IDBConfig) {
-    console.trace(config)
     const indexedDb =  window.indexedDB || window.webkitDB || window.mozDB || window.msDB
     if (!indexedDb) {
       throwError(ErrorCode.DB_NOT_SUPPORT)
@@ -237,7 +236,6 @@ export class DBService {
     return new Promise((resolve, reject) => {
       const req = getReq()
       req.onsuccess = (event) => {
-        console.log(event, req)
         resolve({ success: true, data: req.result })
       }
       req.onerror = (event) => {

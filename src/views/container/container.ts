@@ -57,7 +57,7 @@ export const getModulesHeight = (
   changedHeight: number,
   modulesSize: IModulesSize,
   isFoldConsole: boolean,
-): any => {
+): Partial<IModulesSize> => {
   const { previewHeight, consoleHeight, editorHeight } = modulesSize
   const isWindowHeightDecreased = changedHeight < 0
   // 均分改变的宽度为避免出现小数点，使用floor

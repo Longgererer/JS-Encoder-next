@@ -105,7 +105,6 @@ const setCustomTemplateList = () => {
   isTemplateLoading.value = true
   getCustomTemplateList().then(({ success, data = [] }) => {
     if (!success) { return }
-    console.log(data)
     isTemplateLoading.value = false
     customTemplateList.value = data
   })
