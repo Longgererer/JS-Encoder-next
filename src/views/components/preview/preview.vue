@@ -13,27 +13,35 @@
       <div
         class="flex-center"
         :class="`${namespace}-options`"
-        v-for="option in previewOpts"
-        :key="option.name">
-        <icon-btn :size="IconBtnSize.MD" :icon-class="option.icon" :title="option.title"></icon-btn>
+        v-for="option in previewOptions"
+        :key="option.type">
+        <icon-btn
+          :size="IconBtnSize.MD"
+          :icon-class="option.icon"
+          :title="option.title"
+          @click="handleClickOption(option.type)"
+        ></icon-btn>
       </div>
     </div>
     <div class="flex-1 relative" style="height: calc(100% - 36px)">
       <!--预览html-->
       <div class="fill-h relative no-select" :class="`${namespace}-iframe-wrapper`">
         <iframe
-          title="output" id="iframe" name="iframe" ref="iframeBox"
+          title="output"
+          id="iframe"
+          name="iframe"
+          ref="iframeElement"
+          src="/src/assets/html/preview.html"
           class="fill no-border absolute pos-full"
           sandbox="allow-forms allow-modals allow-pointer-lock allow-popups
                   allow-presentation allow-same-origin allow-scripts"
           allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope;
                 payment; ambient-light-sensor; encrypted-media; fullscreen;"
           :class="`${namespace}-iframe`"
-          :src="`/src/assets/html/preview.html`"
         ></iframe>
         <!--遮罩层-->
         <div
-          v-show="isShowScreen"
+          v-show="isFullScreen"
           class="fill absolute pos-full over-hidden no-select"
           :class="`${namespace}-iframe-screen`">
           <!--尺寸显示-->
@@ -68,48 +76,47 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-
-interface IProps {
-  isShowScreen?: boolean
-}
-withDefaults(defineProps<IProps>(), {
-  isShowScreen: false,
-})
+import { previewOptions, PreviewOptionType } from "./preview"
+import { getLocalStorage, setLocalStorage } from "@utils/tools/storage"
+import { LocalStorageKey } from "@utils/config/storage"
+import PreviewService from "@utils/services/preview-service"
 
 /** 组件名 */
 const namespace = "preview"
 const { modulesSize } = useLayoutStore()
 
-enum PreviewOptName {
-  REFRESH = "refresh",
-  FULLSCREEN = "fullscreen",
-}
-
-interface IPreviewOpt {
-  icon: string
-  name: PreviewOptName
-  title: string
-}
-
-const previewOpts: IPreviewOpt[] = [
-  { icon: "icon-refresh", name: PreviewOptName.REFRESH, title: "刷新" },
-  { icon: "icon-magnify", name: PreviewOptName.FULLSCREEN, title: "全屏" },
-]
-
 /**
  * 新手引导
  */
-const isShowNewUserGuide = ref<boolean>(false)
-const handleJumpToHelp = (): void => {
-  window.open(HELP_DOCS_URL, "_blank")
-}
+const hasHidedNewUserGuide = Boolean(getLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE))
+const isShowNewUserGuide = ref<boolean>(hasHidedNewUserGuide)
 const handleSkipGuide = (): void => {
   // 隐藏引导
   isShowNewUserGuide.value = false
   // 存储状态
+  setLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE, false)
+}
+
+const handleJumpToHelp = (): void => {
+  window.open(HELP_DOCS_URL, "_blank")
+}
+
+const iframeElement = ref<HTMLIFrameElement | null>()
+let previewService: PreviewService
+onMounted(() => {
+  previewService = new PreviewService(iframeElement.value!)
+})
+
+const isFullScreen = ref<boolean>(false)
+const handleClickOption = (type: PreviewOptionType) => {
+  if (type === PreviewOptionType.FULLSCREEN) {
+    isFullScreen.value = !isFullScreen.value
+  } else if (type === PreviewOptionType.REFRESH) {
+    previewService.refreshIframe()
+  } else {}
 }
 </script>
 

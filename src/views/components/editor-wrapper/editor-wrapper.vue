@@ -21,7 +21,7 @@ import { ref, watch } from "vue"
 const editorWrapperStore = useEditorWrapperStore()
 const layoutStore = useLayoutStore()
 const { modulesSize } = layoutStore
-const { createTab, createSplitter, createEditor, updateSplitter, updateEditor } = editorWrapperStore
+const { createTab, updateCodeMap, createSplitter, createEditor, updateSplitter, updateEditor } = editorWrapperStore
 
 /** 根splitter */
 const rootSplitter = ref<IEditorSplitter | null>(null)
@@ -34,6 +34,10 @@ const initEditorWrapperConfig = (): void => {
   const tabHTML = createTab(OriginLang.HTML)
   const tabCSS = createTab(OriginLang.CSS)
   const tabJavaScript = createTab(OriginLang.JAVASCRIPT)
+  // 初始化编辑器内容
+  updateCodeMap(tabHTML.id, "")
+  updateCodeMap(tabCSS.id, "")
+  updateCodeMap(tabJavaScript.id, "")
   // 创建编辑器
   const editor = createEditor({
     displayTabId: tabHTML.id,

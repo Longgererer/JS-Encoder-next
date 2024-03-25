@@ -8,18 +8,22 @@ export interface IRefreshOptions {
   onRefreshed: () => void
 }
 
-const { getResultCode } = useCodeCompile()
-
 /** 预览相关服务 */
 @SingleInstance
 export default class PreviewService {
   /** iframe元素 */
-  private iframe: HTMLIFrameElement
+  private iframe?: HTMLIFrameElement
   /** 刷新选项 */
   private refreshOption?: IRefreshOptions
 
-  constructor(iframe: HTMLIFrameElement) {
-    this.iframe = iframe
+  constructor(iframe?: HTMLIFrameElement) {
+    if (iframe) {
+      this.iframe = iframe
+    } else {
+      if (!this.iframe) {
+        throw new Error("初始化预览服务配置缺失！")
+      }
+    }
   }
 
   public getIframe() {
@@ -27,7 +31,7 @@ export default class PreviewService {
   }
 
   public getWindow() {
-    return this.iframe.contentWindow
+    return this.iframe!.contentWindow
   }
 
   public setRefreshOptions(options: IRefreshOptions) {
@@ -40,7 +44,7 @@ export default class PreviewService {
     const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
     onBeforeRefresh?.()
     // 写入结果代码
-    const code = await getResultCode()
+    const code = await useCodeCompile().getResultCode()
     this.setCode(code)
     // 加载完成后结束
     return new Promise<void>((resolve) => {
