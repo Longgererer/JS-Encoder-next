@@ -1,0 +1,60 @@
+import useCodeCompile from "@hooks/use-code-compile"
+import SingleInstance from "@utils/decorators/single-instance"
+
+export interface IRefreshOptions {
+  /** 刷新前回调 */
+  onBeforeRefresh: () => void
+  /** 刷新后回调 */
+  onRefreshed: () => void
+}
+
+const { getResultCode } = useCodeCompile()
+
+/** 预览相关服务 */
+@SingleInstance
+export default class PreviewService {
+  /** iframe元素 */
+  private iframe: HTMLIFrameElement
+  /** 刷新选项 */
+  private refreshOption?: IRefreshOptions
+
+  constructor(iframe: HTMLIFrameElement) {
+    this.iframe = iframe
+  }
+
+  public getIframe() {
+    return this.iframe
+  }
+
+  public getWindow() {
+    return this.iframe.contentWindow
+  }
+
+  public setRefreshOptions(options: IRefreshOptions) {
+    this.refreshOption = options
+  }
+
+  public async refreshIframe() {
+    const iframeWindow = this.getWindow()
+    if (!iframeWindow) { return }
+    const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
+    onBeforeRefresh?.()
+    // 写入结果代码
+    const code = await getResultCode()
+    this.setCode(code)
+    // 加载完成后结束
+    return new Promise<void>((resolve) => {
+      iframeWindow.onload = () => {
+        onRefreshed?.()
+        resolve()
+      }
+    })
+  }
+
+  private async setCode(code: string) {
+    const iframeDoc = this.getWindow()!.document
+    iframeDoc.open()
+    iframeDoc.write(code)
+    iframeDoc.close()
+  }
+}

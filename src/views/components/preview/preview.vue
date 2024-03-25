@@ -1,53 +1,3 @@
-<script lang="ts" setup>
-import IconBtn from "@components/icon-btn/icon-btn.vue"
-import CustomButton from "@components/custom-button/custom-button.vue"
-import { BtnType } from "@type/interface"
-import { HELP_DOCS_URL } from "@utils/tools/config"
-import { ref } from "vue"
-import { useLayoutStore } from "@store/layout"
-import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-
-interface IProps {
-  isShowScreen?: boolean
-}
-const props = withDefaults(defineProps<IProps>(), {
-  isShowScreen: false,
-})
-
-/** 组件名 */
-const namespace = "preview"
-const { modulesSize } = useLayoutStore()
-
-enum PreviewOptName {
-  REFRESH = "refresh",
-  FULLSCREEN = "fullscreen",
-}
-
-interface IPreviewOpt {
-  icon: string
-  name: PreviewOptName
-  title: string
-}
-
-const previewOpts: IPreviewOpt[] = [
-  { icon: "icon-refresh", name: PreviewOptName.REFRESH, title: "刷新" },
-  { icon: "icon-magnify", name: PreviewOptName.FULLSCREEN, title: "全屏" },
-]
-
-/**
- * 新手引导
- */
-const isShowNewUserGuide = ref<boolean>(false)
-const handleJumpToHelp = (): void => {
-  window.open(HELP_DOCS_URL, "_blank")
-}
-const handleSkipGuide = (): void => {
-  // 隐藏引导
-  isShowNewUserGuide.value = false
-  // 存储状态
-}
-</script>
-
 <template>
   <div class="flex-col fill-w" :class="namespace">
     <div class="bg-main2 flex no-select pr-l flex-sh" :class="`${namespace}-bar`">
@@ -113,8 +63,58 @@ const handleSkipGuide = (): void => {
   </div>
 </template>
 
+<script lang="ts" setup>
+import IconBtn from "@components/icon-btn/icon-btn.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { BtnType } from "@type/interface"
+import { HELP_DOCS_URL } from "@utils/tools/config"
+import { ref } from "vue"
+import { useLayoutStore } from "@store/layout"
+import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
+
+interface IProps {
+  isShowScreen?: boolean
+}
+withDefaults(defineProps<IProps>(), {
+  isShowScreen: false,
+})
+
+/** 组件名 */
+const namespace = "preview"
+const { modulesSize } = useLayoutStore()
+
+enum PreviewOptName {
+  REFRESH = "refresh",
+  FULLSCREEN = "fullscreen",
+}
+
+interface IPreviewOpt {
+  icon: string
+  name: PreviewOptName
+  title: string
+}
+
+const previewOpts: IPreviewOpt[] = [
+  { icon: "icon-refresh", name: PreviewOptName.REFRESH, title: "刷新" },
+  { icon: "icon-magnify", name: PreviewOptName.FULLSCREEN, title: "全屏" },
+]
+
+/**
+ * 新手引导
+ */
+const isShowNewUserGuide = ref<boolean>(false)
+const handleJumpToHelp = (): void => {
+  window.open(HELP_DOCS_URL, "_blank")
+}
+const handleSkipGuide = (): void => {
+  // 隐藏引导
+  isShowNewUserGuide.value = false
+  // 存储状态
+}
+</script>
+
 <style lang="scss" scoped>
-$namespace: preview;
+$namespace: "preview";
 
 .#{$namespace} {
   .#{$namespace}-bar {
