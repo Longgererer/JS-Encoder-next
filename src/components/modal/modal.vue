@@ -1,42 +1,50 @@
+<template>
+  <teleport to="body">
+    <mask-layer v-if="modelValue" @click-mask="handleClickMask">
+    <transition :name="namespace">
+      <div
+        class="p-xxl radius-l bg-main2 absolute shadow flex-col"
+        :class="namespace"
+        :style="{
+          width: width ? `${width}px` : 'auto',
+          top: `${top}px`,
+          maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
+        }">
+        <div class="flex-y-center pb-l" :class="`${namespace}-header`">
+          <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
+          <div class="flex-1"></div>
+          <i
+            class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
+            @click.stop="handleCloseModal"
+          ></i>
+        </div>
+        <div class="over-y-auto flex-1" :class="`${namespace}-content`">
+          <slot></slot>
+        </div>
+        <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
+          <custom-button
+            v-if="showCancel"
+            v-bind="cancelBtnOpts"
+            @click="$emit('cancel')"
+          >{{cancelText}}</custom-button>
+          <custom-button
+            v-bind="confirmBtnOpts"
+            @click="$emit('confirm')"
+          >{{okText}}</custom-button>
+        </div>
+      </div>
+    </transition>
+  </mask-layer>
+  </teleport>
+</template>
+
 <script setup lang="ts">
 import MaskLayer from "@components/mask-layer/mask-layer.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { toRef } from "vue"
 import useEscClose from "@hooks/use-esc-close"
 import { BtnType, Size } from "@type/interface"
-
-interface IProps {
-  /** 是否显示 */
-  modelValue?: boolean
-  /** 标题 */
-  title?: string
-  /** 是否点击esc关闭 */
-  escCloseable?: boolean
-  /** 点击遮罩层关闭 */
-  maskClosable?: boolean
-  /** 距离顶部距离 */
-  top?: number | string
-  /** 距离底部距离 */
-  bottom?: number | string
-  /** modal宽度 */
-  width?: number | string
-
-  /**
-   * 底部按钮相关属性
-   */
-  /** 取消按钮属性 */
-  cancelBtnOpts?: object
-  /** 确认按钮属性 */
-  confirmBtnOpts?: object
-  /** 确认按钮的文本 */
-  okText?: string
-  /** 是否显示取消按钮 */
-  showCancel?: boolean
-  /** 取消按钮文字 */
-  cancelText?: string
-  /** 是否显示底部 */
-  showFooter?: boolean
-}
+import { IEmits, IProps } from "./modal"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
@@ -50,21 +58,18 @@ const props = withDefaults(defineProps<IProps>(), {
   top: 150,
   bottom: 150,
   cancelBtnOpts: () => ({
-    type: "default" as BtnType,
-    size: "medium" as Size,
+    type: BtnType.DEFAULT,
+    size: Size.MEDIUM,
     customClass: "",
   }),
   confirmBtnOpts: () => ({
-    type: "primary" as BtnType,
-    size: "medium" as Size,
+    type: BtnType.PRIMARY,
+    size: Size.MEDIUM,
     customClass: "",
   }),
 })
 
-const emits = defineEmits<{
-  (event: "update:modelValue", state: boolean): void,
-  (event: "confirm" | "cancel" | "close"): void,
-}>()
+const emits = defineEmits<IEmits>()
 
 const namespace = "modal"
 
@@ -88,49 +93,8 @@ const handleCloseModal = (): void => {
 }
 </script>
 
-<template>
-  <teleport to="body">
-    <transition :name="namespace">
-      <mask-layer v-show="modelValue" @click-mask="handleClickMask">
-        <div
-          class="p-xxl radius-l bg-main2 absolute shadow flex-col"
-          :class="namespace"
-          :style="{
-            width: width ? `${width}px` : 'auto',
-            top: `${top}px`,
-            maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
-          }"
-        >
-          <div class="flex-y-center pb-l" :class="`${namespace}-header`">
-            <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
-            <div class="flex-1"></div>
-            <i
-              class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
-              @click.stop="handleCloseModal"
-            ></i>
-          </div>
-          <div class="over-y-auto flex-1" :class="`${namespace}-content`">
-            <slot></slot>
-          </div>
-          <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
-            <custom-button
-              v-if="showCancel"
-              v-bind="cancelBtnOpts"
-              @click="$emit('cancel')"
-            >{{cancelText}}</custom-button>
-            <custom-button
-              v-bind="confirmBtnOpts"
-              @click="$emit('confirm')"
-            >{{okText}}</custom-button>
-          </div>
-        </div>
-      </mask-layer>
-    </transition>
-  </teleport>
-</template>
-
 <style lang="scss" scoped>
-$namespace: 'modal';
+$namespace: "modal";
 
 .#{$namespace} {
   min-width: 500px;
@@ -157,20 +121,5 @@ $namespace: 'modal';
       background-color: var(--color-main-bg-2);
     }
   }
-}
-
-.#{$namespace}-enter-from,
-.#{$namespace}-leave-to {
-  opacity: 0;
-}
-
-.#{$namespace}-enter-to,
-.#{$namespace}-leave-from {
-  opacity: 1;
-}
-
-.#{$namespace}-enter-active,
-.#{$namespace}-leave-active {
-  @include transition(all, 0.3s, ease);
 }
 </style>

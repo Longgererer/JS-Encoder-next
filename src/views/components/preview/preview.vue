@@ -54,7 +54,7 @@
       </div>
       <!--新手引导-->
       <div
-        v-if="!isShowNewUserGuide"
+        v-if="isShowNewUserGuide"
         class="flex-col-center code-font font-xxl active-text absolute pos-full bg-main3 over-hidden"
         :class="`${namespace}-guide`">
         <div class="first-title">首次使用<span class="primary-text p-x-s">JS-Encoder</span>?</div>
@@ -130,7 +130,7 @@ onMounted(() => {
 })
 
 /** 是否全屏展示iframe */
-const isFullScreen = ref<boolean>(true)
+const isFullScreen = ref<boolean>(false)
 const handleClickOption = (type: PreviewOptionType) => {
   switch(type) {
     case PreviewOptionType.FULLSCREEN:
