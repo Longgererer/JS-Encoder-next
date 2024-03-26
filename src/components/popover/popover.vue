@@ -133,7 +133,7 @@ const handleLeaveTarget = (): void => {
 }
 .popover-enter-active,
 .popover-leave-active {
-  @include transition(all, 0.1s, ease);
+  @include transition(all, 0.2s, ease);
 }
 </style>
 
