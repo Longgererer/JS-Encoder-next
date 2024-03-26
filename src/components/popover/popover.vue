@@ -1,13 +1,13 @@
 <template>
   <div
+    ref="popoverRef"
     class="inline-block"
     :class="[
       appendToBody ? '' : 'relative',
     ]"
     @click="handleClickTarget"
     @mouseleave="handleLeaveTarget"
-    @mouseover="handleOverTarget"
-    ref="popoverRef">
+    @mouseover="handleOverTarget">
     <teleport to="body" :disabled="!appendToBody">
       <transition name="popover">
         <div

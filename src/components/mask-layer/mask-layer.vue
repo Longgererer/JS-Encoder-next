@@ -17,7 +17,7 @@ const namespace = "mask-layer"
 </template>
 
 <style lang="scss" scoped>
-$namespace: mask-layer;
+$namespace: "mask-layer";
 
 .#{$namespace} {
   top: 0;

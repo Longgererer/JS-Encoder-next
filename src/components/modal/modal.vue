@@ -1,40 +1,40 @@
 <template>
   <teleport to="body">
-    <mask-layer v-if="modelValue" @click-mask="handleClickMask">
-    <transition :name="namespace">
-      <div
-        class="p-xxl radius-l bg-main2 absolute shadow flex-col"
-        :class="namespace"
-        :style="{
-          width: width ? `${width}px` : 'auto',
-          top: `${top}px`,
-          maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
-        }">
-        <div class="flex-y-center pb-l" :class="`${namespace}-header`">
-          <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
-          <div class="flex-1"></div>
-          <i
-            class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
-            @click.stop="handleCloseModal"
-          ></i>
+    <transition :name="namespace" appear>
+      <mask-layer v-if="modelValue" @click-mask="handleClickMask">
+        <div
+          class="p-xxl radius-l bg-main2 absolute shadow flex-col"
+          :class="namespace"
+          :style="{
+            width: width ? `${width}px` : 'auto',
+            top: `${top}px`,
+            maxHeight: `calc(100vh - ${top}px - ${bottom}px)`
+          }">
+          <div class="flex-y-center pb-l" :class="`${namespace}-header`">
+            <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
+            <div class="flex-1"></div>
+            <i
+              class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
+              @click.stop="handleCloseModal"
+            ></i>
+          </div>
+          <div class="over-y-auto flex-1" :class="`${namespace}-content`">
+            <slot></slot>
+          </div>
+          <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
+            <custom-button
+              v-if="showCancel"
+              v-bind="cancelBtnOpts"
+              @click="$emit('cancel')"
+            >{{cancelText}}</custom-button>
+            <custom-button
+              v-bind="confirmBtnOpts"
+              @click="$emit('confirm')"
+            >{{okText}}</custom-button>
+          </div>
         </div>
-        <div class="over-y-auto flex-1" :class="`${namespace}-content`">
-          <slot></slot>
-        </div>
-        <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
-          <custom-button
-            v-if="showCancel"
-            v-bind="cancelBtnOpts"
-            @click="$emit('cancel')"
-          >{{cancelText}}</custom-button>
-          <custom-button
-            v-bind="confirmBtnOpts"
-            @click="$emit('confirm')"
-          >{{okText}}</custom-button>
-        </div>
-      </div>
+      </mask-layer>
     </transition>
-  </mask-layer>
   </teleport>
 </template>
 
@@ -121,5 +121,15 @@ $namespace: "modal";
       background-color: var(--color-main-bg-2);
     }
   }
+}
+
+.#{$namespace}-enter-active,
+.#{$namespace}-leave-active {
+  transition: all 0.2s ease;
+}
+.#{$namespace}-enter-from,
+.#{$namespace}-leave-to {
+  opacity: 0;
+  transform: scale(1.05);
 }
 </style>
