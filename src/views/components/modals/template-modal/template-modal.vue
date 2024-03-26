@@ -14,23 +14,13 @@
     <div class="modal-desc-text">选择你想使用的模板</div>
     <!--内置模板列表-->
     <div class="template-list pb-l">
-      <div
-        class="template flex code-font p-l radius-l cursor-pointer fade-ease"
-        :class="item.id === currTemplate?.id ? 'active' : ''"
+      <template-card
         v-for="(item, index) in inbuiltTemplateList"
         :key="index"
-        @mousedown="handleChooseTemplate(item)">
-        <svg class="lang-icon" aria-hidden="true">
-          <use :xlink:href="`#${getTemplateIcon(item)}`"></use>
-        </svg>
-        <div class="flex-col flex-jcb">
-          <div class="active-text font-xs template-lang">{{item.lang}}</div>
-          <div
-            class="font-xxs template-type"
-            :class="item.isComponent ? 'golden-text' : 'describe-text'"
-          >{{item.isComponent ? "component" : "default"}}</div>
-        </div>
-      </div>
+        :template="item"
+        :active="item.id === currTemplate?.id"
+        @choose="handleChooseTemplate(item)"
+      ></template-card>
     </div>
     <div class="modal-sub-title flex-y-center">
       <span>自定义模板</span>
@@ -46,23 +36,13 @@
     </div>
     <!--自定义模板列表-->
     <div v-else-if="customTemplateList.length" class="template-list">
-      <div
-        class="template flex code-font p-l radius-l cursor-pointer fade-ease"
-        :class="item.id === currTemplate?.id ? 'active' : ''"
-        v-for="(item, index) in customTemplateList"
+      <template-card
+        v-for="(item, index) in inbuiltTemplateList"
         :key="index"
-        @mousedown="handleChooseTemplate(item)">
-        <svg class="lang-icon" aria-hidden="true">
-          <use :xlink:href="`#${getTemplateIcon(item)}`"></use>
-        </svg>
-        <div class="flex-col flex-jcb">
-          <div class="active-text font-xs template-lang">{{item.lang}}</div>
-          <div
-            class="font-xxs template-type"
-            :class="item.isComponent ? 'golden-text' : 'describe-text'"
-          >{{item.isComponent ? "component" : "default"}}</div>
-        </div>
-      </div>
+        :template="item"
+        :active="item.id === currTemplate?.id"
+        @choose="handleChooseTemplate(item)"
+      ></template-card>
     </div>
     <template v-else>
       <div class="flex-col flex-center bg-main3 radius-l blank-tip-area">
@@ -75,14 +55,15 @@
 </template>
 
 <script setup lang="ts">
-import modal from "@components/modal/modal.vue"
-import helpPopover from "@views/components/help-popover/help-popover.vue"
-import customButton from "@components/custom-button/custom-button.vue"
-import loading from "@components/loading/loading.vue"
+import Modal from "@components/modal/modal.vue"
+import HelpPopover from "@views/components/help-popover/help-popover.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import Loading from "@components/loading/loading.vue"
+import TemplateCard from "./components/template-card/template-card.vue"
 import { ref } from "vue"
 import { useCommonStore } from "@store/common"
 import { Size } from "@type/interface"
-import { inbuiltTemplateList, getTemplateIcon } from "./template-modal"
+import { inbuiltTemplateList } from "./template-modal"
 import { ITemplateInfo } from "@utils/config/indexed-db"
 import useTemplate from "./hooks/use-template"
 
@@ -131,28 +112,6 @@ const handleCreateTemplate = () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  .template {
-    background-color: var(--color-main-bg-1);
-    border: 2px solid var(--color-main-bg-1);
-    &:hover {
-      border: 2px solid var(--color-primary1);
-    }
-    &.active {
-      background-color: var(--color-primary1);
-      border: 2px solid var(--color-primary2);
-    }
-    .lang-icon {
-      width: 40px;
-      height: 40px;
-      margin-right: 32px;
-    }
-    .template-lang {
-      line-height: 18px;
-    }
-    .template-type {
-      line-height: 16px;
-    }
-  }
 }
 .blank-tip-area {
   height: 100px;

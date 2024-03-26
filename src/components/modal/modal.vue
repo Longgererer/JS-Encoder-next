@@ -14,6 +14,7 @@
             <span class="fw-bold no-select" :class="`${namespace}-title`">{{title}}</span>
             <div class="flex-1"></div>
             <i
+              v-if="showClose"
               class="icon iconfont icon-close cursor-pointer fade-ease text-hover-active"
               @click.stop="handleCloseModal"
             ></i>
@@ -30,7 +31,7 @@
             <custom-button
               v-bind="confirmBtnOpts"
               @click="$emit('confirm')"
-            >{{okText}}</custom-button>
+            ><span class="def-font">{{okText}}</span></custom-button>
           </div>
         </div>
       </mask-layer>
@@ -53,6 +54,7 @@ const props = withDefaults(defineProps<IProps>(), {
   maskClosable: true,
   okText: "确认",
   showCancel: false,
+  showClose: true,
   cancelText: "取消",
   showFooter: true,
   top: 150,

@@ -13,6 +13,8 @@ export interface IProps {
   bottom?: number | string
   /** modal宽度 */
   width?: number | string
+  /** 是否显示关闭按钮 */
+  showClose?: boolean
 
   /**
    * 底部按钮相关属性

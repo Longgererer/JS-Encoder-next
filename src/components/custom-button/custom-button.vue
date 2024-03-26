@@ -14,8 +14,7 @@
       customClass,
     ]"
     :disabled="isDisabled"
-    @click.stop="$emit('click')"
-  >
+    @click.stop="$emit('click')">
     <span class="loading-action" :class="`${NAMESPACE}-load`" v-show="loading">-</span>
     <span class="inline-block" :class="`${NAMESPACE}-content ${loading ? 'ml-s' : ''}`">
       <i v-if="icon || showIcon" :class="`${NAMESPACE}-icon icon iconfont ${iconClass}`"></i>
