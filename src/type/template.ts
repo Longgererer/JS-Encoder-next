@@ -1,5 +1,5 @@
 import { OriginLang } from "./prep"
-import { IEditorConfig, IEditorLibraries, IEditorPrepMap } from "./settings"
+import { IEditorConfig } from "./settings"
 import { DeepPartial } from "./types"
 
 /** 模板对应的语言 */
