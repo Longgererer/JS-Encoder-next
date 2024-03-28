@@ -40,7 +40,6 @@ $transition-name: "message-fade";
   transform: translateX(-50%);
   z-index: 2000;
 }
-
 .fademsg-move,
 .fademsg-enter-active,
 .fademsg-leave-active {
