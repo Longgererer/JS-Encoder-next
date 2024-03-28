@@ -1,30 +1,33 @@
 <template>
   <div
-    class="template flex code-font p-l radius-l cursor-pointer fade-ease"
+    class="template flex code-font p-l radius-l cursor-pointer fade-ease relative"
     :class="active ? 'active' : ''"
-    @mousedown="handleChooseTemplate()">
+    @click="emits('choose', template)">
     <svg class="lang-icon" aria-hidden="true">
       <use :xlink:href="`#${templateIcon}`"></use>
     </svg>
     <div class="flex-col flex-jcb">
-      <div class="active-text font-xs template-lang">{{template.lang}}</div>
+      <div class="active-text font-xs template-lang">{{template.name || template.lang}}</div>
       <div
         class="font-xxs template-type"
         :class="template.isComponent ? 'golden-text' : 'describe-text'"
       >{{template.isComponent ? "component" : "default"}}</div>
+      <i
+        v-show="template.type === TemplateType.CUSTOM && active"
+        class="icon iconfont icon-edit-template active-text absolute pos-bottom pos-right mr-s mb-s"
+        title="编辑模板"
+        @click.stop="emits('edit', template)"
+      ></i>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { TemplateType } from "@type/template"
 import { IEmits, IProps, getTemplateIcon } from "./template-card"
 
 const props = withDefaults(defineProps<IProps>(), {})
 const emits = defineEmits<IEmits>()
-
-const handleChooseTemplate = () => {
-  emits("choose", props.template)
-}
 
 const templateIcon = getTemplateIcon(props.template)
 </script>

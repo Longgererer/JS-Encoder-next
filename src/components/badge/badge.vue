@@ -23,7 +23,7 @@ interface IProps {
   /** 徽章的显隐 */
   value: boolean
   /** 徽章显示内容 */
-  content: string
+  content?: string
   /** 徽章位置：top-left|top-right|bottom-left|bottom-right */
   position?: BadgePosition
   /** 徽章颜色 */

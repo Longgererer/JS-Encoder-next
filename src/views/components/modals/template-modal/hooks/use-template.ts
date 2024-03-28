@@ -13,7 +13,7 @@ const useTemplate = () => {
     return await dbService.getAll(DBStoreName.TEMPLATE)
   }
 
-  const createTemplate = async () => {
+  const createTemplate = async (name: string) => {
     const { isCodeEmpty, codeMap, tabMap } = useEditorWrapperStore()
     const { libraries, prepMap } = useEditorConfigStore()
     // TODO：代码为空要有提示
@@ -25,13 +25,15 @@ const useTemplate = () => {
       return acc
     }, {} as Record<OriginLang, string>)
     const template: ITemplateInfo = {
-      name: "123",
+      name,
       lang: TemplateLang.CUSTOM,
       type: TemplateType.CUSTOM,
       codeMap: origin2CodeMap,
       editorConfig: { libraries, prepMap },
     }
-    return dbService.add(DBStoreName.TEMPLATE, template)
+    const { success, data: id } = await dbService.add(DBStoreName.TEMPLATE, template)
+    const data: ITemplateInfo | undefined = success ? { ...template, id } : undefined
+    return { success, data }
   }
 
   const updateTemplate = async (template: ITemplateInfo) => {

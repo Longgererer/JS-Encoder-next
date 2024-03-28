@@ -5,6 +5,7 @@
     top="85"
     bottom="85"
     okText="使用该模板"
+    :esc-closeable="false"
     :confirm-btn-opts="{
       customClass: 'p-l',
       disabled: !currTemplate,
@@ -24,9 +25,9 @@
     </div>
     <div class="modal-sub-title flex-y-center">
       <span>自定义模板</span>
-      <help-popover describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
+      <help-popover class="ml-s" describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
       <div class="flex-1"></div>
-      <custom-button :size="Size.SMALL" @click="handleCreateTemplate">
+      <custom-button :size="Size.SMALL" @click="handleClickCreateTemplate">
         <i class="icon iconfont icon-add font-xxs mr-xs"></i>
         <span>以当前代码创建</span>
       </custom-button>
@@ -37,11 +38,12 @@
     <!--自定义模板列表-->
     <div v-else-if="customTemplateList.length" class="template-list">
       <template-card
-        v-for="(item, index) in inbuiltTemplateList"
+        v-for="(item, index) in customTemplateList"
         :key="index"
         :template="item"
         :active="item.id === currTemplate?.id"
         @choose="handleChooseTemplate(item)"
+        @edit="handleClickEditTemplate(item)"
       ></template-card>
     </div>
     <template v-else>
@@ -49,8 +51,14 @@
         <span class="no-active-text font-xxs mb-s">当前未创建任何自定义模板</span>
       </div>
     </template>
-    <div>
-    </div>
+    <!-- 创建/编辑模板 -->
+    <edit-template-modal
+      v-if="isShowEditModal"
+      :isEdit="!!currEditTemplate"
+      :template="currEditTemplate"
+      @confirm="handleUpdateTemplate"
+      @cancel="handleCancelUpdateTemplate"
+    ></edit-template-modal>
   </modal>
 </template>
 
@@ -60,15 +68,20 @@ import HelpPopover from "@views/components/help-popover/help-popover.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import Loading from "@components/loading/loading.vue"
 import TemplateCard from "./components/template-card/template-card.vue"
+import EditTemplateModal from "./components/edit-template-modal/edit-template-modal.vue"
+import { IEditTemplateForm } from "./components/edit-template-modal/edit-template-modal"
 import { ref } from "vue"
 import { useCommonStore } from "@store/common"
 import { Size } from "@type/interface"
 import { inbuiltTemplateList } from "./template-modal"
 import { ITemplateInfo } from "@utils/config/indexed-db"
 import useTemplate from "./hooks/use-template"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
+import message from "@components/message-list/message-list"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
+const editorWrapperStore = useEditorWrapperStore()
 
 /** 当前选中的自定义模板id */
 const currTemplate= ref<ITemplateInfo>()
@@ -77,7 +90,7 @@ const handleChooseTemplate = (template: ITemplateInfo) => {
   currTemplate.value = template
 }
 
-const { getCustomTemplateList, createTemplate } = useTemplate()
+const { getCustomTemplateList, createTemplate, updateTemplate } = useTemplate()
 const customTemplateList = ref<ITemplateInfo[]>([])
 const isTemplateLoading = ref<boolean>(false)
 /** 设置自定义模板 */
@@ -92,18 +105,57 @@ const setCustomTemplateList = () => {
 }
 setCustomTemplateList()
 
-/** 更新模板 */
-const handleUpdateTemplate = () => {
-
+const isShowEditModal = ref<boolean>(false)
+const currEditTemplate = ref<ITemplateInfo | undefined>(undefined)
+/** 点击编辑模板 */
+const handleClickEditTemplate = (template: ITemplateInfo) => {
+  currEditTemplate.value = template
+  isShowEditModal.value = true
+}
+const processCloseEditModal = () => {
+  currEditTemplate.value = undefined
+  isShowEditModal.value = false
+}
+/** 创建/更新模板 */
+const handleUpdateTemplate = async (info: IEditTemplateForm) => {
+  if (currEditTemplate.value) {
+    processUpdateTemplate(info)
+  } else {
+    processCreateTemplate(info)
+  }
+}
+/** 取消创建/更新模板 */
+const handleCancelUpdateTemplate = () => {
+  processCloseEditModal()
 }
 
+const handleClickCreateTemplate = () => {
+  const { isCodeEmpty } = editorWrapperStore
+  if (isCodeEmpty) {
+    message.error("代码空白")
+    return
+  }
+  isShowEditModal.value = true
+}
 /** 创建新模板 */
-const handleCreateTemplate = () => {
-  createTemplate().then(({ success, data }) => {
-    if (success) {
-      console.log("添加成功")
-    }
-  })
+const processUpdateTemplate = async (info: IEditTemplateForm) => {
+  const { id } = currEditTemplate.value!
+  const editIndex = customTemplateList.value.findIndex((template) => id === template.id)
+  const newTemplate = {
+    ...customTemplateList.value[editIndex],
+    name: info.name,
+  }
+  const { success, data } = await updateTemplate(newTemplate)
+  customTemplateList.value[editIndex] = newTemplate
+  processCloseEditModal()
+}
+/** 创建新模板 */
+const processCreateTemplate = async (info: IEditTemplateForm) => {
+  const { success, data } = await createTemplate(info.name)
+  processCloseEditModal()
+  if (success) {
+    customTemplateList.value.push(data!)
+  }
 }
 </script>
 

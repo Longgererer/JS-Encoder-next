@@ -15,8 +15,8 @@ const props = defineProps<IProps>()
 </script>
 
 <template>
-  <popover offset="8" v-bind="$attrs">
-    <div class="cursor-pointer m-xs">
+  <popover offset="8" level="500" v-bind="$attrs">
+    <div class="cursor-pointer">
       <i class="icon iconfont icon-help font-s primary-text"></i>
     </div>
     <template v-slot:content>

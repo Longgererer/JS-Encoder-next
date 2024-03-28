@@ -17,7 +17,7 @@ export interface IProps {
 }
 
 export interface IEmits {
-  (event: "choose", value: ITemplateInfo): void
+  (event: "choose" | "edit", value: ITemplateInfo): void
 }
 
 /** 根据模板的预处理获取模板的主要语言 */

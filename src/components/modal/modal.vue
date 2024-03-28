@@ -99,7 +99,6 @@ const handleCloseModal = (): void => {
 $namespace: "modal";
 
 .#{$namespace} {
-  min-width: 500px;
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid var(--color-modal-def-border);

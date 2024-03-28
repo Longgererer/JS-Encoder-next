@@ -9,25 +9,26 @@
     @mouseleave="handleLeaveTarget"
     @mouseover="handleOverTarget">
     <teleport to="body" :disabled="!appendToBody">
-      <transition name="popover">
+      <transition :name="namespace">
         <div
           v-show="visible"
-          class="popover absolute pos-origin"
+          class="absolute pos-origin"
           :class="[
+            namespace,
             appendToBody ? '' : 'absolute pos-origin no-append-to-body',
           ]"
           :style="{ zIndex: level }"
           @mouseover="handleOverTarget"
           @mouseleave="handleLeaveTarget">
           <div
-            class="popover-container p-x-l p-y-l absolute shadow radius-l"
-            :class="`popover-${position}`"
+            class="p-x-l p-y-l absolute shadow radius-l"
+            :class="`${namespace}-${position} ${namespace}-container`"
             :style="{...offsetStyle, ...posStyle}">
             <slot name="content"></slot>
             <span
               v-if="showTriangle"
-              class="popover-triangle absolute"
-              :class="`triangle-${position}`"
+              class="absolute"
+              :class="`${namespace}-triangle triangle-${position}`"
             ></span>
           </div>
         </div>
@@ -43,6 +44,8 @@ import { ref, watch } from "vue"
 import { getOffsetStyle, getPosStyle } from "@components/utils/common"
 import useClickOutside from "@hooks/use-click-outside"
 import { IProps } from "./popover"
+
+const namespace = "popover"
 
 const props = withDefaults(defineProps<IProps>(), {
   offset: 0,

@@ -19,6 +19,6 @@ $namespace: "mask-layer";
   top: 0;
   left: 0;
   background-color: var(--color-mask-bgc);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(6px);
 }
 </style>

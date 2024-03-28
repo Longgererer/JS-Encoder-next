@@ -5,11 +5,15 @@
     :mask-closable="false"
     :esc-closeable="false"
     :show-close="false"
+    :show-cancel="true"
     :title="`${isEdit ? '编辑' : '创建'}模板`"
+    :confirm-btn-opts="{
+      disabled: !editTemplateForm.name,
+    }"
     @cancel="handleCancelModal"
-    @confirm="handleConfirmModal">
+    @confirm="emits('confirm', editTemplateForm)">
     <div class="active-text mt-l mb-xs code-font font-xs">模板名</div>
-    <custom-input v-model="editTemplateForm.name"></custom-input>
+    <custom-input v-model.trim="editTemplateForm.name"></custom-input>
   </modal>
 </template>
 
@@ -37,10 +41,6 @@ init()
 const handleCancelModal = () => {
   editTemplateForm.value = { ...initFormValue }
   emits("cancel")
-}
-
-const handleConfirmModal = () => {
-  emits("confirm", editTemplateForm.value)
 }
 </script>
 

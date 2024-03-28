@@ -138,7 +138,7 @@ export class DBService {
   /** 获取单条数据 */
   public get<T extends keyof IDBStoreData>(
     storeName: DBStoreName,
-    primaryKey: string,
+    primaryKey: IDBValidKey | IDBKeyRange,
   ) {
     return this.setSingleReqCallback<IDBStoreData[T]>(
       () => this.beginTransaction(storeName).get(primaryKey),
@@ -172,17 +172,17 @@ export class DBService {
   public update<T extends keyof IDBStoreData>(
     storeName: DBStoreName,
     data: IDBStoreData[T],
-    primaryKey?: string,
+    primaryKey?: IDBValidKey,
   ) {
     return this.setSingleReqCallback<T>(
-      () => this.beginTransaction(storeName).put(data, primaryKey),
+      () => this.beginTransaction(storeName).put(deepCopy(data), primaryKey),
       ErrorCode.DB_UPDATE_FAILED,
       storeName, data, primaryKey,
     )
   }
 
   /** 删除数据 */
-  public delete(storeName: DBStoreName, primaryKey: string): Promise<any> {
+  public delete(storeName: DBStoreName, primaryKey: IDBValidKey | IDBKeyRange): Promise<any> {
     return this.setSingleReqCallback(
       () => this.beginTransaction(storeName).delete(primaryKey),
       ErrorCode.DB_DELETE_FAILED,
