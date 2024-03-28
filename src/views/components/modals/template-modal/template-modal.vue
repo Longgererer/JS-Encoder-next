@@ -27,7 +27,7 @@
       <span>自定义模板</span>
       <help-popover class="ml-s" describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
       <div class="flex-1"></div>
-      <custom-button :size="Size.SMALL" @click="handleClickCreateTemplate">
+      <custom-button :size="Size.SMALL" @click="handleClickCreateBtn">
         <i class="icon iconfont icon-add font-xxs mr-xs"></i>
         <span>以当前代码创建</span>
       </custom-button>
@@ -56,6 +56,7 @@
       v-if="isShowEditModal"
       :isEdit="!!currEditTemplate"
       :template="currEditTemplate"
+      :confirm-loading="isEditModalLoading"
       @confirm="handleUpdateTemplate"
       @cancel="handleCancelUpdateTemplate"
     ></edit-template-modal>
@@ -106,6 +107,7 @@ const setCustomTemplateList = () => {
 setCustomTemplateList()
 
 const isShowEditModal = ref<boolean>(false)
+const isEditModalLoading = ref<boolean>(false)
 const currEditTemplate = ref<ITemplateInfo | undefined>(undefined)
 /** 点击编辑模板 */
 const handleClickEditTemplate = (template: ITemplateInfo) => {
@@ -129,15 +131,15 @@ const handleCancelUpdateTemplate = () => {
   processCloseEditModal()
 }
 
-const handleClickCreateTemplate = () => {
+const handleClickCreateBtn = () => {
   const { isCodeEmpty } = editorWrapperStore
   if (isCodeEmpty) {
-    message.error("代码空白")
+    message.notice("请先编写代码再创建模板")
     return
   }
   isShowEditModal.value = true
 }
-/** 创建新模板 */
+/** 更新模板信息 */
 const processUpdateTemplate = async (info: IEditTemplateForm) => {
   const { id } = currEditTemplate.value!
   const editIndex = customTemplateList.value.findIndex((template) => id === template.id)
@@ -145,17 +147,29 @@ const processUpdateTemplate = async (info: IEditTemplateForm) => {
     ...customTemplateList.value[editIndex],
     name: info.name,
   }
-  const { success, data } = await updateTemplate(newTemplate)
-  customTemplateList.value[editIndex] = newTemplate
-  processCloseEditModal()
+  isEditModalLoading.value = true
+  const { success } = await updateTemplate(newTemplate)
+  if (success) {
+    message.success("模板更新成功")
+    customTemplateList.value[editIndex] = newTemplate
+    processCloseEditModal()
+  } else {
+    message.error("模板更新失败")
+  }
+  isEditModalLoading.value = false
 }
 /** 创建新模板 */
 const processCreateTemplate = async (info: IEditTemplateForm) => {
+  isEditModalLoading.value = true
   const { success, data } = await createTemplate(info.name)
-  processCloseEditModal()
   if (success) {
+    message.success("模板创建成功")
     customTemplateList.value.push(data!)
+    processCloseEditModal()
+  } else {
+    message.error("模板创建失败")
   }
+  isEditModalLoading.value = false
 }
 </script>
 

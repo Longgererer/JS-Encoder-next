@@ -1,3 +1,5 @@
+import type { IProps as IButtonProps } from "@components/custom-button/custom-button"
+
 export interface IProps {
   /** 是否显示 */
   modelValue?: boolean
@@ -20,9 +22,9 @@ export interface IProps {
    * 底部按钮相关属性
    */
   /** 取消按钮属性 */
-  cancelBtnOpts?: object
+  cancelBtnOpts?: IButtonProps
   /** 确认按钮属性 */
-  confirmBtnOpts?: object
+  confirmBtnOpts?: IButtonProps
   /** 确认按钮的文本 */
   okText?: string
   /** 是否显示取消按钮 */

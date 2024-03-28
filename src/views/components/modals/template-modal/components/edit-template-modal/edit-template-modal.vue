@@ -9,6 +9,7 @@
     :title="`${isEdit ? '编辑' : '创建'}模板`"
     :confirm-btn-opts="{
       disabled: !editTemplateForm.name,
+      loading: confirmLoading,
     }"
     @cancel="handleCancelModal"
     @confirm="emits('confirm', editTemplateForm)">

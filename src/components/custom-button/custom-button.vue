@@ -15,7 +15,7 @@
     ]"
     :disabled="isDisabled"
     @click.stop="$emit('click')">
-    <span class="loading-action" :class="`${namespace}-load`" v-show="loading">-</span>
+    <span class="border-box" :class="`${namespace}-load`" v-show="loading"></span>
     <span class="inline-block" :class="`${namespace}-content ${loading ? 'ml-s' : ''}`">
       <i v-if="icon || showIcon" :class="`${namespace}-icon icon iconfont ${iconClass}`"></i>
       <slot v-if="!icon"></slot>

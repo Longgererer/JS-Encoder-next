@@ -3,11 +3,11 @@
     class="template flex code-font p-l radius-l cursor-pointer fade-ease relative"
     :class="active ? 'active' : ''"
     @click="emits('choose', template)">
-    <svg class="lang-icon" aria-hidden="true">
+    <svg class="lang-icon flex-sh" aria-hidden="true">
       <use :xlink:href="`#${templateIcon}`"></use>
     </svg>
     <div class="flex-col flex-jcb">
-      <div class="active-text font-xs template-lang">{{template.name || template.lang}}</div>
+      <div class="active-text font-xs template-lang line-clamp1">{{template.name || template.lang}}</div>
       <div
         class="font-xxs template-type"
         :class="template.isComponent ? 'golden-text' : 'describe-text'"

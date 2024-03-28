@@ -174,7 +174,7 @@ export class DBService {
     data: IDBStoreData[T],
     primaryKey?: IDBValidKey,
   ) {
-    return this.setSingleReqCallback<T>(
+    return this.setSingleReqCallback<number>(
       () => this.beginTransaction(storeName).put(deepCopy(data), primaryKey),
       ErrorCode.DB_UPDATE_FAILED,
       storeName, data, primaryKey,

@@ -4,6 +4,7 @@ export interface IProps {
   /** 是编辑还是创建 */
   isEdit?: boolean
   template?: ITemplateInfo
+  confirmLoading?: boolean
 }
 
 export interface IEmits {

@@ -108,6 +108,26 @@
 .form-item-color { color: var(--color-form-item); }
 .error-text { color: var(--color-red1); }
 
+/** 省略 */
+%line-clamp {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow : hidden;
+  text-overflow: ellipsis;
+}
+.line-clamp1 {
+  -webkit-line-clamp: 1;
+
+  @extend %line-clamp;
+}
+.line-clamp2 {
+  -webkit-line-clamp: 2;
+
+  @extend %line-clamp;
+}
+
 /** background */
 .bg-main1 { background-color: var(--color-main-bg-1); }
 .bg-main2 { background-color: var(--color-main-bg-2); }
@@ -284,6 +304,9 @@
 
 /** pointer-events */
 .events-none { pointer-events: none; }
+
+/** box-sizing */
+.border-box { box-sizing: border-box; }
 
 /** other */
 .no-select { user-select: none; }
