@@ -132,5 +132,8 @@ $namespace: "modal";
 .#{$namespace}-leave-to {
   opacity: 0;
   transform: scale(1.05);
+  .mask-layer {
+    backdrop-filter: blur(0);
+  }
 }
 </style>
