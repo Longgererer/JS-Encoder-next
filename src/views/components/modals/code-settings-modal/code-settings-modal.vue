@@ -37,9 +37,9 @@
         <div class="active-text font-xxs mt-m">字体</div>
         <div class="mt-s">
           <custom-select
+            appendToBody
             v-model="settings.font.fontFamily"
             :data-list="codeFontFamilyOptions"
-            appendToBody
           ></custom-select>
         </div>
 
@@ -47,10 +47,10 @@
         <div class="active-text font-xxs mt-m">头部标签</div>
         <div class="mt-s">
           <custom-input
-            v-model="settings.other.headTags"
-            :type="InputType.TEXTAREA"
             placeholder="输入你想在<head>中添加的标签如<meta...>"
             width="325px"
+            v-model="settings.other.headTags"
+            :type="InputType.TEXTAREA"
             :minRows="4"
           ></custom-input>
         </div>
@@ -64,12 +64,12 @@ import Modal from "@components/modal/modal.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
-import { reactive } from "vue"
+import { ref } from "vue"
 import { useCommonStore } from "@store/common"
 import { InputType } from "@components/form/custom-input/custom-input"
-import { useEditorConfigStore, initialSettings } from "@store/editor-config"
+import { useEditorConfigStore } from "@store/editor-config"
 import { deepCopy } from "@utils/tools/common"
-import { CodeFontFamily } from "@type/settings"
+import { CodeFontFamily, IEditorSettings } from "@type/settings"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -78,26 +78,17 @@ const editorConfigStore = useEditorConfigStore()
 const { updateSettings } = editorConfigStore
 
 /** 复制store中的设置下来 */
-const settings = reactive(deepCopy(initialSettings))
+const settings = ref<IEditorSettings>(deepCopy(editorConfigStore.settings))
 
 /** 关闭modal保存设置 */
 const handleCloseModal = (): void => {
   updateDisplayModal(null)
-  updateSettings(settings)
+  updateSettings(settings.value)
 }
 
-const codeFontFamilyList = [
-  CodeFontFamily.JET_BRAINS_MONO,
-  CodeFontFamily.FIRA_CODE,
-  CodeFontFamily.HACK,
-  CodeFontFamily.SOURCE_CODE_PRO,
-  CodeFontFamily.MONACO,
-  CodeFontFamily.SPACE_MONO,
-  CodeFontFamily.IBM_PLEX_MONO,
-  CodeFontFamily.INCONSOLATA,
-  CodeFontFamily.COURIER_PRIME,
-]
-const codeFontFamilyOptions = codeFontFamilyList.map((codeFontFamily) => ({ value: codeFontFamily }))
+const codeFontFamilyOptions = Object.values(CodeFontFamily).map((codeFontFamily) => {
+  return { value: codeFontFamily }
+})
 </script>
 
 <style lang="scss" scoped></style>

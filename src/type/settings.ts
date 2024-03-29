@@ -51,7 +51,7 @@ export const enum ShortcutMode {
 }
 
 /** 代码字体 */
-export const enum CodeFontFamily {
+export enum CodeFontFamily {
   JET_BRAINS_MONO = "JetBrains Mono",
   FIRA_CODE = "Fira Code",
   HACK = "Hack",
