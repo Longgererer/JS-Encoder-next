@@ -56,7 +56,6 @@ import loading from "@components/loading/loading.vue"
 import { ref } from "vue"
 import useUpdateLogs, { IRelease, CategoryTitle } from "@hooks/use-update-logs"
 import { setLocalStorage } from "@utils/tools/storage"
-import { SidebarType } from "@views/components/sidebar/sidebar"
 import { LocalStorageKey } from "@utils/config/storage"
 
 const commonStore = useCommonStore()

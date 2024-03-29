@@ -48,6 +48,9 @@ export const useEditorConfigStore = defineStore("editorConfig", {
   }),
   actions: {
     /** 更新若干设置 */
+    batchUpdateEditorConfig(config: DeepPartial<IEditorConfig>): void {
+      this.$patch({ ...config })
+    },
     updateSettings(settings: DeepPartial<IEditorSettings>): void {
       this.$patch({ settings: { ...settings } })
     },

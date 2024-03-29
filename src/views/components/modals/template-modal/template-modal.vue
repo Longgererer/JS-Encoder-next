@@ -10,7 +10,8 @@
       customClass: 'p-l',
       disabled: !currTemplate,
     }"
-    @close="updateDisplayModal(null)">
+    @close="updateDisplayModal(null)"
+    @confirm="handleConfirmModal">
     <div class="modal-sub-title">内置模板</div>
     <div class="modal-desc-text">选择你想使用的模板</div>
     <!--内置模板列表-->
@@ -47,6 +48,7 @@
       ></template-card>
     </div>
     <template v-else>
+      <!-- 缺省提示 -->
       <div class="flex-col flex-center bg-main3 radius-l blank-tip-area">
         <span class="no-active-text font-xxs mb-s">当前未创建任何自定义模板</span>
       </div>
@@ -60,6 +62,17 @@
       @confirm="handleUpdateTemplate"
       @cancel="handleCancelUpdateTemplate"
     ></edit-template-modal>
+  </modal>
+  <!-- 确认提示 -->
+  <modal
+    title="提示"
+    v-model="isShowTipModal"
+    :mask-closable="false"
+    :esc-closeable="false"
+    :show-cancel="true"
+    @cancel="isShowTipModal = false"
+    @confirm="handleUseTemplate">
+    <div class="active-text">⚠应用模板会覆盖当前编辑器的内容及配置哦~</div>
   </modal>
 </template>
 
@@ -77,21 +90,19 @@ import { Size } from "@type/interface"
 import { inbuiltTemplateList } from "./template-modal"
 import { ITemplateInfo } from "@utils/config/indexed-db"
 import useTemplate from "./hooks/use-template"
-import { useEditorWrapperStore } from "@store/editor-wrapper"
+import { checkIsCodeEmpty } from "@store/editor-wrapper"
 import message from "@components/message-list/message-list"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
-const editorWrapperStore = useEditorWrapperStore()
 
 /** 当前选中的自定义模板id */
 const currTemplate= ref<ITemplateInfo>()
-
 const handleChooseTemplate = (template: ITemplateInfo) => {
   currTemplate.value = template
 }
 
-const { getCustomTemplateList, createTemplate, updateTemplate } = useTemplate()
+const { getCustomTemplateList, createTemplate, updateTemplate, applyTemplate } = useTemplate()
 const customTemplateList = ref<ITemplateInfo[]>([])
 const isTemplateLoading = ref<boolean>(false)
 /** 设置自定义模板 */
@@ -109,15 +120,18 @@ setCustomTemplateList()
 const isShowEditModal = ref<boolean>(false)
 const isEditModalLoading = ref<boolean>(false)
 const currEditTemplate = ref<ITemplateInfo | undefined>(undefined)
+
 /** 点击编辑模板 */
 const handleClickEditTemplate = (template: ITemplateInfo) => {
   currEditTemplate.value = template
   isShowEditModal.value = true
 }
+
 const processCloseEditModal = () => {
   currEditTemplate.value = undefined
   isShowEditModal.value = false
 }
+
 /** 创建/更新模板 */
 const handleUpdateTemplate = async (info: IEditTemplateForm) => {
   if (currEditTemplate.value) {
@@ -126,19 +140,20 @@ const handleUpdateTemplate = async (info: IEditTemplateForm) => {
     processCreateTemplate(info)
   }
 }
+
 /** 取消创建/更新模板 */
 const handleCancelUpdateTemplate = () => {
   processCloseEditModal()
 }
 
 const handleClickCreateBtn = () => {
-  const { isCodeEmpty } = editorWrapperStore
-  if (isCodeEmpty) {
+  if (checkIsCodeEmpty()) {
     message.notice("请先编写代码再创建模板")
     return
   }
   isShowEditModal.value = true
 }
+
 /** 更新模板信息 */
 const processUpdateTemplate = async (info: IEditTemplateForm) => {
   const { id } = currEditTemplate.value!
@@ -158,6 +173,7 @@ const processUpdateTemplate = async (info: IEditTemplateForm) => {
   }
   isEditModalLoading.value = false
 }
+
 /** 创建新模板 */
 const processCreateTemplate = async (info: IEditTemplateForm) => {
   isEditModalLoading.value = true
@@ -170,6 +186,24 @@ const processCreateTemplate = async (info: IEditTemplateForm) => {
     message.error("模板创建失败")
   }
   isEditModalLoading.value = false
+}
+
+const isShowTipModal = ref<boolean>(false)
+const handleConfirmModal = () => {
+  if (checkIsCodeEmpty()) {
+    processUseTemplate()
+  } else {
+    isShowTipModal.value = true
+  }
+}
+const handleUseTemplate = () => {
+  processUseTemplate()
+}
+const processUseTemplate = () => {
+  applyTemplate(currTemplate.value!)
+  isShowTipModal.value = false
+  updateDisplayModal(null)
+  message.success("应用模板成功")
 }
 </script>
 

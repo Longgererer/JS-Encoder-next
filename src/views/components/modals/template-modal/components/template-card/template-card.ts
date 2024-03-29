@@ -8,7 +8,6 @@ export const inbuiltTemplateIconMap = {
   [TemplateLang.VUE]: "icon-vue",
   [TemplateLang.VANILLA]: "icon-javascript",
   [TemplateLang.REACT]: "icon-jsx",
-  [TemplateLang.ANGULAR]: "icon-angular",
 }
 
 export interface IProps {

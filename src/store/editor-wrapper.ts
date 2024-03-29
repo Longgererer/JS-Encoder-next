@@ -156,13 +156,6 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     },
   },
   getters: {
-    origin2TabIdMap(state: IEditorWrapper) {
-      return Object.entries(state.tabMap).reduce((acc, [tabId, tabInfo]) => {
-        const { origin } = tabInfo
-        acc[origin] = Number(tabId)
-        return acc
-      }, {} as Record<OriginLang, number>)
-    },
     tabId2PrepMap(state: IEditorWrapper) {
       const { prepMap } = useEditorConfigStore()
       return Object.entries(state.tabMap).reduce((acc, [tabId, tabInfo]) => {
@@ -171,9 +164,19 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
         return acc
       }, {} as Record<number, Prep>)
     },
-    isCodeEmpty(state: IEditorWrapper) {
-      const { codeMap } = state
-      return !Object.values(codeMap).some((code) => code)
-    },
   },
 })
+
+export const getOrigin2TabIdMap = () => {
+  const { tabMap } = useEditorWrapperStore()
+  return Object.entries(tabMap).reduce((acc, [tabId, tabInfo]) => {
+    const { origin } = tabInfo
+    acc[origin] = Number(tabId)
+    return acc
+  }, {} as Record<OriginLang, number>)
+}
+
+export const checkIsCodeEmpty = () => {
+  const { codeMap } = useEditorWrapperStore()
+  return !Object.values(codeMap).some((code) => code)
+}

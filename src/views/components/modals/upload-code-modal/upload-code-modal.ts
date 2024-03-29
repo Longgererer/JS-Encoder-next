@@ -4,7 +4,7 @@ import { getFileContent, getFileMimeType } from "@utils/tools/file"
 import { ref, shallowReactive } from "vue"
 import { splitHTML } from "./split-html"
 import { initialPrepMap, useEditorConfigStore } from "@store/editor-config"
-import { useEditorWrapperStore } from "@store/editor-wrapper"
+import { useEditorWrapperStore, getOrigin2TabIdMap } from "@store/editor-wrapper"
 
 interface IUploadFileInfo {
   file: File
@@ -52,8 +52,7 @@ const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInf
 /** 更新store中的代码和预处理器 */
 const setCodeAndTabInfo = (content: string, originLang: OriginLang) => {
   const editorWrapperStore = useEditorWrapperStore()
-  const { origin2TabIdMap } = editorWrapperStore
-  const tabId = origin2TabIdMap[originLang]
+  const tabId = getOrigin2TabIdMap()[originLang]
   editorWrapperStore.updateCodeMap(tabId, content)
 }
 

@@ -1,5 +1,5 @@
 import { useEditorConfigStore } from "@store/editor-config"
-import { useEditorWrapperStore } from "@store/editor-wrapper"
+import { useEditorWrapperStore, getOrigin2TabIdMap } from "@store/editor-wrapper"
 import { OriginLang, Prep } from "@type/prep"
 import { compile, compileComponent } from "@utils/editor/compiler"
 import { genHTMLFileCode, getMarkdownScriptCode } from "@utils/tools/code-gen"
@@ -13,8 +13,8 @@ const useCodeCompile = () => {
   /** 获取编译后的代码 */
   const getCompiledCode = async () => {
     const { prepMap, isComponentMode } = editorConfigStore
-    const { origin2TabIdMap, codeMap } = editorWrapperStore
-    const origin2CodeMap = Object.entries(origin2TabIdMap).reduce((acc, [origin, tabId]) => {
+    const { codeMap } = editorWrapperStore
+    const origin2CodeMap = Object.entries(getOrigin2TabIdMap()).reduce((acc, [origin, tabId]) => {
       acc[origin as OriginLang] = codeMap[tabId]
       return acc
     }, {} as Record<OriginLang, string>)
