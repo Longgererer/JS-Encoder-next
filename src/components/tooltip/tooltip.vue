@@ -6,14 +6,14 @@
     <transition name="tooltip">
       <div
         v-show="!hidden && !disable"
-        class="tooltip-container p-y-s p-x-l absolute shadow radius-m"
+        class="tooltip-container p-y-xs p-x-s absolute shadow radius-m"
         :class="`tooltip-${position}`"
         :style="{ ...offsetStyle, zIndex: level }">
         <template v-if="$slots.content">
           <slot name="content"></slot>
         </template>
         <template v-else>
-          <span class="font-xs text-nowrap">{{ content }}</span>
+          <div class="font-xs text-nowrap line-h-normal">{{ content }}</div>
         </template>
         <span
           v-if="showTriangle"

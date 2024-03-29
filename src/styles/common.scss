@@ -168,6 +168,7 @@
 .renew-line-xxl { line-height: 32px; }
 .line-h-fill { line-height: 100%; }
 .line-h-unset { line-height: unset; }
+.line-h-normal { line-height: $def-line-height; }
 
 /** font-family */
 .def-font { font-family: $def-font; }
@@ -312,4 +313,6 @@
 .no-select { user-select: none; }
 .no-resize { resize: none; }
 .high-layer { z-index: 1000; }
-.shadow { box-shadow: 0 2px 4px var(--color-shadow); }
+
+// .shadow { box-shadow: 0 2px 4px var(--color-shadow); }
+.shadow { box-shadow: $shadow; }

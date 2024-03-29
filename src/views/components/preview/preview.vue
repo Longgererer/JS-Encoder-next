@@ -160,7 +160,9 @@ const processRefreshIframe = () => {
     libraries,
     settings.value.other.headTags,
   ], () => {
-    previewService.refreshIframe()
+    if (settings.value.execute.autoExecute) {
+      previewService.refreshIframe()
+    }
   }, { deep: true })
 }
 

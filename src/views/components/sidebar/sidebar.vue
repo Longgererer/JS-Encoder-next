@@ -11,7 +11,7 @@
           v-for="item in list"
           :key="item">
           <tooltip
-            offset="8"
+            offset="2"
             level="15"
             :content="sidebarList[item].name"
             :show-triangle="false"
