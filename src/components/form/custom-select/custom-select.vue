@@ -2,7 +2,11 @@
   <div
     class="active-text relative bg-form-item code-font cursor-pointer"
     ref="selectRef"
-    :class="`${namespace}-wrapper ${namespace}-wrapper--${size}`"
+    :class="[
+      `${namespace}-wrapper`,
+      `${namespace}-wrapper--${size}`,
+      disabled ? `${namespace}-disabled` : '',
+    ]"
     :style="selectStyle"
     @click="handleClickSelect">
     <div
@@ -76,7 +80,7 @@ const getOptionLabel = (item?: ISelectOption): string => {
 }
 
 watchEffect(() => {
-  if (props.dataList.length && isFocus.value) {
+  if (props.dataList.length && isFocus.value && !props.disabled) {
     isUnfoldOptions.value = true
     setOptionStyle()
   }
@@ -84,6 +88,7 @@ watchEffect(() => {
 
 /** 点击选择框 */
 const handleClickSelect = (): void => {
+  if (props.disabled) { return }
   isFocus.value = true
   if (!props.showSearch && props.dataList.length) {
     isUnfoldOptions.value = !isUnfoldOptions.value

@@ -4,7 +4,7 @@ import { getFileContent, getFileMimeType } from "@utils/tools/file"
 import { ref, shallowReactive } from "vue"
 import { splitHTML } from "./split-html"
 import { initialPrepMap, useEditorConfigStore } from "@store/editor-config"
-import { useEditorWrapperStore, getOrigin2TabIdMap } from "@store/editor-wrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 
 interface IUploadFileInfo {
   file: File
@@ -51,9 +51,9 @@ const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInf
 
 /** 更新store中的代码和预处理器 */
 const setCodeAndTabInfo = (content: string, originLang: OriginLang) => {
-  const editorWrapperStore = useEditorWrapperStore()
-  const tabId = getOrigin2TabIdMap()[originLang]
-  editorWrapperStore.updateCodeMap(tabId, content)
+  const { origin2TabIdMap, updateCodeMap } = useEditorWrapperStore()
+  const tabId = origin2TabIdMap[originLang]
+  updateCodeMap(tabId, content)
 }
 
 /** 处理上传的文件列表，将解析出的信息存储至store */

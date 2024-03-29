@@ -164,19 +164,43 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
         return acc
       }, {} as Record<number, Prep>)
     },
+    origin2TabIdMap(state: IEditorWrapper) {
+      const { tabMap } = state
+      return Object.entries(tabMap).reduce((acc, [tabId, tabInfo]) => {
+        const { origin } = tabInfo
+        acc[origin] = Number(tabId)
+        return acc
+      }, {} as Record<OriginLang, number>)
+    },
+    origin2CodeMap(state: IEditorWrapper) {
+      const { tabMap, codeMap } = state
+      return Object.values(tabMap).reduce((acc, tabInfo) => {
+        const { origin, id } = tabInfo
+        acc[origin] = codeMap[id]
+        return acc
+      }, {} as Record<OriginLang, string>)
+    },
   },
 })
 
-export const getOrigin2TabIdMap = () => {
-  const { tabMap } = useEditorWrapperStore()
-  return Object.entries(tabMap).reduce((acc, [tabId, tabInfo]) => {
-    const { origin } = tabInfo
-    acc[origin] = Number(tabId)
-    return acc
-  }, {} as Record<OriginLang, number>)
-}
+// export const getOrigin2TabIdMap = () => {
+//   const { tabMap } = useEditorWrapperStore()
+//   return Object.entries(tabMap).reduce((acc, [tabId, tabInfo]) => {
+//     const { origin } = tabInfo
+//     acc[origin] = Number(tabId)
+//     return acc
+//   }, {} as Record<OriginLang, number>)
+// }
 
 export const checkIsCodeEmpty = () => {
   const { codeMap } = useEditorWrapperStore()
   return !Object.values(codeMap).some((code) => code)
 }
+
+// export const getOrigin2CodeMap = () => {
+//   const { codeMap } = useEditorWrapperStore()
+//   return Object.entries(getOrigin2TabIdMap()).reduce((acc, [origin, tabId]) => {
+//     acc[origin as OriginLang] = codeMap[tabId]
+//     return acc
+//   }, {} as Record<OriginLang, string>)
+// }

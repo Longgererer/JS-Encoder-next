@@ -69,7 +69,6 @@ $horizontal-padding: (
 
 .#{$namespace}.#{$namespace}-disabled {
   pointer-events: none;
-  box-shadow: none;
   color: var(--color-disabled-color);
   background-color: var(--color-disabled-bgc);
 }

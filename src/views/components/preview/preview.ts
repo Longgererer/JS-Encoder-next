@@ -3,8 +3,11 @@ export interface IProps {
 }
 
 export enum PreviewOptionType {
+  /** 刷新 */
   REFRESH = "refresh",
+  /** 全屏 */
   FULLSCREEN = "fullscreen",
+  /** 退出全屏 */
   EXIT_FULLSCREEN = "exitFullscreen",
 }
 

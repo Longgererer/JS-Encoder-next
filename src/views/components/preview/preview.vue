@@ -93,44 +93,78 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch, watchEffect } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"
 import { getLocalStorage, setLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
 import PreviewService from "@utils/services/preview-service"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
+import { storeToRefs } from "pinia"
+import { useEditorConfigStore } from "@store/editor-config"
 
 defineProps<IProps>()
 
 /** 组件名 */
 const namespace = "preview"
 const { modulesSize } = useLayoutStore()
+const editorWrapperStore = useEditorWrapperStore()
+const editorConfigStore = useEditorConfigStore()
+const { codeMap } = storeToRefs(editorWrapperStore)
+const { prepMap, libraries, settings } = storeToRefs(editorConfigStore)
 
-/**
- * 新手引导
- */
+/** 新手引导 */
 const hasHidedNewUserGuide = Boolean(getLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE))
 const isShowNewUserGuide = ref<boolean>(!hasHidedNewUserGuide)
+
+/** 跳过引导 */
 const handleSkipGuide = (): void => {
-  // 隐藏引导
   isShowNewUserGuide.value = false
-  // 存储状态
-  setLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE, false)
+  setLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE, true)
 }
 
+/** 跳转到文档 */
 const handleJumpToHelp = (): void => {
   window.open(HELP_DOCS_URL, "_blank")
+  setLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE, true)
 }
 
 const iframeElement = ref<HTMLIFrameElement | null>()
+const isIframeLoading = ref<boolean>()
 let previewService: PreviewService
 onMounted(() => {
   previewService = new PreviewService(iframeElement.value!)
+  previewService.setRefreshOptions({
+    onBeforeRefresh: () => {
+      isIframeLoading.value = true
+    },
+    onRefreshed: () => {
+      isIframeLoading.value = false
+    },
+  })
+  processRefreshIframe()
 })
 
-/** 是否全屏展示iframe */
-const isFullScreen = ref<boolean>(false)
+/**
+ * 处理iframe的刷新，目前暂有以下几种情况
+ * 1. 代码更改
+ * 2. 预处理语言更改
+ * 3. 代码设置中头部标签（headTag）更改
+ * 4. 使用外部库更改
+ */
+const processRefreshIframe = () => {
+  watch([
+    codeMap,
+    prepMap,
+    libraries,
+    settings.value.other.headTags,
+  ], () => {
+    previewService.refreshIframe()
+  }, { deep: true })
+}
+
+/** 点击预览选项 */
 const handleClickOption = (type: PreviewOptionType) => {
   switch(type) {
     case PreviewOptionType.FULLSCREEN:
@@ -144,71 +178,20 @@ const handleClickOption = (type: PreviewOptionType) => {
       // do nothing
   }
 }
+
+/** 是否全屏展示iframe */
+const isFullScreen = ref<boolean>(false)
+/** 是否缩起顶部操作栏（全屏下） */
 const isFoldTopBar = ref<boolean>(false)
 const handleToggleFoldTopBar = () => {
   isFoldTopBar.value = !isFoldTopBar.value
 }
+
+defineExpose({
+  getIframe: () => {
+    return iframeElement.value
+  },
+})
 </script>
 
-<style lang="scss" scoped>
-$namespace: "preview";
-
-.#{$namespace} {
-  .#{$namespace}-bar {
-    height: 36px;
-    .#{$namespace}-tab {
-      padding: 0 24px;
-      background-color: var(--color-main-bg-1);
-      &.active {
-        background-color: var(--color-main-bg-3);
-        color: var(--color-active-color);
-      }
-    }
-    .#{$namespace}-options {
-      &:not(:first-child) {
-        padding-left: 8px;
-      }
-    }
-  }
-  .#{$namespace}-iframe-wrapper {
-    .#{$namespace}-iframe {
-      background-color: #fff;
-    }
-    .#{$namespace}-iframe-size {
-      height: 24px;
-      background-color: #f2f2f2;
-      color: #999;
-    }
-  }
-  .#{$namespace}-guide {
-    .jump-btn {
-      margin-top: 120px;
-    }
-  }
-
-  .top-bar {
-    .top-bar-folder {
-      width: 100px;
-      height: 16px;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
-      transform: perspective(20px) rotateX(-8deg) rotateY(0) translateZ(0);
-      bottom: -16px;
-    }
-    &.fold {
-      opacity: 0.1;
-      top: -36px;
-      &:hover {
-        opacity: 1;
-      }
-    }
-    &.unfold {
-      opacity: 1;
-      top: 0;
-      i {
-        transform: rotate(180deg);
-      }
-    }
-  }
-}
-</style>
+<style src="./preview.scss" lang="scss" scoped></style>

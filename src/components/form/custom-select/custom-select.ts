@@ -21,6 +21,8 @@ export interface IProps {
   placeholder?: string
   /** 是否可以搜索 */
   showSearch?: boolean
+  /** 是否禁用 */
+  disabled?: boolean
   selectStyle?: string
   optionStyle?: string
   selectInnerStyle?: string

@@ -1,5 +1,5 @@
 import { useEditorConfigStore } from "@store/editor-config"
-import { useEditorWrapperStore, getOrigin2TabIdMap } from "@store/editor-wrapper"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { OriginLang } from "@type/prep"
 import { TemplateLang, TemplateType } from "@type/template"
 import { DBStoreName, ITemplateInfo } from "@utils/config/indexed-db"
@@ -47,8 +47,9 @@ const useTemplate = () => {
   const applyTemplate = (template: ITemplateInfo) => {
     const { codeMap, editorConfig: { libraries, prepMap }, isComponent } = template
     const { batchUpdateEditorConfig } = editorConfigStore
+    const { origin2TabIdMap } = editorWrapperStore
     // 设置代码内容
-    Object.entries(getOrigin2TabIdMap()).forEach(([origin, tabId]) => {
+    Object.entries(origin2TabIdMap).forEach(([origin, tabId]) => {
       editorWrapperStore.updateCodeMap(tabId, codeMap[origin as OriginLang] || "")
     })
     // 设置编辑器预处理、库等配置
