@@ -2,7 +2,7 @@ import { MimeType, OriginLang, Prep } from "@type/prep"
 import { getOriginByMimeType, mimeType2PrepMap } from "@utils/tools/prep"
 import { getFileContent, getFileMimeType } from "@utils/tools/file"
 import { ref, shallowReactive } from "vue"
-import { splitHTML } from "./split-html"
+import { splitHTML } from "@utils/tools/code-split"
 import { initialPrepMap, useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 
@@ -19,19 +19,18 @@ const allowMimeTypes = Object.values(MimeType)
 export const chosenFiles = shallowReactive<File[]>([])
 export const setAllowMimeTypeFiles = (files: FileList) => {
   // 判断上传的文件中哪些是符合后缀名要求的
-  // eslint-disable-next-line @typescript-eslint/prefer-for-of
-  for (let i = 0; i < files.length; i++) {
-    const mimeType = getFileMimeType(files[i].name)
+  Array.from(files).forEach((file) => {
+    const mimeType = getFileMimeType(file.name)
     if (allowMimeTypes.includes(mimeType as MimeType)) {
-      chosenFiles.push(files[i])
+      chosenFiles.push(file)
     }
-  }
+  })
 }
 
 /** 是否分解HTML */
 export const isSplitHTML = ref<boolean>(true)
 /** 获取源(OriginLang)到文件信息的映射 */
-const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInfo> => {
+const getOrigin2FileInfoMap = (files: File[]) => {
   return files.reduce((acc, file) => {
     const mimeType = getFileMimeType(file.name) as MimeType
     const prep = mimeType2PrepMap[mimeType]
@@ -39,14 +38,12 @@ const getOrigin2FileInfoMap = (files: File[]): Record<OriginLang, IUploadFileInf
     const fileInfo = { file, mimeType, originLang, prep }
     // 在需要分割HTML时，html文件中的CSS和JavaScript代码会覆盖之前上传的同源(OriginLang)文件代码
     if (originLang === OriginLang.HTML && isSplitHTML.value) {
-      acc = {
-        [originLang]: fileInfo,
-      } as Record<OriginLang, IUploadFileInfo>
+      acc = { [originLang]: fileInfo }
     } else {
       acc[originLang] = fileInfo
     }
     return acc
-  }, {} as Record<OriginLang, IUploadFileInfo>)
+  }, {} as Partial<Record<OriginLang, IUploadFileInfo>>)
 }
 
 /** 更新store中的代码和预处理器 */

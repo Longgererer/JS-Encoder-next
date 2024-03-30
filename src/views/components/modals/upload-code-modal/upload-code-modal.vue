@@ -68,7 +68,7 @@
       :size="Size.X_LARGE"
       @click="handleUpdateFiles"
     >上传文件</custom-button>
-    <div class="mt-xs flex-x-center">
+    <div v-if="isShowSplitHTML" class="mt-xs flex-x-center">
       <div class="active-text flex-y-center renew-line-s mt-l">
         <checkbox class="mr-xs" v-model="isSplitHTML">分解HTML</checkbox>
         <help-popover
@@ -89,9 +89,10 @@ import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
 import { BtnType, Position, Size } from "@type/interface"
-import { ref } from "vue"
-import { getFileSizeText } from "@utils/tools/file"
+import { computed, ref } from "vue"
+import { getFileMimeType, getFileSizeText } from "@utils/tools/file"
 import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"
+import { MimeType } from "@type/prep"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -125,6 +126,10 @@ const handleDropFile = (e: DragEvent) => {
   setAllowMimeTypeFiles(files)
 }
 
+const isShowSplitHTML = computed(() => {
+  return chosenFiles.some(({ name }) => getFileMimeType(name) === MimeType.HTML)
+})
+
 const processCloseModal = () => {
   clearInputFiles()
   updateDisplayModal(null)
@@ -133,6 +138,7 @@ const handleCloseModal = () => {
   processCloseModal()
 }
 
+/** 点击上传文件按钮 */
 const handleUpdateFiles = async () => {
   processUploadFiles(chosenFiles)
   chosenFiles.splice(0)
