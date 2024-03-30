@@ -1,8 +1,8 @@
 $namespace: "custom-button";
 $btn-theme: (
-  default: transparent,
-  default-hover: transparent,
-  default-active: transparent,
+  default: var(--color-main-bg-1),
+  default-hover: var(--color-main-bg-1),
+  default-active: var(--color-main-bg-3),
   primary: var(--color-primary1),
   primary-hover: var(--color-primary2),
   primary-active: var(--color-primary0),
@@ -40,6 +40,7 @@ $horizontal-padding: (
   overflow: hidden;
   vertical-align: center;
   font-family: $def-font;
+  outline: none;
   .#{$namespace}-icon {
     font-size: inherit;
     margin-right: 10px;

@@ -11,7 +11,7 @@
     </div>
     <div class="mt-xs">
       <div class="font-xs error-text flex-y-center renew-line-s">
-        <span>注意: 上传相应格式的文件会覆盖对应窗口的代码</span>
+        <span class="mr-xs">注意: 上传相应格式的文件会覆盖对应窗口的代码</span>
         <help-popover
           append-to-body
           level="1001"
@@ -62,15 +62,15 @@
     <custom-button
       class="mt-l"
       fill
-      shadow
       custom-class="radius-l font-s"
       :disabled="!chosenFiles.length"
+      :type="BtnType.PRIMARY"
       :size="Size.X_LARGE"
       @click="handleUpdateFiles"
     >上传文件</custom-button>
     <div class="mt-xs flex-x-center">
-      <div class="active-text flex-y-center renew-line-s">
-        <checkbox v-model="isSplitHTML">分解HTML</checkbox>
+      <div class="active-text flex-y-center renew-line-s mt-l">
+        <checkbox class="mr-xs" v-model="isSplitHTML">分解HTML</checkbox>
         <help-popover
           append-to-body
           level="1002"
@@ -88,7 +88,7 @@ import HelpPopover from "@views/components/help-popover/help-popover.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
-import { Position, Size } from "@type/interface"
+import { BtnType, Position, Size } from "@type/interface"
 import { ref } from "vue"
 import { getFileSizeText } from "@utils/tools/file"
 import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"

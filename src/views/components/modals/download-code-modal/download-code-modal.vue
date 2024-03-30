@@ -42,6 +42,7 @@
       <custom-button
         fill
         custom-class="radius-l font-s"
+        :type="BtnType.PRIMARY"
         :size="Size.X_LARGE"
         @click="handleDownloadFiles"
       >下载文件</custom-button>
@@ -55,7 +56,7 @@ import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
-import { Size } from "@type/interface"
+import { Size, BtnType } from "@type/interface"
 import { ref } from "vue"
 import useDownloadCode from "./hooks/use-download-code"
 

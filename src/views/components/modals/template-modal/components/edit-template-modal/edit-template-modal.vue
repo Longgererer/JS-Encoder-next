@@ -14,7 +14,7 @@
     @cancel="handleCancelModal"
     @confirm="emits('confirm', editTemplateForm)">
     <div class="active-text mt-l mb-xs code-font font-xs">模板名</div>
-    <custom-input v-model.trim="editTemplateForm.name"></custom-input>
+    <custom-input width="100%" v-model.trim="editTemplateForm.name"></custom-input>
   </modal>
 </template>
 

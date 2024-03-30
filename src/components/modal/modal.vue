@@ -23,15 +23,19 @@
             <slot></slot>
           </div>
           <div class="pt-l text-right" :class="`${namespace}-footer`" v-if="showFooter">
-            <custom-button
-              v-if="showCancel"
-              v-bind="cancelBtnOpts"
-              @click="$emit('cancel')"
-            >{{cancelText}}</custom-button>
-            <custom-button
-              v-bind="confirmBtnOpts"
-              @click="$emit('confirm')"
-            ><span class="def-font">{{okText}}</span></custom-button>
+            <slot v-if="slots.footer" name="footer"></slot>
+            <div v-else class="pt-l text-right">
+              <custom-button
+                class="mr-s"
+                v-if="showCancel"
+                v-bind="cancelBtnOpts"
+                @click="$emit('cancel')"
+              >{{cancelText}}</custom-button>
+              <custom-button
+                v-bind="{ ...defaultConfirmBtnOpts, ...confirmBtnOpts }"
+                @click="$emit('confirm')"
+              >{{okText}}</custom-button>
+            </div>
           </div>
         </div>
       </mask-layer>
@@ -42,10 +46,14 @@
 <script setup lang="ts">
 import MaskLayer from "@components/mask-layer/mask-layer.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
-import { toRef } from "vue"
+import { toRef, useSlots } from "vue"
 import useEscClose from "@hooks/use-esc-close"
-import { BtnType, Size } from "@type/interface"
+import { BtnType } from "@type/interface"
 import { IEmits, IProps } from "./modal"
+
+const defaultConfirmBtnOpts = {
+  type: BtnType.PRIMARY,
+}
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
@@ -59,19 +67,12 @@ const props = withDefaults(defineProps<IProps>(), {
   showFooter: true,
   top: 150,
   bottom: 150,
-  cancelBtnOpts: () => ({
-    type: BtnType.DEFAULT,
-    size: Size.MEDIUM,
-    customClass: "",
-  }),
-  confirmBtnOpts: () => ({
-    type: BtnType.PRIMARY,
-    size: Size.MEDIUM,
-    customClass: "",
-  }),
+  confirmBtnOpts: () => ({}),
 })
 
 const emits = defineEmits<IEmits>()
+
+const slots = useSlots()
 
 const namespace = "modal"
 

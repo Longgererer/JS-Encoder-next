@@ -31,7 +31,7 @@ import { IEmits, IProps } from "./custom-button"
 const props = withDefaults(defineProps<IProps>(), {
   size: Size.MEDIUM,
   disabled: false,
-  type: BtnType.PRIMARY,
+  type: BtnType.DEFAULT,
   icon: false,
   iconClass: "",
   showIcon: false,

@@ -28,7 +28,7 @@
       <span>自定义模板</span>
       <help-popover class="ml-s" describe="你可以编写好模板代码添加相关配置并点击创建模板按钮即可创建自定义模板。"></help-popover>
       <div class="flex-1"></div>
-      <custom-button :size="Size.SMALL" @click="handleClickCreateBtn">
+      <custom-button :type="BtnType.PRIMARY" :size="Size.SMALL" @click="handleClickCreateBtn">
         <i class="icon iconfont icon-add font-xxs mr-xs"></i>
         <span>以当前代码创建</span>
       </custom-button>
@@ -86,7 +86,7 @@ import EditTemplateModal from "./components/edit-template-modal/edit-template-mo
 import { IEditTemplateForm } from "./components/edit-template-modal/edit-template-modal"
 import { ref } from "vue"
 import { useCommonStore } from "@store/common"
-import { Size } from "@type/interface"
+import { BtnType, Size } from "@type/interface"
 import { inbuiltTemplateList } from "./template-modal"
 import { ITemplateInfo } from "@utils/config/indexed-db"
 import useTemplate from "./hooks/use-template"

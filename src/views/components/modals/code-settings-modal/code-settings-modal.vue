@@ -4,20 +4,27 @@
     width="730"
     top="85"
     bottom="85"
-    :show-footer="false"
-    @close="handleCloseModal">
+    show-cancel
+    @close="updateDisplayModal(null)">
     <div class="flex">
       <div class="flex-col flex-1">
         <div class="modal-sub-title">编码</div>
-        <div class="mt-s"><checkbox v-model="settings.edit.codeHinting" disabled>智能提示</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.codeHinting">智能提示</checkbox></div>
         <div class="mt-s"><checkbox v-model="settings.edit.codeLint">lint检查</checkbox></div>
-        <div class="mt-s"><checkbox v-model="settings.edit.lineWrapping" disabled>自动换行</checkbox></div>
+        <div class="mt-s"><checkbox v-model="settings.edit.lineWrapping">自动换行</checkbox></div>
         <div class="mt-s"><checkbox v-model="settings.edit.useEmmet">使用Emmet</checkbox></div>
 
         <div class="modal-sub-title">缩进</div>
         <div class="pt-xs"><checkbox v-model="settings.indent.indentWithTab">使用制表符缩进</checkbox></div>
         <div class="active-text font-xxs mt-m">缩进长度</div>
-        <div class="mt-s"><custom-input :type="InputType.NUMBER" v-model="settings.indent.tabSize"/></div>
+        <div class="mt-s">
+          <custom-input
+            :type="InputType.NUMBER"
+            :min="0"
+            :max="8"
+            v-model="settings.indent.tabSize"
+          ></custom-input>
+        </div>
 
         <div class="modal-sub-title">执行</div>
         <div class="pt-xs"><checkbox v-model="settings.execute.autoExecute">自动执行</checkbox></div>
@@ -56,6 +63,14 @@
         </div>
       </div>
     </div>
+    <template #footer>
+      <div class="flex pt-l">
+        <custom-button @click="handleResetSettings">恢复默认设置</custom-button>
+        <div class="flex-1"></div>
+        <custom-button class="mr-s" @click="updateDisplayModal(null)">取消</custom-button>
+        <custom-button :type="BtnType.PRIMARY" @click="updateSettings(settings)">确认</custom-button>
+      </div>
+    </template>
   </modal>
 </template>
 
@@ -64,12 +79,14 @@ import Modal from "@components/modal/modal.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
+import CustomButton from "@components/custom-button/custom-button.vue"
 import { ref } from "vue"
 import { useCommonStore } from "@store/common"
 import { InputType } from "@components/form/custom-input/custom-input"
-import { useEditorConfigStore } from "@store/editor-config"
+import { initialSettings, useEditorConfigStore } from "@store/editor-config"
 import { deepCopy } from "@utils/tools/common"
 import { CodeFontFamily, IEditorSettings } from "@type/settings"
+import { BtnType } from "@type/interface"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -80,15 +97,14 @@ const { updateSettings } = editorConfigStore
 /** 复制store中的设置下来 */
 const settings = ref<IEditorSettings>(deepCopy(editorConfigStore.settings))
 
-/** 关闭modal保存设置 */
-const handleCloseModal = (): void => {
-  updateDisplayModal(null)
-  updateSettings(settings.value)
-}
-
 const codeFontFamilyOptions = Object.values(CodeFontFamily).map((codeFontFamily) => {
   return { value: codeFontFamily }
 })
+
+const handleResetSettings = () => {
+  updateSettings(deepCopy(initialSettings))
+  settings.value = deepCopy(initialSettings)
+}
 </script>
 
 <style lang="scss" scoped></style>
