@@ -11,7 +11,13 @@ const commonStyle = {
   ".cm-scroller::-webkit-scrollbar-thumb": {
     backgroundColor: "var(--color-main-bg-1)",
   },
+  ".cm-scroller::-webkit-scrollbar-thumb:hover": {
+    backgroundColor: "var(--color-main-bg-4)",
+  },
   ".cm-scroller::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
+  },
+  ".cm-scroller::-webkit-scrollbar-corner": {
     backgroundColor: "transparent",
   },
 }

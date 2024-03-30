@@ -289,13 +289,9 @@
     cursor: default;
   }
   &::-webkit-scrollbar-thumb {
-    border-style: dashed;
-    border-color: transparent;
-    border-width: 2px;
     background-color: var(--color-main-bg-1);
-    background-clip: padding-box;
     &:hover {
-      background: var(--color-main-bg-1);
+      background: var(--color-main-bg-4);
     }
   }
   &::-webkit-scrollbar-track {
