@@ -7,7 +7,7 @@ const getStyleContent = (doc: Document) => {
     .from(styleElements)
     .map(({ textContent = "" }) => textContent)
     .filter((content) => !!content)
-  return styleContents.join("\n")
+  return styleContents.join("\n").trim()
 }
 
 /** 获取引入的css外部链接(http/https) */
@@ -32,7 +32,7 @@ const getScriptLinksAndContent = (doc: Document) => {
       content += textContent
     } else {}
   })
-  return { links, content }
+  return { links, content: content.trim() }
 }
 
 /** 分割HTML文件，将HTML文件分解成HTML、CSS和JavaScript代码，并取出里面包含的外部链接(仅含head标签内的) */
@@ -46,7 +46,7 @@ export const splitHTML = (content: string) => {
   const scriptELements = doc.getElementsByTagName("script")
   // body中有可能包含script标签，需要先获取script标签中的内容，再将body中的script标签删除以便获得不包含脚本的代码
   Array.from(scriptELements).forEach((scriptELement) => scriptELement.remove())
-  const htmlContent = doc.body.textContent || ""
+  const htmlContent = doc.body.innerHTML.trim() || ""
   return {
     styleLinks,
     styleContent,
