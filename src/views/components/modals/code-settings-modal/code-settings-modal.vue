@@ -68,7 +68,7 @@
         <custom-button @click="handleResetSettings">恢复默认设置</custom-button>
         <div class="flex-1"></div>
         <custom-button class="mr-s" @click="updateDisplayModal(null)">取消</custom-button>
-        <custom-button :type="BtnType.PRIMARY" @click="updateSettings(settings)">确认</custom-button>
+        <custom-button :type="BtnType.PRIMARY" @click="handleConfirm">确认</custom-button>
       </div>
     </template>
   </modal>
@@ -102,8 +102,13 @@ const codeFontFamilyOptions = Object.values(CodeFontFamily).map((codeFontFamily)
 })
 
 const handleResetSettings = () => {
-  updateSettings(deepCopy(initialSettings))
+  updateSettings(initialSettings)
   settings.value = deepCopy(initialSettings)
+}
+
+const handleConfirm = () => {
+  updateSettings(settings.value)
+  updateDisplayModal(null)
 }
 </script>
 

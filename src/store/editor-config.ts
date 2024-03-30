@@ -50,13 +50,13 @@ export const useEditorConfigStore = defineStore("editorConfig", {
   actions: {
     /** 更新若干设置 */
     batchUpdateEditorConfig(config: DeepPartial<IEditorConfig>): void {
-      this.$patch({ ...config })
+      this.$patch(deepCopy(config))
     },
     updateSettings(settings: DeepPartial<IEditorSettings>): void {
-      this.$patch({ settings: { ...settings } })
+      this.$patch({ settings: deepCopy(settings) })
     },
     updateLibraries(libraries: Partial<IEditorLibraries>): void {
-      this.$patch({ libraries: { ...libraries } })
+      this.$patch({ libraries: deepCopy(libraries) })
     },
     updatePrepMap(prepMap: Partial<IEditorPrepMap>): void {
       this.$patch({ prepMap: { ...prepMap } })
