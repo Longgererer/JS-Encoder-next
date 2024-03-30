@@ -1,6 +1,6 @@
 <template>
   <transition-group
-    name="fademsg"
+    name="message-fade"
     tag="ul"
     class="fixed flex-col-center"
     :class="namespace">
@@ -17,17 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue"
 import Message from "./components/message/message.vue"
 import { IMessageListEmits, IMessageListProps } from "./message-list.interface"
 
 const namespace = "message-list"
-const props = defineProps<IMessageListProps>()
+defineProps<IMessageListProps>()
 
 const emits = defineEmits<IMessageListEmits>()
-watch(() => props.messageList, (a) => {
-  console.log(a)
-})
 </script>
 
 <style lang="scss">
@@ -40,16 +36,17 @@ $transition-name: "message-fade";
   transform: translateX(-50%);
   z-index: 2000;
 }
-.fademsg-move,
-.fademsg-enter-active,
-.fademsg-leave-active {
+.#{$transition-name}-move,
+.#{$transition-name}-enter-active,
+.#{$transition-name}-leave-active {
   transition: all 0.2s cubic-bezier(0, 0, 1, 1);
 }
-.fademsg-enter-from,
-.fademsg-leave-to {
+.#{$transition-name}-enter-from,
+.#{$transition-name}-leave-to {
   opacity: 0;
+  transform: translateY(-30px);
 }
-.fademsg-leave-active {
+.#{$transition-name}-leave-active {
   position: absolute;
 }
 </style>

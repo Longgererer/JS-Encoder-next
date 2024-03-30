@@ -93,6 +93,7 @@ import { computed, ref } from "vue"
 import { getFileMimeType, getFileSizeText } from "@utils/tools/file"
 import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"
 import { MimeType } from "@type/prep"
+import message from "@components/message-list/message-list"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -127,6 +128,7 @@ const handleDropFile = (e: DragEvent) => {
 }
 
 const isShowSplitHTML = computed(() => {
+  /** 只有上传了html文件才展示分割html文件的选项 */
   return chosenFiles.some(({ name }) => getFileMimeType(name) === MimeType.HTML)
 })
 
@@ -140,7 +142,9 @@ const handleCloseModal = () => {
 
 /** 点击上传文件按钮 */
 const handleUpdateFiles = async () => {
-  processUploadFiles(chosenFiles)
+  processUploadFiles(chosenFiles).then(() => {
+    message.success("代码上传成功")
+  })
   chosenFiles.splice(0)
   processCloseModal()
 }

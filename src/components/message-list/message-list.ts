@@ -2,6 +2,8 @@ import { App, AppContext } from "vue"
 import { IMessageProps, MessageType } from "./message-list.interface"
 import MessageManagerService from "./services/message-manager-service"
 
+type MessageApi = (options: IMessageProps | string, app?: AppContext) => void
+
 const apiNameList = [
   "notice",
   "error",
@@ -14,8 +16,8 @@ const getFormatOptions = (options: IMessageProps | string): IMessageProps => {
 }
 
 let messageManagerService: MessageManagerService | null = null
-const messageApi = apiNameList.reduce((acc, apiName) => {
-  acc[apiName as string] = (options: IMessageProps | string, app: AppContext) => {
+const messageApiMap = apiNameList.reduce((acc, apiName) => {
+  acc[apiName as MessageType] = (options, app) => {
     const formatOptions = getFormatOptions(options)
     if (!messageManagerService) {
       messageManagerService = new MessageManagerService(app)
@@ -26,6 +28,6 @@ const messageApi = apiNameList.reduce((acc, apiName) => {
     })
   }
   return acc
-}, {} as Record<string, any>)
+}, {} as Record<MessageType, MessageApi>)
 
-export default messageApi
+export default messageApiMap

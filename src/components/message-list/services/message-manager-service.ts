@@ -7,16 +7,18 @@ export default class MessageManagerService {
   /** message计数 */
   private count: number = 0
 
-  constructor(appContext: AppContext) {
+  constructor(appContext?: AppContext) {
     this.init(appContext)
   }
 
-  init(appContext: AppContext) {
+  init(appContext?: AppContext) {
     const messageListVNode = createVNode(MessageList, {
       messageList: this.messageList.value,
       onClose: (id: number) => this.remove(id),
     })
-    messageListVNode.appContext = appContext
+    if (appContext) {
+      messageListVNode.appContext = appContext
+    }
 
     const messageListWrapperNode = document.createElement("div")
     render(messageListVNode, messageListWrapperNode)
