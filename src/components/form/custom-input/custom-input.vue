@@ -88,7 +88,7 @@
 
 <script lang="ts" setup>
 import { Size } from "@type/interface"
-import { ref, useSlots } from "vue"
+import { ref, shallowRef, useSlots } from "vue"
 import { IEmits, IProps, InputType } from "./custom-input"
 
 const inputFontSizeMap = {
@@ -186,9 +186,9 @@ const getTextAreaHeightRange = (): { minHeight: number, maxHeight: number } => {
 }
 const textAreaHeightRange = getTextAreaHeightRange()
 
-const textareaRef = ref<HTMLElement | null>(null)
+const textareaRef = shallowRef<HTMLElement | null>(null)
 /** 一个虚拟盒子，用来计算文字高度 */
-const virtualBoxRef = ref<HTMLElement | null>(null)
+const virtualBoxRef = shallowRef<HTMLElement | null>(null)
 
 const textareaHeight = ref<number>(textAreaHeightRange.minHeight)
 

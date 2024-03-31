@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, getCurrentInstance, onUnmounted, watch } from "vue"
+import { onMounted, ref, getCurrentInstance, onUnmounted, watch, shallowRef } from "vue"
 import { V_PROP_NAME, VirtualList } from "./virtual-list.util"
 
 type RenderList = Array<Record<string, any>>
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<IProps>(), {})
 
 const V_LIST_ITEM_CLASS = "virtual-list-item"
 
-const listArea = ref<HTMLElement | null>(null)
+const listArea = shallowRef<HTMLElement | null>(null)
 let virtualList: VirtualList | null = null
 
 const cacheList = ref<RenderList>(props.list)

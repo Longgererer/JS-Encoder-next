@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch, watchEffect } from "vue"
+import { computed, onMounted, ref, shallowRef, watch, watchEffect } from "vue"
 import useClickOutside from "@hooks/use-click-outside"
 import { ISelectOption, IProps, IEmits } from "./custom-select"
 import { Size } from "@type/interface"
@@ -107,7 +107,7 @@ const handleInputTextChange = (e: Event): void => {
 }
 
 // 监听弹窗外点击事件
-const selectRef = ref<HTMLElement | null>(null)
+const selectRef = shallowRef<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(selectRef)
 watch(isClickOutSide, () => {
   if (isClickOutSide.value) {
@@ -117,7 +117,7 @@ watch(isClickOutSide, () => {
 })
 
 /** 定位样式 */
-const optionsStyle = ref<Record<string, string>>({})
+const optionsStyle = shallowRef<Record<string, string>>({})
 onMounted(() => {
   setOptionStyle()
 })

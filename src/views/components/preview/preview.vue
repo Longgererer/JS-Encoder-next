@@ -93,7 +93,7 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { onMounted, ref, watch, watchEffect } from "vue"
+import { onMounted, ref, shallowRef, watch, watchEffect } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"
@@ -130,7 +130,7 @@ const handleJumpToHelp = (): void => {
   setLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE, true)
 }
 
-const iframeElement = ref<HTMLIFrameElement | null>()
+const iframeElement = shallowRef<HTMLIFrameElement | null>()
 const isIframeLoading = ref<boolean>()
 let previewService: PreviewService
 onMounted(() => {

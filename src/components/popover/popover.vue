@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { Position, Trigger } from "@type/interface"
-import { ref, watch } from "vue"
+import { ref, shallowRef, watch } from "vue"
 import { getOffsetStyle, getPosStyle } from "@components/utils/common"
 import useClickOutside from "@hooks/use-click-outside"
 import { IProps } from "./popover"
@@ -57,13 +57,13 @@ const props = withDefaults(defineProps<IProps>(), {
   delay: 300,
 })
 
-const popoverRef = ref<HTMLElement | null>(null)
+const popoverRef = shallowRef<HTMLElement | null>(null)
 const visible = ref<boolean>(false)
 
 /** 偏移样式 */
 const offsetStyle = getOffsetStyle(props.offset, props.position)
 /** 定位样式 */
-const posStyle = ref<Record<string, string>>({})
+const posStyle = shallowRef<Record<string, string>>({})
 const showPopover = (): void => {
   if (visible.value) { return }
   visible.value = true

@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, shallowRef } from "vue"
 import { optionsListMap } from "@utils/tools/config"
 import { storeToRefs } from "pinia"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
@@ -111,7 +111,7 @@ const handleTabDragLeaveRightSide = (): void => {
   isOverlapRightSide.value = false
 }
 /** 处理拖拽移出(dragleave)事件 */
-const editorBarRef = ref<HTMLElement | null>(null)
+const editorBarRef = shallowRef<HTMLElement | null>(null)
 const resetHookState = useDragleaveJudge(editorBarRef, () => {
   resetDragState()
 })

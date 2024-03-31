@@ -49,13 +49,13 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import { useCommonStore } from "@store/common"
 import { Size } from "@type/interface"
 import { ShortcutMapList, IShortcutMap } from "./shortcut-modal.interface"
-import { ref, watch } from "vue"
+import { ref, shallowRef, watch } from "vue"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
 const shortcutKeyword = ref<string>("")
-const searchResult = ref<IShortcutMap[]>(ShortcutMapList)
+const searchResult = shallowRef<IShortcutMap[]>(ShortcutMapList)
 
 const searchShortcut = (keyword: string): IShortcutMap[] => {
   if (!keyword) { return ShortcutMapList }

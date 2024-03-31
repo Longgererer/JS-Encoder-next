@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { shallowRef, watch } from "vue"
 import useClickOutside from "@hooks/use-click-outside"
 import { Trigger, Position, Align } from "@type/interface"
 
@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emits = defineEmits(["update:modelValue"])
 
 const namespace = "dropdown"
-const dropdownOptsRef = ref<HTMLElement | null>(null)
+const dropdownOptsRef = shallowRef<HTMLElement | null>(null)
 const isClickOutSide = useClickOutside(dropdownOptsRef)
 
 const handleClickTrigger = (): void => {

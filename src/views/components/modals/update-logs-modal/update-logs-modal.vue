@@ -53,7 +53,7 @@
 import Modal from "@components/modal/modal.vue"
 import { useCommonStore } from "@store/common"
 import loading from "@components/loading/loading.vue"
-import { ref } from "vue"
+import { ref, shallowRef } from "vue"
 import useUpdateLogs, { IRelease, CategoryTitle } from "@hooks/use-update-logs"
 import { setLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
@@ -68,9 +68,9 @@ const categoryTitleStyle = {
 }
 
 const isReleasesLoading = ref<boolean>()
-const releases = ref<IRelease[]>([])
+const releases = shallowRef<IRelease[]>([])
 const versionList = ref<string[]>([])
-const currUpdateLog = ref<IRelease>()
+const currUpdateLog = shallowRef<IRelease>()
 const { getReleases } = useUpdateLogs()
 const setUpdateLogsInfo = async () => {
   isReleasesLoading.value = true

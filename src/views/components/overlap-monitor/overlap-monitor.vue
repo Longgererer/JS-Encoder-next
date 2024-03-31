@@ -26,7 +26,7 @@
  * └——————————————————————————————————————————————————————————————————┙
  * 相当于对整个窗口做了一百等分，如果tab的50%以上进入某一个区域，那么就会按照该区域的分割结果进行窗口分割
  */
-import { watch, ref, computed, onMounted } from "vue"
+import { watch, ref, computed, onMounted, shallowRef } from "vue"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { AreaPosition } from "@type/editor"
 
@@ -35,8 +35,8 @@ const emits = defineEmits<{
 }>()
 
 const editorWrapperStore = useEditorWrapperStore()
-const overlapMonitor = ref<HTMLElement | null>(null)
-const positionCapture = ref<HTMLElement | null>(null)
+const overlapMonitor = shallowRef<HTMLElement | null>(null)
+const positionCapture = shallowRef<HTMLElement | null>(null)
 let monitorWidth = 0
 let monitorHeight = 0
 

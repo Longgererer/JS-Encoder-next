@@ -89,7 +89,7 @@ import CustomButton from "@components/custom-button/custom-button.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
 import { useCommonStore } from "@store/common"
 import { BtnType, Position, Size } from "@type/interface"
-import { computed, ref } from "vue"
+import { computed, ref, shallowRef } from "vue"
 import { getFileMimeType, getFileSizeText } from "@utils/tools/file"
 import { setAllowMimeTypeFiles, chosenFiles, isSplitHTML, processUploadFiles } from "./upload-code-modal"
 import { MimeType } from "@type/prep"
@@ -98,7 +98,7 @@ import message from "@components/message-list/message-list"
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
 
-const fileInput = ref<HTMLInputElement | null>(null)
+const fileInput = shallowRef<HTMLInputElement | null>(null)
 /** 清除input中上一次传入的文件，因为如果不清除，下次上传同一个文件时不会触发change事件 */
 const clearInputFiles = () => {
   if (!fileInput.value) { return }
