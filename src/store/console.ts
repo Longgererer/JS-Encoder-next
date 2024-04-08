@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { LogType } from "@type/console"
+import { LogFilterType } from "@type/console"
 
 interface IConsoleSetting {
   /** 每次执行代码前是否自动清空日志 */
@@ -12,9 +12,9 @@ interface IConsoleStore {
   /** 控制台设置 */
   setting: IConsoleSetting
   /** 日志类型过滤选项 */
-  filter: LogType
+  filter: LogFilterType
   /** 各种日志类型数量 */
-  logTypeCountMap: Partial<Record<LogType, number>>
+  logTypeCountMap: Partial<Record<LogFilterType, number>>
 }
 
 export const useConsoleStore = defineStore("console", {
@@ -24,7 +24,7 @@ export const useConsoleStore = defineStore("console", {
         autoClear: true,
         highlightLog: true,
       },
-      filter: LogType.ALL,
+      filter: LogFilterType.ALL,
       logTypeCountMap: {},
     }
   },
@@ -34,7 +34,7 @@ export const useConsoleStore = defineStore("console", {
         ...newSetting,
       })
     },
-    updateFilter(newType: LogType): void {
+    updateFilter(newType: LogFilterType): void {
       this.filter = newType
     },
   },

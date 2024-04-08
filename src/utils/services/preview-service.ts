@@ -3,9 +3,9 @@ import SingleInstance from "@utils/decorators/single-instance"
 
 export interface IRefreshOptions {
   /** 刷新前回调 */
-  onBeforeRefresh: () => void
+  onBeforeRefresh: (iframe: HTMLIFrameElement) => void
   /** 刷新后回调 */
-  onRefreshed: () => void
+  onRefreshed: (iframe: HTMLIFrameElement) => void
 }
 
 /** 预览相关服务 */
@@ -42,14 +42,14 @@ export default class PreviewService {
     const iframeWindow = this.getWindow()
     if (!iframeWindow) { return }
     const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
-    onBeforeRefresh?.()
+    onBeforeRefresh?.(this.iframe!)
     // 写入结果代码
     const code = await useCodeCompile().getResultCode()
     this.setCode(code)
     // 加载完成后结束
     return new Promise<void>((resolve) => {
       iframeWindow.onload = () => {
-        onRefreshed?.()
+        onRefreshed?.(this.iframe!)
         resolve()
       }
     })

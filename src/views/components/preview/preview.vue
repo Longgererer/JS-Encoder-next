@@ -93,16 +93,18 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { onMounted, ref, shallowRef, watch, watchEffect } from "vue"
+import { onMounted, ref, shallowRef, watch } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"
+import { IPreviewExpose } from "./preview.interface"
 import { getLocalStorage, setLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
 import PreviewService from "@utils/services/preview-service"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { storeToRefs } from "pinia"
 import { useEditorConfigStore } from "@store/editor-config"
+import ConsoleService from "@utils/services/console-service"
 
 defineProps<IProps>()
 
@@ -133,8 +135,10 @@ const handleJumpToHelp = (): void => {
 const iframeElement = shallowRef<HTMLIFrameElement | null>()
 const isIframeLoading = ref<boolean>()
 let previewService: PreviewService
+let consoleService: ConsoleService
 onMounted(() => {
   previewService = new PreviewService(iframeElement.value!)
+  consoleService = new ConsoleService(iframeElement.value!)
   previewService.setRefreshOptions({
     onBeforeRefresh: () => {
       isIframeLoading.value = true
@@ -190,10 +194,8 @@ const handleToggleFoldTopBar = () => {
 }
 
 defineExpose({
-  getIframe: () => {
-    return iframeElement.value
-  },
-})
+  getIframe: () => iframeElement.value,
+} as IPreviewExpose)
 </script>
 
 <style src="./preview.scss" lang="scss" scoped></style>

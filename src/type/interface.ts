@@ -32,6 +32,9 @@ export type AnyObject = Record<ObjKey, any>
 /** 通用数组类型 */
 export type AnyArray = any[]
 
+/** 通用函数类型 */
+export type AnyFunction = (...args: any[]) => any
+
 /** 什么都不返回的函数 */
 export type noop = (...args: any[]) => void
 

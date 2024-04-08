@@ -18,14 +18,7 @@
         ></split-line>
       </div>
       <div class="flex-1">
-        <preview
-          :style="{ height: `${modulesSize.previewHeight}px` }"
-          :isShowSize="layoutStore.isModulesResizing"
-        ></preview>
-        <console
-          :style="{ height: `${modulesSize.consoleHeight}px` }"
-          @resize="handleResizeConsoleAndPreview"
-        ></console>
+        <result></result>
       </div>
     </div>
   </div>
@@ -36,8 +29,6 @@
 <script setup lang="ts">
 import Navbar from "@views/components/navbar/navbar.vue"
 import Sidebar from "@views/components/sidebar/sidebar.vue"
-import Preview from "@views/components/preview/preview.vue"
-import Console from "@views/components/console/console.vue"
 import EditorWrapper from "@views/components/editor-wrapper/editor-wrapper.vue"
 import TemplateModal from "@views/components/modals/template-modal/template-modal.vue"
 import PreprocessorModal from "@views/components/modals/preprocessor-modal/preprocessor-modal.vue"
@@ -48,20 +39,17 @@ import DownloadCodeModal from "@views/components/modals/download-code-modal/down
 import ShortcutModal from "@views/components/modals/shortcut-modal/shortcut-modal.vue"
 import UpdateLogsModal from "@views/components/modals/update-logs-modal/update-logs-modal.vue"
 import SplitLine from "@components/split-line/split-line.vue"
+import Result from "@views/components/result/result.vue"
 import { SplitDirection } from "@type/editor"
 import { onMounted, watch } from "vue"
 import { getModulesHeight, getModulesWidth } from "@views/container/container"
 import { useLayoutStore } from "@store/layout"
 import useWindowResize from "@hooks/use-window-resize"
-import ModuleSizeService, {
-  CONSOLE_MIN_HEIGHT,
-  EDITOR_MIN_WIDTH,
-  PREVIEW_MIN_HEIGHT,
-  RESULT_MIN_WIDTH,
-} from "@utils/services/module-size-service"
+import ModuleSizeService, { EDITOR_MIN_WIDTH, RESULT_MIN_WIDTH } from "@utils/services/module-size-service"
 import { storeToRefs } from "pinia"
 import { useCommonStore } from "@store/common"
 import { ModalName } from "@type/interface"
+import { listenMousemove } from "@utils/tools/event"
 
 const layoutStore = useLayoutStore()
 const {
@@ -69,7 +57,6 @@ const {
   updateIsModulesResizing,
   updateHasInitModulesSize,
   modulesSize,
-  updateIsFoldConsole,
 } = layoutStore
 const { isShowResult, isFoldConsole } = storeToRefs(layoutStore)
 const { clientWidth, clientHeight } = useWindowResize()
@@ -110,53 +97,25 @@ const handleResizeEditorAndResult = (e: MouseEvent): void => {
   const { resultWidth, editorWidth } = modulesSize
   // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
   updateIsModulesResizing(true)
-  const startX = e.clientX
   // 鼠标拖拉editor分隔栏改变editor和结果窗口的宽度
-  document.onmousemove = (event: MouseEvent): void => {
-    // 获取editor和result窗口的新尺寸
-    const [editor, result] = moduleSizeService.getNewModulesSize(
-      { width: editorWidth, minWidth: EDITOR_MIN_WIDTH },
-      { width: resultWidth, minWidth: RESULT_MIN_WIDTH },
-      true,
-      startX - event.clientX,
-    )
-    updateModuleSize({
-      editorWidth: editor.width,
-      resultWidth: result.width,
-    })
-    processFinishResize()
-  }
-}
-
-const handleResizeConsoleAndPreview = (startY: number): void => {
-  const { consoleHeight, previewHeight } = modulesSize
-  // 拖动时在iframe上显示遮罩层避免鼠标划入iframe中导致事件失效
-  updateIsModulesResizing(true)
-  updateIsFoldConsole(false)
-  // 鼠标拖拉console分隔栏改变console和iframe的高度
-  document.onmousemove = (event: MouseEvent): void => {
-    // 获取console和preview窗口的新尺寸
-    const [preview, console] = moduleSizeService.getNewModulesSize(
-      { height: previewHeight, minHeight: PREVIEW_MIN_HEIGHT },
-      { height: consoleHeight, minHeight: CONSOLE_MIN_HEIGHT },
-      false,
-      startY - event.clientY,
-    )
-    // 更新尺寸
-    updateModuleSize({
-      previewHeight: preview.height,
-      consoleHeight: console.height,
-    })
-    processFinishResize()
-  }
-}
-
-const processFinishResize = (): void => {
-  document.onmouseup = (): void => {
-    updateIsModulesResizing(false)
-    document.onmouseup = null
-    document.onmousemove = null
-  }
+  listenMousemove({
+    onMoving: (event) => {
+      // 获取editor和result窗口的新尺寸
+      const [editor, result] = moduleSizeService.getNewModulesSize(
+        { width: editorWidth, minWidth: EDITOR_MIN_WIDTH },
+        { width: resultWidth, minWidth: RESULT_MIN_WIDTH },
+        true,
+        e.clientX - event.clientX,
+      )
+      updateModuleSize({
+        editorWidth: editor.width,
+        resultWidth: result.width,
+      })
+    },
+    onUp: () => {
+      updateIsModulesResizing(false)
+    },
+  })
 }
 </script>
 

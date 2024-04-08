@@ -88,26 +88,3 @@ export const getModulesHeight = (
     editorHeight: editorHeight + changedHeight,
   }
 }
-
-/**
- * 拖拽console时获取最新的预览和console窗口高度
- * 两个窗口的新高度都达到最小值就不更新高度
- */
-export const getNewResultModuleResize = (
-  startY: number,
-  currentY: number,
-  consoleHeight: number,
-  previewHeight: number,
-): Partial<IModulesSize> => {
-  const resultHeight = consoleHeight + previewHeight
-  const newConsoleHeight = consoleHeight - currentY + startY
-  const newPreviewHeight = resultHeight - newConsoleHeight
-  // 处理两个窗口的新高度都没有达到最小值的情况
-  if (newConsoleHeight >= CONSOLE_MIN_HEIGHT && newPreviewHeight >= PREVIEW_MIN_HEIGHT) {
-    return {
-      consoleHeight: newConsoleHeight,
-      previewHeight: newPreviewHeight,
-    }
-  }
-  return {}
-}

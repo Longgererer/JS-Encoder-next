@@ -35,6 +35,27 @@ $dark-colors: (
   modal-def-border: #181d1e,
   popover-bg: #222228,
   form-item: #222228,
+
+  // console
+  console-message: rgb(51 51 51),
+  console-message-bg: rgb(51 51 51 / 50%),
+  console-info: rgb(42 83 205),
+  console-info-bg: rgb(42 83 205 / 50%),
+  console-warn: rgb(102 85 0),
+  console-warn-bg: rgb(102 85 0 / 50%),
+  console-error: rgb(41 0 0),
+  console-error-bg: rgb(41 0 0 / 50%),
+  console-commend: rgb(51 51 51),
+  console-commend-bg: rgb(51 51 51 / 50%),
+  console-result: rgb(51 51 51),
+  console-result-bg: rgb(51 51 51 / 50%),
+
+  // console value
+  console-number: #ff98a4,
+  console-string: #c3e88d,
+  console-boolean: #ff98a4,
+  console-null: #7f85a3,
+  console-undefined: #7f85a3,
 );
 $bright-colors: (
   primary: #9246FF,

@@ -139,3 +139,8 @@ export function JSONStringify(data: any): string {
   str += suffix
   return str
 }
+
+/** 获取数组交集 */
+export const getArrayIntersection = (arr1: any[], arr2: any[]): any[] => {
+  return arr1.filter((item) => arr2.indexOf(item) > -1)
+}

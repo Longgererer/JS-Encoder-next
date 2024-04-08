@@ -1,5 +1,6 @@
 import { ISelectOption } from "@components/form/custom-select/custom-select"
-import { LogType } from "@type/console"
+import { LogFilterType, LogType } from "@type/console"
+import { reactive } from "vue"
 
 export interface IEmits {
   (e: "resize", startY: number): void
@@ -7,11 +8,11 @@ export interface IEmits {
 
 /** 日志过滤选项列表 */
 export const filterSelectOptions: ISelectOption[] = [
-  { value: LogType.ALL },
-  { value: LogType.MESSAGE },
-  { value: LogType.INFO },
-  { value: LogType.WARN },
-  { value: LogType.ERROR },
+  { value: LogFilterType.ALL },
+  { value: LogFilterType.MESSAGE },
+  { value: LogFilterType.INFO },
+  { value: LogFilterType.WARN },
+  { value: LogFilterType.ERROR },
 ]
 
 export const logType2IconMap: Partial<Record<LogType, string>> = {
@@ -27,8 +28,7 @@ export const countLogTypeList: LogType[] = [
   LogType.INFO,
 ]
 
-export const countLogInfoList = countLogTypeList.map((logType) => ({
-  logType,
-  count: 0,
-  icon: logType2IconMap[logType],
-}))
+export const logType2CountMap = reactive(countLogTypeList.reduce((acc, logType) => {
+  acc[logType] = 0
+  return acc
+}, {} as Record<LogType, number>))

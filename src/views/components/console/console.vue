@@ -6,19 +6,19 @@
         <i class="icon iconfont icon-console font-s"></i>
         <span class="ml-s renew-line-xxs">Console</span>
         <!-- 总数计算 -->
-        <div class="font-xxs bg-main3 p-x-xxs ml-xs describe-text radius-m">12</div>
+        <div class="font-xxs bg-main3 p-x-xxs ml-xs describe-text radius-m">{{ consoleService.logs.length }}</div>
       </div>
       <!-- 占位 + 拖拽 -->
       <div class="flex-1 cursor-y-resize" @mousedown="emits('resize', $event.clientY)"></div>
       <!-- 展示总数的日志类型列表 -->
       <div class="flex-y-center font-xxs">
-        <template v-for="item in countLogInfoList" :key="item.logType">
+        <template v-for="logType in countLogTypeList" :key="logType">
           <div
-            v-if="!!item.count"
+            v-if="logType2CountMap[logType]"
             class="mr-m flex-y-center"
-            :class="`${item.logType}-count`">
-            <i class="icon iconfont mr-xs inline-block" :class="item.icon"></i>
-            <div class="renew-line-xxs">{{ item.count }}</div>
+            :class="`${logType}-count`">
+            <i class="icon iconfont mr-xs inline-block" :class="logType2IconMap[logType]"></i>
+            <div class="renew-line-xxs">{{ logType2CountMap[logType] }}</div>
           </div>
         </template>
       </div>
@@ -55,6 +55,7 @@
             icon-class="icon-forbid"
             title="清空日志"
             :size="IconBtnSize.SM"
+            @click="handleClearLogs"
           ></icon-btn>
         </div>
         <div class="ml-s">
@@ -71,7 +72,11 @@
     </div>
     <div class="relative flex-1">
       <!--日志列表-->
-      <div class="console-log-list-wrapper"></div>
+      <div class="console-log-list-wrapper">
+        <template v-for="(logInfo, index) in consoleService.logs" :key="index">
+          <console-item :log-info="logInfo"></console-item>
+        </template>
+      </div>
       <!--设置-->
       <div v-show="isShowConsoleSettings" class="console-settings pt-m pl-m flex-col">
         <checkbox>每次执行前自动清空日志</checkbox>
@@ -82,33 +87,26 @@
 </template>
 
 <script lang="ts" setup>
-import { LogType } from "@type/console"
+import { LogFilterType, ConsoleUpdateType } from "@type/console"
 import { ref, watch } from "vue"
-import { useConsoleStore } from "@store/console"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { Size } from "@type/interface"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
-import { IEmits, countLogInfoList, filterSelectOptions } from "./console"
+import { IEmits, logType2CountMap, logType2IconMap, countLogTypeList, filterSelectOptions } from "./console"
 import { useLayoutStore } from "@store/layout"
 import { CONSOLE_MIN_HEIGHT } from "@utils/services/module-size-service"
+import ConsoleService from "@utils/services/console-service"
+import ConsoleItem from "./components/console-item/console-item.vue"
 
 const emits = defineEmits<IEmits>()
 
-const { updateFilter } = useConsoleStore()
 const layoutStyle = useLayoutStore()
 const { updateIsFoldConsole, updateModuleSize } = layoutStyle
 
 /** 当前过滤日志类型选项 */
-const filterType = ref<LogType>(LogType.ALL)
-// TODO: 使用computed
-const filterLogTypeList = (logType: LogType) => {
-
-}
-watch(filterType, (newType) => {
-  filterLogTypeList(newType)
-})
+const filterType = ref<LogFilterType>(LogFilterType.ALL)
 
 /** 是否展示console设置 */
 const isShowConsoleSettings = ref<boolean>(false)
@@ -121,6 +119,31 @@ const handleClickToggleConsole = () => {
     consoleHeight: CONSOLE_MIN_HEIGHT,
     previewHeight: consoleHeight - CONSOLE_MIN_HEIGHT + previewHeight,
   })
+}
+
+const consoleService = new ConsoleService()
+watch(consoleService.logs, (arr) => {
+  console.log(arr)
+})
+
+consoleService.setOptions({
+  // 监听日志列表变化，更新各类型统计数量（如果使用computed则会导致大量无意义的遍历）
+  onLogsUpdated: (updateType, changeLog) => {
+    if (changeLog && updateType === ConsoleUpdateType.ADD) {
+      const { type } = changeLog || {}
+      logType2CountMap[type] = ++logType2CountMap[type]
+    } else {
+      countLogTypeList.forEach((logType) => {
+        // 数量全部重置
+        logType2CountMap[logType] = 0
+      })
+    }
+  },
+})
+
+/** 手动清除日志 */
+const handleClearLogs = () => {
+  consoleService.clear()
 }
 </script>
 
