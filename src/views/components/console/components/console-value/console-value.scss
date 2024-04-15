@@ -1,3 +1,6 @@
+.console-common {
+  color: var(--color-console-common);
+}
 .console-number {
   color: var(--color-console-number);
 }
@@ -18,4 +21,16 @@
 }
 .console-regexp {
   color: var(--color-console-regexp);
+}
+.console-function-prefix {
+  color: var(--color-console-function-prefix);
+}
+.console-symbol {
+  color: var(--color-console-symbol);
+}
+.console-attribute-name {
+  color: var(--color-console-attribute-name);
+}
+.console-function-code {
+  color: var(--color-active-color);
 }

@@ -38,7 +38,7 @@ $dark-colors: (
 
   // console
   console-message: rgb(51 51 51),
-  console-message-bg: rgb(51 51 51 / 50%),
+  console-message-bg: transparent,
   console-info: rgb(42 83 205),
   console-info-bg: rgb(42 83 205 / 50%),
   console-warn: rgb(102 85 0),
@@ -46,16 +46,21 @@ $dark-colors: (
   console-error: rgb(41 0 0),
   console-error-bg: rgb(41 0 0 / 50%),
   console-commend: rgb(51 51 51),
-  console-commend-bg: rgb(51 51 51 / 50%),
+  console-commend-bg: transparent,
   console-result: rgb(51 51 51),
-  console-result-bg: rgb(51 51 51 / 50%),
+  console-result-bg: transparent,
 
   // console value
-  console-number: #ff98a4,
+  console-common: rgb(177, 177, 177),
+  console-number: rgb(85, 106, 242),
   console-string: #c3e88d,
-  console-boolean: #ff98a4,
-  console-null: #7f85a3,
-  console-undefined: #7f85a3,
+  console-boolean: rgb(85, 106, 242),
+  console-null: rgb(127, 127, 127),
+  console-undefined: rgb(127, 127, 127),
+  console-symbol: #c3e88d,
+  console-function-prefix: #ff98a4,
+  console-regexp: #c3e88d,
+  console-attribute-name: #c099ff,
 );
 $bright-colors: (
   primary: #9246FF,

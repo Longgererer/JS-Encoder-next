@@ -73,6 +73,7 @@ let consoleService: ConsoleService
 const initResult = () => {
   // 获取到iframe，进行初始化
   const iframeElement = previewRef.value!.getIframe()
+  console.log("iframeElement", iframeElement)
   previewService = new PreviewService(iframeElement!)
   consoleService = new ConsoleService(iframeElement!)
 

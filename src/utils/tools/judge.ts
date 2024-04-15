@@ -1,4 +1,6 @@
+import { AnyFunction } from "@type/interface"
 import { getObjOwnKeyList } from "@utils/tools/common"
+import { getObjType } from "."
 
 export function isDom(type: string): boolean {
   return /^HTML/.test(type)
@@ -43,4 +45,18 @@ export function isCyclic(obj: any): boolean {
   }
 
   return detect(obj)
+}
+
+export const isAsyncFn = (fn: AnyFunction): boolean => {
+  return getObjType(fn) === "AsyncFunction"
+}
+
+export const isGeneratorFn = (fn: AnyFunction): boolean => {
+  return getObjType(fn) === "GeneratorFunction"
+}
+
+export const isArrowFn = (fn: AnyFunction): boolean => {
+  return !(fn.hasOwnProperty("prototype")
+    || fn.hasOwnProperty("arguments")
+    || fn.hasOwnProperty("caller"))
 }

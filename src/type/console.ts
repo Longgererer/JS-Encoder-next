@@ -1,3 +1,5 @@
+import { AnyArray } from "./interface"
+
 /** 过滤日志类型 */
 export const enum LogFilterType {
   /** 所有日志 */
@@ -64,7 +66,7 @@ export interface IBasicLogInfo {
 }
 
 export interface ITableLogInfo {
-  type: LogType
+  type: LogType.MESSAGE
   method: ConsoleMethods.TABLE
   data: { headers: string[], body: any[][] }
 }
@@ -77,12 +79,17 @@ export enum ConsoleUpdateType {
 export interface IConsoleValue {
   type: string
   value: any
-  /** 是否展开，默认不展开，若不展开则展示缩写 */
-  unfold?: boolean
-  /** 名字，比如函数名 */
   name?: string
+  /** 前缀 */
+  prefix?: string
+  /** 属性列表 */
+  attrs?: Array<{ key: string, value: any }>
+  /** 大小，如Array(3)、NodeList(3)、Set(3)、Map(3) */
   size?: number
   /** Symbol(Symbol.toStringTag) */
-  tag?: string
-  attrs: IConsoleValue[]
+  toStringTag?: string
+  /** 最少展示出来的属性数，默认为0表示不限制，在unfold为false情况下有效，剩下的用省略号表示 */
+  minLength?: number
+  /** 最多展示出来的属性数，默认为0表示不限制，在unfold为true情况下有效，剩下的用省略号表示 */
+  maxLength?: number
 }

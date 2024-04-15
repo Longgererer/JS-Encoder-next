@@ -122,9 +122,6 @@ const handleClickToggleConsole = () => {
 }
 
 const consoleService = new ConsoleService()
-watch(consoleService.logs, (arr) => {
-  console.log(arr)
-})
 
 consoleService.setOptions({
   // 监听日志列表变化，更新各类型统计数量（如果使用computed则会导致大量无意义的遍历）

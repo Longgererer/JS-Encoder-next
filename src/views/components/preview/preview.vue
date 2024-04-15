@@ -135,40 +135,10 @@ const handleJumpToHelp = (): void => {
 const iframeElement = shallowRef<HTMLIFrameElement | null>()
 const isIframeLoading = ref<boolean>()
 let previewService: PreviewService
-let consoleService: ConsoleService
+
 onMounted(() => {
   previewService = new PreviewService(iframeElement.value!)
-  consoleService = new ConsoleService(iframeElement.value!)
-  previewService.setRefreshOptions({
-    onBeforeRefresh: () => {
-      isIframeLoading.value = true
-    },
-    onRefreshed: () => {
-      isIframeLoading.value = false
-    },
-  })
-  processRefreshIframe()
 })
-
-/**
- * 处理iframe的刷新，目前暂有以下几种情况
- * 1. 代码更改
- * 2. 预处理语言更改
- * 3. 代码设置中头部标签（headTag）更改
- * 4. 使用外部库更改
- */
-const processRefreshIframe = () => {
-  watch([
-    codeMap,
-    prepMap,
-    libraries,
-    settings.value.other.headTags,
-  ], () => {
-    if (settings.value.execute.autoExecute) {
-      previewService.refreshIframe()
-    }
-  }, { deep: true })
-}
 
 /** 点击预览选项 */
 const handleClickOption = (type: PreviewOptionType) => {

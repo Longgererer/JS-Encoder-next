@@ -2,7 +2,8 @@ import SingleInstance from "@utils/decorators/single-instance"
 import { reactive } from "vue"
 import { getArrayIntersection, getType } from "@utils/tools"
 import { AnyArray, AnyObject } from "@type/interface"
-import { ConsoleMethods, ConsoleUpdateType, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
+import { ConsoleMethods, ConsoleUpdateType, IConsoleValue, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
+import { processConsoleValueList } from "@utils/tools/console-value"
 
 export interface IConsoleOptions {
   /** 刷新前回调 */
@@ -37,19 +38,19 @@ export default class ConsoleService {
   }
 
   public log(...args: any[]) {
-    this.logs.push({ type: LogType.MESSAGE, method: "log", data: [...args] })
+    this.logs.push({ type: LogType.MESSAGE, method: "log", data: processConsoleValueList(args) })
   }
 
   public info(...args: any[]) {
-    this.logs.push({ type: LogType.INFO, method: "info", data: [...args] })
+    this.logs.push({ type: LogType.INFO, method: "info", data: processConsoleValueList(args) })
   }
 
   public warn(...args: any[]) {
-    this.logs.push({ type: LogType.WARN, method: "warn", data: [...args] })
+    this.logs.push({ type: LogType.WARN, method: "warn", data: processConsoleValueList(args) })
   }
 
   public error(...args: any[]) {
-    this.logs.push({ type: LogType.ERROR, method: "error", data: [...args] })
+    this.logs.push({ type: LogType.ERROR, method: "error", data: processConsoleValueList(args) })
   }
 
   public time(label: string = "default") {
@@ -98,7 +99,7 @@ export default class ConsoleService {
     const logInfo: ITableLogInfo = {
       type: LogType.MESSAGE,
       method: ConsoleMethods.TABLE,
-      data: { headers, body },
+      data: { headers, body: body.map((list) => processConsoleValueList(list)) },
     }
     this.logs.push(logInfo)
     this.consoleOptions.onLogsUpdated?.(ConsoleUpdateType.ADD, logInfo)
@@ -134,9 +135,5 @@ export default class ConsoleService {
       [ConsoleMethods.CLEAR]: () => this.clear(),
       [ConsoleMethods.TABLE]: () => this.table(args[0], args[1]),
     }
-  }
-
-  private formatData(): void {
-    
   }
 }

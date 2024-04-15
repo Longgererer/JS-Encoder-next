@@ -1,16 +1,21 @@
+import { AnyArray } from "@type/interface"
 import { stringifyDOM } from "@utils/tools/common"
 
-export function getType(data: any): string {
+export const getType = (data: any): string => {
   if (data === null) { return "null" }
   let type: string = typeof data
   if (type === "object") {
-    type = Object.prototype.toString.call(data).slice(8, -1)
+    type = getObjType(data)
   }
   return type
 }
 
+export const getObjType = (data: any): string => {
+  return Object.prototype.toString.call(data).slice(8, -1)
+}
+
 /** 获取对象的所有键，包括不可枚举的键 */
-export function getObjAllKeys(obj: any): Array<string | number> {
+export function getObjAllKeys(obj: any): AnyArray {
   const type = getType(obj)
   switch (type) {
     case "Map": {

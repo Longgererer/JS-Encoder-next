@@ -1,6 +1,6 @@
 <template>
   <div
-    class="console-item pl-m pr-xxl font-xxs flex"
+    class="console-item pl-l pr-xxl p-y-xs font-xxs flex"
     :class="[`console-${logInfo.type}`]">
     <!-- icon -->
     <i class="console-item-icon icon iconfont" :class="logType2Icon[logInfo.type]"></i>
@@ -11,7 +11,8 @@
     ></console-table>
     <div v-else>
       <template v-for="(item, index) in logInfo.data" :key="index">
-        <console-value :data="item"></console-value>
+        <span v-if="index">&nbsp;</span>
+        <console-value v-bind="item"></console-value>
       </template>
     </div>
   </div>
