@@ -24,6 +24,7 @@ import { IPreviewExpose } from "../preview/preview.interface"
 import { useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { storeToRefs } from "pinia"
+import { useConsoleStore } from "@store/console"
 
 const layoutStore = useLayoutStore()
 const {
@@ -36,6 +37,8 @@ const editorWrapperStore = useEditorWrapperStore()
 const editorConfigStore = useEditorConfigStore()
 const { codeMap } = storeToRefs(editorWrapperStore)
 const { prepMap, libraries, settings } = storeToRefs(editorConfigStore)
+const consoleStore = useConsoleStore()
+const { settings: consoleSettings } = storeToRefs(consoleStore)
 
 const moduleSizeService = new ModuleSizeService()
 
@@ -73,7 +76,6 @@ let consoleService: ConsoleService
 const initResult = () => {
   // 获取到iframe，进行初始化
   const iframeElement = previewRef.value!.getIframe()
-  console.log("iframeElement", iframeElement)
   previewService = new PreviewService(iframeElement!)
   consoleService = new ConsoleService(iframeElement!)
 
@@ -85,7 +87,9 @@ const processRefreshIframe = () => {
   previewService.setRefreshOptions({
     onBeforeRefresh: (iframe) => {
       // 清空控制台
-      consoleService.clear()
+      if (consoleSettings.value.autoClear) {
+        consoleService.clear()
+      }
       // 监听iframe中的错误事件输出到控制台
       iframe.contentWindow?.addEventListener("error", (message) => {
         consoleService.error(message)

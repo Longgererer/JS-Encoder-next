@@ -19,6 +19,7 @@ export interface IProps {
   code: string
   settings: ICodemirrorEditorSettings
   extensions?: Extension[]
+  minimal?: boolean
 }
 
 export interface IEmits {

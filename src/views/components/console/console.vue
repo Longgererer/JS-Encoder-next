@@ -70,17 +70,26 @@
         </div>
       </div>
     </div>
-    <div class="relative flex-1">
+    <div class="console-log-list-wrapper console-content relative flex-1">
       <!--日志列表-->
-      <div class="console-log-list-wrapper">
+      <div class="console-log-list fill-h over-y-auto" ref="consoleLogListRef">
         <template v-for="(logInfo, index) in consoleService.logs" :key="index">
           <console-item :log-info="logInfo"></console-item>
         </template>
+        <div class="console-commend-input-wrapper flex-y-center p-y-xs pl-xs">
+          <i class="icon iconfont icon-chevron-right primary-text font-xxs"></i>
+          <input
+            class="console-commend-input bg-main3 font-xxs flex-1 p-x-xs active-text code-font"
+            v-model="commend"
+            type="text"
+            @keypress="handleCommendChange($event)"
+          />
+        </div>
       </div>
       <!--设置-->
       <div v-show="isShowConsoleSettings" class="console-settings pt-m pl-m flex-col">
-        <checkbox>每次执行前自动清空日志</checkbox>
-        <checkbox class="mt-s">控制台日志不进行高亮</checkbox>
+        <checkbox v-model="settings.autoClear">每次执行前自动清空日志</checkbox>
+        <!-- <checkbox class="mt-s">控制台日志不进行高亮</checkbox> -->
       </div>
     </div>
   </div>
@@ -88,7 +97,7 @@
 
 <script lang="ts" setup>
 import { LogFilterType, ConsoleUpdateType } from "@type/console"
-import { ref, watch } from "vue"
+import { nextTick, onMounted, ref, shallowRef, watch } from "vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { Size } from "@type/interface"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
@@ -99,21 +108,32 @@ import { useLayoutStore } from "@store/layout"
 import { CONSOLE_MIN_HEIGHT } from "@utils/services/module-size-service"
 import ConsoleService from "@utils/services/console-service"
 import ConsoleItem from "./components/console-item/console-item.vue"
+import { useConsoleStore, initSettings, IConsoleSetting } from "@store/console"
 
 const emits = defineEmits<IEmits>()
 
-const layoutStyle = useLayoutStore()
-const { updateIsFoldConsole, updateModuleSize } = layoutStyle
+const layoutStore = useLayoutStore()
+const { updateIsFoldConsole, updateModuleSize } = layoutStore
+const consoleStore = useConsoleStore()
+const { updateSetting } = consoleStore
 
-/** 当前过滤日志类型选项 */
-const filterType = ref<LogFilterType>(LogFilterType.ALL)
+const consoleLogListRef = shallowRef<HTMLElement | null>(null)
 
 /** 是否展示console设置 */
 const isShowConsoleSettings = ref<boolean>(false)
+const settings = ref<IConsoleSetting>({ ...initSettings })
+watch(settings, () => {
+  updateSetting(settings.value)
+}, { deep: true })
+
+/** 当前过滤日志类型选项 */
+const filterType = ref<LogFilterType>(LogFilterType.ALL)
+/** console命令 */
+const commend = ref<string>("")
 
 /** 收起console */
 const handleClickToggleConsole = () => {
-  const { modulesSize: { consoleHeight, previewHeight } } = layoutStyle
+  const { modulesSize: { consoleHeight, previewHeight } } = layoutStore
   updateIsFoldConsole(true)
   updateModuleSize({
     consoleHeight: CONSOLE_MIN_HEIGHT,
@@ -122,6 +142,24 @@ const handleClickToggleConsole = () => {
 }
 
 const consoleService = new ConsoleService()
+
+const handleCommendChange = (event: KeyboardEvent) => {
+  if (event.key === "Enter") {
+    // shift + enter换行，enter提交
+    if (event.shiftKey) {
+
+    } else {
+      if (!commend.value) { return }
+      consoleService.execute(commend.value)
+      commend.value = ""
+      nextTick(() => {
+        if (!consoleLogListRef.value) { return }
+        // 滚动到最底部
+        consoleLogListRef.value.scrollTop = consoleLogListRef.value.scrollHeight
+      })
+    }
+  }
+}
 
 consoleService.setOptions({
   // 监听日志列表变化，更新各类型统计数量（如果使用computed则会导致大量无意义的遍历）
@@ -144,34 +182,4 @@ const handleClearLogs = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.console {
-  .console-header {
-    height: 28px;
-    .error-count,
-    .warn-count,
-    .info-count {
-      height: 16px;
-    }
-    .error-count {
-      color: var(--color-red2);
-    }
-    .warn-count {
-      color: var(--color-amber2);
-    }
-    .info-count {
-      color: var(--color-primary2);
-    }
-    .fold-btn {
-      width: 28px;
-      height: 28px;
-    }
-  }
-  .console-toolbar {
-    height: 28px;
-    .tool-btn-group {
-      margin-left: 22px;
-    }
-  }
-}
-</style>
+<style src="./console.scss" lang="scss" scoped></style>

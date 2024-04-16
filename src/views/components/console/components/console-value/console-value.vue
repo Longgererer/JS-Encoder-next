@@ -203,6 +203,8 @@ const props = withDefaults(defineProps<IProps>(), {
   maxLength: Infinity,
   simple: false,
 })
+
+console.log(props)
 const isFold = ref<boolean>(false)
 </script>
 

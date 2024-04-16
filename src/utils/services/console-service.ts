@@ -37,6 +37,30 @@ export default class ConsoleService {
     this.consoleOptions = options
   }
 
+  /**
+   * 执行console手动输入指令
+   * 由于console手动输入指令都是字符串形式，所以要先判断该命令是否会报错，加一层try catch
+   * 首先将命令原样输出
+   * 然后在iframe内执行命令
+   * 最后输出命令的返回值
+   */
+  public execute(commend: string) {
+    let result
+    this.commend(commend)
+    try {
+      result = this.window.eval(`let x=(${commend});x`)
+    } catch (error) {
+      try {
+        this.window.eval(commend)
+      } catch (err) {
+        this.error(`${(err as Error).name}: ${(err as Error).message}`)
+        return
+      }
+    }
+    console.log(result)
+    this.result(result)
+  }
+
   public log(...args: any[]) {
     this.logs.push({ type: LogType.MESSAGE, method: "log", data: processConsoleValueList(args) })
   }
@@ -51,6 +75,14 @@ export default class ConsoleService {
 
   public error(...args: any[]) {
     this.logs.push({ type: LogType.ERROR, method: "error", data: processConsoleValueList(args) })
+  }
+
+  public commend(...args: any[]) {
+    this.logs.push({ type: LogType.COMMEND, method: "log", data: processConsoleValueList(args) })
+  }
+
+  public result(...args: any[]) {
+    this.logs.push({ type: LogType.RESULT, method: "log", data: processConsoleValueList(args) })
   }
 
   public time(label: string = "default") {

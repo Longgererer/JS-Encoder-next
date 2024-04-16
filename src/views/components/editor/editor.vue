@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, shallowRef, watch } from "vue"
 import { IEmits, IProps } from "./editor"
-import { EditorView, basicSetup } from "codemirror"
+import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 import { CodemirrorExtensionsUpdater } from "@utils/editor/utils/codemirror-extensions-updater"
@@ -23,7 +23,7 @@ onMounted(() => {
   editorState.value = EditorState.create({
     doc: props.code,
     extensions: [
-      basicSetup,
+      props.minimal ? minimalSetup : basicSetup,
       EditorView.updateListener.of((update) => {
         // 监听内容改变
         if (update.docChanged) {
