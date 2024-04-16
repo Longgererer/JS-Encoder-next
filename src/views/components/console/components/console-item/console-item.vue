@@ -3,7 +3,9 @@
     class="console-item pl-l pr-xxl p-y-xs font-xxs flex"
     :class="[`console-${logInfo.type}`]">
     <!-- icon -->
-    <i class="console-item-icon icon iconfont" :class="logType2Icon[logInfo.type]"></i>
+    <div class="inline-flex flex-center mr-xs">
+      <i class="console-item-icon icon iconfont font-xxs" :class="logType2Icon[logInfo.type]"></i>
+    </div>
     <!-- value -->
     <console-table
       v-if="logInfo.method === ConsoleMethods.TABLE"

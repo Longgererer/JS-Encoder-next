@@ -39,11 +39,19 @@ const testCode = () => {
   map.set( () => { console.log("hello world") }, "a function")
   map.set("hello", "world")
   map.set("nested", { val1: "val1", val2: "val2" })
-
   console.log(map)
   const dd = new WeakMap()
   dd.set({}, {})
   console.log(dd)
-
   console.log({ a: { b: { c: {} } } })
+  console.log(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+  console.log(new Set([async function a(){}, [], {}, new Set([1, 2, 3])]))
+  console.log(new Promise(() => {}))
+  // <div id="123" class="a b">123</div>
+  console.log(document.querySelectorAll("div"))
+  console.log(document.querySelector("div"))
+  console.log(123, { a: { b: { c: {} } } })
+  console.warn(123, { a: { b: { c: {} } } })
+  console.error(123, { a: { b: { c: {} } } })
+  console.info(123, { a: { b: { c: {} } } })
 }

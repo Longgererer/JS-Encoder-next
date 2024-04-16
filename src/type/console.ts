@@ -82,8 +82,10 @@ export interface IConsoleValue {
   name?: string
   /** 前缀 */
   prefix?: string
+  /** 后缀 */
+  suffix?: string
   /** 属性列表 */
-  attrs?: Array<{ key: string, value: any }>
+  attrs?: Array<{ key: number | string, value: any }>
   /** 大小，如Array(3)、NodeList(3)、Set(3)、Map(3) */
   size?: number
   /** Symbol(Symbol.toStringTag) */
@@ -92,4 +94,6 @@ export interface IConsoleValue {
   minLength?: number
   /** 最多展示出来的属性数，默认为0表示不限制，在unfold为true情况下有效，剩下的用省略号表示 */
   maxLength?: number
+  /** 是否为链接，字符串类型可用 */
+  isLink?: boolean
 }

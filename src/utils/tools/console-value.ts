@@ -1,7 +1,6 @@
 import { IConsoleValue } from "@type/console"
 import { getObjAllKeys, getType } from "."
-import { AnyFunction } from "@type/interface"
-import { isArrowFn, isAsyncFn, isGeneratorFn } from "./judge"
+import { isElement } from "./judge"
 
 export const processConsoleValueList = (list: any[]) => {
   return list.map((value, index) => {
@@ -22,6 +21,7 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
   if (!type) {
     type = getType(value)
   }
+  console.log(value, type)
   let consoleValue: IConsoleValue = {
     type, value,
     toStringTag: value?.[Symbol.toStringTag],
@@ -79,6 +79,7 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
         ...consoleValue,
         ...listLengthLimit,
         size: (value as Set<any>).size,
+        attrs: getObjAllKeys(value).map((item, index) => ({ key: index, value: item })),
       }
       break
     }
@@ -104,6 +105,20 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
         value: value.toString(),
       }
       break
+    }
+    default: {
+      console.log(value instanceof HTMLElement)
+      if (isElement(value)) {
+        consoleValue = {
+          ...consoleValue,
+          ...listLengthLimit,
+          type: "Element",
+          value: value.toString(),
+          name: (value as HTMLElement).nodeName.toLowerCase(),
+          attrs: Array.from((value as HTMLElement).attributes).map((item) => ({ key: item.name, value: item.value })),
+          suffix: `#${(value as HTMLElement).id}` + `.${Array.from((value as HTMLElement).classList).join(".")}`,
+        }
+      }
     }
   }
   return consoleValue

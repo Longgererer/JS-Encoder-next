@@ -2,8 +2,9 @@ import { AnyFunction } from "@type/interface"
 import { getObjOwnKeyList } from "@utils/tools/common"
 import { getObjType } from "."
 
-export function isDom(type: string): boolean {
-  return /^HTML/.test(type)
+export function isElement(data: any): boolean {
+  const element = (data as HTMLElement)?.ownerDocument?.defaultView?.HTMLElement
+  return !!(element && data instanceof element)
 }
 
 export function isUndefined(data: any): boolean {

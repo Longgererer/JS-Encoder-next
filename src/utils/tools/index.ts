@@ -25,6 +25,7 @@ export function getObjAllKeys(obj: any): AnyArray {
       }
       return arr
     }
+    case "Set":
     case "Array": {
       const arr: number[] = []
       obj.forEach((_: string, index: number) => {
