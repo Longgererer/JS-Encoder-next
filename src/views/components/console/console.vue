@@ -91,7 +91,7 @@
         </div>
       </div>
       <!--设置-->
-      <div v-show="isShowConsoleSettings" class="console-settings pt-m pl-m flex-col">
+      <div v-show="isShowConsoleSettings" class="console-settings bg-main3 absolute pos-origin pt-m pl-m flex-col fill">
         <checkbox v-model="settings.autoClear">每次执行前自动清空日志</checkbox>
         <!-- <checkbox class="mt-s">控制台日志不进行高亮</checkbox> -->
       </div>
