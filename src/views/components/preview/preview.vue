@@ -27,7 +27,7 @@
       <!--预览html-->
       <div class="fill-h relative no-select" :class="`${namespace}-iframe-wrapper`">
         <iframe
-          title="output"
+          title="preview"
           id="iframe"
           name="iframe"
           ref="iframeElement"
@@ -93,7 +93,7 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { onMounted, ref, shallowRef, watch } from "vue"
+import { onMounted, ref, shallowRef } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"
@@ -104,7 +104,6 @@ import PreviewService from "@utils/services/preview-service"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { storeToRefs } from "pinia"
 import { useEditorConfigStore } from "@store/editor-config"
-import ConsoleService from "@utils/services/console-service"
 
 defineProps<IProps>()
 
@@ -113,8 +112,6 @@ const namespace = "preview"
 const { modulesSize } = useLayoutStore()
 const editorWrapperStore = useEditorWrapperStore()
 const editorConfigStore = useEditorConfigStore()
-const { codeMap } = storeToRefs(editorWrapperStore)
-const { prepMap, libraries, settings } = storeToRefs(editorConfigStore)
 
 /** 新手引导 */
 const hasHidedNewUserGuide = Boolean(getLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE))

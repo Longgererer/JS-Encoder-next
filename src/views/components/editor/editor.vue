@@ -13,6 +13,7 @@ import { ShortcutMode } from "@type/settings"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
+  code: "",
   settings: () => ({
     lineWrapping: true,
     lineNumbers: true,
@@ -32,7 +33,7 @@ const editorView = shallowRef<EditorView>()
 onMounted(() => {
   // 初始化编辑器
   editorState.value = EditorState.create({
-    doc: props.modelValue,
+    doc: props.modelValue || props.modelValue,
     extensions: [
       props.minimal ? minimalSetup : basicSetup,
       EditorView.updateListener.of((update) => {
@@ -59,6 +60,13 @@ onMounted(() => {
   /**
    * 监听各种编辑器状态设置
    */
+  watch(
+    () => props.code,
+    (newContent) => {
+      if (newContent === baseUtil.getContent()) { return }
+      baseUtil.setContent(newContent)
+    },
+  )
   watch(
     () => props.modelValue,
     (newContent) => {

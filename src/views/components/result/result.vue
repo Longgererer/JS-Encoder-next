@@ -90,13 +90,13 @@ const processRefreshIframe = () => {
       if (consoleSettings.value.autoClear) {
         consoleService.clear()
       }
-      // 监听iframe中的错误事件输出到控制台
-      iframe.contentWindow?.addEventListener("error", (message) => {
+      iframe.contentWindow!.onerror = (message) => {
+        console.log(123, message)
         consoleService.error(message)
-      })
-      iframe.contentWindow?.addEventListener("unhandledrejection", (message) => {
+      }
+      iframe.contentWindow!.onunhandledrejection = (message) => {
         consoleService.error(`Unhandled promise rejection: ${message.reason}`)
-      })
+      }
     },
     onRefreshed: () => {},
   })

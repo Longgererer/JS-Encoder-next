@@ -13,6 +13,7 @@ interface Settings {
   lineHighlight: string
   gutterBackground: string
   gutterForeground: string
+  foldBackground: string
 }
 
 interface IThemeInfo {
@@ -45,6 +46,10 @@ const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
     },
     ".cm-content .cm-selectionMatch": {
       backgroundColor: settings.selectionMatch,
+    },
+    ".cm-content .cm-foldPlaceholder": {
+      backgroundColor: settings.foldBackground,
+      border: "none",
     },
     ".cm-activeLine": {
       backgroundColor: settings.lineHighlight,

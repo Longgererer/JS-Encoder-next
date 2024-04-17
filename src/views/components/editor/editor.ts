@@ -16,8 +16,9 @@ export interface ICodemirrorEditorSettings {
 }
 
 export interface IProps {
-  prep: Prep,
-  modelValue: string
+  prep: Prep
+  code?: string
+  modelValue?: string
   settings: ICodemirrorEditorSettings
   extensions?: Extension[]
   minimal?: boolean

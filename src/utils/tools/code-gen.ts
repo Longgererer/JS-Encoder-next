@@ -41,13 +41,13 @@ export const genHTMLFileCode = (options: IGenHTMLCodeOption) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     ${headTags}
     ${cssLinksCode}
+    ${scriptLinksCode}
     <title></title>
     <style>
     ${cssCode}
     </style>
     <body>
     ${htmlCode}
-    ${scriptLinksCode}
     <script>
     ${javascriptCode}
     </script>

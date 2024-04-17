@@ -13,6 +13,7 @@ export interface IRefreshOptions {
 export default class PreviewService {
   /** iframe元素 */
   private iframe?: HTMLIFrameElement
+  private isIframeInit: boolean = false
   /** 刷新选项 */
   private refreshOption?: IRefreshOptions
 
@@ -38,27 +39,38 @@ export default class PreviewService {
     this.refreshOption = options
   }
 
-  public async refreshIframe() {
-    const iframeWindow = this.getWindow()
-    if (!iframeWindow) { return }
-    const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
-    onBeforeRefresh?.(this.iframe!)
-    // 写入结果代码
-    const code = await useCodeCompile().getResultCode()
-    this.setCode(code)
-    // 加载完成后结束
-    return new Promise<void>((resolve) => {
-      iframeWindow.onload = () => {
-        onRefreshed?.(this.iframe!)
-        resolve()
-      }
-    })
+  public replaceOldIframe() {
+    if (!this.iframe) { return }
+    const newIframe = this.iframe?.cloneNode()
+    this.iframe?.parentNode?.replaceChild(newIframe, this.iframe!)
+    this.iframe = newIframe as HTMLIFrameElement
   }
 
-  private async setCode(code: string) {
-    const iframeDoc = this.getWindow()!.document
-    iframeDoc.open()
-    iframeDoc.write(code)
-    iframeDoc.close()
+  public async refreshIframe() {
+    if (this.isIframeInit) {
+      this.replaceOldIframe()
+    }
+
+      const iframeWindow = this.getWindow()
+      if (!iframeWindow) { return }
+      const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
+
+      const iframeDoc = this.getWindow()!.document
+      iframeDoc.open()
+      onBeforeRefresh?.(this.iframe!)
+      // 写入结果代码
+      const code = await useCodeCompile().getResultCode()
+      iframeDoc.write(code)
+      iframeDoc.close()
+
+      // 加载完成后结束
+      return new Promise<void>((resolve) => {
+        iframeWindow.onload = () => {
+          this.isIframeInit = true
+          onRefreshed?.(this.iframe!)
+          iframeWindow.onload = null
+          resolve()
+        }
+      })
   }
 }

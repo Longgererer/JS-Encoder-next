@@ -13,6 +13,7 @@ const theme = createTheme({
     lineHighlight: "#1f1f1f",
     gutterBackground: "#121212",
     gutterForeground: "#444a73",
+    foldBackground: "#444a73",
   },
   styles: [
     {

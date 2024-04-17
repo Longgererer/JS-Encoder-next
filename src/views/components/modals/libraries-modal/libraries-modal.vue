@@ -128,12 +128,10 @@ import useLibraries, { ILibrary } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
 import { ILibraryInfo, ISelectedLibrary, LibraryType } from "./libraries.modal"
 import { useEditorConfigStore } from "@store/editor-config"
-import { storeToRefs } from "pinia"
 import { debounce } from "@utils/tools/common"
 import { ISelectOption } from "@components/form/custom-select/custom-select"
 
 const commonStore = useCommonStore()
-const { displayModal } = storeToRefs(commonStore)
 const editorConfigStore = useEditorConfigStore()
 
 const disabledDrag = ref<boolean>(false)
