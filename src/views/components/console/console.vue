@@ -114,13 +114,8 @@ import ConsoleService from "@utils/services/console-service"
 import ConsoleItem from "./components/console-item/console-item.vue"
 import { useConsoleStore, initSettings, IConsoleSetting } from "@store/console"
 import Editor from "../editor/editor.vue"
-import { useCommonStore } from "@store/common"
-import { getEditorThemeExtension, getPrepBaseExtension } from "@utils/editor/config/editor.config"
 import { Prep } from "@type/prep"
-import { EditorView, highlightActiveLine, keymap, lineNumbers } from "@codemirror/view"
-import { ICodemirrorEditorSettings } from "../editor/editor"
-import { insertNewlineAndIndent, moveLineDown } from "@codemirror/commands"
-import { Prec } from "@codemirror/state"
+import useConsoleCommend from "./hooks/use-console-commend"
 
 const emits = defineEmits<IEmits>()
 
@@ -180,43 +175,6 @@ const handleClearLogs = () => {
   consoleService.clear()
 }
 
-/** console命令 */
-const commend = ref<string>("")
-/** 指令编辑器用codemirror，需要指定扩展 */
-const commendEditorExtensions = computed(() => {
-  const { theme } = useCommonStore()
-  return [
-    getPrepBaseExtension(Prep.JAVASCRIPT),
-    getEditorThemeExtension(theme),
-    // shift + enter换行, enter执行
-    Prec.highest(keymap.of([
-      { key: "Shift-Enter", run: insertNewlineAndIndent },
-      { key: "Enter", run: () => {
-        processExecuteCommend()
-        return true
-      } },
-    ])),
-  ]
-})
-const commendEditorSettings: ICodemirrorEditorSettings = {
-  lineNumbers: false,
-  lineWrapping: true,
-  style: {
-    ".cm-scroller": {
-      fontSize: "12px",
-      fontFamily: "JetBrains Mono",
-    },
-    ".cm-scroller .cm-line": {
-      paddingLeft: "4px",
-    },
-    ".cm-scroller .cm-content": {
-      padding: 0,
-    },
-    "&.cm-focused": {
-      outline: "none",
-    },
-  },
-}
 /** 执行指令处理 */
 const processExecuteCommend = () => {
   if (!commend.value) { return }
@@ -228,6 +186,14 @@ const processExecuteCommend = () => {
     consoleLogListRef.value.scrollTop = consoleLogListRef.value.scrollHeight
   })
 }
+
+const {
+  commend,
+  commendEditorExtensions,
+  commendEditorSettings,
+} = useConsoleCommend({
+  executeCommend: processExecuteCommend,
+})
 </script>
 
 <style src="./console.scss" lang="scss" scoped></style>
