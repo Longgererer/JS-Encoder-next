@@ -72,9 +72,12 @@
     </div>
     <div class="console-log-list-wrapper console-content relative flex-1">
       <!--日志列表-->
-      <div class="console-log-list fill-h over-y-auto" ref="consoleLogListRef">
+      <div class="console-log-list fill-h over-y-auto common-scrollbar" ref="consoleLogListRef">
         <template v-for="(logInfo, index) in consoleService.logs" :key="index">
-          <console-item :log-info="logInfo"></console-item>
+          <console-item
+            v-show="!filterType || displayLogType.includes(logInfo.type)"
+            :log-info="logInfo"
+          ></console-item>
         </template>
         <div class="console-commend-input-wrapper flex-y-center p-y-xs pl-xs">
           <i class="icon iconfont icon-chevron-right primary-text font-xxs"></i>
@@ -96,8 +99,8 @@
 </template>
 
 <script lang="ts" setup>
-import { LogFilterType, ConsoleUpdateType } from "@type/console"
-import { nextTick, onMounted, ref, shallowRef, watch } from "vue"
+import { ConsoleUpdateType, LogType } from "@type/console"
+import { computed, nextTick, ref, shallowRef, watch } from "vue"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { Size } from "@type/interface"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
@@ -127,7 +130,14 @@ watch(settings, () => {
 }, { deep: true })
 
 /** 当前过滤日志类型选项 */
-const filterType = ref<LogFilterType>(LogFilterType.ALL)
+const filterType = ref<LogType | null>(null)
+const displayLogType = computed(() => {
+  const defaultLogTypeList = [LogType.COMMEND, LogType.RESULT]
+  return [
+    ...defaultLogTypeList,
+    filterType.value,
+  ]
+})
 /** console命令 */
 const commend = ref<string>("")
 

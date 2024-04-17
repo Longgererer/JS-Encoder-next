@@ -1,5 +1,5 @@
 import { ISelectOption } from "@components/form/custom-select/custom-select"
-import { LogFilterType, LogType } from "@type/console"
+import { LogType } from "@type/console"
 import { reactive } from "vue"
 
 export interface IEmits {
@@ -8,11 +8,11 @@ export interface IEmits {
 
 /** 日志过滤选项列表 */
 export const filterSelectOptions: ISelectOption[] = [
-  { value: LogFilterType.ALL },
-  { value: LogFilterType.MESSAGE },
-  { value: LogFilterType.INFO },
-  { value: LogFilterType.WARN },
-  { value: LogFilterType.ERROR },
+  { value: null, label: "All" },
+  { value: LogType.MESSAGE },
+  { value: LogType.INFO },
+  { value: LogType.WARN },
+  { value: LogType.ERROR },
 ]
 
 export const logType2IconMap: Partial<Record<LogType, string>> = {

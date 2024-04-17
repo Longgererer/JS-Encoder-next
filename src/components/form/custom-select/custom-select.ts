@@ -3,7 +3,7 @@ import { Size } from "@type/interface"
 export type SelectSize = Exclude<Size, Size.MINI | Size.X_LARGE>
 
 export interface ISelectOption {
-  value: string | number | boolean
+  value: string | number | boolean | null | undefined
   label?: string | number
   [key: string]: any
 }
