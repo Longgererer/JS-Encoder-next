@@ -2,7 +2,7 @@ import SingleInstance from "@utils/decorators/single-instance"
 import { reactive } from "vue"
 import { getArrayIntersection, getType } from "@utils/tools"
 import { AnyArray, AnyObject } from "@type/interface"
-import { ConsoleMethods, ConsoleUpdateType, IConsoleValue, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
+import { ConsoleMethods, ConsoleUpdateType, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
 import { processConsoleValueList } from "@utils/tools/console-value"
 
 export interface IConsoleOptions {

@@ -21,7 +21,6 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
   if (!type) {
     type = getType(value)
   }
-  console.log(value, type)
   let consoleValue: IConsoleValue = {
     type, value,
     toStringTag: value?.[Symbol.toStringTag],
