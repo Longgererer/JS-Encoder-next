@@ -11,7 +11,7 @@
     <template v-for="tabId in editor.tabIds" :key="tabId">
       <editor
         v-show="tabId === editor.displayTabId"
-        :code="codeMap[tabId] || ''"
+        v-model="codeMap[tabId]"
         :prep="tabId2PrepMap[tabId]"
         :settings="editorSettings"
         :extensions="tabId2Extensions[tabId]"

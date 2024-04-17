@@ -1,7 +1,7 @@
 import { indentWithTab } from "@codemirror/commands"
 import { indentUnit } from "@codemirror/language"
 import { Compartment, EditorState, Extension, StateEffect } from "@codemirror/state"
-import { EditorView, keymap } from "@codemirror/view"
+import { EditorView, keymap, lineNumbers } from "@codemirror/view"
 import { AnyObject } from "@type/interface"
 import { ShortcutMode } from "@type/settings"
 import { ShortCutMode2ExtensionMap } from "../config/editor.config"
@@ -10,6 +10,8 @@ export class CodemirrorExtensionsUpdater {
   public view: EditorView
   public extensionUpdater = this.getExtensionUpdater()
   public tabIndentToggler = this.getExtensionToggler(keymap.of([indentWithTab]))
+  public lineNumbersToggler = this.getExtensionToggler(lineNumbers())
+  public lineWrappingToggler = this.getExtensionToggler(EditorView.lineWrapping)
   private tabSizeUpdater = this.getExtensionUpdater()
   private styleUpdater = this.getExtensionUpdater()
   private keymapBindingUpdater = this.getExtensionUpdater()

@@ -9,8 +9,19 @@ import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 import { CodemirrorExtensionsUpdater } from "@utils/editor/utils/codemirror-extensions-updater"
+import { ShortcutMode } from "@type/settings"
 
-const props = defineProps<IProps>()
+const props = withDefaults(defineProps<IProps>(), {
+  modelValue: "",
+  settings: () => ({
+    lineWrapping: true,
+    lineNumbers: true,
+    indentWithTab: true,
+    tabSize: 2,
+    shortcutTemplate: ShortcutMode.VSCODE,
+    style: {},
+  }),
+})
 const emits = defineEmits<IEmits>()
 
 const editorRef = shallowRef<HTMLElement | null>(null)
@@ -21,13 +32,19 @@ const editorView = shallowRef<EditorView>()
 onMounted(() => {
   // 初始化编辑器
   editorState.value = EditorState.create({
-    doc: props.code,
+    doc: props.modelValue,
     extensions: [
       props.minimal ? minimalSetup : basicSetup,
       EditorView.updateListener.of((update) => {
         // 监听内容改变
         if (update.docChanged) {
-          emits("codeChanged", update.state.doc.toString())
+          const code = update.state.doc.toString()
+          emits("codeChanged", code)
+          emits("update:modelValue", code)
+        }
+        // 焦点改变
+        if (update.focusChanged) {
+          emits(update.view.hasFocus ? "focus" : "blur")
         }
       }),
     ],
@@ -43,7 +60,7 @@ onMounted(() => {
    * 监听各种编辑器状态设置
    */
   watch(
-    () => props.code,
+    () => props.modelValue,
     (newContent) => {
       if (newContent === baseUtil.getContent()) { return }
       baseUtil.setContent(newContent)
@@ -51,12 +68,22 @@ onMounted(() => {
   )
   watch(
     () => props.settings.tabSize,
-    (newTabSize) => extensionsUpdater.setTabSize(newTabSize),
+    (newTabSize = 2) => extensionsUpdater.setTabSize(newTabSize),
     { immediate: true },
   )
   watch(
     () => props.settings.indentWithTab,
     (newStatus) => extensionsUpdater.tabIndentToggler(newStatus),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.lineNumbers,
+    (newStatus) => extensionsUpdater.lineNumbersToggler(newStatus),
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.lineWrapping,
+    (newStatus) => extensionsUpdater.lineWrappingToggler(newStatus),
     { immediate: true },
   )
   watch(

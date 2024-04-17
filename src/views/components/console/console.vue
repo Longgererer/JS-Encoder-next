@@ -79,14 +79,15 @@
             :log-info="logInfo"
           ></console-item>
         </template>
-        <div class="console-commend-input-wrapper flex-y-center p-y-xs pl-xs">
+        <div class="console-commend-input-wrapper flex-y-center pl-xs">
           <i class="icon iconfont icon-chevron-right primary-text font-xxs"></i>
-          <input
-            class="console-commend-input bg-main3 font-xxs flex-1 p-x-xs active-text code-font"
+          <editor
             v-model="commend"
-            type="text"
-            @keypress="handleCommendChange($event)"
-          />
+            minimal
+            :prep="Prep.JAVASCRIPT"
+            :extensions="commendEditorExtensions"
+            :settings="commendEditorSettings"
+          ></editor>
         </div>
       </div>
       <!--设置-->
@@ -112,6 +113,14 @@ import { CONSOLE_MIN_HEIGHT } from "@utils/services/module-size-service"
 import ConsoleService from "@utils/services/console-service"
 import ConsoleItem from "./components/console-item/console-item.vue"
 import { useConsoleStore, initSettings, IConsoleSetting } from "@store/console"
+import Editor from "../editor/editor.vue"
+import { useCommonStore } from "@store/common"
+import { getEditorThemeExtension, getPrepBaseExtension } from "@utils/editor/config/editor.config"
+import { Prep } from "@type/prep"
+import { EditorView, highlightActiveLine, keymap, lineNumbers } from "@codemirror/view"
+import { ICodemirrorEditorSettings } from "../editor/editor"
+import { insertNewlineAndIndent, moveLineDown } from "@codemirror/commands"
+import { Prec } from "@codemirror/state"
 
 const emits = defineEmits<IEmits>()
 
@@ -138,8 +147,6 @@ const displayLogType = computed(() => {
     filterType.value,
   ]
 })
-/** console命令 */
-const commend = ref<string>("")
 
 /** 收起console */
 const handleClickToggleConsole = () => {
@@ -152,24 +159,6 @@ const handleClickToggleConsole = () => {
 }
 
 const consoleService = new ConsoleService()
-
-const handleCommendChange = (event: KeyboardEvent) => {
-  if (event.key === "Enter") {
-    // shift + enter换行，enter提交
-    if (event.shiftKey) {
-
-    } else {
-      if (!commend.value) { return }
-      consoleService.execute(commend.value)
-      commend.value = ""
-      nextTick(() => {
-        if (!consoleLogListRef.value) { return }
-        // 滚动到最底部
-        consoleLogListRef.value.scrollTop = consoleLogListRef.value.scrollHeight
-      })
-    }
-  }
-}
 
 consoleService.setOptions({
   // 监听日志列表变化，更新各类型统计数量（如果使用computed则会导致大量无意义的遍历）
@@ -189,6 +178,55 @@ consoleService.setOptions({
 /** 手动清除日志 */
 const handleClearLogs = () => {
   consoleService.clear()
+}
+
+/** console命令 */
+const commend = ref<string>("")
+/** 指令编辑器用codemirror，需要指定扩展 */
+const commendEditorExtensions = computed(() => {
+  const { theme } = useCommonStore()
+  return [
+    getPrepBaseExtension(Prep.JAVASCRIPT),
+    getEditorThemeExtension(theme),
+    // shift + enter换行, enter执行
+    Prec.highest(keymap.of([
+      { key: "Shift-Enter", run: insertNewlineAndIndent },
+      { key: "Enter", run: () => {
+        processExecuteCommend()
+        return true
+      } },
+    ])),
+  ]
+})
+const commendEditorSettings: ICodemirrorEditorSettings = {
+  lineNumbers: false,
+  lineWrapping: true,
+  style: {
+    ".cm-scroller": {
+      fontSize: "12px",
+      fontFamily: "JetBrains Mono",
+    },
+    ".cm-scroller .cm-line": {
+      paddingLeft: "4px",
+    },
+    ".cm-scroller .cm-content": {
+      padding: 0,
+    },
+    "&.cm-focused": {
+      outline: "none",
+    },
+  },
+}
+/** 执行指令处理 */
+const processExecuteCommend = () => {
+  if (!commend.value) { return }
+  consoleService.execute(commend.value)
+  commend.value = ""
+  nextTick(() => {
+    if (!consoleLogListRef.value) { return }
+    // 滚动到最底部
+    consoleLogListRef.value.scrollTop = consoleLogListRef.value.scrollHeight
+  })
 }
 </script>
 
