@@ -37,7 +37,7 @@
     <div class="console-toolbar bg-main2 active-text font-xxs flex p-x-l flex-sh no-select">
       <!--类型过滤-->
       <div class="filter flex-y-center">
-        <span class="mr-s">过滤:</span>
+        <span class="mr-s flex-sh">过滤:</span>
         <custom-select
           v-model="filterType"
           :size="Size.SMALL"
