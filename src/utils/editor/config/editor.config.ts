@@ -20,6 +20,8 @@ import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
 import themes from "@utils/editor/themes"
 import { scrollPastEnd } from "@codemirror/view"
+import { search } from "@codemirror/search"
+import { createSearchPanel } from "../panels/search"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -141,4 +143,10 @@ const theme2EditorStyleMap: Record<Theme, () => Extension> = {
 
 export const getEditorThemeExtension = (theme: Theme): Extension => {
   return theme2EditorStyleMap[theme]()
+}
+
+export const getPanelExtension = (): Extension => {
+  return [
+    search({ top: true, createPanel: createSearchPanel }),
+  ]
 }

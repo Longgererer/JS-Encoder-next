@@ -1,4 +1,4 @@
-import { App, AppContext } from "vue"
+import { AppContext } from "vue"
 import { IMessageProps, MessageType } from "./message-list.interface"
 import MessageManagerService from "./services/message-manager-service"
 
