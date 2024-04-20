@@ -1,5 +1,10 @@
 import { FreeRecord } from "@type/types"
+import { EditorView } from "codemirror"
 import { reactive } from "vue"
+
+export interface IProps {
+  view: EditorView
+}
 
 export enum ToolType {
   /** 粗体 */
@@ -43,7 +48,7 @@ export interface IToolInfo {
   showDropdown?: boolean
 }
 
-export interface ITitleInfo extends ToolDropdownItem  {
+export interface ITitleInfo extends ToolDropdownItem {
   level: number,
 }
 

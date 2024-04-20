@@ -1,4 +1,5 @@
 import { Extension } from "@codemirror/state"
+import { EditorView } from "@codemirror/view"
 import { AnyObject } from "@type/interface"
 import { Prep } from "@type/prep"
 import { ShortcutMode } from "@type/settings"
@@ -27,4 +28,8 @@ export interface IProps {
 export interface IEmits {
   (e: "codeChanged" | "update:modelValue", code: string): void
   (e: "focus" | "blur"): void
+}
+
+export interface IEditorViewExpose {
+  getEditorView: () => EditorView | undefined
 }

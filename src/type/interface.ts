@@ -44,12 +44,6 @@ export const enum Theme {
   LIGHT = "light",
 }
 
-/** 图标option */
-export interface IIconOption {
-  text?: string
-  icon?: string
-}
-
 /** 位置 */
 export const enum Position {
   TOP = "top",

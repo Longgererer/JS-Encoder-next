@@ -8,4 +8,3 @@ export interface IProps {
 export interface IEmits {
   (e: "selectSplitPosition", splitPosition: AreaPosition): void
 }
-

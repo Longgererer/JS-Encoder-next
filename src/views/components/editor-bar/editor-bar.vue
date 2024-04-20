@@ -30,16 +30,28 @@
       <!-- 占位 -->
       <div class="flex-1"></div>
       <!-- 直接展示出的选项 -->
-      <div class="display-opts" v-if="sideOpts.displayOpts.length"></div>
+      <div class="display-opts flex-y-center" v-if="sideOptions.display.length">
+        <template v-for="(item, index) in sideOptions.display" :key="index">
+          <icon-btn
+            :size="IconBtnSize.MD"
+            :title="editorSideOptionsListMap[item].text"
+            :icon-class="editorSideOptionsListMap[item].icon"
+            @click="handleClickSideOptions(item)"
+          ></icon-btn>
+        </template>
+      </div>
       <!-- 更多选项菜单 -->
-      <div class="more-opts">
+      <div class="more-opts" v-show="sideOptions.more.length">
         <dropdown v-model="showSideMenu" :align="Align.RIGHT">
           <div class="more-icon-wrapper flex-center">
-            <icon-btn :size="IconBtnSize.MD" icon-class="icon-more"></icon-btn>
+            <icon-btn :size="IconBtnSize.MD" title="更多" icon-class="icon-more"></icon-btn>
           </div>
-          <template #options v-if="sideOpts.moreOpts.length">
-            <dropdown-item v-for="(item, index) in sideOpts.moreOpts" :key="index">
-              <span>{{ optionsListMap[item].text }}</span>
+          <template #options v-if="sideOptions.more.length">
+            <dropdown-item
+              v-for="(item, index) in sideOptions.more"
+              :key="index"
+              @click="handleClickSideOptions(item)">
+              <span>{{ editorSideOptionsListMap[item].text }}</span>
             </dropdown-item>
           </template>
         </dropdown>
@@ -50,29 +62,29 @@
 
 <script setup lang="ts">
 import { ref, shallowRef } from "vue"
-import { optionsListMap } from "@utils/tools/config"
 import { storeToRefs } from "pinia"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { Align } from "@type/interface"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
-import { useSideMenu } from "./hooks/use-side-menu"
+import useEditorSideOptions, { EditorSideOptionType, editorSideOptionsListMap } from "./hooks/use-editor-side-options"
 import useDragleaveJudge from "@hooks/use-dragleave-judge"
 import Dropdown from "@components/dropdown/dropdown.vue"
 import DropdownItem from "@components/dropdown/dropdown-item.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import UtilService from "@utils/services/util-service"
+import { EditorView } from "@codemirror/view"
+import { toggleMarkdownToolsPanel } from "@utils/editor/panels/markdown-tools"
 
 const props = defineProps<{
   editorId: number
   splitterId: number
+  getEditorView: () => EditorView | undefined
 }>()
 
-/** store */
 const editorWrapperStore = useEditorWrapperStore()
 const { updateEditor, updateDraggingTabInfo, deleteSplitter, updateSplitter } = editorWrapperStore
 const { editorMap, draggingTabInfo, tabMap, editorSplitterMap, tabId2PrepMap } = storeToRefs(editorWrapperStore)
 
-/** service */
 const utilService = new UtilService()
 
 /**
@@ -219,7 +231,16 @@ const resetDragState = () => {
 }
 
 /** 右侧工具栏菜单 */
-const { showSideMenu, sideOpts } = useSideMenu(editor, tabMap)
+const { showSideMenu, sideOptions } = useEditorSideOptions(editor.id)
+
+const sideOptionType2FuncMap = {
+  [EditorSideOptionType.FORMAT_CODE]: () => {},
+  [EditorSideOptionType.MARKDOWN_TOOLS]: () => toggleMarkdownToolsPanel(props.getEditorView()!),
+}
+
+const handleClickSideOptions = (type: EditorSideOptionType) => {
+  sideOptionType2FuncMap[type]()
+}
 </script>
 
-<style src="./editor-bar.scss" lang="scss" scoped></style>./hooks/use-side-menu
+<style src="./editor-bar.scss" lang="scss" scoped></style>

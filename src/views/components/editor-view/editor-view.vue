@@ -3,6 +3,7 @@
     <editor-bar
       :editor-id="id"
       :splitter-id="splitterId"
+      :get-editor-view="getDisplayEditorView"
     ></editor-bar>
     <overlap-monitor
       v-if="editorWrapperStore.draggingTabInfo"
@@ -15,6 +16,7 @@
         :prep="tabId2PrepMap[tabId]"
         :settings="editorSettings"
         :extensions="tabId2Extensions[tabId]"
+        :ref="(el) => setRefMap(el, tabId)"
         @code-changed="($event) => handleCodeChanged($event, tabId)"
       ></editor>
     </template>
@@ -30,8 +32,8 @@ import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
 import Editor from "@views/components/editor/editor.vue"
-import { computed, ref, shallowRef, watch } from "vue"
-import { ICodemirrorEditorSettings } from "../editor/editor"
+import { ComponentPublicInstance, computed, ref, shallowRef, watch } from "vue"
+import { ICodemirrorEditorSettings, IEditorViewExpose } from "../editor/editor"
 import { debounce } from "@utils/tools/common"
 import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
@@ -110,6 +112,16 @@ const handleCodeChanged = (code: string, tabId: number): void => {
     editorWrapperStore.updateCodeMap(tabId, code)
   }, tabId)
   saveDebounce()
+}
+
+const editorRefMap: Record<number, ComponentPublicInstance<IEditorViewExpose>> = {}
+const setRefMap = (el: ComponentPublicInstance<any>, tabId: number) => {
+  editorRefMap[tabId] = el
+}
+
+const getDisplayEditorView = () => {
+  console.log(editor.value.displayTabId, editorRefMap)
+  return editorRefMap[editor.value.displayTabId]?.getEditorView()
 }
 </script>
 

@@ -22,6 +22,7 @@ import themes from "@utils/editor/themes"
 import { scrollPastEnd } from "@codemirror/view"
 import { search } from "@codemirror/search"
 import { createSearchPanel } from "../panels/search"
+import { markdownToolsState } from "../panels/markdown-tools"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -43,7 +44,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
     emmetConfig.of({ syntax: "html" }),
     abbreviationTracker({ syntax: "html" }),
   ],
-  [Prep.MARKDOWN]: () => [],
+  [Prep.MARKDOWN]: () => [markdownToolsState],
   [Prep.PUG]: () => [],
   [Prep.CSS]: () => [emmetConfig.of({ syntax: "css" })],
   [Prep.SASS]: () => [emmetConfig.of({ syntax: "sass" })],

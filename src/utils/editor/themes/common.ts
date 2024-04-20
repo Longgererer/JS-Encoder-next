@@ -20,6 +20,9 @@ const commonStyle = {
   ".cm-scroller::-webkit-scrollbar-corner": {
     backgroundColor: "transparent",
   },
+  ".cm-panels": {
+    position: "static",
+  },
 }
 
 export default commonStyle

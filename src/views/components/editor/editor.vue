@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, shallowRef, watch } from "vue"
-import { IEmits, IProps } from "./editor"
+import { IEditorViewExpose, IEmits, IProps } from "./editor"
 import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
@@ -110,6 +110,10 @@ onMounted(() => {
   onBeforeUnmount(() => {
     editorView.value?.destroy()
   })
+})
+
+defineExpose<IEditorViewExpose>({
+  getEditorView: () => editorView.value!,
 })
 </script>
 

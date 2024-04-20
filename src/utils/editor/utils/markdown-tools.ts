@@ -218,7 +218,7 @@ export class MarkdownTools extends CodemirrorBase {
   }
 
   /** 插入链接或图片 */
-  public insertLink(isImage: string): void {
+  public insertLink(isImage?: boolean): void {
     if (this.somethingSelected()) {
       const selectRange = this.getListSelections()[0]
       const selectText = this.getSelectionText()

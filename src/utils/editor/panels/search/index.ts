@@ -1,6 +1,6 @@
 import { EditorView } from "@codemirror/view"
 import { Panel } from "@codemirror/view"
-import Search from "./search.vue"
+import Search from "@views/components/plugins/search/search.vue"
 import { VNode, createVNode, render } from "vue"
 
 let searchWrapperNode: HTMLDivElement
@@ -17,9 +17,6 @@ export const createSearchPanel = (view: EditorView): Panel => {
     dom: searchWrapperNode,
     mount: () => {
       searchVNode.component?.exposed?.onMounted()
-    },
-    update: () => {
-      console.log("update")
     },
     destroy: () => {
       searchVNode.component?.exposed?.onDestroy()

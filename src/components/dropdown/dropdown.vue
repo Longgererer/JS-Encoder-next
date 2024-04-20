@@ -66,7 +66,7 @@ watch(isClickOutSide, () => {
 $namespace: dropdown;
 
 .#{$namespace}-options-wrapper {
-  z-index: 100;
+  z-index: 1000;
   background-color: var(--color-main-bg-1);
 }
 
