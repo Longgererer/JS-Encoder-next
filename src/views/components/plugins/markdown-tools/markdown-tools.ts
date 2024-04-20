@@ -56,9 +56,9 @@ export const titleDropdown: ITitleInfo[] = [
   { title: "H1", level: 1 },
   { title: "H2", level: 2 },
   { title: "H3", level: 3 },
-  { title: "H4", level: 4  },
-  { title: "H5", level: 5  },
-  { title: "H6", level: 6  },
+  { title: "H4", level: 4 },
+  { title: "H5", level: 5 },
+  { title: "H6", level: 6 },
 ]
 
 export const toolInfoMap = reactive<IToolInfo[]>([

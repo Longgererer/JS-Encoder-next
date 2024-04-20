@@ -1,26 +1,31 @@
 <template>
   <div class="markdown-tools flex flex-wrap bg-main2">
     <div
-      class="markdown-tool flex-center flex-sh text-hover-active bg-main1 cursor-pointer"
+      class="markdown-tool flex-sh text-hover-active bg-main1 cursor-pointer"
       v-for="tool in toolInfoMap"
       :key="tool.type"
       :title="tool.title"
       @click="handleClickTool(tool)">
-      <div class="fade-ease">
+      <dropdown v-if="tool.dropdown" v-model="tool.showDropdown" :align="Align.MIDDLE">
+        <template #default>
+          <div class="markdown-tool fade-ease fill flex-center">
+            <i class="icon iconfont" :class="tool.icon"></i>
+          </div>
+        </template>
+        <template #options>
+          <dropdown-item
+            v-for="(item, index) in tool.dropdown"
+            :key="index"
+            @click="handleClickDropdownItem(tool, index)">
+            <div :title="item.title">
+              <i v-if="item.icon" class="icon icon" :class="item.icon"></i>
+              <span>{{ item.title }}</span>
+            </div>
+          </dropdown-item>
+        </template>
+      </dropdown>
+      <div v-else class="fade-ease fill flex-center">
         <i class="icon iconfont" :class="tool.icon"></i>
-        <dropdown v-model="tool.showDropdown" :align="Align.MIDDLE">
-          <template #options>
-            <dropdown-item
-              v-for="(item, index) in tool.dropdown"
-              :key="index"
-              @click="handleClickDropdownItem(tool, index)">
-              <div :title="item.title">
-                <i v-if="item.icon" class="icon icon" :class="item.icon"></i>
-                <span>{{ item.title }}</span>
-              </div>
-            </dropdown-item>
-          </template>
-        </dropdown>
       </div>
     </div>
   </div>
@@ -69,12 +74,8 @@ const processHTML2Pdf = () => {
 }
 
 const handleClickTool = (tool: IToolInfo) => {
-  const { dropdown, type } = tool
-  if (dropdown) {
-    tool.showDropdown = true
-  } else {
-    toolType2FuncMap[type]?.()
-  }
+  const { type } = tool
+  toolType2FuncMap[type]?.()
 }
 
 /** 点击下拉菜单项 */
