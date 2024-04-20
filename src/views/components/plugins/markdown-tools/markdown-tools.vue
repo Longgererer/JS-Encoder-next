@@ -54,9 +54,9 @@ const toolType2FuncMap = {
   [ToolType.TITLE]: () => {},
   [ToolType.LINK]: () => markdownTools.insertLink(),
   [ToolType.IMAGE]: () => markdownTools.insertLink(true),
-  [ToolType.QUOTE]: () => markdownTools.insertUnorderedList("> "),
+  [ToolType.QUOTE]: () => markdownTools.insertUnorderedList(">"),
   [ToolType.CODE]: () => markdownTools.changeTextStyle("`"),
-  [ToolType.UL]: () => markdownTools.insertUnorderedList("- "),
+  [ToolType.UL]: () => markdownTools.insertUnorderedList("-"),
   [ToolType.OL]: () => markdownTools.insertOrderList(),
   [ToolType.LINE]: () => markdownTools.insertLine(),
   [ToolType.PDF]: () => processHTML2Pdf(),
@@ -76,6 +76,7 @@ const processHTML2Pdf = () => {
 const handleClickTool = (tool: IToolInfo) => {
   const { type } = tool
   toolType2FuncMap[type]?.()
+  props.view.focus()
 }
 
 /** 点击下拉菜单项 */
@@ -83,6 +84,7 @@ const handleClickDropdownItem = (tool: IToolInfo, index: number) => {
   const { type, dropdown = [] } = tool
   if (type === ToolType.TITLE) {
     processChooseTitle(dropdown[index] as ITitleInfo)
+    props.view.focus()
   } else { }
 }
 </script>
@@ -90,11 +92,11 @@ const handleClickDropdownItem = (tool: IToolInfo, index: number) => {
 <style lang="scss" scoped>
 .markdown-tools {
   border-top: 1px solid var(--color-main-bg-3);
-  border-bottom: 1px solid var(--color-main-bg-3);
   .markdown-tool {
     width: 34px;
     height: 34px;
     border-right: 1px solid var(--color-main-bg-3);
+    border-bottom: 1px solid var(--color-main-bg-3);
   }
 }
 </style>
