@@ -40,6 +40,7 @@ export const MD_STYLE_URL = "/src/assets/css/markdown-style.css"
 export const KATEX_STYLE_URL = "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.css"
 /** katex公式渲染脚本 */
 export const KATEX_RENDER_URL = "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/contrib/auto-render.min.js"
+export const KATEX_JS_URL = "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.js"
 /** 流程图渲染 */
 export const FLOW_CHART_URLS = [
   "https://cdn.bootcdn.net/ajax/libs/raphael/2.3.0/raphael.min.js",

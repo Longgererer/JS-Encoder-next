@@ -3,7 +3,7 @@ import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { OriginLang, Prep } from "@type/prep"
 import { compile, compileComponent } from "@utils/editor/compiler"
 import { genHTMLFileCode, getMarkdownScriptCode } from "@utils/tools/code-gen"
-import { FLOW_CHART_URLS, KATEX_RENDER_URL, KATEX_STYLE_URL, MD_STYLE_URL } from "@utils/tools/config"
+import { FLOW_CHART_URLS, KATEX_JS_URL, KATEX_RENDER_URL, KATEX_STYLE_URL, MD_STYLE_URL } from "@utils/tools/config"
 
 // eslint-disable-next-line max-lines-per-function
 const useCodeCompile = () => {
@@ -41,7 +41,7 @@ const useCodeCompile = () => {
     const script = [...libraries.script]
     if (prepMap[OriginLang.HTML] === Prep.MARKDOWN) {
       style.push(MD_STYLE_URL, KATEX_STYLE_URL)
-      script.push(KATEX_RENDER_URL, ...FLOW_CHART_URLS)
+      script.push(KATEX_JS_URL, KATEX_RENDER_URL, ...FLOW_CHART_URLS)
     }
     return { style, script }
   }
