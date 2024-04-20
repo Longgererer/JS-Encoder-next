@@ -101,17 +101,12 @@ import { IPreviewExpose } from "./preview.interface"
 import { getLocalStorage, setLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
 import PreviewService from "@utils/services/preview-service"
-import { useEditorWrapperStore } from "@store/editor-wrapper"
-import { storeToRefs } from "pinia"
-import { useEditorConfigStore } from "@store/editor-config"
 
 defineProps<IProps>()
 
 /** 组件名 */
 const namespace = "preview"
 const { modulesSize } = useLayoutStore()
-const editorWrapperStore = useEditorWrapperStore()
-const editorConfigStore = useEditorConfigStore()
 
 /** 新手引导 */
 const hasHidedNewUserGuide = Boolean(getLocalStorage(LocalStorageKey.HAS_HIDED_NEW_USER_GUIDE))
@@ -130,7 +125,6 @@ const handleJumpToHelp = (): void => {
 }
 
 const iframeElement = shallowRef<HTMLIFrameElement | null>()
-const isIframeLoading = ref<boolean>()
 let previewService: PreviewService
 
 onMounted(() => {
