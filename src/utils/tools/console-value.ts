@@ -106,7 +106,6 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
       break
     }
     default: {
-      console.log(value instanceof HTMLElement)
       if (isElement(value)) {
         consoleValue = {
           ...consoleValue,

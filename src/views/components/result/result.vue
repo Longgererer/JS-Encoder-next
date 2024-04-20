@@ -91,7 +91,6 @@ const processRefreshIframe = () => {
         consoleService.clear()
       }
       iframe.contentWindow!.onerror = (message) => {
-        console.log(123, message)
         consoleService.error(message)
       }
       iframe.contentWindow!.onunhandledrejection = (message) => {

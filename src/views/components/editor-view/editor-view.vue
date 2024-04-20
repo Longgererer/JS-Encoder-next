@@ -120,7 +120,6 @@ const setRefMap = (el: ComponentPublicInstance<any>, tabId: number) => {
 }
 
 const getDisplayEditorView = () => {
-  console.log(editor.value.displayTabId, editorRefMap)
   return editorRefMap[editor.value.displayTabId]?.getEditorView()
 }
 </script>
