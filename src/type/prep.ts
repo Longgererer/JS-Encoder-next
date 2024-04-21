@@ -11,7 +11,7 @@ export enum Prep {
   JAVASCRIPT = "JavaScript",
   TYPESCRIPT = "TypeScript",
   COFFEESCRIPT = "CoffeeScript",
-  JSX = "JSX",
+  BABEL = "Babel",
   VUE = "Vue",
 }
 
@@ -35,6 +35,6 @@ export enum MimeType {
   JAVASCRIPT = "js",
   TYPESCRIPT = "ts",
   COFFEESCRIPT = "coffee",
-  JSX = "jsx",
+  Babel = "jsx",
   VUE = "vue",
 }

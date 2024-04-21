@@ -29,7 +29,7 @@ export const templatePrepMap = {
   [TemplateLang.VUE]: initialPrepMap,
   [TemplateLang.REACT]: {
     ...initialPrepMap,
-    [OriginLang.JAVASCRIPT]: Prep.JSX,
+    [OriginLang.JAVASCRIPT]: Prep.BABEL,
   },
 }
 

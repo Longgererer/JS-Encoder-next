@@ -54,6 +54,6 @@ export const prep2EditorSideOptionsMap: Record<Prep, IEditorSideOptions> = {
   [Prep.JAVASCRIPT]: { display: [], more: [] },
   [Prep.TYPESCRIPT]: { display: [], more: [] },
   [Prep.COFFEESCRIPT]: { display: [], more: [] },
-  [Prep.JSX]: { display: [], more: [] },
+  [Prep.BABEL]: { display: [], more: [] },
   [Prep.VUE]: { display: [], more: [] },
 }

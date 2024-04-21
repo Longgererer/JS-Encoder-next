@@ -17,17 +17,15 @@ export const BOOT_CDN_URL = "https://api.bootcdn.cn/libraries?output=human"
  * 编译
  */
 /** sass编译sass.js */
-export const SASS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/sass.js/0.11.1/sass.min.js"
-/** sass编译sass.worker.js */
-export const SASS_WORKER_JS_URL = "https://cdn.bootcdn.net/ajax/libs/sass.js/0.11.1/sass.worker.min.js"
+export const SASS_JS_URL = "https://jspm.dev/sass"
 /** less编译 */
 export const LESS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/less.js/4.2.0/less.min.js"
 /** stylus编译 */
-export const STYLUS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/stylus/0.32.1/stylus.min.js"
+export const STYLUS_JS_URL = "https://cdn.bootcdn.net/ajax/libs/stylus/0.32.1/stylus.js"
 /** typescript编译 */
 export const TYPESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/typescript/5.2.2/typescript.min.js"
 /** coffeescript编译 */
-export const COFFEESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/coffee-script/2.7.0/coffeescript.min.js"
+export const COFFEESCRIPT_URL = "https://coffeescript.org/browser-compiler-legacy/coffeescript.js"
 /** babel编译jsx */
 export const BABEL_URL = "https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.22.17/babel.min.js"
 /** pug编译 */
@@ -48,7 +46,6 @@ export const FLOW_CHART_URLS = [
   "https://cdn.bootcdn.net/ajax/libs/raphael/2.3.0/raphael.min.js",
   "https://cdn.bootcdn.net/ajax/libs/flowchart/1.17.1/flowchart.min.js",
 ]
-
 
 /**
  * 更新日志

@@ -10,6 +10,7 @@ declare module "*.vue" {
 declare module "eslint4b-prebuilt"
 
 declare class Sass {
+  [x: string]: any
   compile: (input: string, cb: (result: string) => void) => void
 }
 

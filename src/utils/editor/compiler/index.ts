@@ -18,18 +18,10 @@ export const compilePug = async (code: string) => {
   return window.jade.compile(code)()
 }
 
-// https://github.com/medialize/sass.js/blob/master/docs/getting-started.md
+// https://sass-lang.com/blog/sass-in-the-browser/
 export const compileSass = async (code: string) => {
-  if (!loaderService.get("sass")) {
-    await loaderService.loadScript(SASS_JS_URL)
-    loaderService.set("sass", Sass)
-  }
-  const sass = new Sass()
-  return new Promise<string>((resolve) => {
-    sass.compile(code, (result) => {
-      resolve(result)
-    })
-  })
+  const sass = await import(SASS_JS_URL)
+  return sass.compileString(code).css
 }
 
 export const compileLess = async (code: string) => {
@@ -43,9 +35,13 @@ export const compileStylus = async (code: string) => {
   if (!window.stylus) {
     await loaderService.loadScript(STYLUS_JS_URL)
   }
-  return new Promise<string>((resolve) => {
-    window.stylus.render(code, (err, css) => {
-      resolve(css)
+  return new Promise<string>((resolve, rejected) => {
+    window.stylus.render(code, { filename: "index.styl" }, (err, css) => {
+      if (err) {
+        rejected(err)
+      } else {
+        resolve(css)
+      }
     })
   })
 }
@@ -150,14 +146,15 @@ const prep2CompilerMap: Partial<Record<Prep, PrepCompiler>> = {
   [Prep.STYLUS]: compileStylus,
   [Prep.TYPESCRIPT]: compileTypeScript,
   [Prep.COFFEESCRIPT]: compileCoffeeScript,
-  [Prep.JSX]: compileJSX,
+  [Prep.BABEL]: compileJSX,
 }
 
-export const compile = async (code: string, prep: Prep) => {
+export const compile = async (code: string = "", prep: Prep) => {
   const compileFunc = prep2CompilerMap[prep]
-  if (compileFunc) {
+  if (compileFunc && code) {
     return compileFunc(code)
       .catch((err) => {
+        // TODO: 编译错误时在iframe上展示错误信息
         console.error(err)
         return ""
       })

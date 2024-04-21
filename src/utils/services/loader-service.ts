@@ -32,10 +32,10 @@ class LoaderService {
     return module as T
   }
   /** 加载script脚本，监听加载完成 */
-  async loadScript(url: string): Promise<void> {
+  async loadScript(url: string, module: boolean = false): Promise<void> {
     const head = document.getElementsByTagName("head")[0]
     const script = document.createElement("script")
-    script.type = "text/javascript"
+    script.type = module ? "module" : "text/javascript"
     script.src = url
     head.appendChild(script)
     return new Promise((resolve) => {

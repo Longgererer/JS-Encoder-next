@@ -10,7 +10,7 @@ const prep2ParserNameMap: Partial<Record<Prep, BuiltInParserName>> = {
   [Prep.LESS]: "less",
   [Prep.JAVASCRIPT]: "babel",
   [Prep.TYPESCRIPT]: "typescript",
-  [Prep.JSX]: "babel",
+  [Prep.BABEL]: "babel",
   [Prep.VUE]: "vue",
 }
 

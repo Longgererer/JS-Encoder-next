@@ -53,7 +53,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.STYLUS]: () => [emmetConfig.of({ syntax: "stylus" })],
   [Prep.JAVASCRIPT]: () => [],
   [Prep.TYPESCRIPT]: () => [],
-  [Prep.JSX]: () => [
+  [Prep.BABEL]: () => [
     emmetConfig.of({ syntax: "jsx" }),
     abbreviationTracker({ syntax: "jsx" }),
   ],
@@ -100,7 +100,7 @@ const Prep2LanguageExtensionMap: Record<Prep, () => Extension | StreamLanguage<u
   [Prep.LESS]: () => less(),
   [Prep.JAVASCRIPT]: () => javascript({ typescript: false, jsx: false }),
   [Prep.TYPESCRIPT]: () => javascript({ typescript: true }),
-  [Prep.JSX]: () => javascript({ jsx: true }),
+  [Prep.BABEL]: () => javascript({ jsx: true }),
   // maybe should support tsx :)
   [Prep.VUE]: () => vue({ base: html() }),
   // legacy-modes 下面的语言扩展
@@ -125,7 +125,7 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
   [Prep.STYLUS]: () => stylusLinter,
   [Prep.JAVASCRIPT]: () => javascriptLinter,
   [Prep.TYPESCRIPT]: () => typeScriptLinter,
-  [Prep.JSX]: () => [],
+  [Prep.BABEL]: () => [],
   [Prep.COFFEESCRIPT]: () => [],
   [Prep.VUE]: () => [],
 }

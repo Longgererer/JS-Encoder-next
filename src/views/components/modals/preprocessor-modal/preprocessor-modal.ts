@@ -18,6 +18,6 @@ export const prepInfoList = [
   {
     title: "JavaScript",
     origin: OriginLang.JAVASCRIPT,
-    prepList: transPrep2Options([ Prep.JAVASCRIPT, Prep.TYPESCRIPT, Prep.JSX, Prep.COFFEESCRIPT ]),
+    prepList: transPrep2Options([ Prep.JAVASCRIPT, Prep.TYPESCRIPT, Prep.BABEL, Prep.COFFEESCRIPT ]),
   },
 ]

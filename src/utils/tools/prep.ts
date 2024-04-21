@@ -15,7 +15,7 @@ export const getPrepOrigin = (prep: string): OriginLang | void => {
     case Prep.JAVASCRIPT:
     case Prep.TYPESCRIPT:
     case Prep.COFFEESCRIPT:
-    case Prep.JSX:
+    case Prep.BABEL:
     case Prep.VUE:
       return OriginLang.JAVASCRIPT
     default: {
@@ -39,7 +39,7 @@ export const getOriginByMimeType = (mimeType: string): OriginLang | void => {
     case MimeType.JAVASCRIPT:
     case MimeType.TYPESCRIPT:
     case MimeType.COFFEESCRIPT:
-    case MimeType.JSX:
+    case MimeType.Babel:
     case MimeType.VUE:
      return OriginLang.JAVASCRIPT
     default: {
@@ -60,7 +60,7 @@ export const prep2MimeTypeMap = {
   [Prep.JAVASCRIPT]: MimeType.JAVASCRIPT,
   [Prep.TYPESCRIPT]: MimeType.TYPESCRIPT,
   [Prep.COFFEESCRIPT]: MimeType.COFFEESCRIPT,
-  [Prep.JSX]: MimeType.JSX,
+  [Prep.BABEL]: MimeType.Babel,
   [Prep.VUE]: MimeType.VUE,
 }
 
@@ -76,7 +76,7 @@ export const mimeType2PrepMap = {
   [MimeType.JAVASCRIPT]: Prep.JAVASCRIPT,
   [MimeType.TYPESCRIPT]: Prep.TYPESCRIPT,
   [MimeType.COFFEESCRIPT]: Prep.COFFEESCRIPT,
-  [MimeType.JSX]: Prep.JSX,
+  [MimeType.Babel]: Prep.BABEL,
   [MimeType.VUE]: Prep.VUE,
 }
 
@@ -85,5 +85,5 @@ export const prep2IconMap: Partial<Record<Prep, string>> = {
   [Prep.JAVASCRIPT]: "icon-javascript",
   [Prep.TYPESCRIPT]: "icon-typescript",
   [Prep.COFFEESCRIPT]: "icon-coffeescript",
-  [Prep.JSX]: "icon-jsx",
+  [Prep.BABEL]: "icon-jsx",
 }
