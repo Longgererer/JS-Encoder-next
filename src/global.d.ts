@@ -3,6 +3,7 @@ import type stylus from "stylus"
 import type ts from "typescript"
 import type coffee from "coffeescript"
 import type babel from "@babel/standalone"
+import type pug from "pug"
 
 declare namespace GlobalType {
   interface lessJS extends less {}
@@ -10,6 +11,7 @@ declare namespace GlobalType {
   type typescript = typeof ts
   type coffeescript = typeof coffee
   type babelStandalone = typeof babel
+  type pugJS = typeof pug
 }
 
 export = GlobalType

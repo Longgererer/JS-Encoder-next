@@ -38,20 +38,3 @@ export enum MimeType {
   JSX = "jsx",
   VUE = "vue",
 }
-
-/** 语言对应的codemirror高亮配置 */
-export enum ModeStyle {
-  HTML = "text/html",
-  MARKDOWN = "text/md-mix",
-  PUG = "text/x-pug",
-  CSS = "css",
-  SASS = "text/x-sass",
-  SCSS = "text/x-scss",
-  LESS = "text/x-less",
-  STYLUS = "text/x-styl",
-  JavaScript = "text/javascript",
-  JAVASCRIPT = "text/typescript",
-  COFFEESCRIPT = "text/coffeescript",
-  JSX = "text/jsx",
-  VUE = "text/x-vue",
-}

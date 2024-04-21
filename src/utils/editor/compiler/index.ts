@@ -1,5 +1,5 @@
 import LoaderService from "@utils/services/loader-service"
-import { BABEL_URL, COFFEESCRIPT_URL, LESS_JS_URL, SASS_JS_URL, STYLUS_JS_URL, TYPESCRIPT_URL } from "@utils/tools/config"
+import { BABEL_URL, COFFEESCRIPT_URL, LESS_JS_URL, SASS_JS_URL, STYLUS_JS_URL, TYPESCRIPT_URL, PUG_JS_URL } from "@utils/tools/config"
 import { ModuleKind } from "typescript"
 import { OriginLang, Prep } from "@type/prep"
 import hash from "hash-sum"
@@ -12,8 +12,10 @@ export const compileMarkdown = async (code: string) => {
 }
 
 export const compilePug = async (code: string) => {
-  const pug = await import("pug")
-  return pug.compile(code)()
+  if (!window.jade) {
+    await loaderService.loadScript(PUG_JS_URL)
+  }
+  return window.jade.compile(code)()
 }
 
 // https://github.com/medialize/sass.js/blob/master/docs/getting-started.md

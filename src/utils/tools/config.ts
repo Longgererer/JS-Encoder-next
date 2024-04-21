@@ -30,6 +30,8 @@ export const TYPESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/typescript/5.2.
 export const COFFEESCRIPT_URL = "https://cdn.bootcdn.net/ajax/libs/coffee-script/2.7.0/coffeescript.min.js"
 /** babel编译jsx */
 export const BABEL_URL = "https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.22.17/babel.min.js"
+/** pug编译 */
+export const PUG_JS_URL = "https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/jade.min.js"
 
 /**
  * markdown

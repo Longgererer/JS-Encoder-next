@@ -20,5 +20,6 @@ declare interface Window {
   ts: GlobalType.typescript
   CoffeeScript: GlobalType.coffeescript
   Babel: GlobalType.babelStandalone
+  jade: GlobalType.pugJS
 }
 
