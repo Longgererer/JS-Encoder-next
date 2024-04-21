@@ -85,6 +85,9 @@ const initResult = () => {
 const processRefreshIframe = () => {
   // 设置iframe刷新前后需要执行的额外操作
   previewService.setRefreshOptions({
+    onIframeUpdated: (iframe) => {
+      consoleService.init(iframe)
+    },
     onBeforeRefresh: (iframe) => {
       // 清空控制台
       if (consoleSettings.value.autoClear) {

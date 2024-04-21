@@ -2,10 +2,12 @@ import useCodeCompile from "@hooks/use-code-compile"
 import SingleInstance from "@utils/decorators/single-instance"
 
 export interface IRefreshOptions {
+  /** 当iframe元素被替换 */
+  onIframeUpdated?: (iframe: HTMLIFrameElement) => void
   /** 刷新前回调 */
-  onBeforeRefresh: (iframe: HTMLIFrameElement) => void
+  onBeforeRefresh?: (iframe: HTMLIFrameElement) => void
   /** 刷新后回调 */
-  onRefreshed: (iframe: HTMLIFrameElement) => void
+  onRefreshed?: (iframe: HTMLIFrameElement) => void
 }
 
 /** 预览相关服务 */
@@ -47,30 +49,32 @@ export default class PreviewService {
   }
 
   public async refreshIframe() {
+    const { onIframeUpdated, onBeforeRefresh, onRefreshed } = this.refreshOption || {}
+
     if (this.isIframeInit) {
       this.replaceOldIframe()
+      onIframeUpdated?.(this.iframe!)
     }
 
-      const iframeWindow = this.getWindow()
-      if (!iframeWindow) { return }
-      const { onBeforeRefresh, onRefreshed } = this.refreshOption || {}
+    const iframeWindow = this.getWindow()
+    if (!iframeWindow) { return }
 
-      const iframeDoc = this.getWindow()!.document
-      iframeDoc.open()
-      onBeforeRefresh?.(this.iframe!)
-      // 写入结果代码
-      const code = await useCodeCompile().getResultCode()
-      iframeDoc.write(code)
-      iframeDoc.close()
+    const iframeDoc = this.getWindow()!.document
+    iframeDoc.open()
+    onBeforeRefresh?.(this.iframe!)
+    // 写入结果代码
+    const code = await useCodeCompile().getResultCode()
+    iframeDoc.write(code)
+    iframeDoc.close()
 
-      // 加载完成后结束
-      return new Promise<void>((resolve) => {
-        iframeWindow.onload = () => {
-          this.isIframeInit = true
-          onRefreshed?.(this.iframe!)
-          iframeWindow.onload = null
-          resolve()
-        }
-      })
+    // 加载完成后结束
+    return new Promise<void>((resolve) => {
+      iframeWindow.onload = () => {
+        this.isIframeInit = true
+        onRefreshed?.(this.iframe!)
+        iframeWindow.onload = null
+        resolve()
+      }
+    })
   }
 }

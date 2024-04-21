@@ -22,6 +22,10 @@ export default class ConsoleService {
   private consoleOptions: IConsoleOptions = {}
 
   constructor(iframe?: HTMLIFrameElement) {
+    this.init(iframe)
+  }
+
+  public init(iframe?: HTMLIFrameElement) {
     if (iframe) {
       this.iframe = iframe
       this.window = this.iframe!.contentWindow as Window & typeof globalThis
