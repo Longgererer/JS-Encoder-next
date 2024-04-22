@@ -9,12 +9,16 @@
       <template v-for="(item, index) in editorSplitter.children" :key="item">
         <div class="relative">
           <!--  如果只有一个splitter，不需要分割线进行分割，如果有两个splitter，则需要根据方向来进行分割  -->
-          <split-line
-            v-if="index > 0"
-            size="4"
-            :direction="editorSplitter.direction"
-            @mousedown="handleResizeSplitter"
-          ></split-line>
+          <div
+            v-if="index"
+            class="resize-line absolute high-layer"
+            :class="editorSplitter.direction === SplitDirection.HORIZONTAL ? 'resize-x' : 'resize-y'">
+            <split-line
+              size="4"
+              :direction="editorSplitter.direction"
+              @mousedown="handleResizeSplitter"
+            ></split-line>
+          </div>
           <editor-splitter
             :id="item"
             :parent-id="props.id"
@@ -42,7 +46,7 @@ import { computed, ref, watch } from "vue"
 import { AreaPosition, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"
 import { ISize } from "@type/interface"
-import ModuleSizeService from "@utils/services/module-size-service"
+import ModuleSizeService, { SPLITTER_MIN_HEIGHT, SPLITTER_MIN_WIDTH } from "@utils/services/module-size-service"
 import EditorView from "@views/components/editor-view/editor-view.vue"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import SplitLine from "@components/split-line/split-line.vue"
@@ -132,7 +136,7 @@ watch(
   },
 )
 
-function setSplitterChildrenSize(): void {
+const setSplitterChildrenSize = () => {
   const { width, height } = props
   const { direction, children = [] } = editorSplitter
   const [splitterSize1, splitterSize2] = moduleSizeService.getHalfModuleSize(
@@ -147,7 +151,7 @@ function setSplitterChildrenSize(): void {
 }
 
 /** 在改变宽高时设置子splitter的尺寸 */
-function setChildrenSplitterSize(changeSize: number, changeDirection?: SplitDirection): void {
+const setChildrenSplitterSize = (changeSize: number, changeDirection?: SplitDirection) => {
   const { children = [], direction } = editorSplitter
   const [splitterId1, splitterId2] = children
   const splitter1Size = childrenSizeMap.value[splitterId1]
@@ -176,7 +180,7 @@ function setChildrenSplitterSize(changeSize: number, changeDirection?: SplitDire
   }
 }
 
-
+/** 拖动分割线改变相邻splitter宽高 */
 const handleResizeSplitter = (e: MouseEvent): void => {
   const { direction, children = [] } = editorSplitter
   const isHorizontal = direction === SplitDirection.HORIZONTAL
@@ -186,15 +190,19 @@ const handleResizeSplitter = (e: MouseEvent): void => {
   const splitter2Size = childrenSizeMap.value[splitterId2]
   document.onmousemove = (event: MouseEvent): void => {
     const changeSize = startPos - (isHorizontal ? event.clientX : event.clientY)
+    const minSize = {
+      minWidth: SPLITTER_MIN_WIDTH,
+      minHeight: SPLITTER_MIN_HEIGHT,
+    }
     const [size1, size2] = moduleSizeService.getNewModulesSize(
-      splitter1Size,
-      splitter2Size,
+      { ...splitter1Size, ...minSize },
+      { ...splitter2Size, ...minSize },
       isHorizontal,
       changeSize,
-    )
+    ) as ISize[]
     childrenSizeMap.value = {
-      [splitterId1]: size1 as ISize,
-      [splitterId2]: size2 as ISize,
+      [splitterId1]: size1,
+      [splitterId2]: size2,
     }
     document.onmouseup = (): void => {
       document.onmouseup = null

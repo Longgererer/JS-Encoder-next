@@ -1,4 +1,4 @@
-import { OriginLang, Prep } from "@type/prep"
+import { OriginLang } from "@type/prep"
 import { ISize } from "@type/interface"
 
 /** 编辑窗口tab */

@@ -15,9 +15,9 @@ export const CONSOLE_MIN_HEIGHT = 24
 /** 预览窗口最小高度 */
 export const PREVIEW_MIN_HEIGHT = 36
 /** splitter的最小宽度 */
-export const SPLITTER_MIN_WIDTH = 60
+export const SPLITTER_MIN_WIDTH = 50
 /** splitter的最小高度 */
-export const SPLITTER_MIN_HEIGHT = 60
+export const SPLITTER_MIN_HEIGHT = 50
 
 interface IModuleInfo extends Partial<ISize> {
   minWidth?: number
