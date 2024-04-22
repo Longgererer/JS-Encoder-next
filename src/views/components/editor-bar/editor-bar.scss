@@ -8,10 +8,12 @@
   .editor-tab {
     padding: 0 24px;
     background-color: var(--color-main-bg-1);
+    border-top: 2px solid transparent;
 
     &.active {
       background-color: var(--color-main-bg-3);
       color: var(--color-active-color);
+      border-top: 2px solid var(--color-main-bg-1);
     }
 
     &.dragging {

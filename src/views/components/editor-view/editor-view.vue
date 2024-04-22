@@ -1,14 +1,16 @@
 <template>
-  <div class="editor-view fill flex-col over-hidden">
+  <div class="editor-view fill flex-col over-hidden relative">
     <editor-bar
+      class="flex-sh"
       :editor-id="id"
       :splitter-id="splitterId"
       :get-editor-view="getDisplayEditorView"
     ></editor-bar>
-    <overlap-monitor
+    <div
       v-if="editorWrapperStore.draggingTabInfo"
-      @select-position="handleSelectSplitPosition"
-    ></overlap-monitor>
+      class="absolute fill-w overlap-monitor-wrapper high-layer">
+      <overlap-monitor @select-position="handleSelectSplitPosition"></overlap-monitor>
+    </div>
     <template v-for="tabId in editor.tabIds" :key="tabId">
       <editor
         v-show="tabId === editor.displayTabId"
@@ -124,4 +126,9 @@ const getDisplayEditorView = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.overlap-monitor-wrapper {
+  top: 36px;
+  height: calc(100% - 36px);
+}
+</style>

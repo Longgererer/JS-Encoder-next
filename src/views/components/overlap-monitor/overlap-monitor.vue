@@ -103,7 +103,7 @@ const highlightAreaStyle = computed((): Record<string, any> => {
 
 <template>
   <div
-    class="overlap-monitor fill flex-1 relative"
+    class="overlap-monitor fill relative"
     ref="overlapMonitor"
     @dragleave.prevent="handleDragleave"
     @drop.prevent.stop="handleDrop"
