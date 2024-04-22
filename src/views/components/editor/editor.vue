@@ -33,7 +33,7 @@ const editorView = shallowRef<EditorView>()
 onMounted(() => {
   // 初始化编辑器
   editorState.value = EditorState.create({
-    doc: props.modelValue || props.modelValue,
+    doc: props.modelValue || props.code,
     extensions: [
       props.minimal ? minimalSetup : basicSetup,
       EditorView.updateListener.of((update) => {
