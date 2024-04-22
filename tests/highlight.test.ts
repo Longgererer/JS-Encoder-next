@@ -3,7 +3,23 @@
  */
 
 const htmlCode = `
-
+<div id="loginDiv">
+  <form action="" id="form">
+    <table>
+      <h2 style="text-align: center; color: rgb(59, 194, 248);">立即登录</h2></br>
+      <tr><td style="text-align: center; color: gray;">邮箱</td></tr>
+      <tr><td><input class="line" type="text" id="L_email"></td></tr>
+      <tr><td style="text-align: center; color: gray;">密码</td></tr>
+      <tr><td> <input class="line" type="password" placeholder="密码长度至少为6位" id="L_pwd"></td></tr>
+    </table>
+    </br>
+    <p style="text-align: center;color: rgb(59, 194, 248);"><a href="#">忘记密码?</a></p>
+    <div style="text-align: center;margin-top: 15px;">
+      <input type="button" id="L_login" value="登录" onclick=javascrtpt:jump1()>
+      <input type="button" id="L_register" value="注册" onclick=javascrtpt:jump2()>
+    </div>
+  </form>
+</div>
 `
 
 const markdownCode = `

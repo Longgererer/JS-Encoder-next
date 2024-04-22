@@ -14,6 +14,7 @@ import { ShortcutMode } from "@type/settings"
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
   code: "",
+  extensions: () => [],
   settings: () => ({
     lineWrapping: true,
     lineNumbers: true,
