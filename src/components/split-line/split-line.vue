@@ -1,12 +1,14 @@
 <template>
-  <div class="split-line-wrapper fill relative">
+  <div
+    class="split-line-wrapper relative"
+    :class="direction === SplitDirection.HORIZONTAL ? 'fill-h' : 'fill-w'">
     <div
       class="split-line fill fade-ease absolute"
       :class="[
         isActive ? 'active' : '',
         showCursor && direction === SplitDirection.HORIZONTAL ? 'cursor-x-resize' : 'cursor-y-resize',
       ]"
-      :style="{ width: `${size}px`, ...splitLineSizeStyle }"
+      :style="{ ...splitLineSizeStyle }"
       @mouseenter="isActive = true"
       @mouseleave="isActive = false">
     </div>
@@ -29,10 +31,11 @@ const props = withDefaults(defineProps<IProps>(), {
 
 /** 动态设置分割线宽高 */
 const splitLineSizeStyle = computed(() => {
-  const { direction } = props
+  const { direction, size } = props
   const isHorizontal = direction === SplitDirection.HORIZONTAL
   if (isHorizontal) {
     return {
+      width: `${size}px`,
       top: 0,
       bottom: 0,
       left: "50%",
@@ -40,6 +43,7 @@ const splitLineSizeStyle = computed(() => {
     }
   } else {
     return {
+      height: `${size}px`,
       left: 0,
       right: 0,
       top: "50%",

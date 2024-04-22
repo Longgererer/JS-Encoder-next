@@ -11,11 +11,8 @@
           <!--  如果只有一个splitter，不需要分割线进行分割，如果有两个splitter，则需要根据方向来进行分割  -->
           <split-line
             v-if="index > 0"
-            class="absolute"
-            :size="splitLineSize / 2"
-            :active-size="splitLineSize"
+            size="4"
             :direction="editorSplitter.direction"
-            :style="splitLinePositionStyle"
             @mousedown="handleResizeSplitter"
           ></split-line>
           <editor-splitter
@@ -75,18 +72,6 @@ const utilService = new UtilService()
 const editorSplitter = editorSplitterMap.value[props.id]
 /** 存放子splitter size */
 const childrenSizeMap = ref<Record<number, ISize>>({})
-
-/** 分割线定位样式 */
-const splitLineSize = 4
-const splitLinePositionStyle = computed(() => {
-  const { direction } = editorSplitter
-  const isHorizontal = direction === SplitDirection.HORIZONTAL
-  return {
-    top: isHorizontal ? 0 : `${-splitLineSize}px`,
-    left: isHorizontal ? `${-splitLineSize}px` : 0,
-    ...(isHorizontal ? { bottom: 0 } : { right: 0 }),
-  }
-})
 
 /**
  * 监听改变的宽高将改变均分到children中
