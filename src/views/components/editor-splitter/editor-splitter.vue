@@ -2,8 +2,7 @@
   <div
     class="editor-splitter"
     :class="editorSplitter?.direction === SplitDirection.HORIZONTAL ? 'flex' : ''"
-    :style="{ width: `${width}px`, height: `${height}px` }"
-  >
+    :style="{ width: `${width}px`, height: `${height}px` }">
     <!--  children不为空，表示不为叶子节点，存在子splitter  -->
     <template v-if="editorSplitter?.children?.length">
       <template v-for="(item, index) in editorSplitter.children" :key="item">
@@ -111,7 +110,7 @@ watch(
     } else {
       if ((newChildren as number[]).length === 1) {
         // 如果只有一个子splitter，那就直接继承这个子splitter的editorId和children
-        const { id, children, editorId, parentId } = editorSplitter
+        const { id, children } = editorSplitter
         const {
           id: childSplitterId,
           editorId: childEditorId,

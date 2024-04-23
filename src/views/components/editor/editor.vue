@@ -1,5 +1,5 @@
 <template>
-  <div class="fill over-hidden" ref="editorRef"></div>
+  <div class="editor-instance fill over-hidden" ref="editorRef"></div>
 </template>
 
 <script setup lang="ts">
@@ -103,7 +103,8 @@ onMounted(() => {
   watch(
     () => props.extensions,
     (newExtensions) => {
-      extensionsUpdater.extensionUpdater(newExtensions!)
+      if (!newExtensions) { return }
+      extensionsUpdater.extensionUpdater(newExtensions)
     },
     { immediate: true },
   )

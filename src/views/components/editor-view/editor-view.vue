@@ -12,15 +12,15 @@
       <overlap-monitor @select-position="handleSelectSplitPosition"></overlap-monitor>
     </div>
     <template v-for="tabId in editor.tabIds" :key="tabId">
-      <editor
+      <editor-keeper
         v-show="tabId === editor.displayTabId"
-        :code="codeMap[tabId]"
         :prep="tabId2PrepMap[tabId]"
+        :code="codeMap[tabId]"
         :settings="editorSettings"
         :extensions="tabId2Extensions[tabId]"
-        :ref="(el) => setRefMap(el, tabId)"
+        :tab-id="tabId"
         @code-changed="($event) => handleCodeChanged($event, tabId)"
-      ></editor>
+      ></editor-keeper>
     </template>
   </div>
 </template>
@@ -33,7 +33,6 @@ import { AreaPosition, IEditor } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
-import Editor from "@views/components/editor/editor.vue"
 import { ComponentPublicInstance, computed, ref, shallowRef, watch } from "vue"
 import { ICodemirrorEditorSettings, IEditorViewExpose } from "../editor/editor"
 import { debounce } from "@utils/tools/common"
@@ -42,6 +41,7 @@ import { IEmits, IProps } from "./editor-view"
 import EditorExtensionsService from "@utils/editor/services/editor-extensions-service"
 import useTaskQueueControl from "@hooks/use-task-queue-control"
 import { Extension } from "@codemirror/state"
+import EditorKeeper from "../editor-keeper/editor-keeper.vue"
 
 const props = defineProps<IProps>()
 const emits = defineEmits<IEmits>()
@@ -89,7 +89,6 @@ const getEditorStyle = (): Record<string, AnyObject> => {
 
 /** editor扩展处理 */
 const editorExtensionsService = new EditorExtensionsService()
-
 const tabId2Extensions = shallowRef<Record<number, Extension[]>>({})
 
 watch(tabId2PrepMap, (newMap, oldMap) => {
