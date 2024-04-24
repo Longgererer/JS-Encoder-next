@@ -4,7 +4,6 @@
       class="flex-sh"
       :editor-id="id"
       :splitter-id="splitterId"
-      :get-editor-view="getDisplayEditorView"
     ></editor-bar>
     <div
       v-if="editorWrapperStore.draggingTabInfo"
@@ -14,6 +13,7 @@
     <template v-for="tabId in editor.tabIds" :key="tabId">
       <editor-keeper
         v-show="tabId === editor.displayTabId"
+        :show-editor="tabId === editor.displayTabId"
         :prep="tabId2PrepMap[tabId]"
         :code="codeMap[tabId]"
         :settings="editorSettings"
@@ -33,8 +33,8 @@ import { AreaPosition, IEditor } from "@type/editor"
 import { storeToRefs } from "pinia"
 import EditorBar from "@views/components/editor-bar/editor-bar.vue"
 import OverlapMonitor from "@views/components/overlap-monitor/overlap-monitor.vue"
-import { ComponentPublicInstance, computed, ref, shallowRef, watch } from "vue"
-import { ICodemirrorEditorSettings, IEditorViewExpose } from "../editor/editor"
+import { computed, ref, shallowRef, watch } from "vue"
+import { ICodemirrorEditorSettings } from "../editor/editor"
 import { debounce } from "@utils/tools/common"
 import { AnyObject } from "@type/interface"
 import { IEmits, IProps } from "./editor-view"
@@ -113,15 +113,6 @@ const handleCodeChanged = (code: string, tabId: number): void => {
     editorWrapperStore.updateCodeMap(tabId, code)
   }, tabId)
   saveDebounce()
-}
-
-const editorRefMap: Record<number, ComponentPublicInstance<IEditorViewExpose>> = {}
-const setRefMap = (el: ComponentPublicInstance<any>, tabId: number) => {
-  editorRefMap[tabId] = el
-}
-
-const getDisplayEditorView = () => {
-  return editorRefMap[editor.value.displayTabId]?.getEditorView()
 }
 </script>
 

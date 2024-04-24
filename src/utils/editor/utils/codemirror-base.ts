@@ -69,6 +69,10 @@ export class CodemirrorBase {
     this.view.dispatch({ selection: { anchor: offset } })
   }
 
+  public focus(): void {
+    this.view.focus()
+  }
+
   /** 获取行信息 */
   public getLine(line: number): Line {
     return this.getDoc().line(line)

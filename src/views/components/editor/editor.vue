@@ -1,9 +1,13 @@
 <template>
-  <div class="editor-instance fill over-hidden" ref="editorRef"></div>
+  <div
+    class="editor-instance fill over-hidden"
+    ref="editorRef"
+    v-show="tmpShowStatus"
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, shallowRef, watch } from "vue"
+import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue"
 import { IEditorViewExpose, IEmits, IProps } from "./editor"
 import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state"
@@ -29,6 +33,7 @@ const emits = defineEmits<IEmits>()
 const editorRef = shallowRef<HTMLElement | null>(null)
 const editorState = shallowRef<EditorState>()
 const editorView = shallowRef<EditorView>()
+const editorScrollTop = ref<number>(0)
 
 // eslint-disable-next-line max-lines-per-function
 onMounted(() => {
@@ -48,6 +53,12 @@ onMounted(() => {
         if (update.focusChanged) {
           emits(update.view.hasFocus ? "focus" : "blur")
         }
+      }),
+      EditorView.domEventHandlers({
+        scroll(event: Event){
+          if (!event.target) { return }
+          editorScrollTop.value = (event.target! as HTMLElement)?.scrollTop
+        },
       }),
     ],
   })
@@ -109,13 +120,36 @@ onMounted(() => {
     { immediate: true },
   )
 
+  // editor展示时自动获取焦点
+  watch(
+    () => props.showEditor,
+    (newState) => {
+      if (!newState) { return }
+      nextTick(() => {
+        baseUtil.focus()
+      })
+    },
+    { immediate: true },
+  )
+
   onBeforeUnmount(() => {
     editorView.value?.destroy()
   })
 })
 
+const tmpShowStatus = ref<boolean>(true)
 defineExpose<IEditorViewExpose>({
   getEditorView: () => editorView.value!,
+  restoreEditorView: () => {
+    if (!editorView.value) { return }
+    const scrollDOM = editorView.value.scrollDOM
+    // 恢复scrollTop
+    // TODO: 有时设置scrollTop会失效，如果setTimeout延迟100会解决，但要检查原因
+    setTimeout(() => {
+      scrollDOM.scrollTop = editorScrollTop.value
+      editorView.value!.focus()
+    })
+  },
 })
 </script>
 

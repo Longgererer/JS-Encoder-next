@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { useEditorWrapperStore } from "@store/editor-wrapper"
-import { computed, ref, watch } from "vue"
+import { ref, watch } from "vue"
 import { AreaPosition, SplitDirection } from "@type/editor"
 import { storeToRefs } from "pinia"
 import { ISize } from "@type/interface"

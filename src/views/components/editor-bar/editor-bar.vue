@@ -15,7 +15,7 @@
         draggable="true"
         @mousedown="handleClickTab(tabId)"
         @dragstart="handleTabDragstart(tabId)"
-        @dragend="handleTabDragend()"
+        @dragend="handleTabDragend(tabId)"
         @drop.prevent="handleTabDrop()"
         @dragover.prevent="handleTabDragover(tabId)">
         <span class="editor-tab-title code-font">{{ tabId2PrepMap[tabId] }}</span>
@@ -72,13 +72,12 @@ import Dropdown from "@components/dropdown/dropdown.vue"
 import DropdownItem from "@components/dropdown/dropdown-item.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import UtilService from "@utils/services/util-service"
-import { EditorView } from "@codemirror/view"
 import { toggleMarkdownToolsPanel } from "@utils/editor/panels/markdown-tools"
+import EditorKeeperService from "@utils/services/editor-keeper-service"
 
 const props = defineProps<{
   editorId: number
   splitterId: number
-  getEditorView: () => EditorView | undefined
 }>()
 
 const editorWrapperStore = useEditorWrapperStore()
@@ -103,6 +102,7 @@ const currOverlapTabId = ref<number | null>(null)
 /** 点击tab，设置editor下展示的tabId */
 const handleClickTab = (tabId: number) => {
   updateEditor(props.editorId, { displayTabId: tabId })
+  focusOnEditor(tabId)
 }
 /** 开始拖拽时上报拖拽tab信息 */
 const handleTabDragstart = (tabId: number): void => {
@@ -128,9 +128,10 @@ const resetHookState = useDragleaveJudge(editorBarRef, () => {
   resetDragState()
 })
 /** 拖动结束，清除数据 */
-const handleTabDragend = (): void => {
+const handleTabDragend = (tabId: number): void => {
   isOverlapRightSide.value = false
   updateDraggingTabInfo(null)
+  focusOnEditor(tabId)
 }
 /**
  * 拖动释放，对tab位置进行处理
@@ -232,14 +233,23 @@ const resetDragState = () => {
 
 /** 右侧工具栏菜单 */
 const { showSideMenu, sideOptions } = useEditorSideOptions(editor.id)
+const editorKeeperService = new EditorKeeperService()
 
 const sideOptionType2FuncMap = {
   [EditorSideOptionType.FORMAT_CODE]: () => {},
-  [EditorSideOptionType.MARKDOWN_TOOLS]: () => toggleMarkdownToolsPanel(props.getEditorView()!),
+  [EditorSideOptionType.MARKDOWN_TOOLS]: () => {
+    return toggleMarkdownToolsPanel(editorKeeperService.getEditorView(editor.displayTabId)!)
+  },
 }
 
 const handleClickSideOptions = (type: EditorSideOptionType) => {
   sideOptionType2FuncMap[type]()
+}
+
+const focusOnEditor = (tabId: number) => {
+  setTimeout(() => {
+    editorKeeperService.getEditorView(tabId)?.focus()
+  })
 }
 </script>
 

@@ -23,6 +23,8 @@ export interface IProps {
   modelValue?: string
   extensions?: Extension[]
   minimal?: boolean
+  /** 该属性是用来在editor内监听该编辑器是否被展示的（v-show=true），用来执行副作用 */
+  showEditor?: boolean
 }
 
 export interface IEmits {
@@ -32,4 +34,6 @@ export interface IEmits {
 
 export interface IEditorViewExpose {
   getEditorView: () => EditorView | undefined
+  /** 重新恢复editor状态 */
+  restoreEditorView: () => void
 }
