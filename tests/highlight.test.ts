@@ -61,6 +61,35 @@ $$E=mc^2$$
 行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
 `
 
+const cssCode = `
+li {
+  position: relative;
+  width: 160px;
+  border-radius: 10px 0 0 10px;
+  background: #ddd;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    border-radius: unset;
+    background: radial-gradient(circle at 0 0, transparent, transparent 19.5px, #ddd 20px, #ddd);
+  }
+}
+.g-nav:has(li:nth-child(4):hover) + .g-main {
+  .g-status li:nth-child(4) {
+    opacity: 1;
+  }
+}
+:root {
+  --my-cool-background: #73a4f4;
+}
+/* CSS文件的其他部分 */
+#foo {
+  background-color: var(--my-cool-background);
+}
+`
+
 const sassCode = `
 $is-dark: true;
 body {
@@ -181,6 +210,39 @@ function-name(parameter)
 }
 `
 
+const javascriptCode = `
+const arrScrambling = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    const randomIndex = Math.round(Math.random() * (arr.length - 1 - i)) + i;
+    [arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]];
+  }
+  return arr;
+}
+const sample = arr => arr[Math.floor(Math.random() * arr.length)];
+const telFormat = (tel = "") => {
+  /** 123 */
+  tel = String(tel); // comment
+  return tel.substr(0,3) + "****" + tel.substr(7);
+}
+const getKebabCase = (str) => {
+  return str.replace(/[A-Z]/g, (item) => '-' + item.toLowerCase())
+}
+const scrollToTop = () => {
+  const height = document.documentElement.scrollTop || document.body.scrollTop;
+  if (height > 0) {
+    window.requestAnimationFrame(scrollToTop);
+    window.scrollTo(0, height - height / 8);
+  }
+}
+new Promise((resolveOuter) => {
+  resolveOuter(
+    new Promise((resolveInner) => {
+      setTimeout(resolveInner, 1000);
+    }),
+  );
+});
+`
+
 const typeScriptCode = `
 type num = 1;
 type str = 'hello world';
@@ -232,7 +294,7 @@ alert "I knew it!" if elvis?
 cubes = (math.cube num for num in list)
 `
 
-const jsxCode = `
+const babelCode = `
 const name = 'Josh Perez';
 const style = {
   fontSize: 100,
