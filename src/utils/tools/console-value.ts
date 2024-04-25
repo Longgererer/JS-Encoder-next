@@ -5,7 +5,7 @@ import { isElement } from "./judge"
 export const processConsoleValueList = (list: any[]) => {
   return list.map((value, index) => {
     const type = getType(value)
-    const result = formatConsoleValue(value, type)
+    const result = formatConsoleValue(value)
     if (!index && type === "string") {
       result.value = value
     }
@@ -17,10 +17,11 @@ const listLengthLimit = { minLength: 9, maxLength: 99 }
 const recordLengthLimit = { minLength: 5, maxLength: 99 }
 
 // eslint-disable-next-line max-lines-per-function
-export const formatConsoleValue = (value: any, type?: string): IConsoleValue => {
-  if (!type) {
-    type = getType(value)
-  }
+export const formatConsoleValue = (
+  value: any,
+  isTable?: boolean,
+): IConsoleValue => {
+  const type = getType(value)
   let consoleValue: IConsoleValue = {
     type, value,
     toStringTag: value?.[Symbol.toStringTag],
@@ -28,10 +29,13 @@ export const formatConsoleValue = (value: any, type?: string): IConsoleValue => 
 
   switch (type) {
     case "string": {
-      consoleValue.value = `'${value}'`
+      consoleValue.value = `"${value}"`
       break
     }
-    case "undefined":
+    case "undefined": {
+      consoleValue.value = isTable ? "" : String(value)
+      break
+    }
     case "null": {
       consoleValue.value = String(value)
       break

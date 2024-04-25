@@ -1,6 +1,11 @@
 import { AnyArray } from "@type/interface"
 import { stringifyDOM } from "@utils/tools/common"
 
+export const isBaseData = (data: any): boolean => {
+  if (data === null) { return true }
+  return ["number", "string", "undefined", "boolean", "bigInt", "symbol"].includes(typeof data)
+}
+
 export const getType = (data: any): string => {
   if (data === null) { return "null" }
   let type: string = typeof data

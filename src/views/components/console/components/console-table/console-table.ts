@@ -1,5 +1,4 @@
-import { ITableLogInfo } from "@type/console"
-
 export interface IProps {
-  logInfo: ITableLogInfo
+  headers: string[]
+  body: any[][]
 }

@@ -53,6 +53,8 @@ export interface ITableLogInfo {
   type: LogType.MESSAGE
   method: ConsoleMethods.TABLE
   data: { headers: string[], body: any[][] }
+  /** 处理之前的原始数据 */
+  origin: any
 }
 
 export enum ConsoleUpdateType {

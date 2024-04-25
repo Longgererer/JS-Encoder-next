@@ -1,6 +1,6 @@
 import SingleInstance from "@utils/decorators/single-instance"
 import { reactive } from "vue"
-import { getArrayIntersection, getType } from "@utils/tools"
+import { getArrayIntersection, getType, isBaseData } from "@utils/tools"
 import { AnyArray, AnyObject } from "@type/interface"
 import { ConsoleMethods, ConsoleUpdateType, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
 import { processConsoleValueList } from "@utils/tools/console-value"
@@ -115,27 +115,71 @@ export default class ConsoleService {
     this.error("Assertion failed: ", ...restArgs)
   }
 
+  // eslint-disable-next-line max-lines-per-function
   public table(data: AnyObject | AnyArray, properties: string[] = []) {
-    const headers: string[] = ["(index)"]
+    const indexHeader = "(index)"
+    const valueHeader = "value"
+    const headers: string[] = [indexHeader]
     const body: any[][] = []
     if (getType(data) === "Object") {
       // 如果data是对象，就取出对象的key和value作为表格的index和value即可
-      headers.push("value")
+      headers.push(valueHeader)
       body.push(...Object.entries(data))
     } else if (getType(data) === "Array") {
-      // 如果columns确为data中的属性名，便作为头部，否则仍然用value作为头部
-      const keys = Object.keys(data)
-      const intersection = getArrayIntersection(keys, properties)
-      headers.push(...intersection)
-      const rows = (data as AnyArray).map((item: any, index) => {
-        return [String(index), intersection.map((key) => item[key])]
-      })
-      body.push(...rows)
+      /**
+       * 数组输出规则：
+       * 如果传了properties
+       *    那么properties里面的key值作为表格头部列
+       *        如果data里面的item没有properties对应的key值，头部就添加新列“值”
+       *        如果所有data里面都没有properties里面的key值，那么不展示该列
+       * 如果没有传properties
+       *    那么取出data里面所有的key作为表格头部列
+       */
+      if (properties.length) {
+        const useValueHeaderIndex: number[] = []
+        const keys = (data as AnyArray).reduce((acc: string[], item, index) => {
+          const itemKeys = isBaseData(item) ? [] : Object.keys(item)
+          const intersection = getArrayIntersection(itemKeys, properties)
+          if (intersection.length) {
+            acc.push(...intersection)
+          } else {
+            useValueHeaderIndex.push(index)
+            acc.push(valueHeader)
+          }
+          return acc
+        }, [])
+        const uniqueKeys = Array.from(new Set(keys))
+        headers.push(...uniqueKeys)
+        const rows = (data as AnyArray).map((item, index) => {
+          const cols = uniqueKeys.map((key) => {
+            return key === valueHeader && useValueHeaderIndex.includes(index)
+              ? item
+              : item?.[key]
+          })
+          return [String(index), ...cols]
+        })
+        body.push(...rows)
+      } else {
+        const keys = (data as AnyArray).reduce((acc: string[], item) => {
+          acc.push(...(isBaseData(item) ? [] : Object.keys(item)))
+          return acc
+        }, [])
+        const uniqueKeys = Array.from(new Set(keys))
+        headers.push(...(uniqueKeys.length ? uniqueKeys : [valueHeader]))
+        const rows = (data as AnyArray).map((item, index) => {
+          const cols = uniqueKeys.length
+            ? uniqueKeys.map((key) => item?.[key])
+            : [item]
+          return [String(index), ...cols]
+        })
+        body.push(...rows)
+      }
     }
     const logInfo: ITableLogInfo = {
       type: LogType.MESSAGE,
       method: ConsoleMethods.TABLE,
-      data: { headers, body: body.map((list) => processConsoleValueList(list)) },
+      data: { headers, body },
+      origin: data,
     }
     this.logs.push(logInfo)
     this.consoleOptions.onLogsUpdated?.(ConsoleUpdateType.ADD, logInfo)

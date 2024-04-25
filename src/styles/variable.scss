@@ -71,6 +71,11 @@ $dark-colors: (
   console-element-name: rgb(192, 153, 255),
   console-element-suffix: rgb(93, 176, 215),
   console-attribute-value: rgb(195, 232, 141),
+  
+  // console table
+  console-table-header-bg: rgb(28, 28, 28),
+  console-table-color: rgb(255 255 255 / 80%),
+  console-table-border: rgb(85, 85, 85),
 );
 $bright-colors: (
   primary: #9246FF,
