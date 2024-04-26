@@ -113,10 +113,8 @@ export const getPrepBaseExtension = (prep: Prep): Extension => {
 }
 
 /** 语言对应的linter扩展 */
-const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
+const Prep2LinterExtensionMap: Partial<Record<Prep, () => Extension>> = {
   [Prep.HTML]: () => htmlLinter,
-  [Prep.MARKDOWN]: () => [],
-  [Prep.PUG]: () => [],
   [Prep.CSS]: () => cssLinter,
   [Prep.SASS]: () => scssLinter,
   [Prep.SCSS]: () => scssLinter,
@@ -124,14 +122,12 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
   [Prep.STYLUS]: () => stylusLinter,
   [Prep.JAVASCRIPT]: () => javascriptLinter,
   [Prep.TYPESCRIPT]: () => typeScriptLinter,
-  [Prep.BABEL]: () => [],
-  [Prep.COFFEESCRIPT]: () => [],
-  [Prep.VUE]: () => [],
 }
 
 /** 获取语言对应的linter扩展 */
 export const getPrepLintExtension = (prep: Prep): Extension => {
-  return [Prep2LinterExtensionMap[prep]()]
+  const extension = Prep2LinterExtensionMap[prep]?.()
+  return extension || []
 }
 
 const Prep2EmmetSyntaxMap: Partial<Record<Prep, EmmetKnownSyntax>> = {
