@@ -131,8 +131,7 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
 
 /** 获取语言对应的linter扩展 */
 export const getPrepLintExtension = (prep: Prep): Extension => {
-  // return Prep2LinterExtensionMap[prep]()
-  return []
+  return [Prep2LinterExtensionMap[prep]()]
 }
 
 const Prep2EmmetSyntaxMap: Partial<Record<Prep, EmmetKnownSyntax>> = {

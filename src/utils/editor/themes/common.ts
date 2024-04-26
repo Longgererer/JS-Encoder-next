@@ -1,3 +1,5 @@
+import { CodeFontFamily } from "@type/settings"
+
 const commonStyle = {
   ".cm-selectionMatch": {
     height: "100%",
@@ -22,6 +24,15 @@ const commonStyle = {
   },
   ".cm-panels": {
     position: "static",
+  },
+  ".cm-tooltip": {
+    fontSize: "14px",
+    fontFamily: CodeFontFamily.JET_BRAINS_MONO,
+    boxShadow: "0 2px 2px var(--color-shadow)",
+    backgroundColor: "var(--color-main-bg-4)",
+  },
+  ".cm-diagnostic": {
+    borderLeftWidth: "2px",
   },
 }
 

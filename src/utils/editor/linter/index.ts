@@ -6,6 +6,7 @@ import { esLint } from "@codemirror/lang-javascript"
 import { tsLinter } from "../lsp/typescript"
 import LoaderService from "@utils/services/loader-service"
 import { STYLELINT_URL } from "@utils/tools/config"
+import htmlLintRuleConfig from "./html-lint.config"
 
 const loaderService = new LoaderService()
 
@@ -13,9 +14,10 @@ const loaderService = new LoaderService()
 export const htmlLinter = linter(
   (view) => {
     const code = view.state.doc.toString()
-    const results = HTMLHint.verify(code, {})
+    if (!code) { return [] }
+    const results = HTMLHint.verify(code, htmlLintRuleConfig)
     return results.map((result) => {
-      const from = view.state.doc.line(result.line - 1).from
+      const from = view.state.doc.line(result.line).from
       const to = from + result.evidence.length
       return {
         from, to,
