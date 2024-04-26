@@ -10,11 +10,11 @@ import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
 import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylusLinter, typeScriptLinter } from "@utils/editor/linter"
-import { Extension } from "@codemirror/state"
+import { Extension, Prec } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { autocompletion } from "@codemirror/autocomplete"
-import { emmetConfig, abbreviationTracker } from "@emmetio/codemirror6-plugin"
+import { emmetConfig, abbreviationTracker, expandAbbreviation } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
@@ -36,12 +36,17 @@ export const getDefaultEditorExtensions = (): Extension[] => {
     autocompletion({ defaultKeymap: false }),
     keymap.of(vscodeKeymap),
     scrollPastEnd(),
+    emmetKeyup,
   ]
 }
 
+const emmetKeyup = Prec.highest(keymap.of([{
+    key: "Tab",
+    run: expandAbbreviation,
+}]))
+
 const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.HTML]: () => [
-    emmetConfig.of({ syntax: "html" }),
     abbreviationTracker({ syntax: "html" }),
   ],
   [Prep.MARKDOWN]: () => [markdownToolsState],

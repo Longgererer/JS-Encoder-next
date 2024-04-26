@@ -14,6 +14,7 @@ interface Settings {
   gutterBackground: string
   gutterForeground: string
   foldBackground: string
+  matchingBracket: string
 }
 
 interface IThemeInfo {
@@ -34,15 +35,7 @@ const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
     },
     ".cm-cursor, .cm-dropCursor": {
       borderLeftColor: settings.caret,
-    },
-    "&.cm-focused .cm-scroller .cm-content .cm-line::selection": {
-      backgroundColor: `${settings.focusedSelection} !important`,
-    },
-    "&.cm-focused .cm-scroller .cm-selectionLayer .cm-selectionBackground": {
-      backgroundColor: "transparent",
-    },
-    "& .cm-scroller .cm-selectionLayer .cm-selectionBackground": {
-      backgroundColor: "transparent",
+      borderLeftWidth: "2px",
     },
     ".cm-content .cm-selectionMatch": {
       backgroundColor: settings.selectionMatch,
@@ -60,6 +53,12 @@ const createTheme = ({ variant, settings, styles }: IThemeInfo): Extension => {
     },
     ".cm-activeLineGutter": {
       backgroundColor: settings.lineHighlight,
+    },
+    ".cm-matchingBracket": {
+      backgroundColor: `${settings.matchingBracket} !important`,
+    },
+    "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground": {
+      backgroundColor: settings.focusedSelection,
     },
     ...commonStyle,
   }, {

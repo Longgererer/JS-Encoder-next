@@ -6,14 +6,15 @@ const theme = createTheme({
   settings: {
     background: "#121214",
     foreground: "#c8d3f5",
-    caret: "#c8d3f5",
+    caret: "#60bdff",
     selection: "#28282F",
-    focusedSelection: "#28283F",
-    selectionMatch: "#99ff7740",
+    focusedSelection: "#282838",
+    selectionMatch: "#99ff7720",
     lineHighlight: "#33333944",
     gutterBackground: "#121214",
     gutterForeground: "#555555",
     foldBackground: "#28282A",
+    matchingBracket: "rgba(96, 189, 255, 20%)",
   },
   styles: [
     {

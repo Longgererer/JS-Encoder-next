@@ -14,6 +14,7 @@ const theme = createTheme({
     gutterBackground: "#121212",
     gutterForeground: "#444a73",
     foldBackground: "#444a73",
+    matchingBracket: "#60bdff",
   },
   styles: [
     {
