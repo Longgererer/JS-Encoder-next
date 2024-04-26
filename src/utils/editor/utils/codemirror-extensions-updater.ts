@@ -6,6 +6,8 @@ import { AnyObject } from "@type/interface"
 import { ShortcutMode } from "@type/settings"
 import { ShortCutMode2ExtensionMap } from "../config/editor.config"
 
+export type ExtensionToggler = (newStatus?: boolean | undefined) => void
+
 export class CodemirrorExtensionsUpdater {
   public view: EditorView
   public extensionUpdater = this.getExtensionUpdater()
@@ -34,7 +36,7 @@ export class CodemirrorExtensionsUpdater {
   }
 
   /** 开启或关闭扩展 */
-  public getExtensionToggler(extension: Extension) {
+  public getExtensionToggler(extension: Extension): ExtensionToggler {
     const updater = this.getExtensionUpdater()
     return (newStatus?: boolean) => {
       updater(newStatus ? extension : [])

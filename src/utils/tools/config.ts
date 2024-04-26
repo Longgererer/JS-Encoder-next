@@ -14,6 +14,11 @@ export const HELP_DOCS_URL = "http://docs.lliiooiill.cn/"
 export const BOOT_CDN_URL = "https://api.bootcdn.cn/libraries?output=human"
 
 /**
+ * lint
+ */
+export const STYLELINT_URL = "https://github.com/openstyles/stylelint-bundle"
+
+/**
  * 编译
  */
 /** sass编译sass.js */

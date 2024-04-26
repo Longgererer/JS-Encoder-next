@@ -12,8 +12,9 @@ import { IEditorViewExpose, IEmits, IProps } from "./editor"
 import { EditorView, basicSetup, minimalSetup } from "codemirror"
 import { EditorState } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
-import { CodemirrorExtensionsUpdater } from "@utils/editor/utils/codemirror-extensions-updater"
+import { CodemirrorExtensionsUpdater, ExtensionToggler } from "@utils/editor/utils/codemirror-extensions-updater"
 import { ShortcutMode } from "@type/settings"
+import { getPrepEmmetExtension } from "@utils/editor/config/editor.config"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
@@ -123,12 +124,27 @@ onMounted(() => {
   // editor展示时自动获取焦点
   watch(
     () => props.showEditor,
-    (newState) => {
-      if (!newState) { return }
+    (newStatus) => {
+      if (!newStatus) { return }
       nextTick(() => {
         baseUtil.focus()
       })
     },
+    { immediate: true },
+  )
+
+  /** 切换emmet */
+  let emmetToggler: ExtensionToggler
+  watch(
+    () => props.prep,
+    (newPrep) => {
+      emmetToggler = extensionsUpdater.getExtensionToggler(getPrepEmmetExtension(newPrep))
+    },
+    { immediate: true },
+  )
+  watch(
+    () => props.settings.useEmmet,
+    (newStatus) => emmetToggler(newStatus),
     { immediate: true },
   )
 

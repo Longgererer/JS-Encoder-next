@@ -2,7 +2,6 @@ import LoaderService from "@utils/services/loader-service"
 import { BABEL_URL, COFFEESCRIPT_URL, LESS_JS_URL, SASS_JS_URL, STYLUS_JS_URL, TYPESCRIPT_URL, PUG_JS_URL } from "@utils/tools/config"
 import { ModuleKind } from "typescript"
 import { OriginLang, Prep } from "@type/prep"
-import type sass from "sass"
 import hash from "hash-sum"
 
 const loaderService = new LoaderService()

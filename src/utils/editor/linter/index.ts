@@ -4,6 +4,10 @@ import stylusLintRecommendConfig from "@utils/editor/linter/stylus-lint-recommen
 import Linter from "eslint4b-prebuilt"
 import { esLint } from "@codemirror/lang-javascript"
 import { tsLinter } from "../lsp/typescript"
+import LoaderService from "@utils/services/loader-service"
+import { STYLELINT_URL } from "@utils/tools/config"
+
+const loaderService = new LoaderService()
 
 /** 用HTMLHint实现htmlLinter */
 export const htmlLinter = linter(
@@ -33,6 +37,9 @@ const styleLinter = (config: any) => {
   return linter(
     async (view) => {
       const code = view.state.doc.toString()
+      if (!window.stylelint) {
+        await loaderService.loadScript(STYLELINT_URL)
+      }
       const { results } = await window.stylelint.lint({
         code,
         config: { ...config },

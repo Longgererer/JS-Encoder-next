@@ -14,7 +14,7 @@ import { Extension, Prec } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { autocompletion } from "@codemirror/autocomplete"
-import { emmetConfig, abbreviationTracker, expandAbbreviation } from "@emmetio/codemirror6-plugin"
+import { emmetConfig, abbreviationTracker, expandAbbreviation, EmmetKnownSyntax } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
 import { Theme } from "@type/interface"
@@ -36,14 +36,8 @@ export const getDefaultEditorExtensions = (): Extension[] => {
     autocompletion({ defaultKeymap: false }),
     keymap.of(vscodeKeymap),
     scrollPastEnd(),
-    emmetKeyup,
   ]
 }
-
-const emmetKeyup = Prec.highest(keymap.of([{
-    key: "Tab",
-    run: expandAbbreviation,
-}]))
 
 const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.HTML]: () => [
@@ -139,6 +133,32 @@ const Prep2LinterExtensionMap: Record<Prep, () => Extension> = {
 export const getPrepLintExtension = (prep: Prep): Extension => {
   // return Prep2LinterExtensionMap[prep]()
   return []
+}
+
+const Prep2EmmetSyntaxMap: Partial<Record<Prep, EmmetKnownSyntax>> = {
+  [Prep.HTML]: "html",
+  [Prep.PUG]: "pug",
+  [Prep.CSS]: "css",
+  [Prep.SASS]: "sass",
+  [Prep.SCSS]: "scss",
+  [Prep.LESS]: "less",
+  [Prep.VUE]: "vue",
+}
+
+/** 获取语言对应的Emmet扩展 */
+export const getPrepEmmetExtension = (prep: Prep): Extension => {
+  const emmetSyntax = Prep2EmmetSyntaxMap[prep]
+  const extensions = emmetSyntax
+    ? [
+        emmetConfig.of({ syntax: emmetSyntax }),
+        abbreviationTracker({ syntax: emmetSyntax }),
+        Prec.highest(keymap.of([{
+          key: "Tab",
+          run: expandAbbreviation,
+        }])),
+      ]
+    : []
+  return extensions
 }
 
 /** 主题对应的编辑器样式拓展 */
