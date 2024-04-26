@@ -1,3 +1,3 @@
 export interface IPreviewExpose {
-  getIframe: () => HTMLIFrameElement | null
+  getIframe: () => HTMLIFrameElement
 }

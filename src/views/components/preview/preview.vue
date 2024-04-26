@@ -32,7 +32,7 @@
           name="iframe"
           ref="iframeElement"
           src="/src/assets/html/preview.html"
-          class="fill no-border absolute pos-full"
+          class="fill no-border absolute pos-full bg-white"
           sandbox="allow-forms allow-modals allow-pointer-lock allow-popups
                   allow-presentation allow-same-origin allow-scripts"
           allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope;
@@ -93,7 +93,7 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { onMounted, ref, shallowRef } from "vue"
+import { Ref, onMounted, ref, shallowRef } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"
@@ -154,9 +154,9 @@ const handleToggleFoldTopBar = () => {
   isFoldTopBar.value = !isFoldTopBar.value
 }
 
-defineExpose({
-  getIframe: () => iframeElement.value,
-} as IPreviewExpose)
+defineExpose<IPreviewExpose>({
+  getIframe: () => previewService.getIframe(),
+})
 </script>
 
 <style src="./preview.scss" lang="scss" scoped></style>

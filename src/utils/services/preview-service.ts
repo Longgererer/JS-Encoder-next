@@ -14,7 +14,7 @@ export interface IRefreshOptions {
 @SingleInstance
 export default class PreviewService {
   /** iframe元素 */
-  private iframe?: HTMLIFrameElement
+  private iframe!: HTMLIFrameElement
   private isIframeInit: boolean = false
   /** 刷新选项 */
   private refreshOption?: IRefreshOptions
