@@ -5,7 +5,6 @@ import Linter from "eslint4b-prebuilt"
 import { esLint } from "@codemirror/lang-javascript"
 import { tsLinter } from "../lsp/typescript"
 import LoaderService from "@utils/services/loader-service"
-import { STYLELINT_URL } from "@utils/tools/config"
 import htmlLintRuleConfig from "./html-lint.config"
 
 const loaderService = new LoaderService()
@@ -39,16 +38,15 @@ const styleLinter = (config: any) => {
   return linter(
     async (view) => {
       const code = view.state.doc.toString()
+      if (!code) { return [] }
       if (!window.stylelint) {
-        await loaderService.loadScript(STYLELINT_URL)
+        const url = `${import.meta.env.BASE_URL}src/assets/js/stylelint-bundle.min.js`
+        await loaderService.loadScript(url)
       }
-      const { results } = await window.stylelint.lint({
-        code,
-        config: { ...config },
-      })
+      const { results } = await window.stylelint.lint({ code, config })
       return results.map((result: any) => {
         return result.warnings.map((warning: any) => {
-          const from = view.state.doc.line(warning.line - 1).from
+          const from = view.state.doc.line(warning.line).from
           const to = from + (warning.endColumn || warning.column) - warning.column
           return {
             from, to,
