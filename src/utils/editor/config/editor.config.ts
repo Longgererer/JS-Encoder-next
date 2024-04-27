@@ -13,7 +13,6 @@ import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylus
 import { Extension, Prec } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
-import { autocompletion } from "@codemirror/autocomplete"
 import { emmetConfig, abbreviationTracker, expandAbbreviation, EmmetKnownSyntax } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
 import { ShortcutMode } from "@type/settings"
@@ -33,31 +32,25 @@ export const ShortCutMode2ExtensionMap = {
 /** 获取编辑器通用默认配置 */
 export const getDefaultEditorExtensions = (): Extension[] => {
   return [
-    autocompletion({ defaultKeymap: false }),
     keymap.of(vscodeKeymap),
     scrollPastEnd(),
   ]
 }
 
 const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
-  [Prep.HTML]: () => [
-    abbreviationTracker({ syntax: "html" }),
-  ],
+  [Prep.HTML]: () => [],
   [Prep.MARKDOWN]: () => [markdownToolsState],
   [Prep.PUG]: () => [],
-  [Prep.CSS]: () => [emmetConfig.of({ syntax: "css" })],
-  [Prep.SASS]: () => [emmetConfig.of({ syntax: "sass" })],
-  [Prep.SCSS]: () => [emmetConfig.of({ syntax: "scss" })],
+  [Prep.CSS]: () => [],
+  [Prep.SASS]: () => [],
+  [Prep.SCSS]: () => [],
   [Prep.LESS]: () => [],
-  [Prep.STYLUS]: () => [emmetConfig.of({ syntax: "stylus" })],
+  [Prep.STYLUS]: () => [],
   [Prep.JAVASCRIPT]: () => [],
   [Prep.TYPESCRIPT]: () => [],
-  [Prep.BABEL]: () => [
-    emmetConfig.of({ syntax: "jsx" }),
-    abbreviationTracker({ syntax: "jsx" }),
-  ],
+  [Prep.BABEL]: () => [],
   [Prep.COFFEESCRIPT]: () => [],
-  [Prep.VUE]: () => [emmetConfig.of({ syntax: "vue" })],
+  [Prep.VUE]: () => [],
 }
 
 /** 获取每个预处理器的默认配置 */
