@@ -25,14 +25,39 @@ const commonStyle = {
   ".cm-panels": {
     position: "static",
   },
+  ".cm-diagnostic": {
+    borderLeftWidth: "2px",
+  },
   ".cm-tooltip": {
     fontSize: "14px",
     fontFamily: CodeFontFamily.JET_BRAINS_MONO,
-    boxShadow: "0 2px 2px var(--color-shadow)",
+    backgroundColor: "var(--color-main-bg-1)",
+    border: "1px solid #000",
+    boxSizing: "border-box",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar": {
+    width: "8px",
+    height: "8px",
+    cursor: "default",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar-thumb": {
+    backgroundColor: "var(--color-main-bg-2)",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar-thumb:hover": {
     backgroundColor: "var(--color-main-bg-4)",
   },
-  ".cm-diagnostic": {
-    borderLeftWidth: "2px",
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar-track": {
+    backgroundColor: "transparent",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar-corner": {
+    backgroundColor: "transparent",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul": {
+    maxHeight: "15em",
+    backgroundColor: "var(--color-main-bg-1)",
+  },
+  "& .cm-tooltip.cm-tooltip-autocomplete > ul > li": {
+    padding: "3px 4px",
   },
 }
 
