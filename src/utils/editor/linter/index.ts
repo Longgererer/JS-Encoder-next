@@ -6,6 +6,7 @@ import { esLint } from "@codemirror/lang-javascript"
 import { tsLinter } from "../lsp/typescript"
 import LoaderService from "@utils/services/loader-service"
 import htmlLintRuleConfig from "./html-lint.config"
+import { CodemirrorBase } from "../utils/codemirror-base"
 
 const loaderService = new LoaderService()
 
@@ -44,10 +45,13 @@ const styleLinter = (config: any) => {
         await loaderService.loadScript(url)
       }
       const { results } = await window.stylelint.lint({ code, config })
+      const codemirrorBase = new CodemirrorBase(view)
       return results.map((result: any) => {
         return result.warnings.map((warning: any) => {
-          const from = view.state.doc.line(warning.line).from
-          const to = from + (warning.endColumn || warning.column) - warning.column
+          const { column, endColumn = column, line, endLine = line } = warning
+          // stylelint的列是从1开始算起，而codemirror是从0开始，因此需要减1
+          const from = codemirrorBase.transPos2Offset({ line, col: column - 1 })
+          const to = codemirrorBase.transPos2Offset({ line: endLine, col: endColumn - 1 })
           return {
             from, to,
             severity: warning.severity,
