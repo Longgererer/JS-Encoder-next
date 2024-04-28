@@ -13,6 +13,7 @@ export interface ICodemirrorEditorSettings {
   indentWithTab?: boolean
   tabSize?: number
   shortcutTemplate?: ShortcutMode
+  autocomplete?: boolean
   style?: Record<string, AnyObject>
 }
 

@@ -1,7 +1,7 @@
 import { Extension } from "@codemirror/state"
 import { OriginLang, Prep } from "@type/prep"
 import SingleInstance from "@utils/decorators/single-instance"
-import { getDefaultEditorConfigByPrep, getDefaultEditorExtensions, getEditorThemeExtension, getPanelExtension, getPrepBaseExtension } from "../config/editor.config"
+import { getDefaultEditorConfigByPrep, getDefaultEditorExtensions, getEditorThemeExtension, getPanelExtension, getPrepAutocompleteExtension, getPrepBaseExtension, getPrepHoverTooltipExtension } from "../config/editor.config"
 import { AnyArray, Theme } from "@type/interface"
 import { getPrepOrigin } from "@utils/tools/prep"
 import { reactive } from "vue"
@@ -47,6 +47,8 @@ export default class EditorExtensionsService {
       getDefaultEditorConfigByPrep(prep),
       getPrepBaseExtension(prep),
       getPanelExtension(),
+      getPrepAutocompleteExtension(prep),
+      getPrepHoverTooltipExtension(prep),
     ]
   }
 

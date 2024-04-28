@@ -10,11 +10,12 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue"
 import { IEditorViewExpose, IEmits, IProps } from "./editor"
 import { EditorView, basicSetup, minimalSetup } from "codemirror"
-import { EditorState } from "@codemirror/state"
+import { EditorState, Extension } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 import { CodemirrorExtensionsUpdater, ExtensionToggler } from "@utils/editor/utils/codemirror-extensions-updater"
 import { ShortcutMode } from "@type/settings"
 import { getPrepEmmetExtension, getPrepLintExtension } from "@utils/editor/config/editor.config"
+import { Prep } from "@type/prep"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
@@ -137,11 +138,20 @@ onMounted(() => {
   let emmetToggler: ExtensionToggler
   /** 切换lint */
   let lintToggler: ExtensionToggler
+  const switchNewToggler = (toggler: ExtensionToggler, extension: Extension): ExtensionToggler => {
+    const oldToggler = toggler
+    const newToggler = extensionsUpdater.getExtensionToggler(extension)
+    oldToggler?.(false)
+    return newToggler
+  }
   watch(
     () => props.prep,
     (newPrep) => {
-      emmetToggler = extensionsUpdater.getExtensionToggler(getPrepEmmetExtension(newPrep))
-      lintToggler = extensionsUpdater.getExtensionToggler(getPrepLintExtension(newPrep))
+      // 切换prep的同时关闭旧prep相关的插件，同时开启新prep对应的插件
+      emmetToggler = switchNewToggler(emmetToggler, getPrepEmmetExtension(newPrep))
+      emmetToggler(props.settings.useEmmet)
+      lintToggler = switchNewToggler(lintToggler, getPrepLintExtension(newPrep))
+      lintToggler(props.settings.codeLint)
     },
     { immediate: true },
   )
@@ -155,6 +165,11 @@ onMounted(() => {
     (newStatus) => lintToggler(newStatus),
     { immediate: true },
   )
+  // watch(
+  //   () => props.settings.codeHinting,
+  //   (newStatus) => autocompleteToggler(newStatus),
+  //   { immediate: true },
+  // )
 
   onBeforeUnmount(() => {
     editorView.value?.destroy()

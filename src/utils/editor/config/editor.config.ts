@@ -9,9 +9,9 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { coffeeScript } from "@codemirror/legacy-modes/mode/coffeescript"
 import { stylus } from "@codemirror/legacy-modes/mode/stylus"
 import { Prep } from "@type/prep"
-import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylusLinter, typeScriptLinter } from "@utils/editor/linter"
+import { cssLinter, htmlLinter, javascriptLinter, lessLinter, scssLinter, stylusLinter, typescriptLinter } from "@utils/editor/linter"
 import { Extension, Prec } from "@codemirror/state"
-import { keymap } from "@codemirror/view"
+import { hoverTooltip, keymap } from "@codemirror/view"
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap"
 import { emmetConfig, abbreviationTracker, expandAbbreviation, EmmetKnownSyntax } from "@emmetio/codemirror6-plugin"
 import { emacsStyleKeymap } from "@codemirror/commands"
@@ -22,6 +22,8 @@ import { scrollPastEnd } from "@codemirror/view"
 import { search } from "@codemirror/search"
 import { createSearchPanel } from "../panels/search"
 import { markdownToolsState } from "../panels/markdown-tools"
+import { javascriptAutocomplete, typescriptAutocomplete } from "../auto-complete"
+import { tsTypeDefinition, typescriptLSPPlugin } from "../lsp/typescript"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -47,7 +49,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.LESS]: () => [],
   [Prep.STYLUS]: () => [],
   [Prep.JAVASCRIPT]: () => [],
-  [Prep.TYPESCRIPT]: () => [],
+  [Prep.TYPESCRIPT]: () => [typescriptLSPPlugin],
   [Prep.BABEL]: () => [],
   [Prep.COFFEESCRIPT]: () => [],
   [Prep.VUE]: () => [],
@@ -114,7 +116,7 @@ const Prep2LinterExtensionMap: Partial<Record<Prep, () => Extension>> = {
   [Prep.LESS]: () => lessLinter,
   [Prep.STYLUS]: () => stylusLinter,
   [Prep.JAVASCRIPT]: () => javascriptLinter,
-  [Prep.TYPESCRIPT]: () => typeScriptLinter,
+  [Prep.TYPESCRIPT]: () => typescriptLinter,
 }
 
 /** 获取语言对应的linter扩展 */
@@ -139,7 +141,8 @@ export const getPrepEmmetExtension = (prep: Prep): Extension => {
   const extensions = emmetSyntax
     ? [
         emmetConfig.of({ syntax: emmetSyntax }),
-        abbreviationTracker({ syntax: emmetSyntax }),
+        // 暂时不用emmet格式展示组件
+        // abbreviationTracker({ syntax: emmetSyntax }),
         Prec.highest(keymap.of([{
           key: "Tab",
           run: expandAbbreviation,
@@ -163,4 +166,22 @@ export const getPanelExtension = (): Extension => {
   return [
     search({ top: true, createPanel: createSearchPanel }),
   ]
+}
+
+const prep2AutocompleteExtensionMap: Partial<Record<Prep, () => Extension>> = {
+  [Prep.JAVASCRIPT]: () => javascriptAutocomplete(),
+  [Prep.TYPESCRIPT]: () => typescriptAutocomplete(),
+}
+
+export const getPrepAutocompleteExtension = (prep: Prep): Extension => {
+  const extension = prep2AutocompleteExtensionMap[prep]?.()
+  return extension || []
+}
+
+const prep2HoverTooltipExtensionMap: Partial<Record<Prep, () => Extension>> = {
+  // [Prep.TYPESCRIPT]: () => hoverTooltip(tsTypeDefinition),
+}
+export const getPrepHoverTooltipExtension = (prep: Prep): Extension => {
+  const extension = prep2HoverTooltipExtensionMap[prep]?.()
+  return extension || []
 }

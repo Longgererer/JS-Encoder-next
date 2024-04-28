@@ -9,7 +9,8 @@
     <div class="flex">
       <div class="flex-col flex-1">
         <div class="modal-sub-title">编码</div>
-        <div class="mt-s"><checkbox v-model="settings.edit.codeHinting">智能提示</checkbox></div>
+        <!-- 暂时不能切换智能提示，直接打开 -->
+        <!-- <div class="mt-s"><checkbox v-model="settings.edit.codeHinting">智能提示</checkbox></div> -->
         <div class="mt-s"><checkbox v-model="settings.edit.codeLint">lint检查</checkbox></div>
         <div class="mt-s"><checkbox v-model="settings.edit.lineWrapping">自动换行</checkbox></div>
         <div class="mt-s"><checkbox v-model="settings.edit.useEmmet">使用Emmet</checkbox></div>

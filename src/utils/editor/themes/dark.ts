@@ -68,10 +68,19 @@ const theme = createTheme({
       tag: tags.operatorKeyword,
       color: "#78dbff",
     },
+    // this
+    {
+      tag: tags.self,
+      color: "#ff757f",
+    },
     // 关键字
     {
       tag: tags.keyword,
-      color: "#6690FF",
+      color: "#c678dd",
+    },
+    {
+      tag: tags.definitionKeyword,
+      color: "#78dbff",
     },
     // 运算符
     {

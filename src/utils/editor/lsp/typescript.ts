@@ -7,9 +7,9 @@ import * as tsVfs from "@typescript/vfs"
 import ts from "typescript"
 import { CompletionContext } from "@codemirror/autocomplete"
 import { EditorView } from "codemirror"
+import { Tooltip, ViewPlugin, ViewUpdate } from "@codemirror/view"
 
 const DEFAULT_FILE_NAME = "index.ts"
-
 const vfsMap = await tsVfs.createDefaultMapFromCDN(
   {},
   ts.version,
@@ -40,21 +40,18 @@ export const tsLinter = () => {
   }))
 }
 
-export const tsComplete = (context: CompletionContext) => {
-  /** 文件中指定位置的补全列表 */
+export function tsComplete(context: CompletionContext) {
   const tsCompletions = tsEnv.languageService.getCompletionsAtPosition(
     DEFAULT_FILE_NAME,
     context.pos,
     {},
   )
 
-  if (!tsCompletions) {return { from: context.pos, options: [] }}
+  if (!tsCompletions) { return { from: context.pos, options: [] } }
 
   const code = context.state.doc.toString()
-
   let lastWord: string = ""
   let from: number
-  /** 触发补全的标志 */
   const completeMarkList = [".", "\n", ":"]
   for (let i = context.pos - 1; i >= 0; i--) {
     if (completeMarkList.includes(code[i]) || i === 0) {
@@ -64,10 +61,9 @@ export const tsComplete = (context: CompletionContext) => {
     }
   }
 
-  // 如果存在lastWord(也就是用户当前输入了单词)，就检查有哪些补全内容是以lastWord开头的
   if (lastWord) {
-    tsCompletions.entries = tsCompletions.entries.filter((completion) => {
-      completion.name.startsWith(lastWord)
+    tsCompletions.entries = tsCompletions.entries.filter((completion) =>{
+      return completion.name.startsWith(lastWord)
     })
   }
 
@@ -94,7 +90,6 @@ const isTokenKind = (kind: ts.SyntaxKind) => {
 }
 
 /**
- *
  * @param node AST节点
  * @param pos 位置
  * @param sourceFile 原文件
@@ -138,7 +133,7 @@ export const tsTypeDefinition = (
   view: EditorView,
   pos: number,
   side: number,
-) => {
+): Tooltip | null => {
   const { from, to, text } = view.state.doc.lineAt(pos)
   /**
    * 计算悬停展示定义tooltip的位置范围
@@ -157,16 +152,15 @@ export const tsTypeDefinition = (
 
   // 创建文件的AST并做语法分析
   const program = tsEnv.languageService.getProgram()
-  if (!program) { return {} }
+  if (!program) { return null }
   // 创建checker，获取语义语法分析中的报错
   const typeChecker = program.getTypeChecker()
   const sourceFile = program.getSourceFile(DEFAULT_FILE_NAME)
-  if (!sourceFile) { return {} }
+  if (!sourceFile) { return null }
   const token = getTokenAtPosition(sourceFile, pos)
-  if (!token) { return {} }
+  if (!token) { return null }
   /** 获取悬停位置变量的类型 */
   const type = typeChecker.getTypeAtLocation(token)
-
   return {
     pos: start,
     end,
@@ -187,3 +181,11 @@ export const tsTypeDefinition = (
     },
   }
 }
+
+export const typescriptLSPPlugin = ViewPlugin.fromClass(
+  class {
+    update(viewUpdate: ViewUpdate) {
+      tsEnv.updateFile(DEFAULT_FILE_NAME, viewUpdate.view.state.doc.toString() || " ")
+    }
+  },
+)

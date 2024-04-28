@@ -73,4 +73,4 @@ export const stylusLinter = styleLinter(stylusLintRecommendConfig)
 
 export const javascriptLinter = linter(esLint(new Linter()))
 
-export const typeScriptLinter = linter(() => tsLinter() as Diagnostic[])
+export const typescriptLinter = linter(() => tsLinter() as Diagnostic[])
