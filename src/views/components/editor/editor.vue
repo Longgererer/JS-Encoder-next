@@ -14,7 +14,7 @@ import { EditorState, Extension } from "@codemirror/state"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 import { CodemirrorExtensionsUpdater, ExtensionToggler } from "@utils/editor/utils/codemirror-extensions-updater"
 import { ShortcutMode } from "@type/settings"
-import { getPrepEmmetExtension, getPrepLintExtension } from "@utils/editor/config/editor.config"
+import { getPrepAutocompleteExtension, getPrepEmmetExtension, getPrepLintExtension } from "@utils/editor/config/editor.config"
 import { Prep } from "@type/prep"
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -138,6 +138,8 @@ onMounted(() => {
   let emmetToggler: ExtensionToggler
   /** 切换lint */
   let lintToggler: ExtensionToggler
+  /** 切换hint */
+  let codeHintToggler: ExtensionToggler
   const switchNewToggler = (toggler: ExtensionToggler, extension: Extension): ExtensionToggler => {
     const oldToggler = toggler
     const newToggler = extensionsUpdater.getExtensionToggler(extension)
@@ -152,6 +154,7 @@ onMounted(() => {
       emmetToggler(props.settings.useEmmet)
       lintToggler = switchNewToggler(lintToggler, getPrepLintExtension(newPrep))
       lintToggler(props.settings.codeLint)
+      codeHintToggler = switchNewToggler(codeHintToggler, getPrepAutocompleteExtension(newPrep))
     },
     { immediate: true },
   )
