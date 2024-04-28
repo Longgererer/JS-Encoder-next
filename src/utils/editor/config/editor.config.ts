@@ -24,6 +24,7 @@ import { createSearchPanel } from "../panels/search"
 import { markdownToolsState } from "../panels/markdown-tools"
 import { javascriptAutocomplete, typescriptAutocomplete } from "../auto-complete"
 import { tsTypeDefinition, typescriptLSPPlugin } from "../lsp/typescript"
+import { indentationMarkers } from "@replit/codemirror-indentation-markers"
 
 /** 快捷键模式对应的按键映射扩展 */
 export const ShortCutMode2ExtensionMap = {
@@ -36,6 +37,7 @@ export const getDefaultEditorExtensions = (): Extension[] => {
   return [
     keymap.of(vscodeKeymap),
     scrollPastEnd(),
+    indentationMarkers(),
   ]
 }
 

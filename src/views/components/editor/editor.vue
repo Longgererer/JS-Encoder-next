@@ -15,7 +15,6 @@ import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 import { CodemirrorExtensionsUpdater, ExtensionToggler } from "@utils/editor/utils/codemirror-extensions-updater"
 import { ShortcutMode } from "@type/settings"
 import { getPrepAutocompleteExtension, getPrepEmmetExtension, getPrepLintExtension } from "@utils/editor/config/editor.config"
-import { Prep } from "@type/prep"
 
 const props = withDefaults(defineProps<IProps>(), {
   modelValue: "",
