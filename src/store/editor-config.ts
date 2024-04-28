@@ -8,7 +8,7 @@ export const initialSettings: IEditorSettings = {
   edit: {
     codeHinting: true,
     codeLint: true,
-    lineWrapping: true,
+    lineWrapping: false,
     useEmmet: true,
   },
   indent: {
