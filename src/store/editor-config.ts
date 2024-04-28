@@ -20,7 +20,7 @@ export const initialSettings: IEditorSettings = {
     delayTimeOfExecute: 500,
   },
   font: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: CodeFontFamily.JET_BRAINS_MONO,
   },
   other: {

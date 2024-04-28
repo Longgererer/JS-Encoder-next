@@ -29,7 +29,7 @@ const commonStyle = {
     borderLeftWidth: "2px",
   },
   ".cm-tooltip": {
-    fontSize: "14px",
+    fontSize: "13px",
     fontFamily: CodeFontFamily.JET_BRAINS_MONO,
     backgroundColor: "var(--color-main-bg-1)",
     border: "1px solid #000",
