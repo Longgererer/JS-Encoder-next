@@ -41,11 +41,10 @@ export const ShortcutMapList: IShortcutMap[] = [
       { name: "链接", keys: ["Ctrl / Cmd", "L"] },
       { name: "图片", keys: ["Ctrl / Cmd", "P"] },
       { name: "引用", keys: ["Ctrl / Cmd", "Shift", "Q"] },
-      { name: "代码块", keys: ["Ctrl / Cmd", "K"] },
+      { name: "代码块", keys: ["Ctrl / Cmd", "J"] },
       { name: "无序列表", keys: ["Ctrl / Cmd", "U"] },
       { name: "有序列表", keys: ["Ctrl / Cmd", "O"] },
       { name: "横线", keys: ["Ctrl / Cmd", "H"] },
-      { name: "列表延伸", keys: ["Ctrl / Cmd", "Enter"] },
     ],
   },
   // {

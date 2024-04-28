@@ -21,7 +21,7 @@ import themes from "@utils/editor/themes"
 import { scrollPastEnd } from "@codemirror/view"
 import { search } from "@codemirror/search"
 import { createSearchPanel } from "../panels/search"
-import { markdownToolsState } from "../panels/markdown-tools"
+import { markdownKeymap, markdownToolsState } from "../panels/markdown-tools"
 import { javascriptAutocomplete, typescriptAutocomplete } from "../auto-complete"
 import { tsTypeDefinition, typescriptLSPPlugin } from "../lsp/typescript"
 import { indentationMarkers } from "@replit/codemirror-indentation-markers"
@@ -43,7 +43,7 @@ export const getDefaultEditorExtensions = (): Extension[] => {
 
 const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.HTML]: () => [],
-  [Prep.MARKDOWN]: () => [markdownToolsState],
+  [Prep.MARKDOWN]: () => [markdownToolsState, keymap.of(markdownKeymap)],
   [Prep.PUG]: () => [],
   [Prep.CSS]: () => [],
   [Prep.SASS]: () => [],
@@ -164,6 +164,7 @@ export const getEditorThemeExtension = (theme: Theme): Extension => {
   return theme2EditorStyleMap[theme]()
 }
 
+// TODO: 添加gotoLine插件
 export const getPanelExtension = (): Extension => {
   return [
     search({ top: true, createPanel: createSearchPanel }),
