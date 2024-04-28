@@ -185,8 +185,10 @@ export const tsTypeDefinition = (
 
 export const typescriptLSPPlugin = ViewPlugin.fromClass(
   class {
-    update(viewUpdate: ViewUpdate) {
-      tsEnv.updateFile(DEFAULT_FILE_NAME, viewUpdate.view.state.doc.toString() || " ")
+    update(update: ViewUpdate) {
+      if (update.docChanged) {
+        tsEnv.updateFile(DEFAULT_FILE_NAME, update.view.state.doc.toString() || " ")
+      }
     }
   },
 )
