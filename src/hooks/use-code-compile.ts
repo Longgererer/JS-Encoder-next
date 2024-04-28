@@ -35,8 +35,7 @@ const useCodeCompile = () => {
   }
 
   const getResultLinks = () => {
-    const { prepMap, isComponentMode, libraries } = editorConfigStore
-    if (isComponentMode) { return }
+    const { prepMap, libraries } = editorConfigStore
     const style = [...libraries.style]
     const script = [...libraries.script]
     if (prepMap[OriginLang.HTML] === Prep.MARKDOWN) {

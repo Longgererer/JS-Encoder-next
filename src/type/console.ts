@@ -45,7 +45,7 @@ export const basicLogMethods = ["log", "info", "warn", "error"]
 
 export interface IBasicLogInfo {
   type: LogType
-  method: BasicLogMethod
+  method: "log" | "info" | "warn" | "error" | "assert" | "time" | "timeLog" | "timeEnd"
   data: any[]
 }
 

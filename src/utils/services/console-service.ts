@@ -66,27 +66,39 @@ export default class ConsoleService {
   }
 
   public log(...args: any[]) {
-    this.logs.push({ type: LogType.MESSAGE, method: "log", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.MESSAGE, method: "log", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public info(...args: any[]) {
-    this.logs.push({ type: LogType.INFO, method: "info", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.INFO, method: "info", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public warn(...args: any[]) {
-    this.logs.push({ type: LogType.WARN, method: "warn", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.WARN, method: "warn", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public error(...args: any[]) {
-    this.logs.push({ type: LogType.ERROR, method: "error", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.ERROR, method: "error", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public commend(...args: any[]) {
-    this.logs.push({ type: LogType.COMMEND, method: "log", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.COMMEND, method: "log", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public result(...args: any[]) {
-    this.logs.push({ type: LogType.RESULT, method: "log", data: processConsoleValueList(args) })
+    const logInfo: LogInfo = { type: LogType.RESULT, method: "log", data: processConsoleValueList(args) }
+    this.logs.push(logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public time(label: string = "default") {
@@ -182,12 +194,16 @@ export default class ConsoleService {
       origin: data,
     }
     this.logs.push(logInfo)
-    this.consoleOptions.onLogsUpdated?.(ConsoleUpdateType.ADD, logInfo)
+    this.triggerAddUpdate(logInfo)
   }
 
   public clear() {
     this.logs.splice(0)
     this.consoleOptions.onLogsUpdated?.(ConsoleUpdateType.CLEAR)
+  }
+
+  public triggerAddUpdate(logInfo: LogInfo) {
+    this.consoleOptions.onLogsUpdated?.(ConsoleUpdateType.ADD, logInfo)
   }
 
   private setConsole() {
