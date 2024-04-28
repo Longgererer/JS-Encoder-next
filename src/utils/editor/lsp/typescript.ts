@@ -5,7 +5,7 @@
 
 import * as tsVfs from "@typescript/vfs"
 import ts from "typescript"
-import { CompletionContext } from "@codemirror/autocomplete"
+import { CompletionContext, CompletionResult } from "@codemirror/autocomplete"
 import { EditorView } from "codemirror"
 import { Tooltip, ViewPlugin, ViewUpdate } from "@codemirror/view"
 
@@ -40,7 +40,7 @@ export const tsLinter = () => {
   }))
 }
 
-export function tsComplete(context: CompletionContext) {
+export const tsComplete = async (context: CompletionContext): Promise<CompletionResult | null> => {
   const tsCompletions = tsEnv.languageService.getCompletionsAtPosition(
     DEFAULT_FILE_NAME,
     context.pos,
@@ -52,7 +52,7 @@ export function tsComplete(context: CompletionContext) {
   const code = context.state.doc.toString()
   let lastWord: string = ""
   let from: number
-  const completeMarkList = [".", "\n", ":"]
+  const completeMarkList = [".", "\n", ":", " ", "{"]
   for (let i = context.pos - 1; i >= 0; i--) {
     if (completeMarkList.includes(code[i]) || i === 0) {
       from = i === 0 ? i : i + 1
@@ -70,6 +70,7 @@ export function tsComplete(context: CompletionContext) {
   return {
     from: context.pos,
     options: tsCompletions.entries.map((completion) => ({
+      type: completion.kind,
       label: completion.name,
       apply: (view: EditorView) => {
         view.dispatch({
