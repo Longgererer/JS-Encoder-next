@@ -1,15 +1,18 @@
+import useEditorWrapperState from "@hooks/use-editor-wrapper-state"
 import { useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { OriginLang } from "@type/prep"
 import { TemplateLang, TemplateType } from "@type/template"
 import { DBStoreName, ITemplateInfo } from "@utils/config/indexed-db"
 import { DBService } from "@utils/services/indexed-db-service"
+import { storeToRefs } from "pinia"
 
 // eslint-disable-next-line max-lines-per-function
 const useTemplate = () => {
   const dbService = new DBService()
   const editorWrapperStore = useEditorWrapperStore()
   const editorConfigStore = useEditorConfigStore()
+  const { initDefaultWrapper, initComponentWrapper } = useEditorWrapperState()
 
   /** 获取本地存储的自定义模板列表 */
   const getCustomTemplateList = async () => {
@@ -44,24 +47,32 @@ const useTemplate = () => {
   }
 
   /** 应用模板 */
-  const applyTemplate = (template: ITemplateInfo) => {
-    const { codeMap, editorConfig: { libraries, prepMap }, isComponent } = template
+  const applyTemplate = async (template: ITemplateInfo) => {
+    const { codeMap, editorConfig: { libraries = {}, prepMap }, isComponent } = template
     const { batchUpdateEditorConfig } = editorConfigStore
-    const { origin2TabIdMap } = editorWrapperStore
+    const { batchUpdateEditorWrapper } = editorWrapperStore
+    const { origin2TabIdMap } = storeToRefs(editorWrapperStore)
+
+    const { script = [], style = [] } = libraries
+    if (isComponent) {
+      await initComponentWrapper()
+    } else {
+      await initDefaultWrapper()
+    }
     // 设置代码内容
-    Object.entries(origin2TabIdMap).forEach(([origin, tabId]) => {
-      editorWrapperStore.updateCodeMap(tabId, codeMap[origin as OriginLang] || "")
-    })
+    const finalCodeMap = Object.entries(origin2TabIdMap.value).reduce((acc, [origin, tabId]) => {
+      acc[tabId] = codeMap[origin as OriginLang] || ""
+      return acc
+    }, {} as Record<number, string>)
+    batchUpdateEditorWrapper({ codeMap: finalCodeMap })
     // 设置编辑器预处理、库等配置
     batchUpdateEditorConfig({
       prepMap,
-      libraries,
-      isComponentMode: isComponent,
+      libraries: { script, style },
     })
   }
 
   return {
-    dbService,
     getCustomTemplateList,
     createTemplate,
     updateTemplate,

@@ -199,8 +199,8 @@ const handleConfirmModal = () => {
 const handleUseTemplate = () => {
   processUseTemplate()
 }
-const processUseTemplate = () => {
-  applyTemplate(currTemplate.value!)
+const processUseTemplate = async () => {
+  await applyTemplate(currTemplate.value!)
   isShowTipModal.value = false
   updateDisplayModal(null)
   message.success("应用模板成功")

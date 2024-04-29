@@ -36,6 +36,10 @@ interface IEditorWrapper {
   tabMap: EditorTabMap
   /** 分割器id所对应的分割器信息 */
   editorSplitterMap: EditorSplitterMap
+  /** 根splitter Id */
+  rootSplitterId?: number | null
+  /** 是否组件模式 */
+  isComponentMode?: boolean
 }
 
 const moduleSizeService = new ModuleSizeService()
@@ -51,10 +55,12 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     editorMap: {},
     tabMap: {},
     editorSplitterMap: {},
+    rootSplitterId: null,
+    isComponentMode: false,
   }),
   actions: {
     /** 批量更新配置 */
-    batchUpdateConfig(config: DeepPartial<IEditorWrapper>): void {
+    batchUpdateEditorWrapper(config: DeepPartial<IEditorWrapper>): void {
       this.$patch({ ...config })
     },
     updateDraggingTabInfo(draggingTabInfo: IDraggingTabInfo | null): void {
@@ -73,6 +79,10 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     /** 删除编辑窗口tab */
     deleteTab(id: number): void {
       Reflect.deleteProperty(this.tabMap, id)
+    },
+    /** 设置根splitterId，方便从下至上寻找 */
+    updateRootSplitterId(id: number): void {
+      this.rootSplitterId = id
     },
     /**
      * 创建splitter
@@ -153,6 +163,9 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
       Object.keys(this.codeMap).forEach((tabId) => {
         this.codeMap[Number(tabId)] = ""
       })
+    },
+    updateIsComponentMode(newState: boolean): void {
+      this.isComponentMode = newState
     },
   },
   getters: {

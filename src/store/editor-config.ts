@@ -45,7 +45,6 @@ export const useEditorConfigStore = defineStore("editorConfig", {
     settings: { ...deepCopy(initialSettings) },
     libraries: { ...deepCopy(initialLibraries) },
     prepMap: { ...initialPrepMap },
-    isComponentMode: false,
   }),
   actions: {
     /** 更新若干设置 */
@@ -60,9 +59,6 @@ export const useEditorConfigStore = defineStore("editorConfig", {
     },
     updatePrepMap(prepMap: Partial<IEditorPrepMap>): void {
       this.$patch({ prepMap: { ...prepMap } })
-    },
-    updateIsComponentMode(newState: boolean): void {
-      this.isComponentMode = newState
     },
   },
 })

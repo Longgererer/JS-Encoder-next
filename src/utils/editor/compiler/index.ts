@@ -150,6 +150,7 @@ const prep2CompilerMap: Partial<Record<Prep, PrepCompiler>> = {
 }
 
 export const compile = async (code: string = "", prep: Prep) => {
+  if (!code) { return code }
   const compileFunc = prep2CompilerMap[prep]
   if (compileFunc && code) {
     return compileFunc(code)
@@ -168,13 +169,14 @@ const prep2ComponentCompilerMap: Partial<Record<Prep, PrepComponentCompiler>> = 
   [Prep.VUE]: compileVue,
 }
 
-export const compileComponent = async (code: string, prep: Prep) => {
+export const compileComponent = async (code: string = "", prep: Prep) => {
   const compileFunc = prep2ComponentCompilerMap[prep]
   const defaultCodeMap = {
     [OriginLang.HTML]: "",
     [OriginLang.CSS]: "",
     [OriginLang.JAVASCRIPT]: "",
   }
+  if (!code) { return defaultCodeMap }
   if (compileFunc) {
     return compileFunc(code)
       .catch((err) => {

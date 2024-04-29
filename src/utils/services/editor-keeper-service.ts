@@ -49,4 +49,8 @@ export default class EditorKeeperService {
     this.editorInstanceMap[tabId].vnode = editorVNode
     render(editorVNode, this.editorInstanceMap[tabId].wrapper)
   }
+
+  public clearEditorInstanceMap() {
+    this.editorInstanceMap = {}
+  }
 }

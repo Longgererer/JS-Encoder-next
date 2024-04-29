@@ -12,9 +12,8 @@ const useCodeCompile = () => {
 
   /** 获取编译后的代码 */
   const getCompiledCode = async () => {
-    const { prepMap, isComponentMode } = editorConfigStore
-    const { origin2CodeMap } = editorWrapperStore
-
+    const { prepMap } = editorConfigStore
+    const { origin2CodeMap, isComponentMode } = editorWrapperStore
     if (isComponentMode) {
       // 组件模式
       return await compileComponent(origin2CodeMap.JAVASCRIPT, prepMap.JAVASCRIPT)

@@ -39,11 +39,14 @@ import { ISelectOption } from "@components/form/custom-select/custom-select"
 import { useEditorConfigStore, initialPrepMap } from "@store/editor-config"
 import { IEditorPrepMap } from "@type/settings"
 import { storeToRefs } from "pinia"
+import { useEditorWrapperStore } from "@store/editor-wrapper"
 
 const { updateDisplayModal } = useCommonStore()
+const editorWrapperStore = useEditorWrapperStore()
+const { isComponentMode } = storeToRefs(editorWrapperStore)
 const editorConfigStore = useEditorConfigStore()
 const { updatePrepMap } = editorConfigStore
-const { prepMap, isComponentMode } = storeToRefs(editorConfigStore)
+const { prepMap } = storeToRefs(editorConfigStore)
 
 const cachePrepMap = ref<IEditorPrepMap>({ ...prepMap.value })
 
