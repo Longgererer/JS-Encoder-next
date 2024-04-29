@@ -4,10 +4,18 @@
     :style="{ height: `${modulesSize.previewHeight}px` }"
     :isShowSize="layoutStore.isModulesResizing"
   ></preview>
+  <div class="relative">
+    <div class="resize-line absolute high-layer">
+      <split-line
+        size="4"
+        :direction="SplitDirection.VERTICAL"
+        @mousedown="(e) => handleResizeConsoleAndPreview(e.clientY)"
+      ></split-line>
+    </div>
+  </div>
   <console
     v-if="previewRef"
     :style="{ height: `${modulesSize.consoleHeight}px` }"
-    @resize="handleResizeConsoleAndPreview"
   ></console>
 </template>
 
@@ -25,6 +33,8 @@ import { useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { storeToRefs } from "pinia"
 import { useConsoleStore } from "@store/console"
+import SplitLine from "@components/split-line/split-line.vue"
+import { SplitDirection } from "@type/editor"
 
 const layoutStore = useLayoutStore()
 const {
@@ -126,4 +136,9 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.resize-line {
+  height: 2px;
+  width: 100%;
+}
+</style>

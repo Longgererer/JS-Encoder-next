@@ -1,13 +1,6 @@
 import { ISelectOption } from "@components/form/custom-select/custom-select"
-import { useCommonStore } from "@store/common"
 import { LogType } from "@type/console"
-import { Prep } from "@type/prep"
-import { getEditorThemeExtension, getPrepBaseExtension } from "@utils/editor/config/editor.config"
-import { computed, reactive } from "vue"
-
-export interface IEmits {
-  (e: "resize", startY: number): void
-}
+import { reactive } from "vue"
 
 /** 日志过滤选项列表 */
 export const filterSelectOptions: ISelectOption[] = [

@@ -8,8 +8,8 @@
         <!-- 总数计算 -->
         <div class="font-xxs bg-main3 p-x-xxs ml-xs describe-text radius-m">{{ consoleService.logs.length }}</div>
       </div>
-      <!-- 占位 + 拖拽 -->
-      <div class="flex-1 cursor-y-resize" @mousedown="emits('resize', $event.clientY)"></div>
+      <!-- 占位 -->
+      <div class="flex-1"></div>
       <!-- 展示总数的日志类型列表 -->
       <div class="flex-y-center font-xxs">
         <template v-for="logType in countLogTypeList" :key="logType">
@@ -107,7 +107,7 @@ import { Size } from "@type/interface"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import IconBtn from "@components/icon-btn/icon-btn.vue"
 import Checkbox from "@components/form/checkbox/checkbox.vue"
-import { IEmits, logType2CountMap, logType2IconMap, countLogTypeList, filterSelectOptions } from "./console"
+import { logType2CountMap, logType2IconMap, countLogTypeList, filterSelectOptions } from "./console"
 import { useLayoutStore } from "@store/layout"
 import { CONSOLE_MIN_HEIGHT } from "@utils/services/module-size-service"
 import ConsoleService from "@utils/services/console-service"
@@ -116,8 +116,6 @@ import { useConsoleStore, initSettings, IConsoleSetting } from "@store/console"
 import Editor from "../editor/editor.vue"
 import { Prep } from "@type/prep"
 import useConsoleCommend from "./hooks/use-console-commend"
-
-const emits = defineEmits<IEmits>()
 
 const layoutStore = useLayoutStore()
 const { updateIsFoldConsole, updateModuleSize } = layoutStore
