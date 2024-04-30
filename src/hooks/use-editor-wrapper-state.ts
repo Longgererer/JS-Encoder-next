@@ -1,5 +1,6 @@
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { useLayoutStore } from "@store/layout"
+import { EditorCodeMap } from "@type/editor"
 import { OriginLang } from "@type/prep"
 import EditorKeeperService from "@utils/services/editor-keeper-service"
 import { nextTick } from "vue"
@@ -33,9 +34,11 @@ const useEditorWrapperState = () => {
     const tabCSS = createTab(OriginLang.CSS)
     const tabJavaScript = createTab(OriginLang.JAVASCRIPT)
     // 初始化编辑器内容
-    updateCodeMap(tabHTML.id, "")
-    updateCodeMap(tabCSS.id, "")
-    updateCodeMap(tabJavaScript.id, "")
+    updateCodeMap({
+      [tabHTML.id]: "",
+      [tabCSS.id]: "",
+      [tabJavaScript.id]: "",
+    })
     // 创建编辑器
     const editor = createEditor({
       displayTabId: tabHTML.id,
@@ -63,17 +66,19 @@ const useEditorWrapperState = () => {
   }
 
   const createComponentWrapper = () => {
-    const codeMap = { [OriginLang.JAVASCRIPT]: "" }
+    const origin2CodeMap = { [OriginLang.JAVASCRIPT]: "" }
     createRootSplitter()
     const rootSplitterId = editorWrapperStore.rootSplitterId!
     let firstTabId: number
-    Object.entries(codeMap).forEach(([origin, code]) => {
+    const codeMap = Object.entries(origin2CodeMap).reduce((acc, [origin, code]) => {
       const tab = createTab(origin as OriginLang)
       if (!firstTabId) {
         firstTabId = tab.id
       }
-      updateCodeMap(tab.id, code)
-    })
+      acc[tab.id] = code
+      return acc
+    }, {} as Partial<EditorCodeMap>)
+    updateCodeMap(codeMap)
     // 创建编辑器
     const editor = createEditor({
       displayTabId: firstTabId!,

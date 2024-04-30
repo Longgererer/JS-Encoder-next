@@ -110,7 +110,7 @@ const saveDebounce = debounce(
 /** code改变存入store */
 const handleCodeChanged = (code: string, tabId: number): void => {
   addTask(() => {
-    editorWrapperStore.updateCodeMap(tabId, code)
+    editorWrapperStore.updateCodeMap({ [tabId]: code })
   }, tabId)
   saveDebounce()
 }

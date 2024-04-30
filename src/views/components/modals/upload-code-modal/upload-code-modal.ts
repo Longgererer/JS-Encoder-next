@@ -5,6 +5,9 @@ import { ref, shallowReactive } from "vue"
 import { splitHTML } from "@utils/tools/code-split"
 import { initialPrepMap, useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
+import { IEditorPrepMap } from "@type/settings"
+import { deepCopy } from "@utils/tools/common"
+import { EditorCodeMap } from "@type/editor"
 
 interface IUploadFileInfo {
   file: File
@@ -46,20 +49,20 @@ const getOrigin2FileInfoMap = (files: File[]) => {
   }, {} as Partial<Record<OriginLang, IUploadFileInfo>>)
 }
 
-/** 更新store中的代码和预处理器 */
-const setCodeAndTabInfo = (content: string, originLang: OriginLang) => {
-  const { origin2TabIdMap, updateCodeMap } = useEditorWrapperStore()
-  const tabId = origin2TabIdMap[originLang]
-  updateCodeMap(tabId, content)
-}
-
 /** 处理上传的文件列表，将解析出的信息存储至store */
 export const processUploadFiles = async (files: File[]) => {
+  const editorConfigStore = useEditorConfigStore()
+  const editorWrapperStore = useEditorWrapperStore()
+  const { updateCodeMap, origin2TabIdMap } = editorWrapperStore
+  const { updatePrepMap, updateLibraries, libraries } = editorConfigStore
   // 由于上传相同类型的文件，后面的文件会覆盖前面文件的内容，因此如果列表中有重复类型的文件，只读取后面文件的内容
   const origin2FileInfoMap = getOrigin2FileInfoMap(files)
+  const tmpOrigin2CodeMap: Partial<Record<OriginLang, string>> = {}
+  let tmpPrepMap: Partial<IEditorPrepMap> = {}
+  const tmpLibraries = deepCopy(libraries)
   for (const fileInfo of Object.values(origin2FileInfoMap)) {
     const fileContent = await getFileContent(fileInfo.file)
-    if (fileInfo.originLang === OriginLang.HTML && isSplitHTML.value) {
+    if (fileInfo.prep === Prep.HTML && isSplitHTML.value) {
       // 分解HTML内容并设置到对应的tab中
       const {
         styleLinks,
@@ -68,19 +71,23 @@ export const processUploadFiles = async (files: File[]) => {
         scriptLinks,
         scriptContent,
       } = splitHTML(fileContent)
-      const editorConfigStore = useEditorConfigStore()
-      // 更新外部链接
-      const { libraries: { style, script } } = editorConfigStore
-      editorConfigStore.updateLibraries({
-        style: [...style, ...styleLinks],
-        script: [...script, ...scriptLinks],
-      })
-      editorConfigStore.updatePrepMap(initialPrepMap)
-      setCodeAndTabInfo(htmlContent, OriginLang.HTML)
-      setCodeAndTabInfo(styleContent, OriginLang.CSS)
-      setCodeAndTabInfo(scriptContent, OriginLang.JAVASCRIPT)
+      tmpLibraries.style.push(...styleLinks)
+      tmpLibraries.script.push(...scriptLinks)
+      tmpOrigin2CodeMap[OriginLang.HTML] = htmlContent
+      tmpOrigin2CodeMap[OriginLang.CSS] = styleContent
+      tmpOrigin2CodeMap[OriginLang.JAVASCRIPT] = scriptContent
+      tmpPrepMap = { ...initialPrepMap }
     } else {
-      setCodeAndTabInfo(fileContent, fileInfo.originLang)
+      tmpOrigin2CodeMap[fileInfo.originLang] = fileContent
+      tmpPrepMap[fileInfo.originLang] = fileInfo.prep
     }
   }
+  updateLibraries(libraries)
+  updatePrepMap(tmpPrepMap)
+  const tmpCodeMap = Object.entries(tmpOrigin2CodeMap).reduce((acc, [origin, code]) => {
+    const tabId = origin2TabIdMap[origin as OriginLang]
+    acc[tabId] = code
+    return acc
+  }, {} as Partial<EditorCodeMap>)
+  updateCodeMap(tmpCodeMap)
 }

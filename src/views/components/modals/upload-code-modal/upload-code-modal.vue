@@ -141,10 +141,10 @@ const handleCloseModal = () => {
 }
 
 /** 点击上传文件按钮 */
+// TODO: 兼容单文件组件下进行文件上传
 const handleUpdateFiles = async () => {
-  processUploadFiles(chosenFiles).then(() => {
-    message.success("代码上传成功")
-  })
+  await processUploadFiles(chosenFiles)
+  message.success("代码上传成功")
   chosenFiles.splice(0)
   processCloseModal()
 }

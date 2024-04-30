@@ -156,8 +156,8 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
     deleteEditor(id: number): void {
       Reflect.deleteProperty(this.editorMap, id)
     },
-    updateCodeMap(tabId: number, code: string): void {
-      this.codeMap[tabId] = code
+    updateCodeMap(codeMap: Partial<EditorCodeMap>): void {
+      Object.assign(this.codeMap, codeMap)
     },
     clearCodeMap(): void {
       Object.keys(this.codeMap).forEach((tabId) => {
