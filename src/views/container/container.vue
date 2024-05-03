@@ -14,7 +14,7 @@
           v-if="isShowResult"
           :size="4"
           :direction="SplitDirection.HORIZONTAL"
-          @mousedown="handleResizeEditorAndResult"
+          @mousedown.prevent="handleResizeEditorAndResult"
         ></split-line>
       </div>
       <div class="flex-1">

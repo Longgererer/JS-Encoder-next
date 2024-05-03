@@ -15,7 +15,7 @@
             <split-line
               size="4"
               :direction="editorSplitter.direction"
-              @mousedown="handleResizeSplitter"
+              @mousedown.prevent="handleResizeSplitter"
             ></split-line>
           </div>
           <editor-splitter
@@ -50,6 +50,7 @@ import EditorView from "@views/components/editor-view/editor-view.vue"
 import EditorSplitter from "@views/components/editor-splitter/editor-splitter.vue"
 import SplitLine from "@components/split-line/split-line.vue"
 import UtilService from "@utils/services/util-service"
+import { listenMousemove } from "@utils/tools/event"
 
 const props = defineProps<{
   /** splitter id */
@@ -187,27 +188,25 @@ const handleResizeSplitter = (e: MouseEvent): void => {
   const [splitterId1, splitterId2] = children
   const splitter1Size = childrenSizeMap.value[splitterId1]
   const splitter2Size = childrenSizeMap.value[splitterId2]
-  document.onmousemove = (event: MouseEvent): void => {
-    const changeSize = startPos - (isHorizontal ? event.clientX : event.clientY)
-    const minSize = {
-      minWidth: SPLITTER_MIN_WIDTH,
-      minHeight: SPLITTER_MIN_HEIGHT,
-    }
-    const [size1, size2] = moduleSizeService.getNewModulesSize(
-      { ...splitter1Size, ...minSize },
-      { ...splitter2Size, ...minSize },
-      isHorizontal,
-      changeSize,
-    ) as ISize[]
-    childrenSizeMap.value = {
-      [splitterId1]: size1,
-      [splitterId2]: size2,
-    }
-    document.onmouseup = (): void => {
-      document.onmouseup = null
-      document.onmousemove = null
-    }
-  }
+  listenMousemove({
+    onMoving: (event) => {
+      const changeSize = startPos - (isHorizontal ? event.clientX : event.clientY)
+      const minSize = {
+        minWidth: SPLITTER_MIN_WIDTH,
+        minHeight: SPLITTER_MIN_HEIGHT,
+      }
+      const [size1, size2] = moduleSizeService.getNewModulesSize(
+        { ...splitter1Size, ...minSize },
+        { ...splitter2Size, ...minSize },
+        isHorizontal,
+        changeSize,
+      ) as ISize[]
+      childrenSizeMap.value = {
+        [splitterId1]: size1,
+        [splitterId2]: size2,
+      }
+    },
+  })
 }
 
 /** tab拖动所导致的splitter分割 */

@@ -3,12 +3,16 @@ export const listenMousemove = (options: {
   onUp?: (event: MouseEvent) => void
 }) => {
   const { onMoving = () => {}, onUp = () => {} } = options
-  document.onmousemove = (event: MouseEvent): void => {
+
+  const handleMousemove = (event: MouseEvent) => {
     onMoving(event)
-    document.onmouseup = (): void => {
-      onUp(event)
-      document.onmouseup = null
-      document.onmousemove = null
-    }
   }
+  window.addEventListener("mousemove", handleMousemove, { passive: true })
+
+  const handleMouseup = (event: MouseEvent) => {
+    onUp(event)
+    window.removeEventListener("mousemove", handleMousemove)
+    window.removeEventListener("mouseup", handleMouseup)
+  }
+  window.addEventListener("mouseup", handleMouseup, { passive: true, once: true })
 }

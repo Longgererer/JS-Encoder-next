@@ -9,7 +9,7 @@
       <split-line
         size="4"
         :direction="SplitDirection.VERTICAL"
-        @mousedown="(e) => handleResizeConsoleAndPreview(e.clientY)"
+        @mousedown.prevent="(e: MouseEvent) => handleResizeConsoleAndPreview(e.clientY)"
       ></split-line>
     </div>
   </div>
