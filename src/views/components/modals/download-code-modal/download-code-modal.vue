@@ -28,14 +28,14 @@
         <div class="font-xxs mt-m">生成一个包含编译后的 HTML、CSS 和 JS 文件的文件夹压缩包</div>
       </div>
     </div>
-    <div class="download-pre-compile-file">
-      <div class="flex-ais"><checkbox v-model="isDownloadCompiledFiles">下载编译后的文件</checkbox></div>
+    <div v-show="currDownloadType === DownloadType.MULTIPLE" class="download-pre-compile-file">
+      <div class="flex-ais"><checkbox v-model="needCompiled">下载编译后的文件</checkbox></div>
     </div>
     <div class="flex-col flex-ais mt-l">
       <span class="mb-s font-xxs active-text">下载文件/文件夹名</span>
       <custom-input
         width="100%"
-        placeholder="输入下载文件/文件夹名，默认名是JS-Encoder"
+        placeholder="输入下载文件名，默认名是index"
         v-model="fileOrFolderName"/>
     </div>
     <div class="download-btn">
@@ -69,19 +69,20 @@ const enum DownloadType {
 }
 const currDownloadType = ref<DownloadType>(DownloadType.SINGLE)
 
-const { downloadMultipleFiles } = useDownloadCode()
+const { downloadSingleFile, downloadMultipleFiles } = useDownloadCode()
 
 /** 下载编译后的文件 */
-const isDownloadCompiledFiles = ref<boolean>(false)
+const needCompiled = ref<boolean>(false)
 /** 下载文件/文件夹名 */
 const fileOrFolderName = ref<string>("")
 
+const defaultFilename = "index"
 /** 下载文件 */
 const handleDownloadFiles = () => {
   if (currDownloadType.value === DownloadType.SINGLE) {
-    // processDownloadSingleFile()
+    downloadSingleFile(fileOrFolderName.value || defaultFilename)
   } else {
-    // downloadMultipleFiles()
+    downloadMultipleFiles(fileOrFolderName.value || defaultFilename, needCompiled.value)
   }
 }
 </script>

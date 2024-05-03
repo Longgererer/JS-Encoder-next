@@ -12,38 +12,39 @@ export interface IZipFile {
 export interface IZipInfo {
   /** zip文件名 */
   name: string
-  /** 文件列表 */
-  fileList: IZipFile[]
+  /** 子文件夹列表 */
+  folderList?: IZipInfo[]
+  /** 子文件列表 */
+  fileList?: IZipFile[]
 }
 
 const generateZipFile = (params: IZipInfo) => {
-  const { name, fileList } = params
   const zip = new JSZip()
-  const zipFolder = zip.folder(name)
-  if (!zipFolder) {
-    throw new Error("生成zip文件错误！")
+  const generator = (options: IZipInfo, parent: JSZip) => {
+    const { name, folderList = [], fileList = [] } = options
+    const zipFolder = parent.folder(name)!
+    fileList.forEach(({ name: filename, mimeType, content }) => {
+      zipFolder.file(`${filename}.${mimeType}`, content)
+    })
+    folderList.forEach((folder) => generator(folder, zipFolder))
   }
-  fileList.forEach(({ name: fileName, mimeType, content }) => {
-    zipFolder.file(`${fileName}.${mimeType}`, content)
-  })
+  generator(params, zip)
   return zip.generateAsync({ type: "blob" })
 }
 
 const download = (filename: string, blob: Blob) => {
   const href = URL.createObjectURL(blob)
-  const aELement = document.createElement("a")
-  aELement.download = filename
-  aELement.href = href
-  // document.body.appendChild(aELement)
-  aELement.click()
-  // document.body.removeChild(aELement)
+  const aElement = document.createElement("a")
+  aElement.download = filename
+  aElement.href = href
+  aElement.click()
   URL.revokeObjectURL(href)
 }
 
 /** 下载单个文件 */
-export const downloadFile = (filename: string, content: string) => {
+export const downloadFile = (filename: string, content: string, mimeType: string) => {
   const blob = new Blob([content])
-  download(filename, blob)
+  download(`${filename}.${mimeType}`, blob)
 }
 
 /** 下载zip文件 */

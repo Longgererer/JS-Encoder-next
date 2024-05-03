@@ -196,24 +196,7 @@ export const useEditorWrapperStore = defineStore("editorWrapper", {
   },
 })
 
-// export const getOrigin2TabIdMap = () => {
-//   const { tabMap } = useEditorWrapperStore()
-//   return Object.entries(tabMap).reduce((acc, [tabId, tabInfo]) => {
-//     const { origin } = tabInfo
-//     acc[origin] = Number(tabId)
-//     return acc
-//   }, {} as Record<OriginLang, number>)
-// }
-
 export const checkIsCodeEmpty = () => {
   const { codeMap } = useEditorWrapperStore()
   return !Object.values(codeMap).some((code) => code)
 }
-
-// export const getOrigin2CodeMap = () => {
-//   const { codeMap } = useEditorWrapperStore()
-//   return Object.entries(getOrigin2TabIdMap()).reduce((acc, [origin, tabId]) => {
-//     acc[origin as OriginLang] = codeMap[tabId]
-//     return acc
-//   }, {} as Record<OriginLang, string>)
-// }

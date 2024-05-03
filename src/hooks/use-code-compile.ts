@@ -44,9 +44,9 @@ const useCodeCompile = () => {
     return { style, script }
   }
 
-  const getResultCode = async () => {
+  const getResultCode = async (compiledCodeMap?: Partial<Record<OriginLang, string>>) => {
     const { settings: { other: { headTags } } } = editorConfigStore
-    const code = await getCompiledCode()
+    const code = compiledCodeMap || await getCompiledCode()
     const links = getResultLinks()
     return genHTMLFileCode({
       headTags,
@@ -56,6 +56,7 @@ const useCodeCompile = () => {
   }
 
   return {
+    getCompiledCode,
     getResultCode,
   }
 }

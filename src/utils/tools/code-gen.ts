@@ -14,12 +14,12 @@ export const genScriptLinksCode = (scriptLinks: string[]) => {
 }
 
 export interface IGenHTMLCodeOption {
+  /** 编辑器代码 */
+  code: Partial<Record<OriginLang, string>>
   /** 头部标签 */
   headTags?: string
   /** 外部链接 */
   links?: IEditorLibraries
-  /** 编辑器代码 */
-  code: Record<OriginLang, string>
 }
 
 /** 生成完整的HTML文件代码 */
@@ -43,14 +43,10 @@ export const genHTMLFileCode = (options: IGenHTMLCodeOption) => {
     ${cssLinksCode}
     ${scriptLinksCode}
     <title></title>
-    <style>
-    ${cssCode}
-    </style>
+    ${cssCode ? "<style>\n" + cssCode + "\n</style>": ""}
     <body>
     ${htmlCode}
-    <script>
-    ${javascriptCode}
-    </script>
+    ${javascriptCode ? "<script>\n" + javascriptCode + "\n</script>": ""}
     </body>
     </html>
   `.trim()
