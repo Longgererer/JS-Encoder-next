@@ -6,7 +6,7 @@
         <i class="icon iconfont icon-console font-s"></i>
         <span class="ml-s renew-line-xxs">Console</span>
         <!-- 总数计算 -->
-        <div class="font-xxs bg-main3 p-x-xxs ml-xs describe-text radius-m">{{ consoleService.logs.length }}</div>
+        <div class="font-xxs bg-main3 p-x-xs ml-xs describe-text radius-m">{{ consoleService.logs.length }}</div>
       </div>
       <!-- 占位 -->
       <div class="flex-1"></div>
