@@ -34,8 +34,6 @@ export const PUG_JS_URL = "https://cdnjs.cloudflare.com/ajax/libs/jade/1.11.0/ja
 /**
  * markdown
  */
-/** markdown github风格主题 */
-export const MD_STYLE_URL = "/src/assets/css/markdown-style.css"
 /** katex公式渲染样式 */
 export const KATEX_STYLE_URL = "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.css"
 /** katex公式渲染脚本 */

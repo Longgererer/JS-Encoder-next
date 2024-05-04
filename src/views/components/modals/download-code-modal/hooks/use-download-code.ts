@@ -38,7 +38,6 @@ const useDownloadCode = () => {
     }
     return zipInfo
   }
-  // TODO: github-markdown css链接要变成远程，否则下载出来样式无效
   const downloadSingleFile = async (filename: string) => {
     const code = await getResultCode()
     downloadFile(filename, code, MimeType.HTML)
