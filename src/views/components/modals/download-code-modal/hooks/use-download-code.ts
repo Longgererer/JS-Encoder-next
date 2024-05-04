@@ -17,7 +17,7 @@ const useDownloadCode = () => {
       { name: filename, content: origin2CodeMap.HTML, mimeType: prep2MimeTypeMap[prepMap.HTML] },
       { name: filename, content: origin2CodeMap.CSS, mimeType: prep2MimeTypeMap[prepMap.CSS] },
       { name: filename, content: origin2CodeMap.JAVASCRIPT, mimeType: prep2MimeTypeMap[prepMap.JAVASCRIPT] },
-    ]
+    ].filter(({ content }) => !!content)
     let compiledFileList: IZipFile[] = []
     if (needCompiled) {
       const compiledCodeMap = await getCompiledCode()
@@ -26,15 +26,12 @@ const useDownloadCode = () => {
         { name: filename, content: htmlContent, mimeType: MimeType.HTML },
         { name: filename, content: compiledCodeMap.CSS, mimeType: MimeType.CSS },
         { name: filename, content: compiledCodeMap.JAVASCRIPT, mimeType: MimeType.JAVASCRIPT },
-      ]
+      ].filter(({ content }) => !!content)
     }
     const zipInfo: IZipInfo = {
       name: "code",
       fileList: originFileList,
-      folderList: [{
-        name: "compiled",
-        fileList: compiledFileList,
-      }],
+      folderList: needCompiled ? [{ name: "compiled", fileList: compiledFileList }] : [],
     }
     return zipInfo
   }
