@@ -54,8 +54,8 @@ export default class ModuleSizeService {
     const editorHeight = height
     const editorWidth = Math.floor(width / 2)
     const resultWidth = width - editorWidth
-    const previewHeight = Math.floor(height / 2)
-    const consoleHeight = height - previewHeight
+    const consoleHeight = Math.floor(height / 4)
+    const previewHeight = height - consoleHeight
     return {
       editorWidth,
       editorHeight,
