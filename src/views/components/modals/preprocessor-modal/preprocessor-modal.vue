@@ -12,18 +12,20 @@
     <div v-if="isComponentMode" class="describe-text font-xs">
       <span>无法修改预处理，因为当前使用了组件模式，你可以通过使用普通模式的模板来修改预处理。</span>
     </div>
-    <div v-for="item in prepInfoList" :key="item.origin">
-      <div class="active-text mt-l mb-xs code-font font-xs">{{item.title}}预处理</div>
-      <custom-select
-        select-style="width: 100%;"
-        appendToBody
-        v-model="cachePrepMap[item.origin]"
-        :disabled="isComponentMode"
-        :size="Size.LARGE"
-        :data-list="item.prepList"
-        @selected="($event) => handleSelectPrep($event, item.origin)">
-      </custom-select>
-    </div>
+    <template v-else>
+      <div v-for="item in prepInfoList" :key="item.origin">
+        <div class="active-text mt-l mb-xs code-font font-xs">{{item.title}}预处理</div>
+        <custom-select
+          select-style="width: 100%;"
+          appendToBody
+          v-model="cachePrepMap[item.origin]"
+          :disabled="isComponentMode"
+          :size="Size.LARGE"
+          :data-list="item.prepList"
+          @selected="($event) => handleSelectPrep($event, item.origin)">
+        </custom-select>
+      </div>
+    </template>
   </modal>
 </template>
 
