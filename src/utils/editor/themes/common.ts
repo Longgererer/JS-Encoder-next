@@ -35,6 +35,9 @@ const commonStyle = {
     border: "1px solid #000",
     boxSizing: "border-box",
   },
+  ".cm-gutterElement": {
+    fontFamily: "monospace",
+  },
   "& .cm-tooltip.cm-tooltip-autocomplete > ul::-webkit-scrollbar": {
     width: "8px",
     height: "8px",

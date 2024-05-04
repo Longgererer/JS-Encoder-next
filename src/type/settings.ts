@@ -60,6 +60,8 @@ export enum CodeFontFamily {
   IBM_PLEX_MONO = "IBM Plex Mono",
   INCONSOLATA = "Inconsolata",
   COURIER_PRIME = "Courier Prime",
+  ROBOTO_MONO = "Roboto Mono",
+  CONSOLAS = "Consolas",
 }
 
 export interface IEditorLibraries {

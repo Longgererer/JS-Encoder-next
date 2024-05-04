@@ -1,12 +1,5 @@
 @charset "UTF-8";
 
-// @font-face {
-//   font-family: "JetBrains Mono";
-//   src: url("../assets/fonts/JetBrainsMono-Regular.woff2");
-//   font-weight: 400;
-//   font-style: normal;
-// }
-
 @font-face {
   font-family: "Fira Code";
   src: url("https://cdnjs.cloudflare.com/ajax/libs/firacode/5.2.0/woff2/FiraCode-Regular.woff2");
@@ -59,6 +52,13 @@
 @font-face {
   font-family: "Courier Prime";
   src: url("https://fonts.gstatic.com/s/courierprime/v2/u-450q2lgwslOqpF_6gQ8kELawFpWg.woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("https://fonts.gstatic.com/s/robotomono/v23/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vq_ROW4.woff2");
   font-weight: 400;
   font-style: normal;
 }
