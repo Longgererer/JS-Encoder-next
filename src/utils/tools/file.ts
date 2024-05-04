@@ -17,7 +17,7 @@ const fileSizeUnitList = [
   FileSizeUnit.GB,
 ]
 const SIZE_GAP = 1024
-/** 获取文件大小文案， 如100KB，超过1024则 */
+/** 获取文件大小文案，如100KB，超过1024则使用更高的单位 */
 export const getFileSizeText = (file: File): string => {
   let unitSize = 1
   let sizeText = ""
