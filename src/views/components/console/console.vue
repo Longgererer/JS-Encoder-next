@@ -72,6 +72,7 @@
     </div>
     <div class="console-log-list-wrapper console-content relative flex-1">
       <!--日志列表-->
+      <!-- TODO: 对重复输出的日志进行计数 -->
       <div class="console-log-list fill-h over-y-auto common-scrollbar" ref="consoleLogListRef">
         <template v-for="(logInfo, index) in consoleService.logs" :key="index">
           <console-item
