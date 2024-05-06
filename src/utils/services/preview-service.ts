@@ -67,14 +67,6 @@ export default class PreviewService {
     iframeDoc.write(code)
     iframeDoc.close()
 
-    // 加载完成后结束
-    return new Promise<void>((resolve) => {
-      iframeWindow.onload = () => {
-        this.isIframeInit = true
-        onRefreshed?.(this.iframe!)
-        iframeWindow.onload = null
-        resolve()
-      }
-    })
+    this.isIframeInit = true
   }
 }
