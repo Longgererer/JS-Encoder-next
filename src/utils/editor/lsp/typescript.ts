@@ -52,7 +52,7 @@ export const tsComplete = async (context: CompletionContext): Promise<Completion
   const code = context.state.doc.toString()
   let lastWord: string = ""
   let from: number
-  const completeMarkList = [".", "\n", ":", " ", "{"]
+  const completeMarkList = [".", "\n", ":", " ", "{", "[", "("]
   for (let i = context.pos - 1; i >= 0; i--) {
     if (completeMarkList.includes(code[i]) || i === 0) {
       from = i === 0 ? i : i + 1
@@ -70,7 +70,7 @@ export const tsComplete = async (context: CompletionContext): Promise<Completion
   return {
     from: context.pos,
     options: tsCompletions.entries.map((completion) => ({
-      type: completion.kind,
+      type: completion.kind === "var" ? "variable" : completion.kind,
       label: completion.name,
       apply: (view: EditorView) => {
         view.dispatch({

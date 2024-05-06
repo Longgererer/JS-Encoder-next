@@ -50,7 +50,7 @@ const Prep2DefaultExtensionMap: Record<Prep, () => Extension[]> = {
   [Prep.SCSS]: () => [],
   [Prep.LESS]: () => [],
   [Prep.STYLUS]: () => [],
-  [Prep.JAVASCRIPT]: () => [],
+  [Prep.JAVASCRIPT]: () => [typescriptLSPPlugin],
   [Prep.TYPESCRIPT]: () => [typescriptLSPPlugin],
   [Prep.BABEL]: () => [],
   [Prep.COFFEESCRIPT]: () => [],

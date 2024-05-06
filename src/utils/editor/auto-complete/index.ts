@@ -3,7 +3,7 @@ import { tsComplete } from "../lsp/typescript"
 import { autocompletion } from "@codemirror/autocomplete"
 
 export const javascriptAutocomplete = () => {
-  return autocompletion({ override: [scopeCompletionSource(globalThis)] })
+  return autocompletion({ override: [tsComplete] })
 }
 
 export const typescriptAutocomplete = () => {
