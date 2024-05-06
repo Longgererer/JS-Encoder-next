@@ -43,17 +43,17 @@ export interface IEditorSideOptions {
 
 /** 存储各个预处理器所包含的选项id，分为直接展示出的选项和在菜单中展示的更多选项 */
 export const prep2EditorSideOptionsMap: Record<Prep, IEditorSideOptions> = {
-  [Prep.HTML]: { display: [], more: [] },
-  [Prep.MARKDOWN]: { display: [EditorSideOptionType.MARKDOWN_TOOLS], more: [] },
+  [Prep.HTML]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.MARKDOWN]: { display: [EditorSideOptionType.MARKDOWN_TOOLS], more: [EditorSideOptionType.FORMAT_CODE] },
   [Prep.PUG]: { display: [], more: [] },
-  [Prep.CSS]: { display: [], more: [] },
-  [Prep.SASS]: { display: [], more: [] },
-  [Prep.SCSS]: { display: [], more: [] },
-  [Prep.LESS]: { display: [], more: [] },
+  [Prep.CSS]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.SASS]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.SCSS]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.LESS]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
   [Prep.STYLUS]: { display: [], more: [] },
-  [Prep.JAVASCRIPT]: { display: [], more: [] },
-  [Prep.TYPESCRIPT]: { display: [], more: [] },
+  [Prep.JAVASCRIPT]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.TYPESCRIPT]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
   [Prep.COFFEESCRIPT]: { display: [], more: [] },
-  [Prep.BABEL]: { display: [], more: [] },
-  [Prep.VUE]: { display: [], more: [] },
+  [Prep.BABEL]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
+  [Prep.VUE]: { display: [], more: [EditorSideOptionType.FORMAT_CODE] },
 }

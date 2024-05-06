@@ -16,15 +16,19 @@ export default class EditorKeeperService {
   constructor() {}
 
   public getEditorView(tabId: number) {
+    return this.getEditorExposed(tabId).getEditorView()
+  }
+
+  public getEditorExposed(tabId: number): IEditorViewExpose {
     const vnode = this.editorInstanceMap[tabId].vnode
-    return (vnode.component?.exposed as IEditorViewExpose).getEditorView()
+    return vnode.component?.exposed as IEditorViewExpose
   }
 
   public getEditorInstance(tabId: number, props: AnyObject = {}): IEditorInstance {
     const cacheEditorInstance = this.editorInstanceMap[tabId]
     if (cacheEditorInstance) {
       const { vnode, wrapper } = cacheEditorInstance
-      vnode.component?.exposed?.restoreEditorView()
+      vnode.component?.exposed?.restoreViewScroll(true)
       return { vnode, wrapper }
     } else {
       const { vnode, wrapper } = this.render(props)

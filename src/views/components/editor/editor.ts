@@ -36,5 +36,5 @@ export interface IEmits {
 export interface IEditorViewExpose {
   getEditorView: () => EditorView | undefined
   /** 重新恢复editor状态 */
-  restoreEditorView: () => void
+  restoreViewScroll: (delay?: boolean) => void
 }

@@ -181,15 +181,20 @@ onMounted(() => {
 const tmpShowStatus = ref<boolean>(true)
 defineExpose<IEditorViewExpose>({
   getEditorView: () => editorView.value!,
-  restoreEditorView: () => {
+  restoreViewScroll: (delay?: boolean) => {
     if (!editorView.value) { return }
     const scrollDOM = editorView.value.scrollDOM
     // 恢复scrollTop
     // TODO: 有时设置scrollTop会失效，如果setTimeout延迟100会解决，但要检查原因
-    setTimeout(() => {
+    const scrollToBefore = () => {
       scrollDOM.scrollTop = editorScrollTop.value
       editorView.value!.focus()
-    })
+    }
+    if (delay) {
+      nextTick(scrollToBefore)
+    } else {
+      scrollToBefore()
+    }
   },
 })
 </script>

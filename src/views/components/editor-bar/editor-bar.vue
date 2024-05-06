@@ -74,6 +74,7 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import UtilService from "@utils/services/util-service"
 import { toggleMarkdownToolsPanel } from "@utils/editor/panels/markdown-tools"
 import EditorKeeperService from "@utils/services/editor-keeper-service"
+import { formatCode } from "@utils/editor/formatter"
 
 const props = defineProps<{
   editorId: number
@@ -81,8 +82,9 @@ const props = defineProps<{
 }>()
 
 const editorWrapperStore = useEditorWrapperStore()
-const { updateEditor, updateDraggingTabInfo, deleteSplitter, updateSplitter } = editorWrapperStore
-const { editorMap, draggingTabInfo, tabMap, editorSplitterMap, tabId2PrepMap } = storeToRefs(editorWrapperStore)
+const { updateEditor, updateDraggingTabInfo, deleteSplitter, updateSplitter, updateCodeMap } = editorWrapperStore
+const { editorMap, codeMap, draggingTabInfo, tabMap, editorSplitterMap,
+  tabId2PrepMap } = storeToRefs(editorWrapperStore)
 
 const utilService = new UtilService()
 
@@ -236,9 +238,14 @@ const { showSideMenu, sideOptions } = useEditorSideOptions(editor.id)
 const editorKeeperService = new EditorKeeperService()
 
 const sideOptionType2FuncMap = {
-  [EditorSideOptionType.FORMAT_CODE]: () => {},
+  [EditorSideOptionType.FORMAT_CODE]: async () => {
+    const { id } = tabMap.value[editor.displayTabId]
+    const formattedCode = await formatCode(codeMap.value[id], tabId2PrepMap.value[id])
+    updateCodeMap({ [id]: formattedCode })
+    editorKeeperService.getEditorExposed(id).restoreViewScroll()
+  },
   [EditorSideOptionType.MARKDOWN_TOOLS]: () => {
-    return toggleMarkdownToolsPanel(editorKeeperService.getEditorView(editor.displayTabId)!)
+    toggleMarkdownToolsPanel(editorKeeperService.getEditorView(editor.displayTabId)!)
   },
 }
 

@@ -71,6 +71,7 @@ export const lessLinter = styleLinter({ extends: ["stylelint-config-recommended-
 
 export const stylusLinter = styleLinter(stylusLintRecommendConfig)
 
+// TODO: 将eslint4b-prebuilt替换成jslint https://www.npmjs.com/package/jslint
 export const javascriptLinter = linter(esLint(new Linter()))
 
 export const typescriptLinter = linter(() => tsLinter() as Diagnostic[])
