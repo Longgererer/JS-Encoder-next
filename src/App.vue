@@ -9,12 +9,14 @@ import { DBService } from "@utils/services/indexed-db-service"
 import container from "./views/container/container.vue"
 import { dbConfig } from "@utils/config/indexed-db"
 
-const initApp = () => {
-  // 连接数据库
-  new DBService(dbConfig).init()
-}
+// 连接数据库
+new DBService(dbConfig).init()
 
-initApp()
+// 刷新页面时提示
+window.addEventListener("beforeunload", (event) => {
+  event.preventDefault()
+  event.returnValue = ""
+})
 </script>
 
 <style lang="scss">
