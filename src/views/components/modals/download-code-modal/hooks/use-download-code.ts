@@ -20,7 +20,7 @@ const useDownloadCode = () => {
     ].filter(({ content }) => !!content)
     let compiledFileList: IZipFile[] = []
     if (needCompiled) {
-      const compiledCodeMap = await getCompiledCode()
+      const { result: compiledCodeMap } = await getCompiledCode()
       const htmlContent = await getResultCode({ [OriginLang.HTML]: compiledCodeMap.HTML })
       compiledFileList = [
         { name: filename, content: htmlContent, mimeType: MimeType.HTML },

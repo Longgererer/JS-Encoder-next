@@ -2,6 +2,7 @@ import useCodeCompile from "@hooks/use-code-compile"
 import { OriginLang } from "@type/prep"
 import SingleInstance from "@utils/decorators/single-instance"
 import { processLoop, setLoopController } from "@utils/editor/utils/loop"
+import { genErrorOverlayCode } from "@utils/tools/code-gen"
 
 export interface IRefreshOptions {
   /** 当iframe元素被替换 */
@@ -66,15 +67,19 @@ export default class PreviewService {
     iframeDoc.open()
     onBeforeRefresh?.(this.iframe!)
 
-    const codeMap = await getCompiledCode()
+    const { success, result, message = "" } = await getCompiledCode()
 
-    setLoopController(iframeWindow)
-    // 插入循环处理代码
-    codeMap[OriginLang.JAVASCRIPT] = await processLoop(codeMap[OriginLang.JAVASCRIPT])
-    // 写入结果代码
-    const code = await getResultCode(codeMap)
+    if (success) {
+      setLoopController(iframeWindow)
+      // 插入循环处理代码
+      result[OriginLang.JAVASCRIPT] = await processLoop(result[OriginLang.JAVASCRIPT])
+      // 写入结果代码
+      const code = await getResultCode(result)
 
-    iframeDoc.write(code)
+      iframeDoc.write(code)
+    } else {
+      iframeDoc.write(genErrorOverlayCode(message))
+    }
     iframeDoc.close()
 
     this.isIframeInit = true

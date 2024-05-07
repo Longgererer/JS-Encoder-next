@@ -78,3 +78,12 @@ export const getMarkdownScriptCode = () => {
     }()
   `.trim()
 }
+
+export const genErrorOverlayCode = (message: string) => {
+  return `
+    <div id="errorLayout" style="color: #ff5555;font-family: 'Consolas';box-sizing: border-box;padding: 20px;">
+      <span style="font-weight: bold;">Compilation Error:</span>
+      <pre style="margin-top: 20px;">${message}</pre>
+    </div>
+  `.trim()
+}

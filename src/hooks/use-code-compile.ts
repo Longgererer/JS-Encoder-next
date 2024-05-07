@@ -1,7 +1,7 @@
 import { useEditorConfigStore } from "@store/editor-config"
 import { useEditorWrapperStore } from "@store/editor-wrapper"
 import { OriginLang, Prep } from "@type/prep"
-import { compile, compileComponent } from "@utils/editor/compiler"
+import { ICompileCodeMapResult, defaultCodeMap, compile, compileComponent } from "@utils/editor/compiler"
 import { genHTMLFileCode, getMarkdownScriptCode } from "@utils/tools/code-gen"
 import { FLOW_CHART_URLS, KATEX_JS_URL, KATEX_RENDER_URL, KATEX_STYLE_URL } from "@utils/tools/config"
 
@@ -11,25 +11,28 @@ const useCodeCompile = () => {
   const editorWrapperStore = useEditorWrapperStore()
 
   /** 获取编译后的代码 */
-  const getCompiledCode = async () => {
+  const getCompiledCode = async (): Promise<ICompileCodeMapResult> => {
     const { prepMap } = editorConfigStore
     const { origin2CodeMap, isComponentMode } = editorWrapperStore
     if (isComponentMode) {
       // 组件模式
       return await compileComponent(origin2CodeMap.JAVASCRIPT, prepMap.JAVASCRIPT)
     } else {
-      const htmlCode = await compile(origin2CodeMap.HTML, prepMap.HTML)
-      const cssCode = await compile(origin2CodeMap.CSS, prepMap.CSS)
-      let javascriptCode = await compile(origin2CodeMap.JAVASCRIPT, prepMap.JAVASCRIPT)
+      const htmlResult = await compile(origin2CodeMap.HTML, prepMap.HTML)
+      if (!htmlResult.success) { return { ...htmlResult, result: defaultCodeMap } }
+      const cssResult = await compile(origin2CodeMap.CSS, prepMap.CSS)
+      if (!cssResult.success) { return { ...cssResult, result: defaultCodeMap } }
+      const javascriptResult = await compile(origin2CodeMap.JAVASCRIPT, prepMap.JAVASCRIPT)
+      if (!javascriptResult.success) { return { ...javascriptResult, result: defaultCodeMap } }
       if (prepMap[OriginLang.HTML] === Prep.MARKDOWN) {
-        javascriptCode = getMarkdownScriptCode() + javascriptCode
+        javascriptResult.result = getMarkdownScriptCode() + javascriptResult.result
       }
       const resultCodeMap = {
-        [OriginLang.HTML]: htmlCode,
-        [OriginLang.CSS]: cssCode,
-        [OriginLang.JAVASCRIPT]: javascriptCode,
+        [OriginLang.HTML]: htmlResult.result,
+        [OriginLang.CSS]: cssResult.result,
+        [OriginLang.JAVASCRIPT]: javascriptResult.result,
       }
-      return resultCodeMap
+      return { success: true, result: resultCodeMap }
     }
   }
 
@@ -46,7 +49,7 @@ const useCodeCompile = () => {
 
   const getResultCode = async (compiledCodeMap?: Partial<Record<OriginLang, string>>) => {
     const { settings: { other: { headTags } } } = editorConfigStore
-    const code = compiledCodeMap || await getCompiledCode()
+    const code = compiledCodeMap || (await getCompiledCode()).result
     const links = getResultLinks()
     return genHTMLFileCode({
       headTags,

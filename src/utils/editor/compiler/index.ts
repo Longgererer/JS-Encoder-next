@@ -4,6 +4,29 @@ import { ModuleKind } from "typescript"
 import { OriginLang, Prep } from "@type/prep"
 import hash from "hash-sum"
 
+interface ICompileResultBase {
+  /** 是否编译成功 */
+  success: boolean
+  /** 错误信息 */
+  message?: string
+}
+
+export interface ICompileResult extends ICompileResultBase {
+  /** 编译后代码 */
+  result: string
+}
+
+export interface ICompileCodeMapResult extends ICompileResultBase {
+  /** 编译后代码 */
+  result: Record<OriginLang, string>
+}
+
+export const defaultCodeMap = {
+  [OriginLang.HTML]: "",
+  [OriginLang.CSS]: "",
+  [OriginLang.JAVASCRIPT]: "",
+}
+
 const loaderService = new LoaderService()
 
 export const compileMarkdown = async (code: string) => {
@@ -70,7 +93,8 @@ export const compileJSX = async (code: string) => {
   return window.Babel.transform(code, { presets: ["react"] }).code || ""
 }
 
-export const compileVue = async (code: string): Promise<Record<OriginLang, string>> => {
+// eslint-disable-next-line max-lines-per-function
+export const compileVue = async (code: string): Promise<ICompileCodeMapResult> => {
   const vue = await import("@vue/compiler-sfc")
   const { parse, compileScript, rewriteDefault } = vue
   const descriptor = parse(code).descriptor
@@ -82,17 +106,33 @@ export const compileVue = async (code: string): Promise<Record<OriginLang, strin
   for (const style of styles) {
     const { lang = "", scoped, content } = style
     const prep = getStylePrepByLang(lang)
-    const cssCode = await compile(content, prep)
+    const cssCompileResult = await compile(content, prep)
+    if (!cssCompileResult.success) {
+      return {
+        success: false,
+        result: defaultCodeMap,
+        message: cssCompileResult.message,
+      }
+    }
     styleCodes.push(vue.compileStyle({
       scoped,
-      source: cssCode,
+      source: cssCompileResult.result,
       id: `data-v-${hash(code)}`,
       filename: "",
     }).code.trim())
   }
 
   // 解析编译script
-  const compiledScript = compileScript(descriptor, { id })
+  let compiledScript
+  try {
+    compiledScript = compileScript(descriptor, { id })
+  } catch (error: any) {
+    return {
+      success: false,
+      result: defaultCodeMap,
+      message: error.message,
+    }
+  }
   const mainName = "_sfc_main"
   let scriptCode = rewriteDefault(compiledScript.content, mainName)
   // 取出通过import引入的变量，改为从Vue中取出
@@ -118,9 +158,12 @@ export const compileVue = async (code: string): Promise<Record<OriginLang, strin
   `.trim()
 
   return {
-    [OriginLang.HTML]: htmlCode,
-    [OriginLang.CSS]: styleCodes.join("\n"),
-    [OriginLang.JAVASCRIPT]: "",
+    success: true,
+    result: {
+      [OriginLang.HTML]: htmlCode,
+      [OriginLang.CSS]: styleCodes.join("\n"),
+      [OriginLang.JAVASCRIPT]: "",
+    },
   }
 }
 
@@ -149,41 +192,30 @@ const prep2CompilerMap: Partial<Record<Prep, PrepCompiler>> = {
   [Prep.BABEL]: compileJSX,
 }
 
-export const compile = async (code: string = "", prep: Prep) => {
-  if (!code) { return code }
+export const compile = async (code: string = "", prep: Prep): Promise<ICompileResult> => {
+  if (!code) { return { success: true, result: "" } }
   const compileFunc = prep2CompilerMap[prep]
   if (compileFunc && code) {
     return compileFunc(code)
-      .catch((err) => {
-        // TODO: 编译错误时在iframe上展示错误信息
-        console.error(err)
-        return ""
-      })
+      .then(
+        (result) => ({ success: true, result }),
+        (err) => {
+          console.error(err)
+          return { success: false, result: "", message: err?.message }
+        },
+      )
   } else {
-    return code
+    return { success: true, result: code }
   }
 }
 
-type PrepComponentCompiler = (code: string) => Promise<Record<OriginLang, string>>
+type PrepComponentCompiler = (code: string) => Promise<ICompileCodeMapResult>
 const prep2ComponentCompilerMap: Partial<Record<Prep, PrepComponentCompiler>> = {
   [Prep.VUE]: compileVue,
 }
 
-export const compileComponent = async (code: string = "", prep: Prep) => {
+export const compileComponent = async (code: string = "", prep: Prep): Promise<ICompileCodeMapResult> => {
   const compileFunc = prep2ComponentCompilerMap[prep]
-  const defaultCodeMap = {
-    [OriginLang.HTML]: "",
-    [OriginLang.CSS]: "",
-    [OriginLang.JAVASCRIPT]: "",
-  }
-  if (!code) { return defaultCodeMap }
-  if (compileFunc) {
-    return compileFunc(code)
-      .catch((err) => {
-        console.error(err)
-        return defaultCodeMap
-      })
-  } else {
-    return defaultCodeMap
-  }
+  if (!code) { return { success: true, result: defaultCodeMap } }
+  return compileFunc ? compileFunc(code) : { success: true, result: defaultCodeMap }
 }
