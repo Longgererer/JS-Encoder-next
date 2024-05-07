@@ -1,5 +1,7 @@
 import useCodeCompile from "@hooks/use-code-compile"
+import { OriginLang } from "@type/prep"
 import SingleInstance from "@utils/decorators/single-instance"
+import { processLoop, setLoopController } from "@utils/editor/utils/loop"
 
 export interface IRefreshOptions {
   /** 当iframe元素被替换 */
@@ -50,6 +52,7 @@ export default class PreviewService {
 
   public async refreshIframe() {
     const { onIframeUpdated, onBeforeRefresh, onRefreshed } = this.refreshOption || {}
+    const { getCompiledCode, getResultCode } = useCodeCompile()
 
     if (this.isIframeInit) {
       this.replaceOldIframe()
@@ -62,8 +65,15 @@ export default class PreviewService {
     const iframeDoc = this.getWindow()!.document
     iframeDoc.open()
     onBeforeRefresh?.(this.iframe!)
+
+    const codeMap = await getCompiledCode()
+
+    setLoopController(iframeWindow)
+    // 插入循环处理代码
+    codeMap[OriginLang.JAVASCRIPT] = await processLoop(codeMap[OriginLang.JAVASCRIPT])
     // 写入结果代码
-    const code = await useCodeCompile().getResultCode()
+    const code = await getResultCode(codeMap)
+
     iframeDoc.write(code)
     iframeDoc.close()
 

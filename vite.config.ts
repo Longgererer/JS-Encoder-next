@@ -3,6 +3,7 @@ import { resolve } from "path"
 import vue from "@vitejs/plugin-vue"
 import eslintPlugin from "vite-plugin-eslint"
 import DefineOptions from "unplugin-vue-define-options/vite"
+import requireTransform from "vite-plugin-require-transform"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
@@ -15,6 +16,9 @@ export default defineConfig(() => {
       DefineOptions(),
       eslintPlugin({
         include: ["src/**/*.ts", "src/**/*.vue"],
+      }),
+      requireTransform({
+        fileRegex: /.js$|.ts$/,
       }),
     ],
     resolve: {
