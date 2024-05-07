@@ -12,11 +12,13 @@ import { dbConfig } from "@utils/config/indexed-db"
 // 连接数据库
 new DBService(dbConfig).init()
 
-// 刷新页面时提示
-window.addEventListener("beforeunload", (event) => {
-  event.preventDefault()
-  event.returnValue = ""
-})
+// 生产环境刷新页面时提示
+if (import.meta.env.PROD) {
+  window.addEventListener("beforeunload", (event) => {
+    event.preventDefault()
+    event.returnValue = ""
+  })
+}
 </script>
 
 <style lang="scss">
