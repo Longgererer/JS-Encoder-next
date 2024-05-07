@@ -76,7 +76,8 @@ export const sidebarTypeList: SidebarType[][] = [
   [SidebarType.UPLOAD_CODE, SidebarType.DOWNLOAD_CODE],
   [SidebarType.SHORTCUT, SidebarType.UPDATE_LOG, SidebarType.HELP_DOCUMENT],
   [],
-  [SidebarType.THEME, SidebarType.GITHUB],
+  // TODO: 添加黑白主题切换功能
+  [SidebarType.GITHUB],
 ]
 
 export interface ISidebarOption {
