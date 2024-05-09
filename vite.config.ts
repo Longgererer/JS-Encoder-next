@@ -7,12 +7,14 @@ import requireTransform from "vite-plugin-require-transform"
 import commonjs from "@rollup/plugin-commonjs"
 import { visualizer } from "rollup-plugin-visualizer"
 import externalGlobals from "rollup-plugin-external-globals"
+import viteCompression from "vite-plugin-compression"
 
 // https://vitejs.dev/config/
 // eslint-disable-next-line max-lines-per-function
 export default defineConfig(({ command }: ConfigEnv) => {
   const isBuild = command === "build"
   return {
+    base: "/",
     server: {
       port: 4000,
     },
@@ -27,17 +29,18 @@ export default defineConfig(({ command }: ConfigEnv) => {
           entryFileNames: "js/[name]-[hash].js",
           /** 资源文件像 字体，图片等 */
           assetFileNames: "[ext]/[name]-[hash].[ext]",
-          manualChunks(id: string) {
-            // 打包依赖
-            if (id.includes("node_modules")) {
-              return "vendor"
-            }
-          },
         },
         external: ["typescript"],
         plugins: [
           externalGlobals({
             typescript: "ts",
+          }),
+          viteCompression({
+            algorithm: "gzip",
+            threshold: 10240,
+            verbose: true,
+            ext: ".gz",
+            deleteOriginFile: false,
           }),
         ],
       },
