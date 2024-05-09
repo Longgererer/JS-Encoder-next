@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue"
 import eslintPlugin from "vite-plugin-eslint"
 import DefineOptions from "unplugin-vue-define-options/vite"
 import requireTransform from "vite-plugin-require-transform"
+import commonjs from "@rollup/plugin-commonjs"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
@@ -17,6 +18,7 @@ export default defineConfig(() => {
       eslintPlugin({
         include: ["src/**/*.ts", "src/**/*.vue"],
       }),
+      commonjs(),
       requireTransform({
         fileRegex: /.js$|.ts$/,
       }),
