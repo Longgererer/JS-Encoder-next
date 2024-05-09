@@ -7,7 +7,7 @@ declare module "*.vue" {
   export default component
 }
 
-declare module "eslint4b-prebuilt"
+declare module "eslint4b-prebuilt/dist/eslint4b.es"
 
 declare class Sass {
   [x: string]: any

@@ -1,16 +1,54 @@
-import { defineConfig } from "vite"
+import { ConfigEnv, defineConfig } from "vite"
 import { resolve } from "path"
 import vue from "@vitejs/plugin-vue"
 import eslintPlugin from "vite-plugin-eslint"
 import DefineOptions from "unplugin-vue-define-options/vite"
 import requireTransform from "vite-plugin-require-transform"
 import commonjs from "@rollup/plugin-commonjs"
+import { visualizer } from "rollup-plugin-visualizer"
+import externalGlobals from "rollup-plugin-external-globals"
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+// eslint-disable-next-line max-lines-per-function
+export default defineConfig(({ command }: ConfigEnv) => {
+  const isBuild = command === "build"
   return {
+    server: {
+      port: 4000,
+    },
     build: {
       target: "esnext",
+      rollupOptions: {
+        output: {
+          dir: "dist",
+          /** 引入文件名的名称 */
+          chunkFileNames: "js/[name]-[hash].js",
+          /** 包的入口文件名称 */
+          entryFileNames: "js/[name]-[hash].js",
+          /** 资源文件像 字体，图片等 */
+          assetFileNames: "[ext]/[name]-[hash].[ext]",
+          manualChunks(id: string) {
+            // 打包依赖
+            if (id.includes("node_modules")) {
+              return "vendor"
+            }
+          },
+        },
+        external: ["typescript"],
+        plugins: [
+          externalGlobals({
+            typescript: "ts",
+          }),
+        ],
+      },
+      esbuild: isBuild
+        ? {
+            /** 打包时移除 debugger */
+            drop: ["debugger"],
+            /** 打包时移除所有注释 */
+            legalComments: "none",
+          }
+        : undefined,
     },
     plugins: [
       vue(),
@@ -19,9 +57,12 @@ export default defineConfig(() => {
         include: ["src/**/*.ts", "src/**/*.vue"],
       }),
       commonjs(),
+      /** 兼容使用require */
       requireTransform({
         fileRegex: /.js$|.ts$/,
       }),
+      /** 查看打包大小 */
+      visualizer({ open: true }),
     ],
     resolve: {
       alias: {

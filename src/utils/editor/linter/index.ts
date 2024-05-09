@@ -1,7 +1,7 @@
 import { Diagnostic, linter } from "@codemirror/lint"
 import { HTMLHint } from "htmlhint"
 import stylusLintRecommendConfig from "@utils/editor/linter/stylus-lint-recommend.config"
-import Linter from "eslint4b-prebuilt"
+import Linter from "eslint4b-prebuilt/dist/eslint4b.es"
 import { esLint } from "@codemirror/lang-javascript"
 import { tsLinter } from "../lsp/typescript"
 import LoaderService from "@utils/services/loader-service"
