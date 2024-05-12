@@ -73,21 +73,21 @@
     <div class="console-log-list-wrapper console-content relative flex-1">
       <!--日志列表-->
       <!-- TODO: 对重复输出的日志进行计数 -->
-      <div class="console-log-list fill-h over-y-auto common-scrollbar" ref="consoleLogListRef">
+      <div class="console-log-list fill-h over-y-auto common-scrollbar pb-xxl" ref="consoleLogListRef">
         <template v-for="(logInfo, index) in consoleService.logs" :key="index">
           <console-item
             v-show="!filterType || displayLogType.includes(logInfo.type)"
             :log-info="logInfo"
           ></console-item>
         </template>
-        <div class="console-commend-input-wrapper flex-y-center pl-xs">
+        <div class="console-command-input-wrapper flex-y-center pl-xs">
           <i class="icon iconfont icon-chevron-right primary-text font-xxs"></i>
           <editor
-            v-model="commend"
+            v-model="command"
             minimal
             :prep="Prep.JAVASCRIPT"
-            :extensions="commendEditorExtensions"
-            :settings="commendEditorSettings"
+            :extensions="commandEditorExtensions"
+            :settings="commandEditorSettings"
           ></editor>
         </div>
       </div>
@@ -116,7 +116,7 @@ import ConsoleItem from "./components/console-item/console-item.vue"
 import { useConsoleStore, initSettings, IConsoleSetting } from "@store/console"
 import Editor from "../editor/editor.vue"
 import { Prep } from "@type/prep"
-import useConsoleCommend from "./hooks/use-console-commend"
+import useConsoleCommand from "./hooks/use-console-command"
 
 const layoutStore = useLayoutStore()
 const { updateIsFoldConsole, updateModuleSize } = layoutStore
@@ -135,7 +135,7 @@ watch(settings, () => {
 /** 当前过滤日志类型选项 */
 const filterType = ref<LogType | null>(null)
 const displayLogType = computed(() => {
-  const defaultLogTypeList = [LogType.COMMEND, LogType.RESULT]
+  const defaultLogTypeList = [LogType.COMMAND, LogType.RESULT]
   return [
     ...defaultLogTypeList,
     filterType.value,
@@ -175,10 +175,9 @@ const handleClearLogs = () => {
 }
 
 /** 执行指令处理 */
-const processExecuteCommend = () => {
-  if (!commend.value) { return }
-  consoleService.execute(commend.value)
-  commend.value = ""
+const processExecuteCommand = () => {
+  if (!command.value) { return }
+  consoleService.execute(command.value)
   nextTick(() => {
     if (!consoleLogListRef.value) { return }
     // 滚动到最底部
@@ -187,11 +186,11 @@ const processExecuteCommend = () => {
 }
 
 const {
-  commend,
-  commendEditorExtensions,
-  commendEditorSettings,
-} = useConsoleCommend({
-  executeCommend: processExecuteCommend,
+  command,
+  commandEditorExtensions,
+  commandEditorSettings,
+} = useConsoleCommand({
+  executeCommand: processExecuteCommand,
 })
 </script>
 

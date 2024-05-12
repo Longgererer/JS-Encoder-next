@@ -9,6 +9,6 @@ export const logType2Icon = {
   [LogType.INFO]: "icon-info",
   [LogType.WARN]: "icon-warn",
   [LogType.ERROR]: "icon-error",
-  [LogType.COMMEND]: "icon-chevron-right",
+  [LogType.COMMAND]: "icon-chevron-right",
   [LogType.RESULT]: "icon-chevron-left-dot",
 }

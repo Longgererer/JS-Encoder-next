@@ -48,14 +48,14 @@ export default class ConsoleService {
    * 然后在iframe内执行命令
    * 最后输出命令的返回值
    */
-  public execute(commend: string) {
+  public execute(command: string) {
     let result
-    this.commend(commend)
+    this.command(command)
     try {
-      result = this.window.eval(`let x=(${commend});x`)
+      result = this.window.eval(`let x=(${command});x`)
     } catch (error) {
       try {
-        this.window.eval(commend)
+        this.window.eval(command)
       } catch (err) {
         this.error(`${(err as Error).name}: ${(err as Error).message}`)
         return
@@ -89,8 +89,8 @@ export default class ConsoleService {
     this.triggerAddUpdate(logInfo)
   }
 
-  public commend(...args: any[]) {
-    const logInfo: LogInfo = { type: LogType.COMMEND, method: "log", data: processConsoleValueList(args) }
+  public command(...args: any[]) {
+    const logInfo: LogInfo = { type: LogType.COMMAND, method: "log", data: processConsoleValueList(args) }
     this.logs.push(logInfo)
     this.triggerAddUpdate(logInfo)
   }

@@ -63,10 +63,14 @@ export class CodemirrorBase {
     return this.transOffset2Pos(this.getSelection().main.head)
   }
 
+  public setCursorByOffset(offset: number): void {
+    this.view.dispatch({ selection: { anchor: offset } })
+  }
+
   /** 设置光标位置 */
   public setCursor(pos: IPos): void {
     const offset = this.transPos2Offset(pos)
-    this.view.dispatch({ selection: { anchor: offset } })
+    this.setCursorByOffset(offset)
   }
 
   public focus(): void {
@@ -81,6 +85,10 @@ export class CodemirrorBase {
   /** 获取偏移量所在行信息 */
   public getLineByPos(offset: number): Line {
     return this.getDoc().lineAt(offset)
+  }
+
+  public getLastLine(): Line {
+    return this.getLineByPos(this.getContent().length)
   }
 
   /** 获得范围内的文本 */
@@ -139,3 +147,7 @@ export class CodemirrorBase {
     return this.getLine(line).from + col
   }
 }
+
+/**
+ * 函数式api
+ */

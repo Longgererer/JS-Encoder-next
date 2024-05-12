@@ -28,12 +28,14 @@
   }
   .console-log-list-wrapper {
     height: calc(100% - 56px);
-    .console-commend-input-wrapper {
-      min-height: 24px;
-      .console-commend-input {
-        outline: none;
-        border: none;
-      }
+    .console-log-list {
+      .console-command-input-wrapper {
+        min-height: 24px;
+        .console-command-input {
+          outline: none;
+          border: none;
+        }
+      } 
     }
   }
 }

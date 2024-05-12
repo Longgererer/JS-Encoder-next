@@ -9,7 +9,7 @@ export const enum LogType {
   /** 错误日志 */
   ERROR = "error",
   /** 执行指令输入日志 */
-  COMMEND = "commend",
+  COMMAND = "command",
   /** 执行指令输出日志 */
   RESULT = "result",
 }

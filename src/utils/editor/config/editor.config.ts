@@ -144,7 +144,7 @@ export const getPrepEmmetExtension = (prep: Prep): Extension => {
     ? [
         emmetConfig.of({ syntax: emmetSyntax }),
         // 暂时不用emmet格式展示组件
-        // abbreviationTracker({ syntax: emmetSyntax }),
+        abbreviationTracker({ syntax: emmetSyntax }),
         Prec.highest(keymap.of([{
           key: "Tab",
           run: expandAbbreviation,
@@ -182,7 +182,7 @@ export const getPrepAutocompleteExtension = (prep: Prep): Extension => {
 }
 
 const prep2HoverTooltipExtensionMap: Partial<Record<Prep, () => Extension>> = {
-  // [Prep.TYPESCRIPT]: () => hoverTooltip(tsTypeDefinition),
+  [Prep.TYPESCRIPT]: () => hoverTooltip(tsTypeDefinition),
 }
 export const getPrepHoverTooltipExtension = (prep: Prep): Extension => {
   const extension = prep2HoverTooltipExtensionMap[prep]?.()
