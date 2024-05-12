@@ -89,6 +89,9 @@ dependencies:
   eslint4b-prebuilt:
     specifier: ^6.7.2
     version: 6.7.2
+  espree:
+    specifier: ^10.0.1
+    version: 10.0.1
   estraverse:
     specifier: ^5.3.0
     version: 5.3.0
@@ -163,6 +166,9 @@ devDependencies:
   '@types/coffeescript':
     specifier: ^2.5.7
     version: 2.5.7
+  '@types/espree':
+    specifier: ^10.0.0
+    version: 10.0.0
   '@types/estraverse':
     specifier: ^5.1.7
     version: 5.1.7
@@ -1469,6 +1475,13 @@ packages:
       '@types/json-schema': 7.0.15
     dev: false
 
+  /@types/espree@10.0.0:
+    resolution: {integrity: sha512-jr27nCxC2ycFyJnG+dqJSMhYeoR9+dy3hLuwxr4jWG4Y2NJmiXPgCnVjgJHbGM2tfCWDaldEUg6sNDvY0qkntw==}
+    dependencies:
+      acorn: 8.11.3
+      eslint-visitor-keys: 4.0.0
+    dev: true
+
   /@types/estraverse@5.1.7:
     resolution: {integrity: sha512-JRVtdKYZz7VkNp7hMC/WKoiZ8DS3byw20ZGoMZ1R8eBrBPIY7iBaDAS1zcrnXQCwK44G4vbXkimeU7R0VLG8UQ==}
     dependencies:
@@ -2746,6 +2759,10 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /eslint-visitor-keys@4.0.0:
+    resolution: {integrity: sha512-OtIRv/2GyiF6o/d8K7MYKKbXrOUBIK6SfkIRM4Z0dY3w+LiQ0vy3F57m0Z71bjbyeiWFiHJ8brqnmE6H6/jEuw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   /eslint4b-prebuilt@6.7.2:
     resolution: {integrity: sha512-iGdYi7sSc/nVV1GPinJhWrLRsy7PtKONYJTmgSv7lVar/RzlvIQEGOG3Tbb8rIi4aPmgvsncmVCk7WqDmATlkw==, tarball: https://registry.npmmirror.com/eslint4b-prebuilt/-/eslint4b-prebuilt-6.7.2.tgz}
     dev: false
@@ -2792,6 +2809,15 @@ packages:
       v8-compile-cache: 2.3.0
     transitivePeerDependencies:
       - supports-color
+
+  /espree@10.0.1:
+    resolution: {integrity: sha512-MWkrWZbJsL2UwnjxTX3gG8FneachS/Mwg7tdGXce011sJd5b0JG54vat5KHnfSBODZ3Wvzd2WnjxyzsRoVv+ww==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    dependencies:
+      acorn: 8.11.3
+      acorn-jsx: 5.3.2(acorn@8.11.3)
+      eslint-visitor-keys: 4.0.0
+    dev: false
 
   /espree@9.3.2:
     resolution: {integrity: sha512-D211tC7ZwouTIuY5x9XnS0E9sWNChB7IYKX/Xp5eQj3nFXhqmiUDB9q27y76oFl8jTg3pXcQx/bpxMfs3CIZbA==}

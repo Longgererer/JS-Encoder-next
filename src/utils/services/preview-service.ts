@@ -70,9 +70,12 @@ export default class PreviewService {
     const { success, result, message = "" } = await getCompiledCode()
 
     if (success) {
+      // 插入循环控制
       setLoopController(iframeWindow)
+
       // 插入循环处理代码
       result[OriginLang.JAVASCRIPT] = await processLoop(result[OriginLang.JAVASCRIPT])
+
       // 写入结果代码
       const code = await getResultCode(result)
 
