@@ -197,7 +197,7 @@ export const setLoopController = (window: Window) => {
       if (!loop) { return }
       const { maxSumExeTime, maxLoopCount } = this.timeConfig
       // 如果循环次数超过最大次数，并且时间超过最大循环时间，就抛出异常
-      if (loop.sumExeTime > maxSumExeTime && loop.count > maxLoopCount) {
+      if (loop.sumExeTime > maxSumExeTime || loop.count > maxLoopCount) {
         this.clearLoops()
         throw new Error(
           "你的代码中可能包含死循环(from JS-Encoder)。"
