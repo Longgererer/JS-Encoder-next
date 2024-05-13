@@ -105,7 +105,7 @@ export class DBService {
     }
     return new Promise<boolean>((resolve, reject) => {
       dbReq.onsuccess = (event) => {
-        console.log("数据库连接成功")
+        console.info("数据库连接成功")
         this.status = DBStatus.CONNECTED
         this.db = dbReq.result
         this.dbInfo!.onReady?.()
@@ -218,7 +218,7 @@ export class DBService {
       throwError(ErrorCode.DB_CREATE_TRANSACTION_FAILED, { data: event })
     }
     transaction!.oncomplete = () => {
-      console.log("数据库修改结束，事务完成")
+      console.info("数据库修改结束，事务完成")
     }
 
     return transaction!.objectStore(storeName)

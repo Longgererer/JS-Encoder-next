@@ -41,7 +41,7 @@ export const processLoop = async (code: string) => {
       range: true,
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return codeCpy
   }
 
