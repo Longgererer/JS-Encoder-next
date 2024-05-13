@@ -28,14 +28,13 @@ export function isOwnAttr(target: Record<string, any>, key: string): boolean {
 export function isCyclic(obj: any): boolean {
   const stackSet = new Set()
   const detect = (data: any): boolean => {
-    if (data && typeof data !== "object") {
+    if (typeof data !== "object" || data === null) {
       return false
     }
     if (stackSet.has(data)) {
       return true
     }
     stackSet.add(data)
-
     // 遍历对象所有自身属性
     getObjOwnKeyList(data).forEach((key) => {
       detect(data[key])

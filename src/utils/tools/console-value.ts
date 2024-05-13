@@ -1,6 +1,6 @@
 import { IConsoleValue } from "@type/console"
 import { getObjAllKeys, getType } from "."
-import { isElement } from "./judge"
+import { isCyclic, isElement } from "./judge"
 
 export const processConsoleValueList = (list: any[]) => {
   return list.map((value, index) => {
@@ -28,6 +28,14 @@ export const formatConsoleValue = (
   }
 
   switch (type) {
+    case "Boolean":
+    case "boolean":
+    case "Number":
+    case "number": {
+      // do nothing
+      break
+    }
+    case "String":
     case "string": {
       consoleValue.value = `"${value}"`
       break
@@ -109,6 +117,35 @@ export const formatConsoleValue = (
       }
       break
     }
+    case "Window": {
+      consoleValue = {
+        type: "string",
+        value: "该类型数据暂不支持展示，请在浏览器控制台查看~",
+      }
+      break
+    }
+    case "console": {
+      consoleValue = {
+        ...consoleValue,
+        ...recordLengthLimit,
+        type: "Object",
+        name: value?.constructor?.name,
+        attrs: Object.keys(value).map((key) => {
+          const newValue = key === "memory"
+            ? {
+                // @ts-expect-error: memory exist
+                jsHeapSizeLimit: console.memory?.jsHeapSizeLimit,
+                // @ts-expect-error: memory exist
+                totalJSHeapSize: console.memory?.totalJSHeapSize,
+                // @ts-expect-error: memory exist
+                usedJSHeapSize: console.memory?.usedJSHeapSize,
+              }
+            : value[key]
+          return { key, value: newValue }
+        }),
+      }
+      break
+    }
     default: {
       if (isElement(value)) {
         consoleValue = {
@@ -119,6 +156,14 @@ export const formatConsoleValue = (
           name: (value as HTMLElement).nodeName.toLowerCase(),
           attrs: Array.from((value as HTMLElement).attributes).map((item) => ({ key: item.name, value: item.value })),
           suffix: `#${(value as HTMLElement).id}` + `.${Array.from((value as HTMLElement).classList).join(".")}`,
+        }
+      } else {
+        consoleValue = {
+          ...consoleValue,
+          ...recordLengthLimit,
+          type: "Object",
+          name: value?.constructor?.name,
+          attrs: Object.keys(value).map((key) => ({ key, value: value[key] })),
         }
       }
     }
