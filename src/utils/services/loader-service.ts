@@ -1,4 +1,5 @@
 import SingleInstance from "@utils/decorators/single-instance"
+import { safeFetch } from "@utils/tools/request"
 
 /** 模块类型 */
 export enum ModuleType {
@@ -45,7 +46,7 @@ class LoaderService {
   /** 请求url获取内容 */
   async loadUrl(url: string): Promise<string> {
     let text = ""
-    await fetch(url)
+    await safeFetch(url)
       .then(async (res) => res.blob())
       .then((res) => res.text())
       .then((res) => {

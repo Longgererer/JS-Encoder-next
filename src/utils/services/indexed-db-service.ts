@@ -6,6 +6,7 @@ import { ErrorCode, throwError } from "@utils/tools/error"
 import { deepCopy } from "@utils/tools/common"
 import SingleInstance from "@utils/decorators/single-instance"
 import { DBStoreName, IDBStoreData } from "@utils/config/indexed-db"
+import { IReqRes } from "@utils/tools/request"
 
 export interface DBStoreIndex {
   name: string
@@ -43,11 +44,6 @@ export enum DBStatus {
   CONNECTED = "connected",
   /** 连接失败 */
   FAILED = "failed",
-}
-
-export interface IDBRes<T> {
-  success: boolean
-  data?: T
 }
 
 type TransactionMode = "readonly" | "readwrite" | "versionchange"
@@ -232,7 +228,7 @@ export class DBService {
     getReq: () => IDBRequest<any>,
     code: ErrorCode,
     ...args: any[]
-  ): Promise<IDBRes<T>> {
+  ): Promise<IReqRes<T>> {
     return new Promise((resolve, reject) => {
       const req = getReq()
       req.onsuccess = (event) => {
@@ -249,7 +245,7 @@ export class DBService {
     getReq: () => IDBRequest<any>,
     code: ErrorCode,
     ...args: any[]
-  ): Promise<IDBRes<T[]>> {
+  ): Promise<IReqRes<T[]>> {
     return new Promise((resolve, reject) => {
       const req = getReq()
       const data: T[] = []

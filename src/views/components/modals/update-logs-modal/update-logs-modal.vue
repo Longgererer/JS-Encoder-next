@@ -7,6 +7,10 @@
     :show-footer="false"
     @close="updateDisplayModal(null)">
     <loading v-if="isReleasesLoading" height="200px"></loading>
+    <div v-else-if="isShowLoadError" class="p-y-xxl flex-col flex-y-center">
+      <div class="active-text font-l">Aoh，更新日志加载失败:(</div>
+      <custom-button class="mt-xxl" type="primary" @click="handleClickReloadUpdateLogs">重新加载</custom-button>
+    </div>
     <div v-else-if="releases.length" class="update-logs-wrapper flex mt-m active-text code-font over-hidden">
       <div class="version-list over-y-auto common-scrollbar">
         <div
@@ -57,6 +61,7 @@ import { ref, shallowRef } from "vue"
 import useUpdateLogs, { IRelease, CategoryTitle } from "@hooks/use-update-logs"
 import { setLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
+import CustomButton from "@components/custom-button/custom-button.vue"
 
 const commonStore = useCommonStore()
 const { updateDisplayModal } = commonStore
@@ -67,15 +72,21 @@ const categoryTitleStyle = {
   [CategoryTitle.BUGFIX]: { borderColor: "var(--color-red2)" },
 }
 
-const isReleasesLoading = ref<boolean>()
+const isReleasesLoading = ref<boolean>(false)
 const releases = shallowRef<IRelease[]>([])
-const versionList = ref<string[]>([])
+const versionList = shallowRef<string[]>([])
 const currUpdateLog = shallowRef<IRelease>()
+const isShowLoadError = ref<boolean>(false)
 const { getReleases } = useUpdateLogs()
 const setUpdateLogsInfo = async () => {
   isReleasesLoading.value = true
-  const list = await getReleases()
-  isReleasesLoading.value = false
+  const { success, data: list = [] } = await getReleases()
+  setTimeout(() => isReleasesLoading.value = false, 200)
+  // 请求失败提示
+  if (success) {
+    isShowLoadError.value = true
+    return
+  }
   if (!list.length) { return }
   // 将最新版本号储存
   setLocalStorage(LocalStorageKey.VERSION, list[0].version)
@@ -94,6 +105,11 @@ const handleChooseVersion = (version: string) => {
 
 const handleClickGithubLink = () => {
   window.open(currUpdateLog.value!.url!)
+}
+
+const handleClickReloadUpdateLogs = () => {
+  isShowLoadError.value = false
+  setUpdateLogsInfo()
 }
 </script>
 

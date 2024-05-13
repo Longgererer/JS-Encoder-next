@@ -41,7 +41,7 @@ const styleLinter = (config: any) => {
       const code = view.state.doc.toString()
       if (!code) { return [] }
       if (!window.stylelint) {
-        const url = `${import.meta.env.BASE_URL}src/assets/js/stylelint-bundle.min.js`
+        const url = `${import.meta.env.BASE_URL}src/assets/js/stylelint-bundle.min.cjs`
         await loaderService.loadScript(url)
       }
       const { results } = await window.stylelint.lint({ code, config })

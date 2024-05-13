@@ -1,3 +1,4 @@
+import { IReqRes, processReqState, safeFetch } from "@utils/tools/request"
 import { GITHUB_LATEST_RELEASE_URL, GITHUB_RELEASES_URL } from "@utils/tools/config"
 import { formatDateTime } from "@utils/tools/date"
 
@@ -34,6 +35,7 @@ export interface IRelease {
   updateCategories: IUpdateCategory[]
 }
 
+// eslint-disable-next-line max-lines-per-function
 const useUpdateLogs = () => {
   /**
    * 解析markdown代码的内容，获取每个分类下面的列表项
@@ -73,18 +75,28 @@ const useUpdateLogs = () => {
     }
   }
 
-  /** 请求github获取更新列表 */
-  const getReleases = async () => {
-    const originReleases: IOriginGithubRelease[] = await fetch(GITHUB_RELEASES_URL).then((res) => res.json())
-    return originReleases
-      .filter(({ prerelease, draft }) => !prerelease && !draft)
-      .map((originRelease) => formatUpdateLog(originRelease))
+  /** 请求github获取最新版本 */
+  const getLatestRelease = async (): Promise<IReqRes<IRelease>> => {
+    const req = safeFetch(GITHUB_LATEST_RELEASE_URL).then((res) => res.json())
+    const { success, data: originRelease } = await processReqState<IOriginGithubRelease>(req)
+    return {
+      success,
+      data: success ? formatUpdateLog(originRelease!) : undefined,
+    }
   }
 
-  /** 获取最新版本 */
-  const getLatestRelease = async () => {
-    const originRelease: IOriginGithubRelease = await fetch(GITHUB_LATEST_RELEASE_URL).then((res) => res.json())
-    return formatUpdateLog(originRelease)
+  /** 请求github获取更新列表 */
+  const getReleases = async (): Promise<IReqRes<IRelease[]>> => {
+    const req = safeFetch(GITHUB_RELEASES_URL).then((res) => res.json())
+    const { success, data: originReleases = [] } = await processReqState<IOriginGithubRelease[]>(req)
+    if (success) {
+      const releases = originReleases
+        .filter(({ prerelease, draft }) => !prerelease && !draft)
+        .map((originRelease) => formatUpdateLog(originRelease))
+      return { success: true, data: releases }
+    } else {
+      return { success: false }
+    }
   }
 
   return {

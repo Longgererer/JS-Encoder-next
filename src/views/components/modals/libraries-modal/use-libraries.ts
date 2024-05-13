@@ -1,4 +1,5 @@
 import { BOOT_CDN_URL } from "@utils/tools/config"
+import { safeFetch } from "@utils/tools/request"
 
 interface IRemoteLibraryInfo {
   name: string
@@ -16,7 +17,7 @@ const useLibraries = () => {
   const scriptLibraries: ILibrary[] = []
 
   const fetchCDNLibraries = () => {
-    return fetch(BOOT_CDN_URL)
+    return safeFetch(BOOT_CDN_URL)
       .then((res) => res.json())
       .then(({ results }) => results as IRemoteLibraryInfo[])
   }

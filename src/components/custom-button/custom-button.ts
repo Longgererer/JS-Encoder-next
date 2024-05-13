@@ -2,7 +2,7 @@ import { BtnType, Size } from "@type/interface"
 
 export interface IProps {
   /** 按钮尺寸 mini|small|medium|large|xLarge */
-  size?: Size
+  size?: Size | string
   /** 是否禁用 */
   disabled?: boolean
   /** 是否只显示icon没有文字 */
@@ -10,7 +10,7 @@ export interface IProps {
   /** icon类名 */
   iconClass?: string
   /** 按钮类型 */
-  type?: BtnType
+  type?: BtnType | string
   /** 是否显示icon */
   showIcon?: boolean
   /** 是否有阴影 */

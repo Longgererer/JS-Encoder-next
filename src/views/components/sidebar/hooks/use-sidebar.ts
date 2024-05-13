@@ -40,10 +40,14 @@ const useSidebar = () => {
   const { getLatestRelease } = useUpdateLogs()
   const setUpdateLogBadge = async () => {
     // 如果当前储存的版本不是最新版本的话就展示badge
-    const latestRelease = await getLatestRelease()
-    const savedVersion = getLocalStorage(LocalStorageKey.VERSION)
-    if (savedVersion !== latestRelease.version) {
-      sidebarList[SidebarType.UPDATE_LOG].isShowBadge = true
+    const { success, data: latestRelease } = await getLatestRelease()
+    if (success) {
+      const savedVersion = getLocalStorage(LocalStorageKey.VERSION)
+      if (savedVersion !== latestRelease!.version) {
+        sidebarList[SidebarType.UPDATE_LOG].isShowBadge = true
+      }
+    } else {
+      console.error("最新版本日志获取失败")
     }
   }
 
