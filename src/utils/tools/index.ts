@@ -1,9 +1,19 @@
 import { AnyArray } from "@type/interface"
 import { stringifyDOM } from "@utils/tools/common"
 
+export const basicTypes = [
+  "string",
+  "number",
+  "boolean",
+  "bigint",
+  "null",
+  "undefined",
+  "symbol",
+]
+
 export const isBaseData = (data: any): boolean => {
   if (data === null) { return true }
-  return ["number", "string", "undefined", "boolean", "bigInt", "symbol"].includes(typeof data)
+  return basicTypes.includes(typeof data)
 }
 
 export const getType = (data: any): string => {

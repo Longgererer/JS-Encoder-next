@@ -1,6 +1,6 @@
 import { IConsoleValue } from "@type/console"
-import { getObjAllKeys, getType } from "."
-import { isCyclic, isElement } from "./judge"
+import { getObjAllKeys, getType, isBaseData } from "."
+import { isElement } from "./judge"
 
 export const processConsoleValueList = (list: any[]) => {
   return list.map((value, index) => {
@@ -24,14 +24,16 @@ export const formatConsoleValue = (
   const type = getType(value)
   let consoleValue: IConsoleValue = {
     type, value,
-    toStringTag: value?.[Symbol.toStringTag],
+    ...(isBaseData(value) ? null : { toStringTag: value?.[Symbol.toStringTag] }),
   }
 
   switch (type) {
     case "Boolean":
     case "boolean":
     case "Number":
-    case "number": {
+    case "number":
+    case "symbol":
+    case "Promise": {
       // do nothing
       break
     }
@@ -155,7 +157,12 @@ export const formatConsoleValue = (
           value: value.toString(),
           name: (value as HTMLElement).nodeName.toLowerCase(),
           attrs: Array.from((value as HTMLElement).attributes).map((item) => ({ key: item.name, value: item.value })),
-          suffix: `#${(value as HTMLElement).id}` + `.${Array.from((value as HTMLElement).classList).join(".")}`,
+          suffix: [
+            (value as HTMLElement).id ? `#${(value as HTMLElement).id}` : "",
+            (value as HTMLElement).classList?.length
+              ? `.${Array.from((value as HTMLElement).classList).join(".")}`
+              : "",
+          ].join(""),
         }
       } else {
         consoleValue = {

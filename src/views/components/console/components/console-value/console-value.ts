@@ -5,12 +5,7 @@ export interface IProps extends IConsoleValue {
   simple?: boolean
 }
 
-export const basicTypes = [
-  "string",
-  "number",
-  "boolean",
-  "bigint",
-  "null",
-  "undefined",
-  "symbol",
-]
+export interface IConsoleValueMapData {
+  key: IConsoleValue
+  value: IConsoleValue
+}
