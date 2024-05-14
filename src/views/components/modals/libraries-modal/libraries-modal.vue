@@ -123,7 +123,7 @@ import CustomInput from "@components/form/custom-input/custom-input.vue"
 import CustomSelect from "@components/form/custom-select/custom-select.vue"
 import { useCommonStore } from "@store/common"
 import { Size } from "@type/interface"
-import { reactive, ref, watch } from "vue"
+import { reactive, ref, watch, nextTick } from "vue"
 import useLibraries, { ILibrary } from "./use-libraries"
 import DragSortable from "@components/drag-sortable/drag-sortable.vue"
 import { ILibraryInfo, ISelectedLibrary, LibraryType } from "./libraries.modal"
@@ -198,7 +198,9 @@ watch(
 const handleSelectLibrary = ({ url }: ISelectOption, type: LibraryType) => {
   const libraryInfo = getLibraryInfo(type)
   libraryInfo.selected.push(getSelectedLibrary(url))
-  libraryInfo.keyword = ""
+  nextTick(() => {
+    libraryInfo.keyword = ""
+  })
 }
 /** 删除库 */
 const handleDeleteLibrary = (index: number, type: LibraryType) => {
