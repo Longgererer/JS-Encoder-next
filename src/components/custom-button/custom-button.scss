@@ -108,7 +108,7 @@ $horizontal-padding: (
   }
   .#{$namespace}--#{$type}.#{$namespace}-outline {
     color: map.get($btn-theme, $type);
-    border: 2px solid map.get($btn-theme, $type);
+    border: 1px solid map.get($btn-theme, $type);
     background-color: transparent;
     &:hover {
       color: map.get($btn-theme, #{$type}-hover);

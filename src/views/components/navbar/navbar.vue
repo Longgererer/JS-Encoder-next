@@ -13,7 +13,8 @@
     <div class="flex-1"></div>
 
     <!-- 右侧菜单 -->
-    <div class="right-side-menu">
+    <div class="right-side-menu flex flex-y-center">
+      <custom-button outline class="mr-l" type="primary" size="small" @click="handleGoToOldVersion">去旧版</custom-button>
       <div
         class="menu-item cursor-pointer fade-ease"
         :title="showResult ? '隐藏预览窗口' : '显示预览窗口'"
@@ -27,11 +28,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import projectConfig from "../../../../package.json"
-import { IModulesSize, useLayoutStore } from "@store/layout"
+import { useLayoutStore } from "@store/layout"
+import CustomButton from "@components/custom-button/custom-button.vue"
+import { OLD_VERSION_URL } from "@utils/tools/config"
 
 const layoutStore = useLayoutStore()
-/** 缓存隐藏之前结果窗口的宽度 */
-// let cacheModulesSize: Partial<IModulesSize> = {}
+
 const processHideResult = () => {
   const { modulesSize: { resultWidth, editorWidth } } = layoutStore
   layoutStore.updateModuleSize({ editorWidth: editorWidth + resultWidth })
@@ -41,6 +43,10 @@ const processShowResult = () => {
   const { modulesSize: { resultWidth, editorWidth } } = layoutStore
   layoutStore.updateModuleSize({ editorWidth: editorWidth - resultWidth })
   layoutStore.updateIsShowResult(true)
+}
+
+const handleGoToOldVersion = () => {
+  window.open(OLD_VERSION_URL, "_blank")
 }
 
 /** 是否显示结果窗口 */
