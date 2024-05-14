@@ -84,7 +84,7 @@ import Loading from "@components/loading/loading.vue"
 import TemplateCard from "./components/template-card/template-card.vue"
 import EditTemplateModal from "./components/edit-template-modal/edit-template-modal.vue"
 import { IEditTemplateForm } from "./components/edit-template-modal/edit-template-modal"
-import { ref } from "vue"
+import { ref, shallowRef } from "vue"
 import { useCommonStore } from "@store/common"
 import { BtnType, Size } from "@type/interface"
 import { inbuiltTemplateList } from "./template-modal"
@@ -119,7 +119,7 @@ setCustomTemplateList()
 
 const isShowEditModal = ref<boolean>(false)
 const isEditModalLoading = ref<boolean>(false)
-const currEditTemplate = ref<ITemplateInfo | undefined>(undefined)
+const currEditTemplate = shallowRef<ITemplateInfo | undefined>(undefined)
 
 /** 点击编辑模板 */
 const handleClickEditTemplate = (template: ITemplateInfo) => {

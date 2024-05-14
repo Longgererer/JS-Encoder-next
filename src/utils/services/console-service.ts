@@ -1,5 +1,5 @@
 import SingleInstance from "@utils/decorators/single-instance"
-import { reactive } from "vue"
+import { shallowReactive } from "vue"
 import { getArrayIntersection, getType, isBaseData } from "@utils/tools"
 import { AnyArray, AnyObject } from "@type/interface"
 import { ConsoleMethods, ConsoleUpdateType, ITableLogInfo, LogInfo, LogType, enableConsoleMethods } from "@type/console"
@@ -13,7 +13,7 @@ export interface IConsoleOptions {
 @SingleInstance
 export default class ConsoleService {
   /** 日志列表 */
-  public logs = reactive<LogInfo[]>([])
+  public logs = shallowReactive<LogInfo[]>([])
   /** iframe元素 */
   private iframe!: HTMLIFrameElement
   /** iframe中的window */

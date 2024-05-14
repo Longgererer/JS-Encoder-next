@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import { SearchQuery, closeSearchPanel, findNext, findPrevious, replaceAll, replaceNext, setSearchQuery } from "@codemirror/search"
-import { nextTick, onMounted, reactive, ref, watch } from "vue"
+import { nextTick, onMounted, reactive, ref, shallowRef, watch } from "vue"
 import { IProps, SearchOptionType, searchOptions, searchItemOptions, searchInputOptions, replaceOptions, ISearchOption } from "./search"
 import { CodemirrorBase } from "@utils/editor/utils/codemirror-base"
 
@@ -99,7 +99,7 @@ const props = defineProps<IProps>()
 
 const codemirrorBase = new CodemirrorBase(props.view)
 
-const searchInputRef = ref<HTMLInputElement | null>(null)
+const searchInputRef = shallowRef<HTMLInputElement | null>(null)
 
 onMounted(() => {
   // 查询输入框获取焦点
