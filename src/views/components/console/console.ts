@@ -5,10 +5,10 @@ import { reactive } from "vue"
 /** 日志过滤选项列表 */
 export const filterSelectOptions: ISelectOption[] = [
   { value: null, label: "All" },
-  { value: LogType.MESSAGE },
-  { value: LogType.INFO },
-  { value: LogType.WARN },
-  { value: LogType.ERROR },
+  { value: LogType.MESSAGE, label: "Message" },
+  { value: LogType.INFO, label: "Info" },
+  { value: LogType.WARN, label: "Warn" },
+  { value: LogType.ERROR, label: "Error" },
 ]
 
 export const logType2IconMap: Partial<Record<LogType, string>> = {
