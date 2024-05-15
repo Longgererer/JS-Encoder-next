@@ -2,11 +2,10 @@ import { useCommonStore } from "@store/common"
 import { ModalName, Theme } from "@type/interface"
 import { storeToRefs } from "pinia"
 import { SidebarType, sidebarList, themeIcon } from "../sidebar"
-import { GITHUB_REPO_URL } from "@utils/tools/config"
+import { GITHUB_REPO_URL, HELP_DOCS_URL } from "@utils/tools/config"
 import useUpdateLogs from "@hooks/use-update-logs"
 import { getLocalStorage } from "@utils/tools/storage"
 import { LocalStorageKey } from "@utils/config/storage"
-import Modal from "@components/modal/modal.vue"
 
 const useSidebar = () => {
   const commonStore = useCommonStore()
@@ -24,7 +23,7 @@ const useSidebar = () => {
   }
 
   const processClickHelp = () => {
-    window.open(GITHUB_REPO_URL, "_blank")
+    window.open(HELP_DOCS_URL, "_blank")
   }
 
   const processClickUpdateLogs = () => {

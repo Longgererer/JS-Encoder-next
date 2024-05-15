@@ -5,7 +5,7 @@
 /** Github仓库的网址 */
 export const GITHUB_REPO_URL = "https://github.com/JS-Encoder/JS-Encoder"
 /** 帮助文档的网址 */
-export const HELP_DOCS_URL = "http://docs.lliiooiill.cn/"
+export const HELP_DOCS_URL = "https://docs.jsencoder.cn/"
 /** 旧版本JS-Encoder地址 */
 export const OLD_VERSION_URL = "http://jsencoder.lliiooiill.cn/"
 
