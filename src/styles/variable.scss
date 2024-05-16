@@ -1,9 +1,17 @@
 @charset "UTF-8";
 
+$primary0: #254EDB;
+$primary1: #3366FF;
+$primary2: #6690FF;
 $dark-colors: (
-  primary0: #254EDB,
-  primary1: #3366FF,
-  primary2: #6690FF,
+  emphasis1: rgb(255 255 255),
+  emphasis2: rgb(255 255 255 / 90%),
+  emphasis3: rgb(255 255 255 / 80%),
+  emphasis4: rgb(255 255 255 / 70%),
+  emphasis5: rgb(255 255 255 / 60%),
+  primary0: $primary0,
+  primary1: $primary1,
+  primary2: $primary2,
   red0: #B71C1C,
   red1: #C62828,
   red2: #E53935,
@@ -17,7 +25,7 @@ $dark-colors: (
   main-bg-2: #18181A,
   main-bg-3: #121214,
   main-bg-4: #28282A,
-  active-color: rgb(255 255 255 / 87%),
+  active-color: rgb(255 255 255 / 90%),
   describe: rgb(255 255 255 / 60%),
   no-active-color: rgb(255 255 255 / 40%),
   shadow: #000,

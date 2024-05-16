@@ -57,7 +57,7 @@
         v-if="isShowNewUserGuide"
         class="flex-col-center code-font font-xxl active-text absolute pos-full bg-main3 over-hidden"
         :class="`${namespace}-guide`">
-        <div class="first-title">首次使用<span class="primary-text p-x-s">JS-Encoder</span>?</div>
+        <div class="first-title">首次使用<span class="primary1-text p-x-s">JS-Encoder</span>?</div>
         <span class="font-r mt-xxl">查看帮助文档了解更多好用功能</span>
         <custom-button class="jump-btn flex-sh" :type="BtnType.PRIMARY" @click="handleJumpToHelp">前往文档</custom-button>
         <span
@@ -93,7 +93,7 @@ import IconBtn from "@components/icon-btn/icon-btn.vue"
 import CustomButton from "@components/custom-button/custom-button.vue"
 import { BtnType } from "@type/interface"
 import { HELP_DOCS_URL } from "@utils/tools/config"
-import { Ref, onMounted, ref, shallowRef } from "vue"
+import { onMounted, ref, shallowRef } from "vue"
 import { useLayoutStore } from "@store/layout"
 import { IconBtnSize } from "@components/icon-btn/icon-btn.interface"
 import { IProps, previewFullscreenOptions, previewOptions, PreviewOptionType } from "./preview"

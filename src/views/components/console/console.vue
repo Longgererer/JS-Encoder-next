@@ -81,7 +81,7 @@
           ></console-item>
         </template>
         <div class="console-command-input-wrapper flex-y-center pl-xs">
-          <i class="icon iconfont icon-chevron-right primary-text font-xxs"></i>
+          <i class="icon iconfont icon-chevron-right primary1-text font-xxs"></i>
           <editor
             v-model="command"
             minimal

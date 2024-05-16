@@ -2,6 +2,8 @@
  * 公共配置存储
  */
 
+export const PROJECT_NAME = "JS-Encoder"
+
 /** Github仓库的网址 */
 export const GITHUB_REPO_URL = "https://github.com/JS-Encoder/JS-Encoder"
 /** 帮助文档的网址 */

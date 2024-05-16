@@ -1,5 +1,5 @@
 <template>
-  <div class="search-panel relative bg-main3 flex flex-jce">
+  <div class="search-panel relative bg-main3 flex-jce">
     <div class="search-bar bg-main2 shadow p-y-xs pl-xs pr-s flex">
       <div
         class="mr-xs cursor-pointer active-text flex-y-center"

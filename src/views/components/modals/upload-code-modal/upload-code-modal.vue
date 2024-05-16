@@ -31,7 +31,7 @@
       @drop.prevent="handleDropFile">
       <div class="font-xs describe-text text-center p-y-xxl events-none">
         <span>拖拽文件到此区域/</span>
-        <span class="primary-text">点击上传文件</span>
+        <span class="primary1-text">点击上传文件</span>
       </div>
       <input
         class="display-none"

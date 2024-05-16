@@ -101,9 +101,19 @@
 .bg-white { background: #FFF; }
 
 /** color */
+.emphasis0-text { color: var(--color-emphasis0) }
+.emphasis1-text { color: var(--color-emphasis1) }
+.emphasis2-text { color: var(--color-emphasis2) }
+.emphasis3-text { color: var(--color-emphasis3) }
+.emphasis4-text { color: var(--color-emphasis4) }
+.green0-text { color: var(--color-green0) }
+.green1-text { color: var(--color-green1) }
+.green2-text { color: var(--color-green2) }
 .no-active-text { color: var(--color-no-active-color); }
 .active-text { color: var(--color-active-color); }
-.primary-text { color: var(--color-primary1); }
+.primary0-text { color: var(--color-primary0); }
+.primary1-text { color: var(--color-primary1); }
+.primary2-text { color: var(--color-primary2); }
 .describe-text { color: var(--color-describe); }
 .golden-text { color: var(--color-golden); }
 .form-item-color { color: var(--color-form-item); }
@@ -319,3 +329,5 @@
 
 // .shadow { box-shadow: 0 2px 4px var(--color-shadow); }
 .shadow { box-shadow: $shadow; }
+.text-clip { background-clip: text; color: transparent; }
+.primary-bg-gradient { background-image: linear-gradient(135deg, var(--color-primary2), var(--color-primary1)); }

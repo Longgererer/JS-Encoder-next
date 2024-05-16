@@ -1,10 +1,14 @@
 <template>
   <div class="navbar fill-w pr-xl code-font flex-y-center bg-main1 no-select">
     <!-- logo信息 -->
-    <div class="logo fill-h flex-center" title="logo">
-      <img src="../../../assets/images/logo.svg" alt="logo" />
-    </div>
-    <span class="logo-text fw-bold mr-s primary-text" title="JS-Encoder">JS-Encoder</span>
+    <router-link to="/" custom v-slot="{ navigate }">
+      <div class="flex-y-center fill-h" @click="navigate">
+        <div class="logo fill-h flex-center" title="logo">
+          <img src="../../../assets/images/logo.svg" alt="logo" />
+        </div>
+        <span class="logo-text fw-bold mr-s primary1-text" title="JS-Encoder">JS-Encoder</span>
+      </div>
+    </router-link>
 
     <!-- 版本 -->
     <span class="version font-xxs pt-xs describe-text" title="version">v{{ projectConfig.version }}</span>
@@ -13,7 +17,7 @@
     <div class="flex-1"></div>
 
     <!-- 右侧菜单 -->
-    <div class="right-side-menu flex flex-y-center">
+    <div class="right-side-menu flex-y-center">
       <custom-button outline class="mr-l" type="primary" size="small" @click="handleGoToOldVersion">去旧版</custom-button>
       <div
         class="menu-item cursor-pointer fade-ease"

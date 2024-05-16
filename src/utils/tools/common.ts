@@ -150,3 +150,12 @@ export const debounce = (cb: noop, delay: number = 0) => {
 export const isHttpUrl = (url: string) => {
   return /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&@=]*)?$/.test(url)
 }
+
+/** 获取范围间的随机数 */
+export const getRandom = (min: number, max: number): number => {
+  const floatRandom = Math.random()
+  const difference = max - min
+  const random = Math.round(difference * floatRandom)
+  const randomWithinRange = random + min
+  return randomWithinRange
+}

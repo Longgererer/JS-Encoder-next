@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-main1 fill-h flex-col-x-center" :class="namespace">
+  <div class="bg-main1 flex-col-x-center" :class="namespace">
     <template v-for="(list, index) in sidebarTypeList" :key="index">
       <!-- 分割线 -->
       <div v-if="!!index && index !== sidebarTypeList.length - 1 && list.length" class="split-line"></div>
