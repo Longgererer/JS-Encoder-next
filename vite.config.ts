@@ -8,6 +8,7 @@ import commonjs from "@rollup/plugin-commonjs"
 import { visualizer } from "rollup-plugin-visualizer"
 import externalGlobals from "rollup-plugin-external-globals"
 import viteCompression from "vite-plugin-compression"
+import autoprefixer from "autoprefixer"
 
 // https://vitejs.dev/config/
 // eslint-disable-next-line max-lines-per-function
@@ -87,6 +88,20 @@ export default defineConfig(({ command }: ConfigEnv) => {
         scss: {
           additionalData: "@use \"sass:map\";@import \"@/styles/index.scss\";",
         },
+      },
+      postcss: {
+        plugins: [
+          autoprefixer({
+            overrideBrowserslist: [
+                "Android 4.1",
+                "iOS 7.1",
+                "Chrome > 31",
+                "ff > 31",
+                "ie >= 8",
+            ],
+            grid: true,
+          }) as any,
+        ],
       },
     },
   }

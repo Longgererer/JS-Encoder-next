@@ -5,6 +5,7 @@ module.exports = {
   ],
   "rules": {
     "declaration-block-single-line-max-declarations": 10,
+    "media-feature-range-notation": "prefix",
     "no-duplicate-selectors": null,
     "no-empty-source": null,
     "rule-empty-line-before": ["always", {

@@ -110,7 +110,7 @@ $home-btn-color-map: (
   100% { opacity: 1; }
 }
 
-@media screen and (width <= 1300px) {
+@media screen and (max-width: 1300px) {
   .home {
     .container {
       width: 100%;
@@ -127,7 +127,7 @@ $home-btn-color-map: (
   }
 }
 
-@media screen and (width <= 800px) {
+@media screen and (max-width: 800px) {
   .home {
     .container {
       .introduce-wrapper {
@@ -149,7 +149,7 @@ $home-btn-color-map: (
   }
 }
 
-@media screen and (width <= 500px) {
+@media screen and (max-width: 500px) {
   .home {
     .navbar {
       .navbar-menu {
