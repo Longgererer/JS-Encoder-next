@@ -1,16 +1,49 @@
-# Vue 3 + TypeScript + Vite
+<div align=center>
+  <img width="64" src="./src/assets/images/logo.svg"/>
+</div>
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<h1 align="center">JS-Encoder</h1>
 
-## Recommended IDE Setup
+<p align="center">这是一个前端在线编辑器，且致力于成为一个方便、快速的在线 Web 实例开发、调试工具</p>
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+<p align="center">
+  <img src="https://img.shields.io/badge/version-v4-%236690FF?style=flat-square"/>
+  <img src="https://img.shields.io/badge/contributions-welcome-%233366FF?style=flat-square" />
+  <img src="https://img.shields.io/github/stars/JS-Encoder/JS-Encoder?label=stars&logo=Github&style=flat-square&color=%23254EDB" />
+</p>
 
-## Type Support For `.vue` Imports in TS
+<p align="center">
+  <a href="https://www.jsencoder.cn/code">👉 Get Started 👈</a>
+</p>
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+<p align="center">
+  <a href="https://docs.jsencoder.cn/">说明文档</a> |
+  <a href="https://github.com/JS-Encoder/JS-Encoder">Github</a> |
+  <a href="https://github.com/Longgererer/JS-Encoder/blob/master/LICENSE">License</a>
+</p>
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+## 特性
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+- 编写代码并实时预览。
+- 支持包含 TypeScript、Scss、Markdown 等常用语言在内的12种预处理语言。
+- 支持使用模板，可自定义，并且支持 Vue 单文件组件的开发。
+- 丰富的个性化编码设置。
+- 可上传本地代码或下载 JS-Encoder 中编写的代码。
+- Console 调试，支持多个常用方法以及数据结构的展示。
+- 以及一些特殊功能，如 Markdown 工具栏、编码窗口视图分割等。
+
+## 未来
+
+所有未来计划的功能性改动都记录在此：[TO DO LIST](https://docs.jsencoder.cn/docs/intro)
+
+## 本地运行
+
+```dash
+npm run dev
+```
+
+如果你是该项目的贡献者，请使用该命令运行，该命令会执行 stylelint 和 eslint 的校验（在 commit 时会再进行一次校验）：
+
+```dash
+npm run start
+```
