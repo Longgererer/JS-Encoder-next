@@ -37,7 +37,7 @@
 
 ## 未来
 
-所有未来计划的功能性改动都记录在此：[TO DO LIST](https://docs.jsencoder.cn/docs/intro)
+所有未来计划的功能性改动都记录在此：[TO DO LIST](https://docs.jsencoder.cn/docs/to-do-list)
 
 ## 本地运行
 
