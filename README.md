@@ -22,6 +22,11 @@
   <a href="https://github.com/Longgererer/JS-Encoder/blob/master/LICENSE">License</a>
 </p>
 
+<p align="center">
+  <span>旧版（V3） <a href="https://github.com/JS-Encoder/JS-Encoder/tree/v3.5.1">代码</a></span>
+  <span>及 <a href="http://jsencoder.lliiooiill.cn/">链接</a></span>
+</p>
+
 <img width="1280" alt="Screenshot 2024-05-17 150903" src="https://github.com/Longgererer/JS-Encoder-next/assets/40834209/61576c39-6b00-48cd-bb07-cc2f6d18b279">
 <div align=center>图中示例来自<a href="https://codepen.io/josetxu/pen/RwdGmqp?editors=1100">CodePen</a></div>
 
